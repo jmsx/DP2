@@ -1,2 +1,2 @@
 # DP2
-Diseño y Prueba 2
+Diseño y Pruebas 2. Primer entregable.
