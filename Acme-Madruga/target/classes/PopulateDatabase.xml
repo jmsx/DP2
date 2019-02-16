@@ -16,7 +16,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 	
-	<!------------ USER ACCOUNTS ---------------->
+	<!-- USER ACCOUNTS -->
 
 	<bean id="userAccountAdmin1" class="security.UserAccount">
 		<property name="username" value="admin1" />
@@ -97,7 +97,7 @@
 	</bean>
 	
 	
-	<!----------- SOCIAL PROFILES ---------------->	
+	<!-- SOCIAL PROFILES -->	
 	
 	<bean id="socialProfileMember1" class="domain.SocialProfile">
 		<property name="nick" value="nickmember1" />
@@ -128,7 +128,7 @@
 	</bean>
 	
 	
-	<!----------- FOLDERS ---------------->
+	<!-- FOLDERS -->
 	
 	<bean id="outBoxAdministrator1" class="domain.Folder">
 		<property name="name" value="Out box" />
