@@ -16,7 +16,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 	
-	<!-- User accounts -->
+	<!------------ USER ACCOUNTS ---------------->
 
 	<bean id="userAccountAdmin1" class="security.UserAccount">
 		<property name="username" value="admin1" />
@@ -96,7 +96,318 @@
 		</property>
 	</bean>
 	
-	<!-- Other domain beans come here -->	
+	
+	<!----------- SOCIAL PROFILES ---------------->	
+	
+	<bean id="socialProfileMember1" class="domain.SocialProfile">
+		<property name="nick" value="nickmember1" />
+		<property name="socialNetwork" value="socialnetworkmember1" />
+		<property name="profileLink" value="http://www.linkmember1.com" />
+		<property name="actor" ref="member1" />
+	</bean>
+
+	<bean id="socialProfileMember2" class="domain.SocialProfile">
+		<property name="nick" value="nickmember2" />
+		<property name="socialNetwork" value="socialnetworkmember2" />
+		<property name="profileLink" value="http://www.limkmember2.com" />
+		<property name="actor" ref="member2" />
+	</bean>
+
+	<bean id="socialProfileBrotherhood1" class="domain.SocialProfile">
+		<property name="nick" value="nickbrotherhood1" />
+		<property name="socialNetwork" value="socialnetworkbrotherhood1" />
+		<property name="profileLink" value="http://www.linkbrotherhood1.com" />
+		<property name="actor" ref="brotherhood1" />
+	</bean>
+	
+	<bean id="socialProfileBrotherhood2" class="domain.SocialProfile">
+		<property name="nick" value="nickbrotherhood2" />
+		<property name="socialNetwork" value="socialnetworkbrotherhood2" />
+		<property name="profileLink" value="http://www.linkbrotherhood2.com" />
+		<property name="actor" ref="brotherhood2" />
+	</bean>
+	
+	
+	<!----------- FOLDERS ---------------->
+	
+	<bean id="outBoxAdministrator1" class="domain.Folder">
+		<property name="name" value="Out box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="administrator1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="inBoxAdministrator1" class="domain.Folder">
+		<property name="name" value="In box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="administrator1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="trashBoxAdministrator1" class="domain.Folder">
+		<property name="name" value="Trash box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="administrator1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="notificationBoxAdministrator1" class="domain.Folder">
+		<property name="name" value="Notification box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="administrator1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="spamBoxAdministrator1" class="domain.Folder">
+		<property name="name" value="Spam box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="administrator1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="outBoxMember1" class="domain.Folder">
+		<property name="name" value="Out box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="inBoxMember1" class="domain.Folder">
+		<property name="name" value="In box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="trashBoxMember1" class="domain.Folder">
+		<property name="name" value="Trash box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="notificationBoxMember1" class="domain.Folder">
+		<property name="name" value="Notification box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="spamBoxMember1" class="domain.Folder">
+		<property name="name" value="Spam box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="outBoxMember2" class="domain.Folder">
+		<property name="name" value="Out box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="inBoxMember2" class="domain.Folder">
+		<property name="name" value="In box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="trashBoxMember2" class="domain.Folder">
+		<property name="name" value="Trash box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="notificationBoxMember2" class="domain.Folder">
+		<property name="name" value="Notification box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="spamBoxMember2" class="domain.Folder">
+		<property name="name" value="Spam box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="member2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	<bean id="outBoxBrotherhood1" class="domain.Folder">
+		<property name="name" value="Out box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="inBoxBrotherhood1" class="domain.Folder">
+		<property name="name" value="In box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="trashBoxBrotherhood1" class="domain.Folder">
+		<property name="name" value="Trash box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="notificationBoxBrotherhood1" class="domain.Folder">
+		<property name="name" value="Notification box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="spamBoxBrotherhood1" class="domain.Folder">
+		<property name="name" value="Spam box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood1" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="outBoxBrotherhood2" class="domain.Folder">
+		<property name="name" value="Out box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="inBoxBrotherhood2" class="domain.Folder">
+		<property name="name" value="In box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="trashBoxBrotherhood2" class="domain.Folder">
+		<property name="name" value="Trash box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="notificationBoxBrotherhood2" class="domain.Folder">
+		<property name="name" value="Notification box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="spamBoxBrotherhood2" class="domain.Folder">
+		<property name="name" value="Spam box" />
+		<property name="isSystemFolder" value="true" />
+		<property name="actor" ref="brotherhood2" />
+		<property name="messages">
+			<list>
+			   <!--  <ref bean="message1"/>-->
+			</list>
+		</property>
+	</bean>
+	
 	
 	
 	
