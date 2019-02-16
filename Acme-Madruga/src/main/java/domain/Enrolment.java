@@ -12,6 +12,8 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Past;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Enrolment extends DomainEntity {
@@ -26,6 +28,7 @@ public class Enrolment extends DomainEntity {
 
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}
@@ -37,7 +40,7 @@ public class Enrolment extends DomainEntity {
 	//Relational getters and setters
 
 	@Valid
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	public Position getPosition() {
 		return this.position;
 	}
@@ -47,7 +50,7 @@ public class Enrolment extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	public Member getMember() {
 		return this.member;
 	}

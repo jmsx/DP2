@@ -79,6 +79,7 @@ public class Actor extends DomainEntity {
 	}
 
 	@NotBlank
+	//@Pattern(regexp="^\+{1}[1-9]{0,3}\s\([1-9]{0,3}\)\s[0-9]{4,}|\+{1}[1-9]{0,3}\s[0-9]{4,}|[0-9]{4,}$")
 	public String getPhone() {
 		return this.phone;
 	}

@@ -68,7 +68,7 @@ public class ConfigurationParameters extends DomainEntity {
 	}
 
 	//TODO
-	@Pattern(regexp = "^[+][1-9]\\d{0,2}")
+	@Pattern(regexp = "^[+][1-9]{0,2}")
 	public String getCountryPhoneCode() {
 		return this.countryPhoneCode;
 	}
