@@ -105,7 +105,6 @@ public class Actor extends DomainEntity {
 		this.score = score;
 	}
 
-	@NotNull
 	public Boolean getSpammer() {
 		return this.spammer;
 	}

@@ -14,7 +14,7 @@ import javax.validation.constraints.Past;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Enrollment extends DomainEntity {
+public class Enrolment extends DomainEntity {
 
 	private Date		moment;
 	private Position	position;
@@ -34,7 +34,10 @@ public class Enrollment extends DomainEntity {
 		this.moment = moment;
 	}
 
+	//Relational getters and setters
+
 	@Valid
+	@ManyToOne(optional = true)
 	public Position getPosition() {
 		return this.position;
 	}
@@ -42,8 +45,6 @@ public class Enrollment extends DomainEntity {
 	public void setPosition(final Position position) {
 		this.position = position;
 	}
-
-	//Relational getters and setters
 
 	@Valid
 	@ManyToOne(optional = true)

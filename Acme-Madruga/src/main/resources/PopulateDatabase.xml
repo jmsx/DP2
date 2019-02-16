@@ -16,6 +16,73 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 	
+	<bean id="configurationParameters" class="domain.ConfigurationParameters">
+		<property name="sysName" value="Acme Madrugá" />
+		<property name="banner" value="https://tinyurl.com/acme-madruga" />
+		<property name="welcomeMessageEn" value="Welcome to Acme Madrugá!  The site to organise your processions" />
+		<property name="welcomeMessageEsp" value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
+		<property name="countryPhoneCode" value="+34" />
+		<property name="positions">
+			<list>
+				<ref bean="position1"/>
+				<ref bean="position2"/>
+				<ref bean="position3"/>
+				<ref bean="position4"/>
+				<ref bean="position5"/>
+				<ref bean="position6"/>
+				<ref bean="position7"/>
+			</list>
+		</property>
+		<property name="spamWords">
+			<list>
+				<value>sex</value>
+				<value>viagra</value>
+				<value>cialis</value>
+				<value>one million</value>
+				<value>you've been selected</value>
+				<value>Nigeria</value>
+				<value>sexo</value>
+				<value>un millón</value>
+				<value>ha sido seleccionado</value>
+			</list>
+		</property>
+		<property name="positiveWords">
+			<list>
+				<value>good</value>
+				<value>factastic</value>
+				<value>excellent</value>
+				<value>great</value>
+				<value>amazing</value>
+				<value>terrific</value>
+				<value>beautiful</value>
+				<value>bueno</value>
+				<value>buena</value>
+				<value>fantástico</value>
+				<value>fantástica</value>
+				<value>excelente</value>
+				<value>genial</value>
+				<value>terrorífico</value>
+				<value>bonito</value>
+				<value>bonita</value>
+			</list>
+		</property>
+		<property name="negativeWords">
+			<list>
+				<value>not</value>
+				<value>bad</value>
+				<value>horrible</value>
+				<value>average</value>
+				<value>disaster</value>
+				<value>malo</value>
+				<value>media</value>
+				<value>desastre</value>
+			</list>
+		</property>
+		<property name="maxFinderResults" value="10" />
+		<property name="finderTime" value="1" />
+		
+	</bean>
+	
 	<!-- USER ACCOUNTS -->
 
 	<bean id="userAccountAdmin1" class="security.UserAccount">
@@ -191,7 +258,8 @@
 		<property name="actor" ref="member1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message1"/>
+			   <ref bean="message3"/>
 			</list>
 		</property>
 	</bean>
@@ -258,7 +326,8 @@
 		<property name="actor" ref="member2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message1"/>
+			   <ref bean="message4"/>
 			</list>
 		</property>
 	</bean>
@@ -304,7 +373,8 @@
 		<property name="actor" ref="brotherhood1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message2"/>
+			   <ref bean="message4"/>
 			</list>
 		</property>
 	</bean>
@@ -315,7 +385,7 @@
 		<property name="actor" ref="brotherhood1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message3"/>
 			</list>
 		</property>
 	</bean>
@@ -370,7 +440,7 @@
 		<property name="actor" ref="brotherhood2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message2"/>
 			</list>
 		</property>
 	</bean>
@@ -407,6 +477,66 @@
 			</list>
 		</property>
 	</bean>
+	
+	<!-- MESSAGES -->
+	
+	<bean id="message1" class="domain.Message">
+		<property name="moment" value="2017/10/01 15:20" />
+		<property name="subject" value="subject 1" />
+		<property name="body" value="body 1" />
+		<property name="priority" value="HIGH" />
+		<property name="isSpam" value="false" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="sender" ref="member1" />
+		<property name="recipient" ref="member2" />
+	</bean>
+	
+	<bean id="message2" class="domain.Message">
+		<property name="moment" value="2017/11/02 15:20" />
+		<property name="subject" value="subject 2" />
+		<property name="body" value="body 2" />
+		<property name="priority" value="LOW" />
+		<property name="isSpam" value="false" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="sender" ref="brotherhood1" />
+		<property name="recipient" ref="brotherhood2" />
+	</bean>
+	
+	<bean id="message3" class="domain.Message">
+		<property name="moment" value="2018/09/01 15:20" />
+		<property name="subject" value="subject 3" />
+		<property name="body" value="body 1" />
+		<property name="priority" value="HIGH" />
+		<property name="isSpam" value="false" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="sender" ref="member1" />
+		<property name="recipient" ref="brotherhood1" />
+	</bean>
+	
+	<bean id="message4" class="domain.Message">
+		<property name="moment" value="2018/04/16 15:20" />
+		<property name="subject" value="subject 4" />
+		<property name="body" value="body 4" />
+		<property name="priority" value="HIGH" />
+		<property name="isSpam" value="false" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="sender" ref="brotherhood1" />
+		<property name="recipient" ref="member2" />
+	</bean>
+	
+	
 	
 	
 	
