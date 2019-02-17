@@ -83,7 +83,11 @@
 		
 	</bean>
 	
-	<!-- USER ACCOUNTS -->
+	<!-- 
+	===================================================================
+	=======                   USER ACCOUNTS                   =========
+	===================================================================
+	 -->
 
 	<bean id="userAccountAdmin1" class="security.UserAccount">
 		<property name="username" value="admin1" />
@@ -164,7 +168,11 @@
 	</bean>
 	
 	
-	<!-- SOCIAL PROFILES -->	
+	<!-- 
+	===================================================================
+	=======                  SOCIAL PROFILES                  =========
+	===================================================================
+	-->	
 	
 	<bean id="socialProfileMember1" class="domain.SocialProfile">
 		<property name="nick" value="nickmember1" />
@@ -195,7 +203,11 @@
 	</bean>
 	
 	
-	<!-- FOLDERS -->
+	<!-- 
+	===================================================================
+	=======                      FOLDERS                      =========
+	===================================================================
+	-->
 	
 	<bean id="outBoxAdministrator1" class="domain.Folder">
 		<property name="name" value="Out box" />
@@ -478,7 +490,11 @@
 		</property>
 	</bean>
 	
-	<!-- MESSAGES -->
+	<!-- 
+	===================================================================
+	=======                     MESSAGES                      =========
+	===================================================================
+	-->
 	
 	<bean id="message1" class="domain.Message">
 		<property name="moment" value="2017/10/01 15:20" />
@@ -539,6 +555,74 @@
 	
 	
 	
+	
+	<!-- 
+	===================================================================
+	=======                     PROCESSIONS                   =========
+	===================================================================
+	-->
+	
+	<bean id="procession1" class="class.Procession">
+		<property name="title" value="El gran poder" />
+		<property name="description" value="This is a description of a procession1" />
+		<property name="moment"  value="2020/04/24 00:00"/>
+		<property name="ticker" value="200424-TUEBG"></property>
+		<property name="mode" value="FINAL"></property>
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float1"/>
+				<ref bean="float2"/>
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1"></property>
+	</bean>
+	<bean id="procession2" class="class.Procession">
+		<property name="title" value="Esperanza de triana" />
+		<property name="description" value="This is a description of a procession2" />
+		<property name="moment"  value="2020/04/26 00:00"/>
+		<property name="ticker" value="200426-DOUBG"></property>
+		<property name="mode" value="DRAFT"></property>
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3"/>
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood2"></property>
+	</bean>
+	
+	
+	
+	
+	<!-- 
+	===================================================================
+	=======                      REQUEST                      =========
+	===================================================================
+	-->
+	
+	
+	<bean id="request1" class="class.Request">
+		<property name="status" value="PENDING"></property>
+		<property name="moment" value="2018/04/16 15:20"></property>
+		<property name="row" value=""></property>
+		<property name="column" value=""></property>
+		<property name="explanation" value=""></property>
+		<!-- Relations -->
+		<property name="member" ref="member1"></property>
+		<property name="procession" ref="procession1"></property>
+	</bean>
+	
+	<bean id="request2" class="class.Request">
+		<property name="status" value="APPROVED"></property>
+		<property name="moment" value="2018/02/16 15:20"></property>
+		<property name="row" value="1"></property>
+		<property name="column" value="2"></property>
+		<property name="explanation" value=""></property>
+		<!-- Relations -->
+		<property name="member" ref="member2"></property>
+		<property name="procession" ref="procession2"></property>
+	</bean>
 	
 	
 </beans>
