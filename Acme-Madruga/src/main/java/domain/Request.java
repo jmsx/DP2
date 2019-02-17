@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -50,7 +49,7 @@ public class Request extends DomainEntity {
 	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
-	@Min(1)
+
 	public Integer getRow() {
 		return this.row;
 	}
@@ -58,7 +57,7 @@ public class Request extends DomainEntity {
 	public void setRow(final Integer row) {
 		this.row = row;
 	}
-	@Min(1)
+
 	public Integer getColumn() {
 		return this.column;
 	}
