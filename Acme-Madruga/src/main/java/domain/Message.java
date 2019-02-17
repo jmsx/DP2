@@ -6,7 +6,9 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,6 +17,8 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -26,9 +30,9 @@ public class Message extends DomainEntity {
 	private String				priority;
 	private Collection<String>	tags;
 
-	//Relational atributes
+	//Relational attributes
 	private Actor				sender;
-	private Actor				recipient;
+	private Collection<Actor>	recipients;
 
 
 	@Past
@@ -68,9 +72,8 @@ public class Message extends DomainEntity {
 		this.priority = priority;
 	}
 
-	//@EachNotBlank
-	//@ElementCollection
-	@NotBlank
+	@ElementCollection
+	@EachNotBlank
 	public Collection<String> getTags() {
 		return this.tags;
 	}
@@ -92,13 +95,13 @@ public class Message extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = false)
-	public Actor getRecipient() {
-		return this.recipient;
+	@ManyToMany
+	public Collection<Actor> getRecipients() {
+		return this.recipients;
 	}
 
-	public void setRecipient(final Actor recipient) {
-		this.recipient = recipient;
+	public void setRecipients(final Collection<Actor> recipients) {
+		this.recipients = recipients;
 	}
 
 }

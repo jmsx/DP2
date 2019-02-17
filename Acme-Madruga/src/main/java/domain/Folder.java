@@ -20,7 +20,7 @@ public class Folder extends DomainEntity {
 	private String				name;
 	private Boolean				isSystemFolder;
 
-	//Relational atributes
+	//Relational attributes
 	private Actor				actor;
 	private Collection<Message>	messages;
 
@@ -44,6 +44,7 @@ public class Folder extends DomainEntity {
 	}
 
 	//Relational methods
+
 	@Valid
 	@ManyToOne(optional = false)
 	public Actor getActor() {

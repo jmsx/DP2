@@ -16,7 +16,7 @@ public class SocialProfile extends DomainEntity {
 	private String	socialNetwork;
 	private String	profileLink;
 
-	//Relational atributes
+	//Relational attributes
 	private Actor	actor;
 
 

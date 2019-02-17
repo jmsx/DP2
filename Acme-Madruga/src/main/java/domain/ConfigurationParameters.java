@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
@@ -13,6 +14,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
+
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -23,7 +26,7 @@ public class ConfigurationParameters extends DomainEntity {
 	private String					welcomeMessageEsp;
 	private String					welcomeMessageEn;
 	private String					countryPhoneCode;
-	private Collection<Position>	positions;
+	private Collection<Position>	positionList;
 	private Collection<String>		positiveWords;
 	private Collection<String>		negativeWords;
 	private Collection<String>		spamWords;
@@ -79,17 +82,16 @@ public class ConfigurationParameters extends DomainEntity {
 
 	@Valid
 	@NotEmpty
-	public Collection<Position> getPositions() {
-		return this.positions;
+	public Collection<Position> getPositionList() {
+		return this.positionList;
 	}
 
-	public void setPositions(final Collection<Position> positions) {
-		this.positions = positions;
+	public void setPositionList(final Collection<Position> positions) {
+		this.positionList = positions;
 	}
 
-	//@EachNotBlank
-	//@ElementCollection
-	@NotBlank
+	@ElementCollection
+	@EachNotBlank
 	public Collection<String> getPositiveWords() {
 		return this.positiveWords;
 	}
@@ -98,9 +100,8 @@ public class ConfigurationParameters extends DomainEntity {
 		this.positiveWords = positiveWords;
 	}
 
-	//@EachNotBlank
-	//@ElementCollection
-	@NotBlank
+	@ElementCollection
+	@EachNotBlank
 	public Collection<String> getNegativeWords() {
 		return this.negativeWords;
 	}
@@ -109,9 +110,8 @@ public class ConfigurationParameters extends DomainEntity {
 		this.negativeWords = negativeWords;
 	}
 
-	//@EachNotBlank
-	//@ElementCollection
-	@NotBlank
+	@ElementCollection
+	@EachNotBlank
 	public Collection<String> getSpamWords() {
 		return this.spamWords;
 	}
