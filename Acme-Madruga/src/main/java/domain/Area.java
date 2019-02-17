@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import cz.jirutka.validator.collection.constraints.EachURL;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Area extends DomainEntity {
@@ -29,6 +31,7 @@ public class Area extends DomainEntity {
 
 	// TODO: @URL
 	@ElementCollection
+	@EachURL
 	public Collection<String> getPicture() {
 		return this.picture;
 	}

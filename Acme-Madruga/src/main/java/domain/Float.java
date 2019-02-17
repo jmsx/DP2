@@ -12,6 +12,8 @@ import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import cz.jirutka.validator.collection.constraints.EachURL;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Float extends DomainEntity {
@@ -42,6 +44,7 @@ public class Float extends DomainEntity {
 
 	// TODO: @URL
 	@ElementCollection
+	@EachURL
 	public Collection<String> getPictures() {
 		return this.pictures;
 	}
