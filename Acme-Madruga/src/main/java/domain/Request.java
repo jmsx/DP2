@@ -50,12 +50,12 @@ public class Request extends DomainEntity {
 		this.moment = moment;
 	}
 
-	public Integer getRow() {
+	public Integer getFila() {
 		return this.fila;
 	}
 
-	public void setRow(final Integer row) {
-		this.fila = row;
+	public void setFila(final Integer fila) {
+		this.fila = fila;
 	}
 
 	public Integer getColumna() {
