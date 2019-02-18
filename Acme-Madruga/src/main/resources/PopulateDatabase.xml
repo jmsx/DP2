@@ -641,4 +641,99 @@
 	</bean>
 	
 	
+	<!-- 
+	===================================================================
+	=======                       MEMBER                      =========
+	===================================================================
+	-->
+	
+	<bean id="member1" class="class.Member">
+		<!-- Actor -->
+		<property name="name" value="Jose Manuel"></property>
+		<property name="middleName" value="jmsx"></property>
+		<property name="surname" value="Gonzalez"></property>
+		<property name="photo" value="http://tinyurl.com/picture.png"></property>
+		<property name="email" value="contacto@jmsx.es"></property>
+		<property name="phone" value="+34647607406"></property>
+		<property name="address" value="Reina Mercedes"></property>
+		<property name="score" value="0.5"></property>
+		<property name="spammer" value="false"></property>
+		<property name="userAccount" ref="userAccountMember1"></property>
+		<!-- Member -->
+		<property name="finder" ref="finder1"></property>
+	</bean>
+	
+
+	<!-- 
+	===================================================================
+	=======                       FINDER                      =========
+	===================================================================
+	-->
+	
+	
+	<bean id="finder1" class="class.Finder">
+		<!-- Finder -->
+		<property name="keyword" value="Triana"></property>
+		<property name="areaName" value="Triana"></property>
+		<property name="minDate" value="2018/04/16 15:20"></property>
+		<property name="maxDate" value="2019/04/16 15:20"></property>
+		
+		<!-- Reletions -->
+		<property name="processions">
+			<list>
+				<ref bean="procession1"/>
+				<ref bean="procession2"/>
+			</list>
+		</property>
+
+	</bean>
+	
+	
+	
+	
+	<!-- 
+	===================================================================
+	=======                    BROTHERHOODS                   =========
+	===================================================================
+	-->
+	
+	<bean id="brotherhood1" class="class.Brotherhood">
+		<property name="title" value="La Esperanza de Triana"></property>
+		<property name="date" value="2018/02/16 15:20"></property>
+		<property name="pictures">
+			<list>
+				<value>http://tyniurl.com/dsfresesd.png</value>
+				<value>http://tyniurl.com/dsfes3r32w45d.png</value>
+				<value>http://tyniurl.com/dsfe2435rwsd.png</value>
+			</list>
+		</property>
+		<property name="area" ref="area1"></property>
+	</bean>
+	
+	
+	
+	
+	
+	<!-- 
+	===================================================================
+	=======                      ENROLMENT                    =========
+	===================================================================
+	-->
+	
+	<bean id="enrolment1" class="class.Enrolment">
+		<!-- Atributes -->
+		<property name="moment" value="2018/03/16 15:20"></property>
+		<property name="position" ref="position1"></property>
+		
+		<!-- Relations -->
+		<property name="member" ref="member1"></property>
+		<property name="brotherhood" ref="brotherhood1"></property>
+	</bean>
+	
+	
+
+
+	
+	
+	
 </beans>

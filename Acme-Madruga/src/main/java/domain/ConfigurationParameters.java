@@ -7,7 +7,6 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -80,7 +79,7 @@ public class ConfigurationParameters extends DomainEntity {
 		this.countryPhoneCode = countryPhoneCode;
 	}
 
-	@Valid
+	@ElementCollection
 	@NotEmpty
 	public Collection<Position> getPositionList() {
 		return this.positionList;
