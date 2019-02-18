@@ -22,8 +22,8 @@ public class Request extends DomainEntity {
 
 	private String		status;
 	private Date		moment;
-	private Integer		row;
-	private Integer		column;
+	private Integer		fila;
+	private Integer		columna;
 	private String		explanation;
 
 	//Relation attributes
@@ -51,19 +51,19 @@ public class Request extends DomainEntity {
 	}
 
 	public Integer getRow() {
-		return this.row;
+		return this.fila;
 	}
 
 	public void setRow(final Integer row) {
-		this.row = row;
+		this.fila = row;
 	}
 
-	public Integer getColumn() {
-		return this.column;
+	public Integer getColumna() {
+		return this.columna;
 	}
 
-	public void setColumn(final Integer column) {
-		this.column = column;
+	public void setColumna(final Integer columna) {
+		this.columna = columna;
 	}
 	@SafeHtml
 	public String getExplanation() {

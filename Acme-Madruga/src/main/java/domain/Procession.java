@@ -24,15 +24,15 @@ import org.hibernate.validator.constraints.SafeHtml;
 @Access(AccessType.PROPERTY)
 public class Procession extends DomainEntity {
 
-	private String				title;
-	private String				description;
-	private Date				moment;
-	private String				ticker;
-	private String				mode;
+	private String						title;
+	private String						description;
+	private Date						moment;
+	private String						ticker;
+	private String						mode;
 
 	//Relational atributes
-	private Collection<Float>	floats;
-	private Brotherhood			brotherhood;
+	private Collection<FloatProcession>	floatProcessions;
+	private Brotherhood					brotherhood;
 
 
 	@NotBlank
@@ -84,12 +84,12 @@ public class Procession extends DomainEntity {
 	//Relational Methods
 	@Valid
 	@ManyToMany
-	public Collection<Float> getFloats() {
-		return this.floats;
+	public Collection<FloatProcession> getFloatProcessions() {
+		return this.floatProcessions;
 	}
 
-	public void setFloats(final Collection<Float> floats) {
-		this.floats = floats;
+	public void setFloatProcessions(final Collection<FloatProcession> floatProcessions) {
+		this.floatProcessions = floatProcessions;
 	}
 	@Valid
 	@ManyToOne(optional = false)

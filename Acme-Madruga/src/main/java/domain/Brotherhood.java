@@ -21,7 +21,7 @@ import cz.jirutka.validator.collection.constraints.EachURL;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Brotherhood extends DomainEntity {
+public class Brotherhood extends Actor {
 
 	private String				title;
 	private Date				date;

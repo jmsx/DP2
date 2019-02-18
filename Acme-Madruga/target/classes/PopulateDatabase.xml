@@ -16,73 +16,6 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 	
-	<bean id="configurationParameters" class="domain.ConfigurationParameters">
-		<property name="sysName" value="Acme Madrugá" />
-		<property name="banner" value="https://tinyurl.com/acme-madruga" />
-		<property name="welcomeMessageEn" value="Welcome to Acme Madrugá!  The site to organise your processions" />
-		<property name="welcomeMessageEsp" value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
-		<property name="countryPhoneCode" value="+34" />
-		<property name="positionList">
-			<list>
-				<ref bean="position1"/>
-				<ref bean="position2"/>
-				<ref bean="position3"/>
-				<ref bean="position4"/>
-				<ref bean="position5"/>
-				<ref bean="position6"/>
-				<ref bean="position7"/>
-			</list>
-		</property>
-		<property name="spamWords">
-			<list>
-				<value>sex</value>
-				<value>viagra</value>
-				<value>cialis</value>
-				<value>one million</value>
-				<value>you've been selected</value>
-				<value>Nigeria</value>
-				<value>sexo</value>
-				<value>un millón</value>
-				<value>ha sido seleccionado</value>
-			</list>
-		</property>
-		<property name="positiveWords">
-			<list>
-				<value>good</value>
-				<value>factastic</value>
-				<value>excellent</value>
-				<value>great</value>
-				<value>amazing</value>
-				<value>terrific</value>
-				<value>beautiful</value>
-				<value>bueno</value>
-				<value>buena</value>
-				<value>fantástico</value>
-				<value>fantástica</value>
-				<value>excelente</value>
-				<value>genial</value>
-				<value>terrorífico</value>
-				<value>bonito</value>
-				<value>bonita</value>
-			</list>
-		</property>
-		<property name="negativeWords">
-			<list>
-				<value>not</value>
-				<value>bad</value>
-				<value>horrible</value>
-				<value>average</value>
-				<value>disaster</value>
-				<value>malo</value>
-				<value>media</value>
-				<value>desastre</value>
-			</list>
-		</property>
-		<property name="maxFinderResults" value="10" />
-		<property name="finderTime" value="1" />
-		
-	</bean>
-	
 	<!-- 
 	===================================================================
 	=======                   USER ACCOUNTS                   =========
@@ -144,7 +77,7 @@
 			</list>
 		</property>
 	</bean>
-	
+	<!-- 
 	<bean id="userAccountMember3" class="security.UserAccount">
 		<property name="username" value="member3" />
 		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
@@ -156,7 +89,7 @@
 			</list>
 		</property>
 	</bean>
-	
+	-->
 	<!-- 
 	========================= BROTHERHOOD ===========================
 	-->
@@ -184,7 +117,7 @@
 			</list>
 		</property>
 	</bean>
-	
+	<!--  
 	<bean id="userAccountBrotherhood3" class="security.UserAccount">
 		<property name="username" value="brotherhood3" />
 		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
@@ -196,7 +129,7 @@
 			</list>
 		</property>
 	</bean>
-	
+	-->
 	<!-- 
 	========================= SUPER ===========================
 	-->
@@ -220,6 +153,86 @@
 	</bean>
 	
 	
+	
+	
+
+
+  <!-- 
+	===================================================================
+	=======                       MEMBER                      =========
+	===================================================================
+	-->
+	
+	<bean id="member1" class="domain.Member">
+		<!-- Actor -->
+		<property name="name" value="Jose Manuel"></property>
+		<property name="middleName" value="jmsx"></property>
+		<property name="surname" value="Gonzalez"></property>
+		<property name="photo" value="http://tinyurl.com/picture.png"></property>
+		<property name="email" value="contacto@jmsx.es"></property>
+		<property name="phone" value="+34647607406"></property>
+		<property name="address" value="Reina Mercedes"></property>
+		<property name="score" value="0.5"></property>
+		<property name="spammer" value="false"></property>
+		<property name="userAccount" ref="userAccountMember1"></property>
+		<!-- Member -->
+		<property name="finder" ref="finder1"></property>
+	</bean>
+	
+	<bean id="member2" class="domain.Member">
+		<!-- Actor -->
+		<property name="name" value="Antonia"></property>
+		<property name="middleName" value="a80801"></property>
+		<property name="surname" value="Ruiz"></property>
+		<property name="photo" value="http://tinyurl.com/picture.png"></property>
+		<property name="email" value="ant@opensource.es"></property>
+		<property name="phone" value="+34647675239"></property>
+		<property name="address" value="Reina Mercedes"></property>
+		<property name="score" value="0.5"></property>
+		<property name="spammer" value="false"></property>
+		<property name="userAccount" ref="userAccountMember2"></property>
+		<!-- Member -->
+		<!-- 
+		<property name="finder"></property>
+		 -->
+	</bean>
+	  <!-- 
+	===================================================================
+	=======                  ADMINISTRATOR                    =========
+	===================================================================
+	-->
+		
+	<bean id="administrator1" class="domain.Administrator">
+		<!-- Actor -->
+		<property name="name" value="Jose Manuel"></property>
+		<property name="middleName" value="jmsx12"></property>
+		<property name="surname" value="Gonzalez"></property>
+		<property name="photo" value="http://tinyurl.com/picture.png"></property>
+		<property name="email" value="conwdasto@jmsx.es"></property>
+		<property name="phone" value="+34647607406"></property>
+		<property name="address" value="Reina Mercedes"></property>
+		<property name="score" value="0.5"></property>
+		<property name="spammer" value="false"></property>
+		<property name="userAccount" ref="userAccountAdmin1"></property>
+
+
+	</bean>
+	<bean id="administrator2" class="domain.Administrator">
+		<!-- Actor -->
+		<property name="name" value="Jose Luis"></property>
+		<property name="middleName" value="jluis"></property>
+		<property name="surname" value="Gonzalez"></property>
+		<property name="photo" value="http://tinyurl.com/picture.png"></property>
+		<property name="email" value="lusi@gamil.es"></property>
+		<property name="phone" value="+34647307406"></property>
+		<property name="address" value="Reina Mercedes"></property>
+		<property name="score" value="0.5"></property>
+		<property name="spammer" value="false"></property>
+		<property name="userAccount" ref="userAccountAdmin2"></property>
+
+
+	</bean>
+
 	<!-- 
 	===================================================================
 	=======                  SOCIAL PROFILES                  =========
@@ -255,6 +268,7 @@
 	</bean>
 	
 	
+
 	<!-- 
 	===================================================================
 	=======                      FOLDERS                      =========
@@ -486,14 +500,14 @@
 		</property>
 	</bean>
 	
-	<!-- ========================================= -->
+	<!-- ========================================= 
 	<bean id="outBoxMember3" class="domain.Folder">
 		<property name="name" value="Out box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -514,7 +528,7 @@
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			     <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -525,7 +539,7 @@
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			     <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -536,11 +550,11 @@
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			     <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
-	
+	-->
 	<!-- ========================================= -->
 	<bean id="outBoxBrotherhood1" class="domain.Folder">
 		<property name="name" value="Out box" />
@@ -653,14 +667,14 @@
 		</property>
 	</bean>
 	
-	<!-- ========================================= -->
+	<!-- ========================================= 
 		<bean id="outBoxBrotherhood3" class="domain.Folder">
 		<property name="name" value="Out box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			  <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -671,7 +685,7 @@
 		<property name="actor" ref="brotherhood3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			    <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -682,7 +696,7 @@
 		<property name="actor" ref="brotherhood3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -693,7 +707,7 @@
 		<property name="actor" ref="brotherhood3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -704,11 +718,11 @@
 		<property name="actor" ref="brotherhood3" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+			   <ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
-	
+	-->
 	<!-- 
 	===================================================================
 	=======                     MESSAGES                      =========
@@ -720,7 +734,6 @@
 		<property name="subject" value="subject 1" />
 		<property name="body" value="body 1" />
 		<property name="priority" value="HIGH" />
-		<property name="isSpam" value="false" />
 		<property name="tags">
 			<list>
 			</list>
@@ -738,7 +751,6 @@
 		<property name="subject" value="subject 2" />
 		<property name="body" value="body 2" />
 		<property name="priority" value="LOW" />
-		<property name="isSpam" value="false" />
 		<property name="tags">
 			<list>
 			</list>
@@ -756,7 +768,6 @@
 		<property name="subject" value="subject 3" />
 		<property name="body" value="body 1" />
 		<property name="priority" value="HIGH" />
-		<property name="isSpam" value="false" />
 		<property name="tags">
 			<list>
 			</list>
@@ -774,7 +785,6 @@
 		<property name="subject" value="subject 4" />
 		<property name="body" value="body 4" />
 		<property name="priority" value="HIGH" />
-		<property name="isSpam" value="false" />
 		<property name="tags">
 			<list>
 			</list>
@@ -797,31 +807,31 @@
 	===================================================================
 	-->
 	
-	<bean id="procession1" class="class.Procession">
+	<bean id="procession1" class="domain.Procession">
 		<property name="title" value="El gran poder" />
 		<property name="description" value="This is a description of a procession1" />
 		<property name="moment"  value="2020/04/24 00:00"/>
 		<property name="ticker" value="200424-TUEBG"/>
 		<property name="mode" value="FINAL"/>
 		<!-- Relations -->
-		<property name="floats">
+		<property name="floatProcessions">
 			<list>
-				<ref bean="float1"/>
-				<ref bean="float2"/>
+				<ref bean="floatProcession1"/>
+				<ref bean="floatProcession1"/>
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
-	<bean id="procession2" class="class.Procession">
+	<bean id="procession2" class="domain.Procession">
 		<property name="title" value="Esperanza de triana" />
 		<property name="description" value="This is a description of a procession2" />
 		<property name="moment"  value="2020/04/26 00:00"/>
 		<property name="ticker" value="200426-DOUBG"/>
 		<property name="mode" value="DRAFT"/>
 		<!-- Relations -->
-		<property name="floats">
+		<property name="floatProcessions">
 			<list>
-				<ref bean="float3"/>
+				<ref bean="floatProcession3"/>
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood2"/>
@@ -837,22 +847,22 @@
 	-->
 	
 	
-	<bean id="request1" class="class.Request">
+	<bean id="request1" class="domain.Request">
 		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/04/16 15:20"/>
-		<property name="row" value=""/>
-		<property name="column" value=""/>
+		<property name="fila" value=""/>
+		<property name="columna" value=""/>
 		<property name="explanation" value=""/>
 		<!-- Relations -->
 		<property name="member" ref="member1"/>
 		<property name="procession" ref="procession1"/>
 	</bean>
 	
-	<bean id="request2" class="class.Request">
+	<bean id="request2" class="domain.Request">
 		<property name="status" value="APPROVED"/>
 		<property name="moment" value="2018/02/16 15:20"/>
-		<property name="row" value="1"/>
-		<property name="column" value="2"/>
+		<property name="fila" value="1"/>
+		<property name="columna" value="2"/>
 		<property name="explanation" value=""/>
 		<!-- Relations -->
 		<property name="member" ref="member2"/>
@@ -865,7 +875,7 @@
 	===================================================================
 	-->
 	
-	<bean id="area1" class="class.Area">
+	<bean id="area1" class="domain.Area">
 		<property name="name" value="Capilla San Jorge"/>
 		<property name="pictures">
 			<list>
@@ -876,7 +886,7 @@
 		</property>
 	</bean>
 	
-	<bean id="area2" class="class.Area">
+	<bean id="area2" class="domain.Area">
 		<property name="name" value="Capilla La Estrella"/>
 		<property name="pictures">
 			<list>
@@ -885,7 +895,7 @@
 		</property>
 	</bean>
 	
-	<bean id="area3" class="class.Area">
+	<bean id="area3" class="domain.Area">
 		<property name="name" value="Capilla Mexico"/>
 		<property name="pictures">
 			<list>
@@ -894,7 +904,7 @@
 		</property>
 	</bean>
 	
-	<bean id="area4" class="class.Area">
+	<bean id="area4" class="domain.Area">
 		<property name="name" value="Capilla San Enrique"/>
 		<property name="pictures">
 			<list>
@@ -905,11 +915,11 @@
 	
 	<!-- 
 	===================================================================
-	=======                      FLOAT                        =========
+	=======                  FLOATPROCESSION                  =========
 	===================================================================
 	-->
 	
-	<bean id="float1" class="class.Float">
+	<bean id="floatProcession1" class="domain.FloatProcession">
 		<property name="title" value="Cristo de las Almas"/>
 		<property name="description" value="Cristo de José  Pires Azcárraga (1947)"/>
 		<property name="pictures">
@@ -921,7 +931,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="float2" class="class.Float">
+	<bean id="floatProcession2" class="domain.FloatProcession">
 		<property name="title" value="Virgen de Gracia y Amparo"/>
 		<property name="description" value="Virgen de Fernández Andés (1936) restaurada por Manuel Ramos Corona en 1992."/>
 		<property name="pictures">
@@ -933,7 +943,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="float3" class="class.Float">
+	<bean id="floatProcession3" class="domain.FloatProcession">
 		<property name="title" value="Divina Misericordia"/>
 		<property name="description" value="El Nazareno es de Felipe de Ribas (1641) restaurado por Ortega Bru."/>
 		<property name="pictures">
@@ -945,7 +955,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="float4" class="class.Float">
+	<bean id="floatProcession4" class="domain.FloatProcession">
 		<property name="title" value="Siete Palabras y Virgen de los Remedios"/>
 		<property name="description" value="El Crucificado de Felipe Martínez, 1682). La Virgen de los Remedios y el Misterio (Manuel Gutiérrez, 1865) excepto San Juan (José Sánchez, 1859)."/>
 		<property name="pictures">
@@ -957,7 +967,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="float5" class="class.Float">
+	<bean id="floatProcession5" class="domain.FloatProcession">
 		<property name="title" value="Virgen de la Cabeza"/>
 		<property name="description" value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956."/>
 		<property name="pictures">
@@ -979,73 +989,41 @@
 	===================================================================
 	-->
 	
-	<bean id="position1" class="class.Position">
+	<bean id="position1" class="domain.Position">
 		<property name="nameEnglish" value="President" />
 		<property name="nameSpanish" value="Presidente" />
 	</bean>
 
-	<bean id="position2" class="class.Position">
+	<bean id="position2" class="domain.Position">
 		<property name="nameEnglish" value="Vice President" />
 		<property name="nameSpanish" value="Vicepresidente" />
 	</bean>
 
-	<bean id="position3" class="class.Position">
+	<bean id="position3" class="domain.Position">
 		<property name="nameEnglish" value="Secretary" />
 		<property name="nameSpanish" value="Secretario" />
 	</bean>
 
-	<bean id="position4" class="class.Position">
+	<bean id="position4" class="domain.Position">
 		<property name="nameEnglish" value="Treasurer" />
 		<property name="nameSpanish" value="Tesorero" />
 	</bean>
 
-	<bean id="position5" class="class.Position">
+	<bean id="position5" class="domain.Position">
 		<property name="nameEnglish" value="Historian" />
 		<property name="nameSpanish" value="Historiador" />
 	</bean>
 
-	<bean id="position6" class="class.Position">
+	<bean id="position6" class="domain.Position">
 		<property name="nameEnglish" value="Fundraiser" />
 		<property name="nameSpanish" value="Promotor" />
 	</bean>
 
-	<bean id="position7" class="class.Position">
+	<bean id="position7" class="domain.Position">
 		<property name="nameEnglish" value="Officer" />
 		<property name="nameSpanish" value="Vocal" />
 	</bean>
-	
-	<!-- 
-	===================================================================
-	=======                     BROTHERHOOD                   =========
-	===================================================================
-	-->
-	
-	
-	<!-- brotherhood1: Los Javieres // pasos: float1,2 -->
-	<!-- brotherhood2: Las siete palabras // pasos: float3,4,5 -->
-	
-	<!-- 
-	===================================================================
-	=======                       MEMBER                      =========
-	===================================================================
-	-->
-	
-	<bean id="member1" class="class.Member">
-		<!-- Actor -->
-		<property name="name" value="Jose Manuel"></property>
-		<property name="middleName" value="jmsx"></property>
-		<property name="surname" value="Gonzalez"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="contacto@jmsx.es"></property>
-		<property name="phone" value="+34647607406"></property>
-		<property name="address" value="Reina Mercedes"></property>
-		<property name="score" value="0.5"></property>
-		<property name="spammer" value="false"></property>
-		<property name="userAccount" ref="userAccountMember1"></property>
-		<!-- Member -->
-		<property name="finder" ref="finder1"></property>
-	</bean>
-	
+
 
 	<!-- 
 	===================================================================
@@ -1054,7 +1032,7 @@
 	-->
 	
 	
-	<bean id="finder1" class="class.Finder">
+	<bean id="finder1" class="domain.Finder">
 		<!-- Finder -->
 		<property name="keyword" value="Triana"></property>
 		<property name="areaName" value="Triana"></property>
@@ -1080,8 +1058,41 @@
 	===================================================================
 	-->
 	
-	<bean id="brotherhood1" class="class.Brotherhood">
+	<bean id="brotherhood1" class="domain.Brotherhood">
+		<property name="name" value="Esperanza de triana"></property>
+		<property name="middleName" value="Triana"></property>
+		<property name="surname" value="surnameBrother"></property>
+		<property name="photo" value="http://tinyurl.com/serfdq.png"></property>
+		<property name="email" value="esperanza@hotmail.es"></property>
+		<property name="phone" value="+34655398741"></property>
+		<property name="address" value="C/ Esperanza"></property>
+		<property name="score" value="0.7"></property>
+		<property name="spammer" value="false"></property>
 		<property name="title" value="La Esperanza de Triana"></property>
+		<property name="date" value="2018/02/16 15:20"></property>
+		<property name="userAccount" ref="userAccountBrotherhood1"></property>
+		<property name="pictures">
+			<list>
+				<value>http://tyniurl.com/dsfresesd.png</value>
+				<value>http://tyniurl.com/dsfes3r32w45d.png</value>
+				<value>http://tyniurl.com/dsfe2435rwsd.png</value>
+			</list>
+		</property>
+		<property name="area" ref="area1"></property>
+	</bean>
+	
+	
+	<bean id="brotherhood2" class="domain.Brotherhood">
+		<property name="title" value="El gran poder"></property>
+		<property name="middleName" value="Gran Poder"></property>
+		<property name="surname" value="surnameBrother"></property>
+		<property name="photo" value="http://tinyurl.com/serfdq.png"></property>
+		<property name="email" value="granpoder@hotmail.es"></property>
+		<property name="phone" value="+34655398741"></property>
+		<property name="address" value="C/ Grna Poder"></property>
+		<property name="score" value="0.7"></property>
+		<property name="spammer" value="false"></property>
+		<property name="userAccount" ref="userAccountBrotherhood2"></property>
 		<property name="date" value="2018/02/16 15:20"></property>
 		<property name="pictures">
 			<list>
@@ -1096,14 +1107,13 @@
 	
 	
 	
-	
 	<!-- 
 	===================================================================
 	=======                      ENROLMENT                    =========
 	===================================================================
 	-->
 	
-	<bean id="enrolment1" class="class.Enrolment">
+	<bean id="enrolment1" class="domain.Enrolment">
 		<!-- Atributes -->
 		<property name="moment" value="2018/03/16 15:20"></property>
 		<property name="position" ref="position1"></property>
@@ -1114,7 +1124,78 @@
 	</bean>
 	
 	
+	<!-- 
+	===================================================================
+	=======              ConfigurationParameters              =========
+	===================================================================
+	-->
 
+	<bean id="configurationParameters" class="domain.ConfigurationParameters">
+		<property name="sysName" value="Acme Madrugá" />
+		<property name="banner" value="https://tinyurl.com/acme-madruga" />
+		<property name="welcomeMessageEn" value="Welcome to Acme Madrugá!  The site to organise your processions" />
+		<property name="welcomeMessageEsp" value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
+		<property name="countryPhoneCode" value="+34" />
+		<property name="positionList">
+			<list>
+				<ref bean="position1"/>
+				<ref bean="position2"/>
+				<ref bean="position3"/>
+				<ref bean="position4"/>
+				<ref bean="position5"/>
+				<ref bean="position6"/>
+				<ref bean="position7"/>
+			</list>
+		</property>
+		<property name="spamWords">
+			<list>
+				<value>sex</value>
+				<value>viagra</value>
+				<value>cialis</value>
+				<value>one million</value>
+				<value>you've been selected</value>
+				<value>Nigeria</value>
+				<value>sexo</value>
+				<value>un millón</value>
+				<value>ha sido seleccionado</value>
+			</list>
+		</property>
+		<property name="positiveWords">
+			<list>
+				<value>good</value>
+				<value>factastic</value>
+				<value>excellent</value>
+				<value>great</value>
+				<value>amazing</value>
+				<value>terrific</value>
+				<value>beautiful</value>
+				<value>bueno</value>
+				<value>buena</value>
+				<value>fantástico</value>
+				<value>fantástica</value>
+				<value>excelente</value>
+				<value>genial</value>
+				<value>terrorífico</value>
+				<value>bonito</value>
+				<value>bonita</value>
+			</list>
+		</property>
+		<property name="negativeWords">
+			<list>
+				<value>not</value>
+				<value>bad</value>
+				<value>horrible</value>
+				<value>average</value>
+				<value>disaster</value>
+				<value>malo</value>
+				<value>media</value>
+				<value>desastre</value>
+			</list>
+		</property>
+		<property name="maxFinderResults" value="10" />
+		<property name="finderTime" value="1" />
+		
+	</bean>
 
 	
 	

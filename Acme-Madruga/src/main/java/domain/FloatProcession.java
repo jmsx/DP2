@@ -16,7 +16,7 @@ import cz.jirutka.validator.collection.constraints.EachURL;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Float extends DomainEntity {
+public class FloatProcession extends DomainEntity {
 
 	private String				title;
 	private String				description;
