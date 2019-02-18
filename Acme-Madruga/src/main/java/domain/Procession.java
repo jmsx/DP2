@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -44,7 +43,7 @@ public class Procession extends DomainEntity {
 	}
 
 	@NotBlank
-	@SafeHtml
+	//@SafeHtml
 	public String getDescription() {
 		return this.description;
 	}
@@ -64,7 +63,7 @@ public class Procession extends DomainEntity {
 	}
 	@NotBlank
 	@Column(unique = true)
-	@Pattern(regexp = "^[0-9]{6}[A-Z]{5}$")
+	@Pattern(regexp = "^[0-9]{6}-[A-Z]{5}$")
 	public String getTicker() {
 		return this.ticker;
 	}

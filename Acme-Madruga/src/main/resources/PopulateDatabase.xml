@@ -1083,6 +1083,7 @@
 	
 	
 	<bean id="brotherhood2" class="domain.Brotherhood">
+		<property name="name" value="Gran poder"></property>
 		<property name="title" value="El gran poder"></property>
 		<property name="middleName" value="Gran Poder"></property>
 		<property name="surname" value="surnameBrother"></property>

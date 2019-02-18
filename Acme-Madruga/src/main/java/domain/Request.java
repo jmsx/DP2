@@ -14,8 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.SafeHtml;
-
 @Entity
 @Access(AccessType.PROPERTY)
 public class Request extends DomainEntity {
@@ -65,7 +63,7 @@ public class Request extends DomainEntity {
 	public void setColumna(final Integer columna) {
 		this.columna = columna;
 	}
-	@SafeHtml
+	//@SafeHtml
 	public String getExplanation() {
 		return this.explanation;
 	}
