@@ -17,7 +17,7 @@ import cz.jirutka.validator.collection.constraints.EachURL;
 public class Area extends DomainEntity {
 
 	private String				name;
-	private Collection<String>	picture;
+	private Collection<String>	pictures;
 
 
 	@NotBlank
@@ -32,12 +32,12 @@ public class Area extends DomainEntity {
 	// TODO: @URL
 	@ElementCollection
 	@EachURL
-	public Collection<String> getPicture() {
-		return this.picture;
+	public Collection<String> getPictures() {
+		return this.pictures;
 	}
 
-	public void setPicture(final Collection<String> picture) {
-		this.picture = picture;
+	public void setPictures(final Collection<String> pictures) {
+		this.pictures = pictures;
 	}
 
 }
