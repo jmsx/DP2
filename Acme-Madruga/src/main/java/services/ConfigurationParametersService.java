@@ -60,4 +60,22 @@ public class ConfigurationParametersService {
 		return result;
 		
 	}
+
+	public Collection<String> findPositiveWords() {
+		Collection<String> result = new ArrayList<String>();
+		List<ConfigurationParameters> confs = new ArrayList<>(this.findAll());
+		ConfigurationParameters conf = confs.get(0);
+		result.addAll(conf.getPositiveWords());
+		return result;
+	}
+	
+	public Collection<String> findNegativeWords() {
+		Collection<String> result = new ArrayList<String>();
+		List<ConfigurationParameters> confs = new ArrayList<>(this.findAll());
+		ConfigurationParameters conf = confs.get(0);
+		result.addAll(conf.getNegativeWords());
+		return result;
+	}
+	
+	
 }
