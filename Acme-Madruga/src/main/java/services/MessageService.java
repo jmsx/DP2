@@ -40,9 +40,6 @@ public class MessageService {
 		final Collection<String> tags = new ArrayList<>();
 		message.setTags(tags);
 
-		final Date moment = new Date(System.currentTimeMillis() - 1000);
-		message.setMoment(moment);
-
 		final Actor principal = this.actorService.findByPrincipal();
 		message.setSender(principal);
 
@@ -63,11 +60,11 @@ public class MessageService {
 		return res;
 	}
 
-	public Collection<Message> findAllByFolderIdAndUserId(final int fid, final int uid) {
-		Assert.isTrue(fid != 0);
-		Assert.isTrue(uid != 0);
+	public Collection<Message> findAllByFolderIdAndUserId(final int folderId, final int userAccountId) {
+		Assert.isTrue(folderId != 0);
+		Assert.isTrue(userAccountId != 0);
 
-		return this.messageRepository.findAllByFolderIdAndUserId(fid, uid);
+		return this.messageRepository.findAllByFolderIdAndUserId(folderId, userAccountId);
 	}
 
 	public Message save(final Message m) {
@@ -76,25 +73,28 @@ public class MessageService {
 		return this.messageRepository.save(m);
 	}
 
+	/**
+	 * This method send a message to the recipients specified as an attribute in Message Object. It check if message contains spam words to send it to recipient inbox or spambox.
+	 * 
+	 * @param m
+	 *            Message that is going to be sent
+	 * 
+	 * @author a8081
+	 * */
 	public Message send(final Message m) {
 		Assert.notNull(m);
 
-		//Esto pasa a setearse en el create
-		//final Actor sender = this.actorService.findByPrincipal();
-		//m.setSender(sender);
 		final Actor sender = this.actorService.findByPrincipal();
 		final Folder outbox = this.folderService.findOutboxByUserId(sender.getUserAccount().getId());
 		final Collection<Message> outboxMessages = outbox.getMessages();
 
-		//Pasa a ser seteado en el create
-		//final Date moment = new Date(System.currentTimeMillis() - 1000);
-		//m.setMoment(moment);
+		//== Create method set the sender ==
+		//final Actor sender = this.actorService.findByPrincipal();
+		//m.setSender(sender);
+		final Date moment = new Date(System.currentTimeMillis() - 1000);
+		m.setMoment(moment);
 
-		//Pasa a ser seteado en el create
-		//final Collection<String> tags = new ArrayList<>();
-		//m.setTags(tags);
-
-		final boolean bool = this.checkForSpamWords(m);
+		final boolean containsSpamWords = this.checkForSpamWords(m);
 
 		final Collection<Actor> recipients = m.getRecipients();
 		Folder inbox;
@@ -105,7 +105,7 @@ public class MessageService {
 		outboxMessages.add(sent);
 		outbox.setMessages(outboxMessages);
 
-		if (bool) {
+		if (containsSpamWords) {
 			sender.setSpammer(true);
 			this.actorService.update(sender);
 
@@ -144,56 +144,103 @@ public class MessageService {
 		strings.add(subject);
 		strings.add(body);
 
-		return this.configurationParametersService.checkForSpamWords(strings);
+		/*
+		 * public boolean checkForSpamWords(final Collection<String> strings) {
+		 * boolean res = false;
+		 * final Collection<String> spamWords = this.findSpamWords();
+		 * 
+		 * for (final String s : strings)
+		 * for (final String spamWord : spamWords) {
+		 * final boolean bool = s.matches(".*" + spamWord + ".*");
+		 * 
+		 * if (bool) {
+		 * res = true;
+		 * break;
+		 * }
+		 * }
+		 * return res;
+		 * }
+		 */
+
+		return true;//this.configurationParametersService.checkForSpamWords(strings);
 	}
 
-	public void deleteFromFolder(final Message m, final Folder f) {
-		Assert.notNull(m);
-		Assert.isTrue(m.getId() != 0);
-		Assert.isTrue(f.getMessages().contains(m));
+	/**
+	 * Remove a message from a given folder
+	 * 
+	 * @param message
+	 *            Message to delete
+	 * @param folder
+	 *            Folder where message is going to be removed
+	 * 
+	 * @author a8081
+	 * */
+	public void deleteFromFolder(final Message message, final Folder folder) {
+		Assert.notNull(message);
+		Assert.isTrue(message.getId() != 0);
+		Assert.isTrue(folder.getMessages().contains(message));
 
 		final Actor principal = this.actorService.findByPrincipal();
 		final Folder trash = this.folderService.findTrashboxByUserId(principal.getUserAccount().getId());
 
-		final Collection<Message> fms = this.findAllByFolderIdAndUserId(f.getId(), principal.getUserAccount().getId());
-		final Collection<Message> tms = this.findAllByFolderIdAndUserId(trash.getId(), principal.getUserAccount().getId());
-		final Collection<Folder> fs = this.folderService.findAllByMessageIdAndUserId(principal.getUserAccount().getId(), m.getId());
+		final Collection<Message> folderMessages = this.findAllByFolderIdAndUserId(folder.getId(), principal.getUserAccount().getId());
+		final Collection<Message> trashMessages = this.findAllByFolderIdAndUserId(trash.getId(), principal.getUserAccount().getId());
+		final Collection<Folder> principalFolders = this.folderService.findAllByMessageIdAndUserId(principal.getUserAccount().getId(), message.getId());
 
-		final boolean bool = f.getId() == trash.getId();
+		final boolean isTrashBox = (folder.getId() == trash.getId());
 
-		if (bool) {
-			tms.remove(m);
-			trash.setMessages(tms);
+		if (isTrashBox) {
+			trashMessages.remove(message);
+			trash.setMessages(trashMessages);
 
-			for (final Folder i : fs) {
+			for (final Folder i : principalFolders) {
 				final Collection<Message> ims = i.getMessages();
-				ims.remove(m);
+				ims.remove(message);
 				i.setMessages(ims);
 				this.folderService.save(i, principal);
 			}
 
 			this.folderService.save(trash, principal);
 
-			if (this.actorService.countByMessageId(m.getId()) == 0)
-				this.messageRepository.delete(m);
+			// If message only belongs to principal actor, we're going to remove it from DB
+			if (this.actorService.countByMessageId(message.getId()) == 0)
+				this.messageRepository.delete(message);
 
 		} else {
-			fms.remove(m);
-			f.setMessages(fms);
-			tms.add(m);
-			trash.setMessages(tms);
+			folderMessages.remove(message);
+			folder.setMessages(folderMessages);
+			trashMessages.add(message);
+			trash.setMessages(trashMessages);
 			this.folderService.save(trash, principal);
-			this.folderService.save(f, principal);
+			this.folderService.save(folder, principal);
 		}
 	}
 
-	/* Este método se llama desde FolderService y es necesario que cumpla las restricciones de un delete, de ahí el uso de un for */
+	/**
+	 * DeleteAll method is necessary to delete all message when a folder is removed
+	 * 
+	 * @param ms
+	 *            All message you want to be removed from the folder
+	 * @param f
+	 *            Folder which messages belongs
+	 * @author a8081
+	 * */
 	public void deleteAll(final Collection<Message> ms, final Folder f) {
 		Assert.notEmpty(ms);
 		for (final Message m : ms)
 			this.deleteFromFolder(m, f);
 	}
 
+	/**
+	 * Copy a message to another folder
+	 * 
+	 * @param m
+	 *            Message to copy
+	 * @param f
+	 *            Folder where the message is going to be moved
+	 * 
+	 * @author a8081
+	 * */
 	public Message copyToFolder(final Message m, final Folder f) {
 		Assert.notNull(m);
 		Assert.notNull(f);
@@ -210,7 +257,19 @@ public class MessageService {
 		return m;
 	}
 
-	public Message moveFromAToB(final Message m, final Folder a, final Folder b) {
+	/**
+	 * This method moves a message from folder a to folder b
+	 * 
+	 * @param a
+	 *            Origin folder
+	 * @param b
+	 *            Destination folder
+	 * @param m
+	 *            Message to move
+	 * 
+	 * @author a8081
+	 * */
+	public void moveFromAToB(final Message m, final Folder a, final Folder b) {
 		Assert.notNull(m);
 		Assert.notNull(a);
 		Assert.notNull(b);
@@ -228,8 +287,6 @@ public class MessageService {
 		b.setMessages(bms);
 		this.folderService.save(b, principal);
 		this.folderService.save(a, principal);
-
-		return m;
 	}
 
 }

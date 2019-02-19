@@ -1124,6 +1124,15 @@
 		<property name="brotherhood" ref="brotherhood1"></property>
 	</bean>
 	
+	<bean id="enrolment2" class="domain.Enrolment">
+		<!-- Atributes -->
+		<property name="moment" value="2018/03/14 17:30"></property>
+		<property name="position" ref="position2"></property>
+		
+		<!-- Relations -->
+		<property name="member" ref="member2"></property>
+		<property name="brotherhood" ref="brotherhood2"></property>
+	</bean>
 	
 	<!-- 
 	===================================================================
