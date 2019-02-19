@@ -12,6 +12,7 @@ import repositories.BrotherhoodRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Actor;
 import domain.Brotherhood;
 
 @Service
@@ -22,7 +23,7 @@ public class BrotherhoodService {
 	private BrotherhoodRepository	brotherhoodRepository;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
 
 
 	public Brotherhood create() {
@@ -81,4 +82,9 @@ public class BrotherhoodService {
 		return brotherhood;
 	}
 
+	public Collection<Brotherhood> findAllBrotherHoodByMember() {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		return this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getUserAccount().getId());
+	}
 }

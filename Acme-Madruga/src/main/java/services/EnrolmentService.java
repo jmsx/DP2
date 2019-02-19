@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.EnrolmentRepository;
+import security.Authority;
+import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
@@ -24,6 +27,12 @@ public class EnrolmentService {
 
 	@Autowired
 	private MemberService		memberService;
+
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private BrotherhoodService	brotherhoodService;
 
 
 	public Enrolment create() {
@@ -44,7 +53,16 @@ public class EnrolmentService {
 		return enrolment;
 	}
 	public Collection<Enrolment> findAll() {
-		final Collection<Enrolment> res = this.enrolmentRepository.findAll();
+		Collection<Enrolment> res = new ArrayList<>();
+		final Actor principal = this.actorService.findByPrincipal();
+		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
+
+		if (isBrotherhood)
+			res = this.enrolmentRepository.findAllByBrotherHoodId(principal.getUserAccount().getId());
+		else if (isMember)
+			res = this.enrolmentRepository.findAllByMemberId(principal.getUserAccount().getId());
+		//Si salta puede ser un Admin
 		Assert.notNull(res);
 		return res;
 	}
@@ -60,18 +78,18 @@ public class EnrolmentService {
 		Assert.notNull(enrolment);
 		final Enrolment result;
 
-		if (enrolment.getVersion() == 0) {
+		if (enrolment.getId() == 0) {
+			Assert.isTrue(!this.brotherhoodService.findAllBrotherHoodByMember().contains(enrolment.getBrotherhood()));
 			final Date moment = new Date(System.currentTimeMillis() - 1);
 			enrolment.setMoment(moment);
 			enrolment.setMember(this.memberService.findByPrincipal());
 
 		}
-		if (enrolment.getVersion() != 0)
+		if (enrolment.getId() != 0)
 			Assert.isTrue(enrolment.getMember() == this.memberService.findByPrincipal());
 		result = this.enrolmentRepository.save(enrolment);
 		return result;
 	}
-
 	public void delete(final Enrolment enrolment) {
 		Assert.notNull(enrolment);
 		Assert.isTrue(enrolment.getId() != 0);
@@ -81,29 +99,4 @@ public class EnrolmentService {
 
 	/* ========================= OTHER METHODS =========================== */
 
-	public Collection<Enrolment> getEnrolmentByBrotherhood(final Brotherhood brotherhood) {
-		return this.enrolmentRepository.findAllByBrotherHoodId(brotherhood.getId());
-	}
-
-	public Collection<Enrolment> getEnrolmentByMember(final Member member) {
-		return this.enrolmentRepository.findAllByMemberId(member.getId());
-	}
-
-	public Collection<Brotherhood> brotherhoodByMember(final Member member) {
-		Assert.notNull(member);
-		final Collection<Brotherhood> res = this.enrolmentRepository.findAllBrotherHoodByMember(member.getId());
-		Assert.notNull(res);
-		return res;
-	}
-
-	public Boolean checkBrotherhoodFromMember(final Brotherhood brotherhood) {
-		Boolean res = false;
-		final Member member = this.memberService.findByPrincipal();
-		Assert.notNull(member);
-
-		if (this.brotherhoodByMember(member).contains(brotherhood))
-			res = true;
-
-		return res;
-	}
 }

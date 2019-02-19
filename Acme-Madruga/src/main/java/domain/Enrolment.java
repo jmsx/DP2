@@ -20,6 +20,7 @@ public class Enrolment extends DomainEntity {
 
 	private Date		moment;
 	private Position	position;
+	private Boolean		enrolled;
 
 	//Relational atributes
 	private Member		member;
@@ -35,6 +36,14 @@ public class Enrolment extends DomainEntity {
 
 	public void setMoment(final Date moment) {
 		this.moment = moment;
+	}
+
+	public Boolean getEnrolled() {
+		return this.enrolled;
+	}
+
+	public void setEnrolled(final Boolean enrolled) {
+		this.enrolled = enrolled;
 	}
 
 	//Relational getters and setters
@@ -60,7 +69,7 @@ public class Enrolment extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	public Brotherhood getBrotherhood() {
 		return this.brotherhood;
 	}
