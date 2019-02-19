@@ -50,6 +50,14 @@
 	<bean class="converters.SocialProfileToStringConverter"/>
 	<bean class="converters.StringToSocialProfileConverter"/>
 	
+	<!-- FLOAT PROCESSION -->
+	<bean class="converters.FloatProcessionToStringConverter"/>
+	<bean class="converters.StringToFloatProcessionConverter"/>
+	
+	<!-- FINDER -->
+	<bean class="converters.FinderToStringConverter"/>
+	<bean class="converters.StringToFinderConverter"/>
+	
 	</util:list>
 	
 </beans>

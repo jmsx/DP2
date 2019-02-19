@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.FinderRepository;
+import domain.Actor;
 import domain.Finder;
-import domain.Member;
 import domain.Procession;
 
 @Service
@@ -31,6 +31,9 @@ public class FinderService {
 
 	@Autowired
 	private ConfigurationParametersService	configParamService;
+
+	@Autowired
+	private ActorService					actorService;
 
 
 	//Métodos CRUD
@@ -51,6 +54,8 @@ public class FinderService {
 	public Finder save(final int finderId) {
 		Assert.notNull(finderId);
 		Assert.isTrue(finderId != 0);
+		final Actor me = this.actorService.findByPrincipal();
+		Assert.notNull(me);
 		final Finder res = this.finderRepository.findOne(finderId);
 		Assert.notNull(res);
 		return res;
@@ -68,7 +73,6 @@ public class FinderService {
 
 		try {
 
-			final Integer numberOfElementInList = this.configParamService.get.getNumberOfResults();
 			/*
 			 * Crear en el Servicio de ConfigurationParameters:
 			 * public ConfigurationParameters getConfigParas(){
@@ -93,10 +97,7 @@ public class FinderService {
 			else
 				result = aux;
 
-			if (aux.size() > numberOfElementInList)
-				result = new ArrayList<>(aux.subList(0, numberOfElementInList));
-			else
-				result = aux;
+			result = aux;
 
 			//			final Member member = this.memberService.findByPrincipal();
 			//			member.getFinder().add(finder);
