@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 
 import repositories.FinderRepository;
 import domain.Finder;
+import domain.Member;
 import domain.Procession;
 
 @Service
