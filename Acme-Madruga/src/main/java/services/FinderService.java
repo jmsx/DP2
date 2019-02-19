@@ -68,7 +68,7 @@ public class FinderService {
 
 		try {
 
-			final Integer numberOfElementInList = this.configParamService.get.getHutil().getNumberOfResults();
+			final Integer numberOfElementInList = this.configParamService.get.getNumberOfResults();
 			/*
 			 * Crear en el Servicio de ConfigurationParameters:
 			 * public ConfigurationParameters getConfigParas(){
@@ -98,9 +98,9 @@ public class FinderService {
 			else
 				result = aux;
 
-			final Member member = this.memberService.findByPrincipal();
-			member.getSearches().add(finder);
-			this.memberService.save(member);
+			//			final Member member = this.memberService.findByPrincipal();
+			//			member.getFinder().add(finder);
+			//			this.memberService.save(member);
 			return result;
 		} catch (final Exception e) {
 			e.printStackTrace();
