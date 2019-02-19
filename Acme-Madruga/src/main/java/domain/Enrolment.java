@@ -20,7 +20,8 @@ public class Enrolment extends DomainEntity {
 
 	private Date		moment;
 	private Position	position;
-	private Boolean		enrolled;
+	private boolean		enrolled;
+	private Date		dropOut;
 
 	//Relational atributes
 	private Member		member;
@@ -38,12 +39,23 @@ public class Enrolment extends DomainEntity {
 		this.moment = moment;
 	}
 
-	public Boolean getEnrolled() {
+	public boolean getEnrolled() {
 		return this.enrolled;
 	}
 
-	public void setEnrolled(final Boolean enrolled) {
+	public void setEnrolled(final boolean enrolled) {
 		this.enrolled = enrolled;
+	}
+
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	public Date getDropOut() {
+		return this.dropOut;
+	}
+
+	public void setDropOut(final Date dropOut) {
+		this.dropOut = dropOut;
 	}
 
 	//Relational getters and setters

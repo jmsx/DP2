@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.PositionRepository;
-import domain.Administrator;
+import security.Authority;
+import domain.Actor;
 import domain.Position;
 
 @Service
@@ -21,6 +22,9 @@ public class PositionService {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private ActorService			actorService;
 
 
 	public Position create() {
@@ -49,12 +53,13 @@ public class PositionService {
 	}
 
 	public void delete(final Position position) {
-		final Administrator admin = this.administratorService.findByPrincipal();
-		Assert.notNull(admin);
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.notNull(principal);
 		Assert.isTrue(!this.AllPositionUsed().contains(position)); /* Una position se puede borrar siempre y cuando no se esté usando */
-		this.positionRepository.delete(position);
+		if (isAdmin)
+			this.positionRepository.delete(position);
 	}
-
 	/* ========================= OTHER METHODS =========================== */
 
 	public Collection<Position> AllPositionUsed() {

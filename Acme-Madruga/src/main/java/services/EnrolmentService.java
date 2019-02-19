@@ -16,7 +16,6 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
-import domain.Position;
 
 @Service
 @Transactional
@@ -44,12 +43,6 @@ public class EnrolmentService {
 		final Member principal = this.memberService.findByPrincipal();
 		enrolment.setMember(principal);
 
-		final Date moment = new Date(System.currentTimeMillis() - 1000);
-		enrolment.setMoment(moment);
-
-		final Position position = new Position();
-		enrolment.setPosition(position);
-
 		return enrolment;
 	}
 	public Collection<Enrolment> findAll() {
@@ -76,20 +69,34 @@ public class EnrolmentService {
 
 	public Enrolment save(final Enrolment enrolment) {
 		Assert.notNull(enrolment);
+		final Actor principal = this.actorService.findByPrincipal();
 		final Enrolment result;
+		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 
-		if (enrolment.getId() == 0) {
-			Assert.isTrue(!this.brotherhoodService.findAllBrotherHoodByMember().contains(enrolment.getBrotherhood()));
-			final Date moment = new Date(System.currentTimeMillis() - 1);
-			enrolment.setMoment(moment);
-			enrolment.setMember(this.memberService.findByPrincipal());
+		if (isMember) {
+			if (enrolment.getId() == 0) {
+				Assert.isTrue(!this.brotherhoodService.findAllBrotherHoodByMember().contains(enrolment.getBrotherhood()));
+				final Date moment = new Date(System.currentTimeMillis() - 1);
+				enrolment.setMoment(moment);
+				enrolment.setMember(this.memberService.findByPrincipal());
+				enrolment.setDropOut(null);
+			} else
+				Assert.isTrue(enrolment.getMember() == this.memberService.findByPrincipal());
+			if (enrolment.getDropOut() != null)
+				Assert.isTrue(enrolment.getMoment().before(enrolment.getDropOut()));
 
+		} else if (isBrotherhood) {
+			Assert.isTrue(enrolment.getBrotherhood() == this.brotherhoodService.findByPrincipal());
+			Assert.notNull(enrolment.getPosition());
+			enrolment.setEnrolled(true);
+			if (enrolment.getDropOut() != null)
+				Assert.isTrue(enrolment.getMoment().before(enrolment.getDropOut()));
 		}
-		if (enrolment.getId() != 0)
-			Assert.isTrue(enrolment.getMember() == this.memberService.findByPrincipal());
 		result = this.enrolmentRepository.save(enrolment);
 		return result;
 	}
+
 	public void delete(final Enrolment enrolment) {
 		Assert.notNull(enrolment);
 		Assert.isTrue(enrolment.getId() != 0);

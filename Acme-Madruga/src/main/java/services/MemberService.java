@@ -56,6 +56,7 @@ public class MemberService {
 
 	public void delete(final Member member) {
 		Assert.notNull(member);
+		Assert.isTrue(this.findByPrincipal().equals(member));
 		Assert.isTrue(member.getId() != 0);
 		Assert.isTrue(this.memberRepository.exists(member.getId()));
 		this.memberRepository.delete(member);
