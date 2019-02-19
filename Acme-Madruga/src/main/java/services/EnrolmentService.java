@@ -23,9 +23,6 @@ public class EnrolmentService {
 	private EnrolmentRepository	enrolmentRepository;
 
 	@Autowired
-	private ActorService		actorService;
-
-	@Autowired
 	private MemberService		memberService;
 
 
@@ -41,10 +38,6 @@ public class EnrolmentService {
 		final Date moment = new Date(System.currentTimeMillis() - 1000);
 		enrolment.setMoment(moment);
 
-		/*
-		 * Contemplar la restriccion de que un member no puede ocupar dos posiciones
-		 * en la misma hermandad
-		 */
 		final Position position = new Position();
 		enrolment.setPosition(position);
 
@@ -79,4 +72,38 @@ public class EnrolmentService {
 		return result;
 	}
 
+	public void delete(final Enrolment enrolment) {
+		Assert.notNull(enrolment);
+		Assert.isTrue(enrolment.getId() != 0);
+		Assert.isTrue(this.enrolmentRepository.exists(enrolment.getId()));
+		this.enrolmentRepository.delete(enrolment);
+	}
+
+	/* ========================= OTHER METHODS =========================== */
+
+	public Collection<Enrolment> getEnrolmentByBrotherhood(final Brotherhood brotherhood) {
+		return this.enrolmentRepository.findAllByBrotherHoodId(brotherhood.getId());
+	}
+
+	public Collection<Enrolment> getEnrolmentByMember(final Member member) {
+		return this.enrolmentRepository.findAllByMemberId(member.getId());
+	}
+
+	public Collection<Brotherhood> brotherhoodByMember(final Member member) {
+		Assert.notNull(member);
+		final Collection<Brotherhood> res = this.enrolmentRepository.findAllBrotherHoodByMember(member.getId());
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Boolean checkBrotherhoodFromMember(final Brotherhood brotherhood) {
+		Boolean res = false;
+		final Member member = this.memberService.findByPrincipal();
+		Assert.notNull(member);
+
+		if (this.brotherhoodByMember(member).contains(brotherhood))
+			res = true;
+
+		return res;
+	}
 }

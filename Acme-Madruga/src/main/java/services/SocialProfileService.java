@@ -85,4 +85,8 @@ public class SocialProfileService {
 
 	// Other business methods -------------------------------------------------
 
+	public SocialProfile findByUserId(final int userAccountId) {
+		return this.socialProfileRepository.findByUserId(userAccountId);
+	}
+
 }
