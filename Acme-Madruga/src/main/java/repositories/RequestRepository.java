@@ -21,7 +21,7 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 	@Query("select r from Request r join r.procession p where p.brotherhood.id = ?1")
 	Collection<Request> findByBrotherhood(Integer idBrtoherhood);
 
-	@Query("select case when (count(r) > 0)  then true else false end from Request r join r.procession p where p.brotherhood.id = ?1")
-	Boolean checkBrotherhoodAccess(Integer idBrtoherhood);
+	@Query("select case when (count(r) > 0)  then true else false end from Request r join r.procession p where (p.brotherhood.id = ?1 and r.id = ?2)")
+	Boolean checkBrotherhoodAccess(Integer idBrtoherhood, Integer idRequest);
 
 }
