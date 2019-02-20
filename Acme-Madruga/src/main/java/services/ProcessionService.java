@@ -69,44 +69,35 @@ public class ProcessionService {
 		return res;
 	}
 
-	//	public Folder save(final Folder f, final Actor a) {
-	//		Assert.notNull(f);
-	//		Assert.notNull(a);
-	//
-	//		Folder saved;
-	//		final boolean bool = this.checkForSpamWords(f);
-	//
-	//		if (bool)
-	//			a.setSpammer(true);
-	//
-	//		if (f.getId() == 0)
-	//			saved = this.folderRepository.save(f);
-	//		else {
-	//			final Collection<Folder> fs = this.findAllByUserId(a.getUserAccount().getId());
-	//			Assert.isTrue(fs.contains(f));
-	//			saved = this.folderRepository.save(f);
-	//		}
-	//		return saved;
-	//	}
-	//
-	//	public void delete(final Folder f) {
-	//		Assert.notNull(f);
-	//		Assert.isTrue(!f.getIsSystemFolder());
-	//		Assert.isTrue(f.getId() != 0);
-	//
-	//		final Actor principal = this.actorService.findByPrincipal();
-	//		final Collection<Folder> fs = this.findAllByUserId(principal.getUserAccount().getId());
-	//		final Collection<Message> ms = this.messageService.findAllByFolderIdAndUserId(f.getId(), principal.getUserAccount().getId());
-	//		Assert.isTrue(fs.contains(f));
-	//
-	//		if (!ms.isEmpty())
-	//			//El delete de folder falla por este clear, ya que se le pasa al metodo deleteAll() una carpeta vacia y falla el assert de que no este vacia
-	//			//f.getMessages().clear();
-	//			this.messageService.deleteAll(ms, f);
-	//
-	//		this.folderRepository.delete(f);
-	//		this.actorService.update(principal);
-	//	}
+	public Procession save(final Procession procession) {
+		Assert.notNull(procession);
+		final Actor principal = this.actorService.findByPrincipal();
+		final Procession result;
+		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+
+		if (isBrotherhood)
+			if (procession.getId() == 0) {
+				procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
+				procession.setMode("DRAFT");
+				final Date moment = new Date(System.currentTimeMillis() - 1);
+				procession.setMoment(moment);
+			} else
+				Assert.isTrue(procession.getBrotherhood() == this.brotherhoodService.findByPrincipal());
+
+		result = this.processionRepository.save(procession);
+		return result;
+	}
+
+	public void delete(final Procession procession) {
+		Assert.notNull(procession);
+		Assert.isTrue(procession.getId() != 0);
+
+		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
+		Assert.isTrue(procession.getBrotherhood().equals(principal));
+
+		this.processionRepository.delete(procession);
+
+	}
 
 	/* ========================= OTHER METHODS =========================== */
 
