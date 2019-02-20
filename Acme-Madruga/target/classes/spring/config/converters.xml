@@ -58,6 +58,10 @@
 	<bean class="converters.FinderToStringConverter"/>
 	<bean class="converters.StringToFinderConverter"/>
 	
+	<!-- REQUEST -->
+	<bean class="converters.RequestToStringConverter"/>
+	<bean class="converters.StringToRequestConverter"/>
+	
 	</util:list>
 	
 </beans>
