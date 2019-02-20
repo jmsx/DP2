@@ -19,15 +19,21 @@ import javax.validation.constraints.Pattern;
 @Access(AccessType.PROPERTY)
 public class Request extends DomainEntity {
 
-	private String		status;
-	private Date		moment;
-	private String		explanation;
-	private Integer		row;
-	private Integer		column;
+	private String				status;
+	private Date				moment;
+	private String				explanation;
+	private Integer				row;
+	private Integer				column;
+
+	// Values -----------------------------------------------------------------
+
+	public static final String	APPROVED	= "APPROVED";
+	public static final String	PENDING		= "PENDING";
+	public static final String	REJECTED	= "REJECTED";
 
 	//Relation attributes
-	private Member		member;
-	private Procession	procession;
+	private Member				member;
+	private Procession			procession;
 
 
 	@Pattern(regexp = "^(APPROVED|PENDING|REJECTED)$")

@@ -64,8 +64,7 @@ public class SocialProfileServiceTest extends AbstractTest {
 	public void testDelete() {
 		super.authenticate("member1");
 
-		SocialProfile socialProfile;
-		socialProfile = this.socialProfileService.findOne(super.getEntityId("socialProfileMember1"));
+		final SocialProfile socialProfile = this.socialProfileService.findOne(super.getEntityId("socialProfileMember1"));
 		this.socialProfileService.delete(socialProfile);
 
 		super.unauthenticate();

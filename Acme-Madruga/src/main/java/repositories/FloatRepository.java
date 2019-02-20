@@ -13,7 +13,7 @@ import domain.Procession;
 @Repository
 public interface FloatRepository extends JpaRepository<Float, Integer> {
 
-	@Query("select p from Procession p join p.floatProcessions b where b.title =?1")
+	@Query("select p from Procession p join p.floats b where b.title =?1")
 	List<Procession> findForFloat(String fProcession);
 
 }

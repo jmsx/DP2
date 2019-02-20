@@ -14,7 +14,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
-import domain.Folder;
+import domain.Message;
 
 @Service
 @Transactional
@@ -36,7 +36,7 @@ public class ActorService {
 	private ConfigurationParametersService	configurationParametersService;
 
 	@Autowired
-	private SocialProfileService			socialProfileService;
+	private MessageService					messageService;
 
 
 	public Actor create() {
@@ -140,7 +140,7 @@ public class ActorService {
 		final UserAccount saved = this.userAccountService.save(userAccount);
 		actor.setUserAccount(saved);
 
-		final Collection<Folder> defaultFolders = this.folderService.setFoldersByDefault(actor);
+		/* final Collection<Folder> defaultFolders = */this.folderService.setFoldersByDefault(actor);
 		//this.folderService.saveAll(defaultFolders);
 
 		actor.setSpammer(false);
@@ -208,12 +208,13 @@ public class ActorService {
 	}
 
 	// TODO: Score
-	public double computeScore(final Actor a) {
-		final boolean isMember = this.checkAuthority(a, Authority.MEMBER);
-		final boolean isBrotherhood = this.checkAuthority(a, Authority.BROTHERHOOD);
-		Assert.isTrue(isBrotherhood || isMember);
-		Assert.notNull(a);
 
+	public double computeScore(final Actor a) {
+		final boolean isBrotherhood = this.checkAuthority(a, Authority.BROTHERHOOD);
+		final boolean isMember = this.checkAuthority(a, Authority.MEMBER);
+		Assert.isTrue(isMember || isBrotherhood);
+
+		Assert.notNull(a);
 		int p = 0;
 		int n = 0;
 
@@ -221,22 +222,23 @@ public class ActorService {
 		final Collection<String> pwords = this.configurationParametersService.findPositiveWords();
 		final Collection<String> nwords = this.configurationParametersService.findNegativeWords();
 
-		final Collection<String> lcomments = new ArrayList<>();
-
-		for (String comment : comments) {
-			comment = comment.toLowerCase();
-			lcomments.add(comment);
+		final Collection<String> messagesStrings = new ArrayList<>();
+		for (final Message m : this.messageService.findActorMessages(a)) {
+			final String body = m.getBody().toLowerCase();
+			final String subject = m.getSubject().toLowerCase();
+			messagesStrings.add(subject);
+			messagesStrings.add(body);
 		}
 
 		for (final String pword : pwords)
-			for (final String comment : lcomments) {
+			for (final String comment : messagesStrings) {
 				final boolean bool = comment.matches(".*" + pword + ".*");
 				if (bool)
 					p++;
 			}
 
 		for (final String nword : nwords)
-			for (final String comment : lcomments) {
+			for (final String comment : messagesStrings) {
 				final boolean bool = comment.matches(".*" + nword + ".*");
 				if (bool)
 					n++;

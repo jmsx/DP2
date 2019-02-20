@@ -3,38 +3,40 @@ package converters;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import repositories.FloatRepository;
-import domain.Float;
+import repositories.RequestRepository;
+import domain.Request;
 
 @Component
 @Transactional
-public class StringToFloatProcessionConverter implements Converter<String, Float> {
+public class StringToRequestConverter implements Converter<String, Request> {
 
 	@Autowired
-	private FloatRepository	floatRepository;
+	private RequestRepository	requestRepository;
 
 
 	@Override
-	public Float convert(final String text) {
+	public Request convert(final String text) {
 
-		final Float res;
+		final Request result;
 		final int id;
 
 		try {
 			if (StringUtils.isEmpty(text))
-				res = null;
+				result = null;
 			else {
 				id = Integer.valueOf(text);
-				res = this.floatRepository.findOne(id);
+				result = this.requestRepository.findOne(id);
 			}
+
 		} catch (final Throwable oops) {
 			throw new IllegalArgumentException(oops);
 		}
-		return res;
+		return result;
 	}
+
 }
