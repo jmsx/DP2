@@ -19,16 +19,15 @@ import javax.validation.constraints.Pattern;
 @Access(AccessType.PROPERTY)
 public class Request extends DomainEntity {
 
-	private String				status;
-	private Date				moment;
-	private String				explanation;
-	private Integer				row;
-	private Integer				column;
+	private String		status;
+	private Date		moment;
+	private String		explanation;
+	private Integer		row;
+	private Integer		column;
 
 	//Relation attributes
-	private Member				member;
-	private Procession			procession;
-	private ProcessionPosition	processionPosition;
+	private Member		member;
+	private Procession	procession;
 
 
 	@Pattern(regexp = "^(APPROVED|PENDING|REJECTED)$")
@@ -60,20 +59,20 @@ public class Request extends DomainEntity {
 	}
 
 	@Column(name = "row_position")
-	public int getRow() {
+	public Integer getRow() {
 		return this.row;
 	}
 
-	public void setRow(final int row) {
+	public void setRow(final Integer row) {
 		this.row = row;
 	}
 
 	@Column(name = "column_position")
-	public int getColumn() {
+	public Integer getColumn() {
 		return this.column;
 	}
 
-	public void setColumn(final int column) {
+	public void setColumn(final Integer column) {
 		this.column = column;
 	}
 

@@ -17,7 +17,7 @@ import cz.jirutka.validator.collection.constraints.EachURL;
 
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name = "FloatProcession")
+@Table(name = "`float`")
 public class Float extends DomainEntity {
 
 	private String				title;

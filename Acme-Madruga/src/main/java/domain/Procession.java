@@ -83,11 +83,11 @@ public class Procession extends DomainEntity {
 	//Relational Methods
 	@Valid
 	@ManyToMany
-	public Collection<Float> getFloatProcessions() {
+	public Collection<Float> getFloats() {
 		return this.floats;
 	}
 
-	public void setFloatProcessions(final Collection<Float> floats) {
+	public void setFloats(final Collection<Float> floats) {
 		this.floats = floats;
 	}
 	@Valid

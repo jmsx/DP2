@@ -814,10 +814,10 @@
 		<property name="ticker" value="200424-TUEBG"/>
 		<property name="mode" value="FINAL"/>
 		<!-- Relations -->
-		<property name="floatProcessions">
+		<property name="floats">
 			<list>
-				<ref bean="floatProcession1"/>
-				<ref bean="floatProcession1"/>
+				<ref bean="float1"/>
+				<ref bean="float1"/>
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1"/>
@@ -829,9 +829,9 @@
 		<property name="ticker" value="200426-DOUBG"/>
 		<property name="mode" value="DRAFT"/>
 		<!-- Relations -->
-		<property name="floatProcessions">
+		<property name="floats">
 			<list>
-				<ref bean="floatProcession3"/>
+				<ref bean="float3"/>
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood2"/>
@@ -850,9 +850,12 @@
 	<bean id="request1" class="domain.Request">
 		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/04/16 15:20"/>
+		<!-- 
 		<property name="row" value=""/>
 		<property name="column" value=""/>
+		-->
 		<property name="explanation" value=""/>
+		 
 		<!-- Relations -->
 		<property name="member" ref="member1"/>
 		<property name="procession" ref="procession1"/>
@@ -919,7 +922,7 @@
 	===================================================================
 	-->
 	
-	<bean id="floatProcession1" class="domain.FloatProcession">
+	<bean id="float1" class="domain.Float">
 		<property name="title" value="Cristo de las Almas"/>
 		<property name="description" value="Cristo de José  Pires Azcárraga (1947)"/>
 		<property name="pictures">
@@ -931,7 +934,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="floatProcession2" class="domain.FloatProcession">
+	<bean id="float2" class="domain.Float">
 		<property name="title" value="Virgen de Gracia y Amparo"/>
 		<property name="description" value="Virgen de Fernández Andés (1936) restaurada por Manuel Ramos Corona en 1992."/>
 		<property name="pictures">
@@ -943,7 +946,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="floatProcession3" class="domain.FloatProcession">
+	<bean id="float3" class="domain.Float">
 		<property name="title" value="Divina Misericordia"/>
 		<property name="description" value="El Nazareno es de Felipe de Ribas (1641) restaurado por Ortega Bru."/>
 		<property name="pictures">
@@ -955,7 +958,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="floatProcession4" class="domain.FloatProcession">
+	<bean id="float4" class="domain.Float">
 		<property name="title" value="Siete Palabras y Virgen de los Remedios"/>
 		<property name="description" value="El Crucificado de Felipe Martínez, 1682). La Virgen de los Remedios y el Misterio (Manuel Gutiérrez, 1865) excepto San Juan (José Sánchez, 1859)."/>
 		<property name="pictures">
@@ -967,7 +970,7 @@
 		<property name="brotherhood" ref="brotherhood1"/>
 	</bean>
 	
-	<bean id="floatProcession5" class="domain.FloatProcession">
+	<bean id="float5" class="domain.Float">
 		<property name="title" value="Virgen de la Cabeza"/>
 		<property name="description" value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956."/>
 		<property name="pictures">
