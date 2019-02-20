@@ -13,7 +13,7 @@ import domain.Float;
 
 @Component
 @Transactional
-public class StringToFloatProcessionConverter implements Converter<String, Float> {
+public class StringToFloatConverter implements Converter<String, Float> {
 
 	@Autowired
 	private FloatRepository	floatRepository;
