@@ -39,7 +39,7 @@ public class ProcessionService {
 		final Procession procession = new Procession();
 
 		final Collection<Float> floats = new ArrayList<>();
-		procession.setFloatProcessions(floats);
+		procession.setFloats(floats);
 
 		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
 		procession.setBrotherhood(brotherhood);

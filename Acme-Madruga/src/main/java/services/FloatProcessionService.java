@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import domain.Procession;
 public class FloatProcessionService {
 
 	@Autowired
-	private FloatRepository		floatRepository;
+	private FloatRepository					floatRepository;
 
 	@Autowired
 	private ProcessionService				processionService;
@@ -62,16 +61,15 @@ public class FloatProcessionService {
 	}
 
 	public Collection<Procession> find(final String fProcession) {
-		final List<Procession> res;
-		final Integer numberOfElementInList = this.configuracionParametersService.get.getNumberOfResults();
+		final Collection<Procession> res;
 
 		try {
-			final List<Procession> aux = this.processionService.findAll();
+			final Collection<Procession> aux = this.processionService.findAll();
 			aux.retainAll(this.floatRepository.findForFloat(fProcession));
-			if (aux.size() > numberOfElementInList)
-				res = new ArrayList<>(aux.subList(0, numberOfElementInList));
-			else
-				res = aux;
+			//			if (aux.size() > numberOfElementInList)
+			//				res = new ArrayList<>(aux.subList(0, numberOfElementInList));
+			//			else
+			res = aux;
 			return res;
 		} catch (final Exception e) {
 			e.printStackTrace();
