@@ -12,7 +12,7 @@ import domain.Position;
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Integer> {
 
-	@Query("select e.position from Enrolment e;")
+	@Query("select e.position from Enrolment e")
 	Collection<Position> AllPositionUsed();
 
 }

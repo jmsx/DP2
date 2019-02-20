@@ -208,52 +208,54 @@ public class ActorService {
 	}
 
 	// TODO: Score
-	public double computeScore(final Actor a) {
-		final boolean isMember = this.checkAuthority(a, Authority.MEMBER);
-		final boolean isBrotherhood = this.checkAuthority(a, Authority.BROTHERHOOD);
-		Assert.isTrue(isBrotherhood || isMember);
-		Assert.notNull(a);
-
-		int p = 0;
-		int n = 0;
-
-		this.administratorService.findByPrincipal();
-		final Collection<String> pwords = this.configurationParametersService.findPositiveWords();
-		final Collection<String> nwords = this.configurationParametersService.findNegativeWords();
-
-		final Collection<String> lcomments = new ArrayList<>();
-
-		for (String comment : comments) {
-			comment = comment.toLowerCase();
-			lcomments.add(comment);
-		}
-
-		for (final String pword : pwords)
-			for (final String comment : lcomments) {
-				final boolean bool = comment.matches(".*" + pword + ".*");
-				if (bool)
-					p++;
-			}
-
-		for (final String nword : nwords)
-			for (final String comment : lcomments) {
-				final boolean bool = comment.matches(".*" + nword + ".*");
-				if (bool)
-					n++;
-			}
-
-		final int min = -n;
-		final int max = p;
-		final int range = max - min;
-		final int res = p - n;
-		final double normRes;
-
-		if (range != 0)
-			normRes = (2 * ((res - min) / range)) - 1;
-		else
-			normRes = 0;
-
-		return normRes;
-	}
+	/*
+	 * public double computeScore(final Actor a) {
+	 * final boolean isMember = this.checkAuthority(a, Authority.MEMBER);
+	 * final boolean isBrotherhood = this.checkAuthority(a, Authority.BROTHERHOOD);
+	 * Assert.isTrue(isBrotherhood || isMember);
+	 * Assert.notNull(a);
+	 * 
+	 * int p = 0;
+	 * int n = 0;
+	 * 
+	 * this.administratorService.findByPrincipal();
+	 * final Collection<String> pwords = this.configurationParametersService.findPositiveWords();
+	 * final Collection<String> nwords = this.configurationParametersService.findNegativeWords();
+	 * 
+	 * final Collection<String> lcomments = new ArrayList<>();
+	 * 
+	 * for (String comment : comments) {
+	 * comment = comment.toLowerCase();
+	 * lcomments.add(comment);
+	 * }
+	 * 
+	 * for (final String pword : pwords)
+	 * for (final String comment : lcomments) {
+	 * final boolean bool = comment.matches(".*" + pword + ".*");
+	 * if (bool)
+	 * p++;
+	 * }
+	 * 
+	 * for (final String nword : nwords)
+	 * for (final String comment : lcomments) {
+	 * final boolean bool = comment.matches(".*" + nword + ".*");
+	 * if (bool)
+	 * n++;
+	 * }
+	 * 
+	 * final int min = -n;
+	 * final int max = p;
+	 * final int range = max - min;
+	 * final int res = p - n;
+	 * final double normRes;
+	 * 
+	 * if (range != 0)
+	 * normRes = (2 * ((res - min) / range)) - 1;
+	 * else
+	 * normRes = 0;
+	 * 
+	 * return normRes;
+	 * }
+	 */
 
 }
