@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class ProcessionService {
 		final Procession procession = new Procession();
 
 		final Collection<Float> floats = new ArrayList<>();
-		procession.setFloatProcessions(floats);
+		procession.setFloats(floats);
 
 		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
 		procession.setBrotherhood(brotherhood);
@@ -115,16 +114,8 @@ public class ProcessionService {
 		String res = "";
 		final SimpleDateFormat myFormat = new SimpleDateFormat("yyMMdd", Locale.ENGLISH);
 		final String YYMMMDDD = myFormat.format(date);
-		final String word = RandomStringUtils.randomAlphabetic(6);
-		final int max = 99;
-		final int min = 10;
-		final Random rand = new Random();
-		final int randomNum = rand.nextInt((max - min) + 1) + min;
-		final String num = String.valueOf(randomNum);
-		final String yy = YYMMMDDD.substring(0, 2);
-		final String mm = YYMMMDDD.substring(2, 5);
-		final String dd = YYMMMDDD.substring(5, 6);
-		final String tickr = yy + mm + dd + '-' + word;
+		final String word = RandomStringUtils.randomAlphabetic(5);
+		final String tickr = YYMMMDDD + '-' + word;
 		res = tickr;
 
 		if (this.hasDuplicate(res))
