@@ -62,6 +62,22 @@
 	<bean class="converters.RequestToStringConverter"/>
 	<bean class="converters.StringToRequestConverter"/>
 	
+	<!-- PROCESSION -->
+	<bean class="converters.ProcessionToStringConverter"/>
+	<bean class="converters.StringToProcessionConverter"/>
+	
+	<!-- BROTHERHOOD -->
+	<bean class="converters.BrotherhoodToStringConverter"/>
+	<bean class="converters.StringToBrotherhoodConverter"/>
+	
+	<!-- CONFIGURATION PARAMETERS -->
+	<bean class="converters.ConfigurationParametersToStringConverter"/>
+	<bean class="converters.StringToConfigurationParametersConverter"/>
+	
+	<!-- AREA -->
+	<bean class="converters.AreaToStringConverter"/>
+	<bean class="converters.StringToAreaConverter"/>
+	
 	</util:list>
 	
 </beans>
