@@ -50,12 +50,20 @@ public class FinderService {
 		return res;
 	}
 
-	public Finder save(final int finderId) {
+	public Finder findOne(final int finderId) {
 		Assert.notNull(finderId);
 		Assert.isTrue(finderId != 0);
+		final Finder res = this.finderRepository.findOne(finderId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Finder save(final Finder finder) {
+		Assert.notNull(finder);
+		Assert.isTrue(finder.getId() != 0);
 		final Actor me = this.actorService.findByPrincipal();
 		Assert.notNull(me);
-		final Finder res = this.finderRepository.findOne(finderId);
+		final Finder res = this.finderRepository.save(finder);
 		Assert.notNull(res);
 		return res;
 	}
