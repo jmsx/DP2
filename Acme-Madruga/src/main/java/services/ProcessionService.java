@@ -18,7 +18,7 @@ import repositories.ProcessionRepository;
 import security.Authority;
 import domain.Actor;
 import domain.Brotherhood;
-import domain.FloatProcession;
+import domain.Float;
 import domain.Procession;
 
 @Service
@@ -38,7 +38,7 @@ public class ProcessionService {
 	public Procession create() {
 		final Procession procession = new Procession();
 
-		final Collection<FloatProcession> floats = new ArrayList<>();
+		final Collection<Float> floats = new ArrayList<>();
 		procession.setFloatProcessions(floats);
 
 		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();

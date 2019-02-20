@@ -850,8 +850,8 @@
 	<bean id="request1" class="domain.Request">
 		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/04/16 15:20"/>
-		<property name="fila" value=""/>
-		<property name="columna" value=""/>
+		<property name="row" value=""/>
+		<property name="column" value=""/>
 		<property name="explanation" value=""/>
 		<!-- Relations -->
 		<property name="member" ref="member1"/>
@@ -861,8 +861,8 @@
 	<bean id="request2" class="domain.Request">
 		<property name="status" value="APPROVED"/>
 		<property name="moment" value="2018/02/16 15:20"/>
-		<property name="fila" value="1"/>
-		<property name="columna" value="2"/>
+		<property name="row" value="1"/>
+		<property name="column" value="2"/>
 		<property name="explanation" value=""/>
 		<!-- Relations -->
 		<property name="member" ref="member2"/>

@@ -8,21 +8,21 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import repositories.FloatProcessionRepository;
-import domain.FloatProcession;
+import repositories.FloatRepository;
+import domain.Float;
 
 @Component
 @Transactional
-public class StringToFloatProcessionConverter implements Converter<String, FloatProcession> {
+public class StringToFloatProcessionConverter implements Converter<String, Float> {
 
 	@Autowired
-	private FloatProcessionRepository	floatProcessionRepository;
+	private FloatRepository	floatRepository;
 
 
 	@Override
-	public FloatProcession convert(final String text) {
+	public Float convert(final String text) {
 
-		final FloatProcession res;
+		final Float res;
 		final int id;
 
 		try {
@@ -30,7 +30,7 @@ public class StringToFloatProcessionConverter implements Converter<String, Float
 				res = null;
 			else {
 				id = Integer.valueOf(text);
-				res = this.floatProcessionRepository.findOne(id);
+				res = this.floatRepository.findOne(id);
 			}
 		} catch (final Throwable oops) {
 			throw new IllegalArgumentException(oops);
