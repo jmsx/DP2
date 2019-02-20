@@ -6,14 +6,14 @@ import javax.transaction.Transactional;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import domain.FloatProcession;
+import domain.Float;
 
 @Component
 @Transactional
-public class FloatProcessionToStringConverter implements Converter<FloatProcession, String> {
+public class FloatProcessionToStringConverter implements Converter<Float, String> {
 
 	@Override
-	public String convert(final FloatProcession fProcession) {
+	public String convert(final Float fProcession) {
 
 		String result;
 

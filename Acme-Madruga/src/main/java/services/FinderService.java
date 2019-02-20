@@ -4,7 +4,6 @@ package services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,7 +68,7 @@ public class FinderService {
 	}
 
 	public Collection<Procession> find(final Finder finder) {
-		List<Procession> result;
+		Collection<Procession> result;
 
 		try {
 
@@ -85,7 +84,7 @@ public class FinderService {
 			final String areaName = finder.getAreaName();
 			final Date minDate = finder.getMinDate();
 			final Date maxDate = finder.getMaxDate();
-			final List<Procession> aux = this.processionService.findAll();
+			final Collection<Procession> aux = this.processionService.findAll();
 			if (keyword != null)
 				aux.retainAll(this.finderRepository.findForKeyword(keyword));
 			else if (areaName != null)

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import repositories.ProcessionRepository;
 import security.Authority;
 import domain.Actor;
 import domain.Brotherhood;
-import domain.FloatProcession;
+import domain.Float;
 import domain.Procession;
 
 @Service
@@ -38,8 +37,8 @@ public class ProcessionService {
 	public Procession create() {
 		final Procession procession = new Procession();
 
-		final Collection<FloatProcession> floats = new ArrayList<>();
-		procession.setFloatProcessions(floats);
+		final Collection<Float> floats = new ArrayList<>();
+		procession.setFloats(floats);
 
 		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
 		procession.setBrotherhood(brotherhood);
@@ -70,44 +69,35 @@ public class ProcessionService {
 		return res;
 	}
 
-	//	public Folder save(final Folder f, final Actor a) {
-	//		Assert.notNull(f);
-	//		Assert.notNull(a);
-	//
-	//		Folder saved;
-	//		final boolean bool = this.checkForSpamWords(f);
-	//
-	//		if (bool)
-	//			a.setSpammer(true);
-	//
-	//		if (f.getId() == 0)
-	//			saved = this.folderRepository.save(f);
-	//		else {
-	//			final Collection<Folder> fs = this.findAllByUserId(a.getUserAccount().getId());
-	//			Assert.isTrue(fs.contains(f));
-	//			saved = this.folderRepository.save(f);
-	//		}
-	//		return saved;
-	//	}
-	//
-	//	public void delete(final Folder f) {
-	//		Assert.notNull(f);
-	//		Assert.isTrue(!f.getIsSystemFolder());
-	//		Assert.isTrue(f.getId() != 0);
-	//
-	//		final Actor principal = this.actorService.findByPrincipal();
-	//		final Collection<Folder> fs = this.findAllByUserId(principal.getUserAccount().getId());
-	//		final Collection<Message> ms = this.messageService.findAllByFolderIdAndUserId(f.getId(), principal.getUserAccount().getId());
-	//		Assert.isTrue(fs.contains(f));
-	//
-	//		if (!ms.isEmpty())
-	//			//El delete de folder falla por este clear, ya que se le pasa al metodo deleteAll() una carpeta vacia y falla el assert de que no este vacia
-	//			//f.getMessages().clear();
-	//			this.messageService.deleteAll(ms, f);
-	//
-	//		this.folderRepository.delete(f);
-	//		this.actorService.update(principal);
-	//	}
+	public Procession save(final Procession procession) {
+		Assert.notNull(procession);
+		final Actor principal = this.actorService.findByPrincipal();
+		final Procession result;
+		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+
+		if (isBrotherhood)
+			if (procession.getId() == 0) {
+				procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
+				procession.setMode("DRAFT");
+				final Date moment = new Date(System.currentTimeMillis() - 1);
+				procession.setMoment(moment);
+			} else
+				Assert.isTrue(procession.getBrotherhood() == this.brotherhoodService.findByPrincipal());
+
+		result = this.processionRepository.save(procession);
+		return result;
+	}
+
+	public void delete(final Procession procession) {
+		Assert.notNull(procession);
+		Assert.isTrue(procession.getId() != 0);
+
+		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
+		Assert.isTrue(procession.getBrotherhood().equals(principal));
+
+		this.processionRepository.delete(procession);
+
+	}
 
 	/* ========================= OTHER METHODS =========================== */
 
@@ -115,16 +105,8 @@ public class ProcessionService {
 		String res = "";
 		final SimpleDateFormat myFormat = new SimpleDateFormat("yyMMdd", Locale.ENGLISH);
 		final String YYMMMDDD = myFormat.format(date);
-		final String word = RandomStringUtils.randomAlphabetic(6);
-		final int max = 99;
-		final int min = 10;
-		final Random rand = new Random();
-		final int randomNum = rand.nextInt((max - min) + 1) + min;
-		final String num = String.valueOf(randomNum);
-		final String yy = YYMMMDDD.substring(0, 2);
-		final String mm = YYMMMDDD.substring(2, 5);
-		final String dd = YYMMMDDD.substring(5, 6);
-		final String tickr = yy + mm + dd + '-' + word;
+		final String word = RandomStringUtils.randomAlphabetic(5);
+		final String tickr = YYMMMDDD + '-' + word;
 		res = tickr;
 
 		if (this.hasDuplicate(res))

@@ -5,9 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -19,14 +19,15 @@ import javax.validation.constraints.Pattern;
 @Access(AccessType.PROPERTY)
 public class Request extends DomainEntity {
 
-	private String				status;
-	private Date				moment;
-	private String				explanation;
+	private String		status;
+	private Date		moment;
+	private String		explanation;
+	private Integer		row;
+	private Integer		column;
 
 	//Relation attributes
-	private Member				member;
-	private Procession			procession;
-	private ProcessionPosition	processionPosition;
+	private Member		member;
+	private Procession	procession;
 
 
 	@Pattern(regexp = "^(APPROVED|PENDING|REJECTED)$")
@@ -57,6 +58,24 @@ public class Request extends DomainEntity {
 		this.explanation = explanation;
 	}
 
+	@Column(name = "row_position")
+	public Integer getRow() {
+		return this.row;
+	}
+
+	public void setRow(final Integer row) {
+		this.row = row;
+	}
+
+	@Column(name = "column_position")
+	public Integer getColumn() {
+		return this.column;
+	}
+
+	public void setColumn(final Integer column) {
+		this.column = column;
+	}
+
 	//Relation metods
 	@Valid
 	@ManyToOne(optional = false)
@@ -75,16 +94,6 @@ public class Request extends DomainEntity {
 
 	public void setProcession(final Procession procession) {
 		this.procession = procession;
-	}
-
-	@Valid
-	@OneToOne(optional = true)
-	public ProcessionPosition getProcessionPosition() {
-		return this.processionPosition;
-	}
-
-	public void setProcessionPosition(final ProcessionPosition processionPosition) {
-		this.processionPosition = processionPosition;
 	}
 
 }

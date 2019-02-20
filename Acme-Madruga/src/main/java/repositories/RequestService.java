@@ -27,6 +27,12 @@ public class RequestService {
 
 
 	// ======================= CRUD ================================
+	/**
+	 * Este metodo devuelve todos los Request's a los que puede acceder el actor autentificado.
+	 * 
+	 * @return Collection<Request>
+	 * @author jmsx
+	 */
 	public Collection<Request> findAll() {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Collection<Request> res = new HashSet<>();
@@ -36,6 +42,12 @@ public class RequestService {
 			res.addAll(this.requestRepository.findByBrotherhood(principal.getId()));
 		return res;
 	}
+	/**
+	 * Este metodo devuelve Request si el actor tiene acceos a el.
+	 * 
+	 * @return Request
+	 * @author jmsx
+	 */
 	public Request findOne(final Integer idRequest) {
 		final Actor principal = this.actorService.findByPrincipal();
 		Request res = this.requestRepository.findOne(idRequest);
@@ -43,10 +55,26 @@ public class RequestService {
 		if (this.actorService.checkAuthority(principal, Authority.MEMBER))
 			isAccepted = res.getMember().getId() == principal.getId();
 		else if (this.actorService.checkAuthority(principal, Authority.BROTHERHOOD))
-			isAccepted = this.requestRepository.checkBrotherhoodAccess(principal.getId());
+			isAccepted = this.requestRepository.checkBrotherhoodAccess(principal.getId(), idRequest);
 		Assert.isTrue(isAccepted, "RequesService - findOne - Access Denied");
 		res = isAccepted ? res : null;
 		return res;
 	}
+	/**
+	 * Devuelve un Request vacio.
+	 * 
+	 * @return Request
+	 * @author jmsx
+	 */
+	public Request create() {
+		final Request res = new Request();
+		return res;
+	}
 
+	public Request save(Request req) {
+		//TODO: Falsta comprobar las restricciones de quien guarda el request y en que condiciones.
+
+		req = this.requestRepository.save(req);
+		return req;
+	}
 }
