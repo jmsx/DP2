@@ -73,7 +73,24 @@ public class RequestService {
 
 	public Request save(Request req) {
 		//TODO: Falsta comprobar las restricciones de quien guarda el request y en que condiciones.
-
+		final Actor principal = this.actorService.findByPrincipal();
+		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
+		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+		if (req.getId() == 0)
+			//Creacion de Request, esta debe estar PENDING
+			Assert.isTrue(req.getStatus().equals(Request.PENDING), "Request must be create as PENDING");
+		else {
+			Assert.isTrue(!isMember, "A member cannot update the request");
+			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request");
+			Assert.isTrue(!this.requestRepository.checkBrotherhoodAccess(principal.getId(), req.getId()), "This Brotherhood haven't access to this request");
+			if (req.getStatus().equals(Request.REJECTED))
+				Assert.isTrue(!(req.getExplanation() == "" || req.getExplanation() == null), "If Request is REJECTED must have a explanation");
+			if (req.getStatus().equals(Request.APPROVED)) {
+				final boolean rowIsNull = req.getRow() == null;
+				final boolean columnIsNull = req.getColumn() == null;
+				Assert.isTrue(!(rowIsNull || columnIsNull), "If Reuqest is APPROVED, row and column cannot be null ");
+			}
+		}
 		req = this.requestRepository.save(req);
 		return req;
 	}

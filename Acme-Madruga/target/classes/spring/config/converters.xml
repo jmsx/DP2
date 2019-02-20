@@ -58,10 +58,6 @@
 	<bean class="converters.FinderToStringConverter"/>
 	<bean class="converters.StringToFinderConverter"/>
 	
-	<!-- REQUEST -->
-	<bean class="converters.RequestToStringConverter"/>
-	<bean class="converters.StringToRequestConverter"/>
-	
 	<!-- PROCESSION -->
 	<bean class="converters.ProcessionToStringConverter"/>
 	<bean class="converters.StringToProcessionConverter"/>
@@ -77,6 +73,10 @@
 	<!-- AREA -->
 	<bean class="converters.AreaToStringConverter"/>
 	<bean class="converters.StringToAreaConverter"/>
+	
+	<!-- REQUEST -->
+	<bean class="converters.RequestToStringConverter"/>
+	<bean class="converters.StringToRequestConverter"/>
 	
 	</util:list>
 	
