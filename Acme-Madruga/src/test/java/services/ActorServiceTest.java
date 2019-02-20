@@ -32,32 +32,31 @@ public class ActorServiceTest extends AbstractTest {
 	private AdministratorService	administratorService;
 
 
-	/*
-	 * @Test
-	 * public void testSave() {
-	 * final Actor a = this.administratorService.create();
-	 * a.setName("Name");
-	 * a.setMiddleName("");
-	 * a.setSurname("Surname");
-	 * a.setPhoto("");
-	 * a.setEmail("nameSurname@gmail.com");
-	 * a.setPhone("");
-	 * a.setAddress("");
-	 * a.setSpammer(false);
-	 * 
-	 * final Actor saved = this.actorService.save(a);
-	 * final Collection<Actor> actors = this.actorService.findAll();
-	 * 
-	 * Assert.isTrue(actors.contains(saved));
-	 * }
-	 */
+	@Test
+	public void testSave() {
+		final Actor a = this.administratorService.create();
+		a.setName("José");
+		a.setMiddleName("");
+		a.setSurname("Millán");
+		a.setPhoto("");
+		a.setEmail("millan@gmail.com");
+		a.setPhone("");
+		a.setAddress("");
+		a.setSpammer(false);
+
+		final Actor saved = this.actorService.setNewActor(Authority.MEMBER, a);
+		final Collection<Actor> actors = this.actorService.findAll();
+
+		Assert.isTrue(actors.contains(saved));
+	}
+
 	@Test
 	public void testUpdate() {
 		final Actor a = (Actor) this.actorService.findAll().toArray()[0];
 		final String oldEmail = a.getEmail();
 		final String username = a.getUserAccount().getUsername();
 		super.authenticate(username);
-		a.setEmail("testemail@gmail.com");
+		a.setEmail("another@gmail.com");
 		final Actor saved = this.actorService.update(a);
 
 		Assert.isTrue(!oldEmail.equals(saved.getEmail()));
@@ -86,10 +85,10 @@ public class ActorServiceTest extends AbstractTest {
 
 	@Test
 	public void testFindByPrincipalActor() {
-		super.authenticate("customer40");
+		super.authenticate("member1");
 		final Actor res = this.actorService.findByPrincipal();
 		Assert.notNull(res);
-		Assert.isTrue(res.getUserAccount().getUsername().equals("customer40"));
+		Assert.isTrue(res.getUserAccount().getUsername().equals("member1"));
 	}
 
 	@Test
@@ -104,7 +103,7 @@ public class ActorServiceTest extends AbstractTest {
 
 	@Test
 	public void testFindSuspiciousActors() {
-		super.authenticate("admin30");
+		super.authenticate("admin1");
 		final Collection<Actor> actors = this.actorService.findAllSpammers();
 		final Collection<Actor> spammers = new ArrayList<>();
 		for (final Actor a : actors)
@@ -114,7 +113,7 @@ public class ActorServiceTest extends AbstractTest {
 	}
 	@Test
 	public void testBanActor() {
-		super.authenticate("admin30");
+		super.authenticate("admin1");
 		List<Actor> spammers = new ArrayList<>();
 		spammers = (List<Actor>) this.actorService.findAllSpammers();
 		final Actor a = spammers.get(0);
@@ -130,10 +129,10 @@ public class ActorServiceTest extends AbstractTest {
 
 	@Test
 	public void testUnbanActor() {
-		super.authenticate("admin30");
-		List<Actor> spammers = new ArrayList<>();
-		spammers = (List<Actor>) this.actorService.findAllSpammers();
-		final Actor a = spammers.get(0);
+		super.authenticate("admin1");
+		List<Actor> suspicious = new ArrayList<>();
+		suspicious = (List<Actor>) this.actorService.findAllSpammers();
+		final Actor a = suspicious.get(0);
 		this.actorService.banActor(a);
 
 		this.actorService.unbanActor(a);
@@ -147,7 +146,8 @@ public class ActorServiceTest extends AbstractTest {
 
 	@Test
 	public void testComputeScore() {
-		super.authenticate("admin30");
+		super.authenticate("admin1");
+		final Actor a = (Actor) this.actorService.findAll().toArray()[0];
 		final double res = this.actorService.computeScore(a);
 		Assert.isTrue(res <= 1.0 && res >= -1.0);
 	}

@@ -29,10 +29,10 @@ public class MessageService {
 	private FolderService					folderService;
 
 	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
+	private AdministratorService			administratorService;
 
 	@Autowired
-	private AdministratorService			administratorService;
+	private ConfigurationParametersService	configurationParametersService;
 
 
 	public Message create() {
@@ -58,6 +58,18 @@ public class MessageService {
 		final Message res = this.messageRepository.findOne(id);
 
 		return res;
+	}
+
+	/**
+	 * It gets all actor messages to iterate them in computeScore method. The scope of this method is limited to the package only (default), and it's only available to administrators.
+	 * 
+	 * @param a
+	 *            Actor whose messages will be return
+	 * @author a8081
+	 * */
+	Collection<Message> findActorMessages(final Actor a) {
+		this.administratorService.findByPrincipal();
+		return this.messageRepository.findAllByUserId(a.getUserAccount().getId());
 	}
 
 	public Collection<Message> findAllByFolderIdAndUserId(final int folderId, final int userAccountId) {
@@ -144,25 +156,7 @@ public class MessageService {
 		strings.add(subject);
 		strings.add(body);
 
-		/*
-		 * public boolean checkForSpamWords(final Collection<String> strings) {
-		 * boolean res = false;
-		 * final Collection<String> spamWords = this.findSpamWords();
-		 * 
-		 * for (final String s : strings)
-		 * for (final String spamWord : spamWords) {
-		 * final boolean bool = s.matches(".*" + spamWord + ".*");
-		 * 
-		 * if (bool) {
-		 * res = true;
-		 * break;
-		 * }
-		 * }
-		 * return res;
-		 * }
-		 */
-
-		return true;//this.configurationParametersService.checkForSpamWords(strings);
+		return this.configurationParametersService.checkForSpamWords(strings);
 	}
 
 	/**
