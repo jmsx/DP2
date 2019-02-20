@@ -51,6 +51,7 @@ public class RequestService {
 	public Request findOne(final Integer idRequest) {
 		final Actor principal = this.actorService.findByPrincipal();
 		Request res = this.requestRepository.findOne(idRequest);
+		Assert.notNull(res, "Not found Request to this id");
 		Boolean isAccepted = false;
 		if (this.actorService.checkAuthority(principal, Authority.MEMBER))
 			isAccepted = res.getMember().getId() == principal.getId();
@@ -93,5 +94,15 @@ public class RequestService {
 		}
 		req = this.requestRepository.save(req);
 		return req;
+	}
+
+	public void delete(final Request req) {
+		final Actor principal = this.actorService.findByPrincipal();
+		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
+		Assert.isTrue(isMember, "Only a member can delete a request");
+		Assert.isTrue(req.getMember().getId() == principal.getId(), "Member must be the own of the request");
+		final Request request = this.requestRepository.findOne(req.getId());
+		Assert.isTrue(request.getStatus().equals(Request.PENDING), "The Request must be PENDING");
+		this.requestRepository.delete(req.getId());
 	}
 }
