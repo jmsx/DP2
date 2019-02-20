@@ -16,7 +16,7 @@ import domain.Procession;
 
 @Service
 @Transactional
-public class FloatProcessionService {
+public class FloatService {
 
 	@Autowired
 	private FloatRepository					floatRepository;
