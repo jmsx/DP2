@@ -32,6 +32,13 @@ public class PositionService {
 		return res;
 	}
 
+	Position create(final String nameSpanish, final String nameEnglish) {
+		final Position res = new Position();
+		res.setNameEnglish(nameEnglish);
+		res.setNameSpanish(nameSpanish);
+		return res;
+	}
+
 	public Collection<Position> findAll() {
 		final Collection<Position> res = this.positionRepository.findAll();
 		Assert.notNull(res);
