@@ -10,7 +10,7 @@ import domain.Float;
 
 @Component
 @Transactional
-public class FloatProcessionToStringConverter implements Converter<Float, String> {
+public class FloatToStringConverter implements Converter<Float, String> {
 
 	@Override
 	public String convert(final Float fProcession) {
