@@ -62,16 +62,16 @@ public class FolderService {
 		if (bool)
 			a.setSpammer(true);
 
-		if (f.getId() == 0)
+		if (f.getId() == 0) {
+			f.setActor(a);
 			saved = this.folderRepository.save(f);
-		else {
+		} else {
 			final Collection<Folder> fs = this.findAllByUserId(a.getUserAccount().getId());
 			Assert.isTrue(fs.contains(f));
 			saved = this.folderRepository.save(f);
 		}
 		return saved;
 	}
-
 	private boolean checkForSpamWords(final Folder f) {
 		final Collection<String> words = new ArrayList<>();
 		words.add(f.getName());
@@ -90,15 +90,13 @@ public class FolderService {
 		Assert.isTrue(fs.contains(f));
 
 		if (!ms.isEmpty())
-			//El delete de folder falla por este clear, ya que se le pasa al metodo deleteAll() una carpeta vacia y falla el assert de que no este vacia
-			//f.getMessages().clear();
 			this.messageService.deleteAll(ms, f);
 
 		this.folderRepository.delete(f);
-		this.actorService.update(principal);
 	}
 
 	public Collection<Folder> setFoldersByDefault(final Actor actor) {
+		Assert.isTrue(actor.getId() == 0);
 		final Collection<Folder> folders = new ArrayList<Folder>();
 		final Collection<Message> messages = new ArrayList<Message>();
 

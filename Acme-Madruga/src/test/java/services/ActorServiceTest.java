@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,18 +47,6 @@ public class ActorServiceTest extends AbstractTest {
 		final Collection<Actor> actors = this.actorService.findAll();
 
 		Assert.isTrue(actors.contains(saved));
-	}
-
-	@Test
-	public void testUpdate() {
-		final Actor a = (Actor) this.actorService.findAll().toArray()[0];
-		final String oldEmail = a.getEmail();
-		final String username = a.getUserAccount().getUsername();
-		super.authenticate(username);
-		a.setEmail("another@gmail.com");
-		final Actor saved = this.actorService.update(a);
-
-		Assert.isTrue(!oldEmail.equals(saved.getEmail()));
 	}
 
 	@Test
@@ -114,9 +101,7 @@ public class ActorServiceTest extends AbstractTest {
 	@Test
 	public void testBanActor() {
 		super.authenticate("admin1");
-		List<Actor> spammers = new ArrayList<>();
-		spammers = (List<Actor>) this.actorService.findAllSpammers();
-		final Actor a = spammers.get(0);
+		final Actor a = (Actor) this.actorService.findAllSpammers().toArray()[0];
 		this.actorService.banActor(a);
 
 		final UserAccount ua = a.getUserAccount();
@@ -130,9 +115,7 @@ public class ActorServiceTest extends AbstractTest {
 	@Test
 	public void testUnbanActor() {
 		super.authenticate("admin1");
-		List<Actor> suspicious = new ArrayList<>();
-		suspicious = (List<Actor>) this.actorService.findAllSpammers();
-		final Actor a = suspicious.get(0);
+		final Actor a = (Actor) this.actorService.findAllSpammers().toArray()[0];
 		this.actorService.banActor(a);
 
 		this.actorService.unbanActor(a);
@@ -147,7 +130,12 @@ public class ActorServiceTest extends AbstractTest {
 	@Test
 	public void testComputeScore() {
 		super.authenticate("admin1");
-		final Actor a = (Actor) this.actorService.findAll().toArray()[0];
+		int i = 0;
+		Actor a = (Actor) this.actorService.findAll().toArray()[i];
+		while (!(this.actorService.checkAuthority(a, Authority.MEMBER) || (this.actorService.checkAuthority(a, Authority.BROTHERHOOD)))) {
+			a = (Actor) this.actorService.findAll().toArray()[i];
+			i = i + 1;
+		}
 		final double res = this.actorService.computeScore(a);
 		Assert.isTrue(res <= 1.0 && res >= -1.0);
 	}

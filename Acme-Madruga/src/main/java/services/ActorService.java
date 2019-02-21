@@ -56,18 +56,6 @@ public class ActorService {
 		return result;
 	}
 
-	public Actor update(final Actor a) {
-		Assert.notNull(a);
-		Assert.isTrue(a.getId() != 0);
-
-		final Actor principal = this.findByPrincipal();
-		//Un admin puede banear a actores por lo que tiene acceso a actualizar un usuario
-		final boolean isAdmin = this.checkAuthority(principal, Authority.ADMIN);
-		Assert.isTrue(principal.getUserAccount().getId() == a.getUserAccount().getId() || isAdmin);
-
-		return this.actorRepository.save(a);
-	}
-
 	public int countByMessageId(final Integer id) {
 		Assert.isTrue(id != 0);
 		return this.actorRepository.countByMessageId(id);
@@ -140,15 +128,14 @@ public class ActorService {
 		final UserAccount saved = this.userAccountService.save(userAccount);
 		actor.setUserAccount(saved);
 
-		/* final Collection<Folder> defaultFolders = */this.folderService.setFoldersByDefault(actor);
-		//this.folderService.saveAll(defaultFolders);
+		this.folderService.setFoldersByDefault(actor);
 
 		actor.setSpammer(false);
 
 		return actor;
 	}
 
-	/* Admin */
+	// =========================================== Admin =================================================
 
 	public void banActor(final Actor a) {
 		Assert.notNull(a);
@@ -190,8 +177,9 @@ public class ActorService {
 
 	public Collection<Actor> findAllSpammers() {
 		this.administratorService.findByPrincipal();
-
-		return this.actorRepository.findAllSpammer();
+		final Collection<Actor> result = this.actorRepository.findAllSpammer();
+		Assert.notNull(result);
+		return result;
 	}
 
 	public void checkForSpamWords(final Actor a) {
@@ -206,8 +194,6 @@ public class ActorService {
 		if (this.configurationParametersService.checkForSpamWords(words))
 			a.setSpammer(true);
 	}
-
-	// TODO: Score
 
 	public double computeScore(final Actor a) {
 		final boolean isBrotherhood = this.checkAuthority(a, Authority.BROTHERHOOD);
@@ -256,6 +242,60 @@ public class ActorService {
 			normRes = 0;
 
 		return normRes;
+	}
+
+	/**
+	 * An administrator can ban system actors, so he must be able to modify them. That's an ancilliary method to "banActor" and "unbanActor", it checks administrator only changes actor's spammer attribute.
+	 * 
+	 * @param a
+	 *            Actor who will be modified
+	 * @author a8081
+	 * */
+	private Actor update(final Actor a) {
+		Assert.notNull(a);
+		Assert.isTrue(a.getId() != 0);
+		this.administratorService.findByPrincipal();
+		Assert.isTrue(this.equalsLessSpammer(this.findByUserId(a.getUserAccount().getId()), a));
+		return this.actorRepository.save(a);
+	}
+
+	private boolean equalsLessSpammer(final Actor a1, final Actor a2) {
+		if (a1.getAddress() == null) {
+			if (a2.getAddress() != null)
+				return false;
+		} else if (!a1.getAddress().equals(a2.getAddress()))
+			return false;
+		if (a1.getEmail() == null) {
+			if (a2.getEmail() != null)
+				return false;
+		} else if (!a1.getEmail().equals(a2.getEmail()))
+			return false;
+		if (a1.getMiddleName() == null) {
+			if (a2.getMiddleName() != null)
+				return false;
+		} else if (!a1.getMiddleName().equals(a2.getMiddleName()))
+			return false;
+		if (a1.getName() == null) {
+			if (a2.getName() != null)
+				return false;
+		} else if (!a1.getName().equals(a2.getName()))
+			return false;
+		if (a1.getPhone() == null) {
+			if (a2.getPhone() != null)
+				return false;
+		} else if (!a1.getPhone().equals(a2.getPhone()))
+			return false;
+		if (a1.getPhoto() == null) {
+			if (a2.getPhoto() != null)
+				return false;
+		} else if (!a1.getPhoto().equals(a2.getPhoto()))
+			return false;
+		if (a1.getSurname() == null) {
+			if (a2.getSurname() != null)
+				return false;
+		} else if (!a1.getSurname().equals(a2.getSurname()))
+			return false;
+		return true;
 	}
 
 }

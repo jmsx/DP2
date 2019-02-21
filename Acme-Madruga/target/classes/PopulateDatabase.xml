@@ -181,7 +181,7 @@
 	
 	<bean id="member2" class="domain.Member">
 		<!-- Actor -->
-		<property name="name" value="Antonia"></property>
+		<property name="name" value="Antonio"></property>
 		<property name="middleName" value="a80801"></property>
 		<property name="surname" value="Ruiz"></property>
 		<property name="photo" value="http://tinyurl.com/picture.png"></property>
