@@ -251,7 +251,7 @@ public class ActorService {
 	 *            Actor who will be modified
 	 * @author a8081
 	 * */
-	private Actor update(final Actor a) {
+	public Actor update(final Actor a) {
 		Assert.notNull(a);
 		Assert.isTrue(a.getId() != 0);
 		this.administratorService.findByPrincipal();

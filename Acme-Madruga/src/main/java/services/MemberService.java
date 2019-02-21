@@ -30,6 +30,7 @@ public class MemberService {
 	}
 
 	public Collection<Member> findAll() {
+
 		final Collection<Member> result = this.memberRepository.findAll();
 		Assert.notNull(result);
 		return result;
@@ -44,6 +45,7 @@ public class MemberService {
 
 	public Member save(final Member member) {
 		Assert.notNull(member);
+
 		Member result;
 		this.actorService.checkForSpamWords(member);
 		if (member.getId() == 0)

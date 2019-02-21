@@ -1,79 +1,96 @@
 
 package services;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Finder;
+import domain.Procession;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
 public class FinderServiceTest extends AbstractTest {
 
-	// Service under test ---------------------------------
 	@Autowired
 	private FinderService		finderService;
 
 	@Autowired
 	private ProcessionService	processionService;
 
+	@Autowired
+	private MemberService		memberService;
 
-	// Tests ----------------------------------------------
 
 	@Test
 	public void testCreate() {
-		super.authenticate("finder1");
-
 		final Finder finder = this.finderService.create();
+		final Collection<Procession> processions = this.processionService.findAll();
+		finder.setProcessions(processions);
 		Assert.notNull(finder);
+	}
 
-		super.unauthenticate();
+	@Test
+	public void testFindAll() {
+		super.authenticate("member1");
+		Assert.isTrue(this.finderService.findAll().size() > 0);
+
 	}
 
 	@Test
 	public void testFindOne() {
-		final Finder finder = this.finderService.findOne(super.getEntityId("member1"));
-		Assert.notNull(finder);
+		super.authenticate("member1");
+		final List<Finder> finders = new ArrayList<>(this.finderService.findAll());
+		Assert.isTrue(finders.size() > 0);
+		Assert.notNull(this.finderService.findOne(finders.get(0).getId()));
 	}
 
 	@Test
 	public void testSave() {
-		super.authenticate("member1");
-
-		final Finder finder = this.finderService.create();
-
+		this.authenticate("member1");
+		final List<Finder> finders = new ArrayList<>(this.finderService.findAll());
+		Assert.isTrue(finders.size() > 0);
+		Finder finder = this.finderService.findOne(finders.get(0).getId());
 		finder.setKeyword("This");
-
-		final Finder res = this.finderService.save(finder);
-		Assert.notNull(res);
-
-		super.unauthenticate();
+		final Date moment = new Date();
+		finder.setMaxDate(moment);
+		finder.setMinDate(moment);
+		finder.setAreaName("area1");
+		finder = this.finderService.save(finder);
+		Assert.isTrue(finder.getId() != 0);
 	}
-	//	@Test
-	//	public void testDelete() {
-	//		super.authenticate("member1");
-	//
-	//		Finder finder;
-	//		finder = this.finderService.findOne(super.getEntityId("member1"));
-	//		this.finderService.delete(finder);
-	//
-	//		super.unauthenticate();
-	//	}
-	//
-	//	@Test
-	//	public void testFindAll() {
-	//		final Collection<Finder> finder = this.finderService.findAll();
-	//		Assert.notNull(finder);
-	//	}
-	//
-	//	@Test
-	//	public void testFind() {
-	//		super.authenticate("member1");
-	//
-	//		final Finder finder = this.finderService.create();
-	//		final Collection<Procession> processions = this.processionService.findAll();
-	//		finder.setKeyword("This");
-	//		processions.addAll();
-	//
-	//	}
+
+	@Test
+	public void testDelete() {
+		this.authenticate("member1");
+		final List<Finder> finders = new ArrayList<>(this.finderService.findAll());
+		Assert.isTrue(finders.size() > 0);
+		final Finder finder = this.finderService.findOne(finders.get(0).getId());
+		finder.setKeyword("This");
+		final Date moment = new Date();
+		finder.setMaxDate(moment);
+		finder.setMinDate(moment);
+		finder.setAreaName("area1");
+		this.finderService.delete(finder);
+		Assert.isTrue(finder.getId() != 0);
+	}
+
+	//		@Test
+	//		public void testFind() {
+	//			
+	//		}
+
 }

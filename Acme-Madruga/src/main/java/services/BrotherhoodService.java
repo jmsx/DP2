@@ -87,4 +87,5 @@ public class BrotherhoodService {
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
 		return this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getUserAccount().getId());
 	}
+
 }
