@@ -77,37 +77,6 @@ public class ActorService {
 	}
 
 	/**
-	 * Initializes the atributes common to every actor (system folders, user account and its authority) to a NEW actor (it checks it has ID = 0)
-	 * 
-	 * @param authority
-	 *            String of the authority you want actor to have
-	 * @param actor
-	 *            New actor object
-	 * @return The new actor with its atributes initialized
-	 * @author a8081
-	 * */
-	public Actor save(final String authority, final Actor actor) {
-		Assert.notNull(actor);
-		Assert.isTrue(actor.getId() == 0);
-		final UserAccount userAccount = this.userAccountService.create();
-		final Collection<Authority> authorities = new ArrayList<>();
-		final Authority auth = new Authority();
-		auth.setAuthority(authority);
-
-		if (!authorities.contains(auth))
-			authorities.add(auth);
-		userAccount.setAuthorities(authorities);
-		final UserAccount saved = this.userAccountService.save(userAccount);
-		actor.setUserAccount(saved);
-
-		this.folderService.setFoldersByDefault(actor);
-
-		actor.setSpammer(false);
-
-		return actor;
-	}
-
-	/**
 	 * Update an actor. Its important that it checks actor object isn't new, id != 0, and that the actor who is modifying himself, not another system actor.
 	 * 
 	 * @param actor
@@ -129,6 +98,38 @@ public class ActorService {
 
 		return result;
 
+	}
+
+	/**
+	 * Initializes the user account and authority atributes to a NEW actor (it checks it has ID = 0). You can't save an new actor in the system as an actor, because actor is an abstract class, you only create
+	 * Members, Brotherhoods or Administrators.
+	 * 
+	 * @param authority
+	 *            String of the authority you want actor to have
+	 * @param actor
+	 *            New actor object
+	 * @return The new actor with its atributes initialized
+	 * @author a8081
+	 * */
+	public Actor setAuthorityUserAccount(final String authority, final Actor actor) {
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getId() == 0);
+		final UserAccount userAccount = this.userAccountService.create();
+		final Collection<Authority> authorities = new ArrayList<>();
+		final Authority auth = new Authority();
+		auth.setAuthority(authority);
+
+		if (!authorities.contains(auth))
+			authorities.add(auth);
+		userAccount.setAuthorities(authorities);
+		final UserAccount saved = this.userAccountService.save(userAccount);
+		actor.setUserAccount(saved);
+
+		actor.setSpammer(false);
+
+		//this.folderService.setFoldersByDefault(actor); it references to an actor that not exists
+
+		return actor;
 	}
 
 	/**

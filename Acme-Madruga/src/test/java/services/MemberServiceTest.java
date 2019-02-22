@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.MemberRepository;
-import security.Authority;
-import security.UserAccount;
 import utilities.AbstractTest;
 import domain.Member;
 
@@ -60,12 +58,14 @@ public class MemberServiceTest extends AbstractTest {
 	@Test
 	public void testSave() {
 		final Member member = this.memberService.create();
-		final UserAccount user = this.userAccountService.create();
-		final Authority auth = new Authority();
-		auth.setAuthority(Authority.MEMBER);
-		user.addAuthority(auth);
+		//		final UserAccount user = this.userAccountService.create();
+		//		final Authority auth = new Authority();
+		//		auth.setAuthority(Authority.MEMBER);
+		//		user.addAuthority(auth);
 
-		member.setUserAccount(user);
+		// a8081: Jesus he añadido esta funcionalidad diractamente en el save del servicio
+
+		//		member.setUserAccount(user);
 		member.setName("Jesús Manuel");
 		member.setMiddleName("");
 		member.setSurname("García Lanzas");

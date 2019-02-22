@@ -24,6 +24,9 @@ public class MemberService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private FolderService		folderService;
+
 
 	public Member create() {
 		return new Member();
@@ -48,9 +51,11 @@ public class MemberService {
 
 		Member result;
 		this.actorService.checkForSpamWords(member);
-		if (member.getId() == 0)
+		if (member.getId() == 0) {
+			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
 			result = this.memberRepository.save(member);
-		else
+			this.folderService.setFoldersByDefault(result);
+		} else
 			result = (Member) this.actorService.save(member);
 
 		return result;

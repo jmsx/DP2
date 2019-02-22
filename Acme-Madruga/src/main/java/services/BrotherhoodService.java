@@ -25,6 +25,9 @@ public class BrotherhoodService {
 	@Autowired
 	private ActorService			actorService;
 
+	@Autowired
+	private FolderService			folderService;
+
 
 	public Brotherhood create() {
 		return new Brotherhood();
@@ -47,14 +50,15 @@ public class BrotherhoodService {
 		Assert.notNull(brotherhood);
 		Brotherhood result;
 		this.actorService.checkForSpamWords(brotherhood);
-		if (brotherhood.getId() == 0)
+		if (brotherhood.getId() == 0) {
+			this.actorService.setAuthorityUserAccount(Authority.BROTHERHOOD, brotherhood);
 			result = this.brotherhoodRepository.save(brotherhood);
-		else
+			this.folderService.setFoldersByDefault(result);
+		} else
 			result = (Brotherhood) this.actorService.save(brotherhood);
 
 		return result;
 	}
-
 	public void delete(final Brotherhood brotherhood) {
 		Assert.notNull(brotherhood);
 		Assert.isTrue(brotherhood.getId() != 0);

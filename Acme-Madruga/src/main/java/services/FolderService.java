@@ -96,7 +96,6 @@ public class FolderService {
 	}
 
 	public Collection<Folder> setFoldersByDefault(final Actor actor) {
-		Assert.isTrue(actor.getId() == 0);
 		final Collection<Folder> folders = new ArrayList<Folder>();
 		final Collection<Message> messages = new ArrayList<Message>();
 

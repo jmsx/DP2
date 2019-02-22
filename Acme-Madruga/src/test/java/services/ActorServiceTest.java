@@ -25,29 +25,8 @@ import domain.Actor;
 public class ActorServiceTest extends AbstractTest {
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService	actorService;
 
-	@Autowired
-	private AdministratorService	administratorService;
-
-
-	@Test
-	public void testSave() {
-		final Actor a = this.administratorService.create();
-		a.setName("José");
-		a.setMiddleName("");
-		a.setSurname("Millán");
-		a.setPhoto("");
-		a.setEmail("millan@gmail.com");
-		a.setPhone("");
-		a.setAddress("");
-		a.setSpammer(false);
-
-		final Actor saved = this.actorService.setNewActor(Authority.MEMBER, a);
-		final Collection<Actor> actors = this.actorService.findAll();
-
-		Assert.isTrue(actors.contains(saved));
-	}
 
 	@Test
 	public void testFindAll() {
@@ -115,14 +94,18 @@ public class ActorServiceTest extends AbstractTest {
 	@Test
 	public void testUnbanActor() {
 		super.authenticate("admin1");
-		final Actor a = (Actor) this.actorService.findAllSpammers().toArray()[0];
-		this.actorService.banActor(a);
+		final Authority auth = new Authority();
+		auth.setAuthority(Authority.BANNED);
+		int i = 0;
+		Actor a = (Actor) this.actorService.findAllSpammers().toArray()[i];
+		while (!a.getUserAccount().getAuthorities().contains(auth)) {
+			a = (Actor) this.actorService.findAllSpammers().toArray()[i];
+			i = i + 1;
+		}
 
 		this.actorService.unbanActor(a);
 		final UserAccount ua = a.getUserAccount();
 		final Collection<Authority> auths = ua.getAuthorities();
-		final Authority auth = new Authority();
-		auth.setAuthority(Authority.BANNED);
 
 		Assert.isTrue(!auths.contains(auth));
 	}
