@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import repositories.MemberRepository;
 import utilities.AbstractTest;
 import domain.Member;
 
@@ -24,17 +23,7 @@ public class MemberServiceTest extends AbstractTest {
 
 	//Services
 	@Autowired
-	private MemberService		memberService;
-
-	@Autowired
-	private ActorService		actorService;
-
-	@Autowired
-	private UserAccountService	userAccountService;
-
-	//Repositorys
-	@Autowired
-	private MemberRepository	memberRepository;
+	private MemberService	memberService;
 
 
 	//	@Test

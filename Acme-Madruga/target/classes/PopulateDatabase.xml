@@ -396,7 +396,7 @@
 		<property name="actor" ref="member1" />
 		<property name="messages">
 			<list>
-				<!-- <ref bean="message1"/> -->
+				<ref bean="message5" />
 			</list>
 		</property>
 	</bean>
@@ -479,9 +479,9 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- ============================================== -->
-	
+
 	<bean id="outBoxMember3" class="domain.Folder">
 		<property name="name" value="Out box" />
 		<property name="isSystemFolder" value="true" />
@@ -758,8 +758,22 @@
 		</property>
 	</bean>
 
-
-
+	<bean id="message5" class="domain.Message">
+		<property name="moment" value="2018/04/16 12:20" />
+		<property name="subject" value="subject 5" />
+		<property name="body" value="body 5" />
+		<property name="priority" value="HIGH" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="sender" ref="brotherhood1" />
+		<property name="recipients">
+			<list>
+				<ref bean="member1" />
+			</list>
+		</property>
+	</bean>
 
 
 	<!-- =================================================================== 

@@ -24,9 +24,6 @@ public class ActorService {
 	private ActorRepository					actorRepository;
 
 	@Autowired
-	private FolderService					folderService;
-
-	@Autowired
 	private UserAccountService				userAccountService;
 
 	@Autowired
@@ -212,7 +209,8 @@ public class ActorService {
 	public void checkForSpamWords(final Actor a) {
 		final Collection<String> words = new ArrayList<>();
 
-		words.add(a.getAddress());
+		if (a.getAddress() != null)
+			words.add(a.getAddress());
 		words.add(a.getEmail());
 		words.add(a.getMiddleName());
 		words.add(a.getName());

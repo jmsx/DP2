@@ -31,9 +31,6 @@ public class FinderServiceTest extends AbstractTest {
 	@Autowired
 	private ProcessionService	processionService;
 
-	@Autowired
-	private MemberService		memberService;
-
 
 	@Test
 	public void testCreate() {
