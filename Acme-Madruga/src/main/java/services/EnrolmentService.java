@@ -34,7 +34,12 @@ public class EnrolmentService {
 	private BrotherhoodService	brotherhoodService;
 
 
-	public Enrolment create() {
+	//Metodos:
+	//	Drop-Out (Una hdad echa a un miembro)
+	//	Reconstruct
+	//	Leave (Un miembro sale de una hdad)
+
+	public Enrolment create(final int btoherhoodId) {
 		final Enrolment enrolment = new Enrolment();
 
 		final Brotherhood brotherhood = new Brotherhood();

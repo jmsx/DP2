@@ -1,7 +1,9 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.MemberRepository;
 import utilities.AbstractTest;
 import domain.Member;
 
@@ -23,27 +26,31 @@ public class MemberServiceTest extends AbstractTest {
 
 	//Services
 	@Autowired
-	private MemberService	memberService;
+	private MemberService		memberService;
+
+	//Repositorys
+	@Autowired
+	private MemberRepository	memberRepository;
 
 
-	//	@Test
-	//	public void testCreate() {
-	//		final Member member = this.memberService.create();
-	//		Assert.notNull(member);
-	//	}
-	//
-	//	@Test
-	//	public void testFindAll() {
-	//		Assert.isTrue(this.memberService.findAll().size() > 0);
-	//	}
-	//
-	//	@Test
-	//	public void testFindOne() {
-	//		final List<Member> members = new ArrayList<>(this.memberService.findAll());
-	//		Assert.isTrue(members.size() > 0);
-	//		Assert.notNull(this.memberService.findOne(members.get(0).getId()));
-	//	}
-	//
+	@Test
+	public void testCreate() {
+		final Member member = this.memberService.create();
+		Assert.notNull(member);
+	}
+
+	@Test
+	public void testFindAll() {
+		Assert.isTrue(this.memberService.findAll().size() > 0);
+	}
+
+	@Test
+	public void testFindOne() {
+		final List<Member> members = new ArrayList<>(this.memberService.findAll());
+		Assert.isTrue(members.size() > 0);
+		Assert.notNull(this.memberService.findOne(members.get(0).getId()));
+	}
+
 	@Test
 	public void testSave() {
 		final Member member = this.memberService.create();
@@ -70,35 +77,35 @@ public class MemberServiceTest extends AbstractTest {
 		Assert.isTrue(members.contains(saved));
 
 	}
-	//
-	//	@Test
-	//	public void testDelete() {
-	//		this.authenticate("member1");
-	//		final Member principal = this.memberService.findByPrincipal();
-	//		final Integer myId = principal.getId();
-	//
-	//		Assert.isTrue(myId != 0);
-	//		this.memberService.delete(principal);
-	//		Member member;
-	//		member = this.memberRepository.findOne(myId);
-	//		Assert.isTrue(member == null);
-	//
-	//	}
-	//
-	//	@Test
-	//	public void testFindByPrincipal() {
-	//		super.authenticate("member1");
-	//		final Member res = this.memberService.findByPrincipal();
-	//		Assert.notNull(res);
-	//		Assert.isTrue(res.getUserAccount().getUsername().equals("member1"));
-	//	}
-	//
-	//	@Test
-	//	public void testFindByUserId() {
-	//		final Member retrieved = (Member) this.memberService.findAll().toArray()[0];
-	//		final int id = retrieved.getUserAccount().getId();
-	//		final Member member = this.memberService.findByUserId(id);
-	//		Assert.isTrue(member.equals(retrieved));
-	//	}
+
+	@Test
+	public void testDelete() {
+		super.authenticate("member1");
+		final Member principal = this.memberService.findByPrincipal();
+		final Integer myId = principal.getId();
+
+		Assert.isTrue(myId != 0);
+		this.memberService.delete(principal);
+		Member member;
+		member = this.memberRepository.findOne(myId);
+		Assert.isTrue(member == null);
+
+	}
+
+	@Test
+	public void testFindByPrincipal() {
+		super.authenticate("member1");
+		final Member res = this.memberService.findByPrincipal();
+		Assert.notNull(res);
+		Assert.isTrue(res.getUserAccount().getUsername().equals("member1"));
+	}
+
+	@Test
+	public void testFindByUserId() {
+		final Member retrieved = (Member) this.memberService.findAll().toArray()[0];
+		final int id = retrieved.getUserAccount().getId();
+		final Member member = this.memberService.findByUserId(id);
+		Assert.isTrue(member.equals(retrieved));
+	}
 
 }

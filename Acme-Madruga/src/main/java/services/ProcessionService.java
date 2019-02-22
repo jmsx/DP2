@@ -74,8 +74,9 @@ public class ProcessionService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Procession result;
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
 
-		if (isBrotherhood)
+		if (isBrotherhood && bro.getArea() != null)
 			if (procession.getId() == 0) {
 				procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
 				procession.setMode("DRAFT");
