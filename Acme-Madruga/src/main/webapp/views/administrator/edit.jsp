@@ -6,7 +6,10 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<h2><spring:message code="manageAdministartor.title"/></h2>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
+<h2><spring:message code="administrator.edit.msg"/></h2>
+
 <form:form modelAttribute="administrator" action="/administrator/edit.do">
-	<acme:textbox code="administartor.name" path="name" />
+	<acme:textbox code="administrator.edit.name" path="name" />
 </form:form>

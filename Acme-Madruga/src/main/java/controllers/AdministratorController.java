@@ -67,10 +67,9 @@ public class AdministratorController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView();
 		final Administrator admin = this.administratorService.create();
-		admin.setName("");
-		result.addObject("administartor", admin);
+		admin.setName("Administrador name");
 		result = new ModelAndView("administrator/edit");
-
+		result.addObject("administrator", admin);
 		return result;
 	}
 

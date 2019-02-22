@@ -74,7 +74,7 @@ public class BrotherhoodService {
 
 		final Brotherhood brotherhood = this.findByUserId(user.getId());
 		Assert.notNull(brotherhood);
-		final boolean bool = this.actorService.checkAuthority(brotherhood, Authority.MEMBER);
+		final boolean bool = this.actorService.checkAuthority(brotherhood, Authority.BROTHERHOOD);
 		Assert.isTrue(bool);
 
 		return brotherhood;
