@@ -59,12 +59,12 @@ public class MemberServiceTest extends AbstractTest {
 		//		auth.setAuthority(Authority.MEMBER);
 		//		user.addAuthority(auth);
 
-		// a8081: Jesus he añadido esta funcionalidad diractamente en el save del servicio
+		// a8081: Jesus he aï¿½adido esta funcionalidad diractamente en el save del servicio
 
 		//		member.setUserAccount(user);
-		member.setName("Jesús Manuel");
+		member.setName("Jesï¿½s Manuel");
 		member.setMiddleName("");
-		member.setSurname("García Lanzas");
+		member.setSurname("Garcï¿½a Lanzas");
 		member.setPhoto("");
 		member.setEmail("jmgl@gmail.com");
 		member.setPhone("658 98 65 96");

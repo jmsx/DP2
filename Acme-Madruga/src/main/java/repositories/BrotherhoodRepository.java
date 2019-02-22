@@ -13,7 +13,7 @@ public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Intege
 	@Query("select b from Brotherhood b where b.userAccount.id=?1")
 	Brotherhood findByUserId(Integer brotherhoodId);
 
-	@Query("select b from Enrolment e join e.brotherhood b where e.member.userAccount.id=?1")
+	@Query("select b from Enrolment e join e.brotherhood b where e.member.id=?1")
 	Collection<Brotherhood> findAllBrotherHoodByMember(Integer id);
 
 }
