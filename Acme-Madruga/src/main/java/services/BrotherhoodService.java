@@ -13,6 +13,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
+import domain.Area;
 import domain.Brotherhood;
 import domain.Member;
 
@@ -95,6 +96,15 @@ public class BrotherhoodService {
 		final Actor principal = this.memberService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
 		return this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getId());
+	}
+	
+	public void areaSet(final Area area){
+		Assert.notNull(area);
+		final Brotherhood principal = this.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
+		Assert.isTrue(principal.getArea() == null);
+		principal.setArea(area);
+		this.save(principal);
 	}
 
 }

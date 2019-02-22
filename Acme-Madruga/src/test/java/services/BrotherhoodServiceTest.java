@@ -3,6 +3,7 @@ package services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -130,29 +131,39 @@ public class BrotherhoodServiceTest extends AbstractTest{
 //		Assert.isTrue(a.equals(retrieved));
 //	}
 
-	//TODO:testFindAllBrotherHoodByMember()
+//	//TODO:testFindAllBrotherHoodByMember()
+//	@Test
+//	public void testFindAllBrotherHoodByMember() {
+//		super.authenticate("member1");
+//		final Member member = memberService.findByPrincipal();
+//		final Collection<Brotherhood> bros = this.brotherhoodService.findAll();
+//		Enrolment enrol = null;
+//		for(Brotherhood b: bros){
+//			final Brotherhood bro = b;
+//			if(bro.getUserAccount().getUsername().equals("brotherhood2"))
+//				enrol = this.enrolmentService.create(bro.getId());
+//		}
+//		enrol.setMember(member);
+//		final Position position = this.positionService.create();
+//		position.setNameEnglish("Hello");
+//		position.setNameSpanish("Hola");
+//		final Position posSaved = this.positionService.save(position);
+//		enrol.setPosition(posSaved);
+//		final Enrolment saved = this.enrolmentService.save(enrol);
+//		final Collection<Brotherhood> end = this.brotherhoodService.findAllBrotherHoodByMember();
+//		
+//		Assert.isTrue(end.contains(saved.getBrotherhood()));
+//		
+//	}
+	
 	@Test
-	public void testFindAllBrotherHoodByMember() {
-		super.authenticate("member1");
-		final Member member = memberService.findByPrincipal();
-		final Collection<Brotherhood> bros = this.brotherhoodService.findAll();
-		Enrolment enrol = null;
-		for(Brotherhood b: bros){
-			final Brotherhood bro = b;
-			if(bro.getUserAccount().getUsername().equals("brotherhood2"))
-				enrol = this.enrolmentService.create(bro.getId());
-		}
-		enrol.setMember(member);
-		final Position position = this.positionService.create();
-		position.setNameEnglish("Hello");
-		position.setNameSpanish("Hola");
-		final Position posSaved = this.positionService.save(position);
-		enrol.setPosition(posSaved);
-		final Enrolment saved = this.enrolmentService.save(enrol);
-		final Collection<Brotherhood> end = this.brotherhoodService.findAllBrotherHoodByMember();
-		
-		Assert.isTrue(end.contains(saved.getBrotherhood()));
-		
+	public void areaSet(){
+		super.authenticate("brotherhood2");
+		final List<Area> areas = (List<Area>) this.areaService.findAll();
+		final Area area = areas.get(1);
+		brotherhoodService.areaSet(area);
+		final List<Area> areasSettled = (List<Area>) this.areaService.AllAreasSettled();
+		Assert.isTrue(areasSettled.contains(area));
 	}
 
 }

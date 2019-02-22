@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -64,6 +65,7 @@ public class Request extends DomainEntity {
 		this.explanation = explanation;
 	}
 
+	@Min(1)
 	@Column(name = "row_position")
 	public Integer getRow() {
 		return this.row;
@@ -73,6 +75,7 @@ public class Request extends DomainEntity {
 		this.row = row;
 	}
 
+	@Min(1)
 	@Column(name = "column_position")
 	public Integer getColumn() {
 		return this.column;

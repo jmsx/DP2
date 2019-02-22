@@ -44,7 +44,6 @@ public class Float extends DomainEntity {
 		this.description = description;
 	}
 
-	// TODO: @URL
 	@ElementCollection
 	@EachURL
 	public Collection<String> getPictures() {
