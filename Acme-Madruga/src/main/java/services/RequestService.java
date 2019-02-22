@@ -73,7 +73,7 @@ public class RequestService {
 	}
 
 	public Request save(Request req) {
-		//TODO: Falsta comprobar las restricciones de quien guarda el request y en que condiciones.
+		//TODO: Falta comprobar las restricciones de quien guarda el request y en que condiciones.
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);

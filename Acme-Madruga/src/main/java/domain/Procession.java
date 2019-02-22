@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -28,6 +29,8 @@ public class Procession extends DomainEntity {
 	private Date				moment;
 	private String				ticker;
 	private String				mode;
+	private Integer				maxRows;
+	private Integer				maxColumns;
 
 	//Relational atributes
 	private Collection<Float>	floats;
@@ -100,4 +103,21 @@ public class Procession extends DomainEntity {
 		this.brotherhood = brotherhood;
 	}
 
+	@Min(1)
+	public Integer getMaxRows() {
+		return this.maxRows;
+	}
+
+	public void setMaxRows(final Integer maxRows) {
+		this.maxRows = maxRows;
+	}
+
+	@Min(1)
+	public Integer getMaxColumns() {
+		return this.maxColumns;
+	}
+
+	public void setMaxColumns(final Integer maxColumns) {
+		this.maxColumns = maxColumns;
+	}
 }

@@ -29,7 +29,6 @@ public class Area extends DomainEntity {
 		this.name = name;
 	}
 
-	// TODO: @URL
 	@ElementCollection
 	@EachURL
 	public Collection<String> getPictures() {
