@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
- * PopulateDatabase.xml
- *
- * Copyright (C) 2019 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- -->
+<!-- * PopulateDatabase.xml * * Copyright (C) 2019 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
-	
-	<!-- 
-	===================================================================
-	=======                   USER ACCOUNTS                   =========
-	===================================================================
-	 -->
-	 
-	<!-- 
-	========================= ADMINISTRATOR ===========================
-	-->
-	
+
+	<!-- =================================================================== 
+		======= USER ACCOUNTS ========= =================================================================== -->
+
+	<!-- ========================= ADMINISTRATOR =========================== -->
+
 	<bean id="userAccountAdmin1" class="security.UserAccount">
 		<property name="username" value="admin1" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
@@ -37,7 +26,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userAccountAdmin2" class="security.UserAccount">
 		<property name="username" value="admin2" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
@@ -50,9 +39,7 @@
 		</property>
 	</bean>
 
-	<!-- 
-	========================= MEMBER ===========================
-	-->
+	<!-- ========================= MEMBER =========================== -->
 
 	<bean id="userAccountMember1" class="security.UserAccount">
 		<property name="username" value="member1" />
@@ -65,7 +52,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userAccountMember2" class="security.UserAccount">
 		<property name="username" value="member2" />
 		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
@@ -77,7 +64,7 @@
 			</list>
 		</property>
 	</bean>
-	<!-- 
+
 	<bean id="userAccountMember3" class="security.UserAccount">
 		<property name="username" value="member3" />
 		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
@@ -86,14 +73,15 @@
 				<bean class="security.Authority">
 					<property name="authority" value="MEMBER" />
 				</bean>
+				<bean class="security.Authority">
+					<property name="authority" value="BANNED" />
+				</bean>
 			</list>
 		</property>
 	</bean>
-	-->
-	<!-- 
-	========================= BROTHERHOOD ===========================
-	-->
-	
+
+	<!-- ========================= BROTHERHOOD =========================== -->
+
 	<bean id="userAccountBrotherhood1" class="security.UserAccount">
 		<property name="username" value="brotherhood1" />
 		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
@@ -105,7 +93,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userAccountBrotherhood2" class="security.UserAccount">
 		<property name="username" value="brotherhood2" />
 		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
@@ -117,22 +105,12 @@
 			</list>
 		</property>
 	</bean>
-	<!--  
-	<bean id="userAccountBrotherhood3" class="security.UserAccount">
-		<property name="username" value="brotherhood3" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="BROTHERHOOD" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-	-->
-	<!-- 
-	========================= SUPER ===========================
-	-->
+	<!-- <bean id="userAccountBrotherhood3" class="security.UserAccount"> <property 
+		name="username" value="brotherhood3" /> <property name="password" value="91ec1f9324753048c0096d036a694f86" 
+		/> <property name="authorities"> <list> <bean class="security.Authority"> 
+		<property name="authority" value="BROTHERHOOD" /> </bean> </list> </property> 
+		</bean> -->
+	<!-- ========================= SUPER =========================== -->
 
 	<bean id="userAccountSuper" class="security.UserAccount">
 		<property name="username" value="super" />
@@ -151,18 +129,15 @@
 			</list>
 		</property>
 	</bean>
-	
-	
-	
-	
 
 
-  <!-- 
-	===================================================================
-	=======                       MEMBER                      =========
-	===================================================================
-	-->
-	
+
+
+
+
+	<!-- =================================================================== 
+		======= MEMBER ========= =================================================================== -->
+
 	<bean id="member1" class="domain.Member">
 		<!-- Actor -->
 		<property name="name" value="Jose Manuel"></property>
@@ -178,10 +153,10 @@
 		<!-- Member -->
 		<property name="finder" ref="finder1"></property>
 	</bean>
-	
+
 	<bean id="member2" class="domain.Member">
 		<!-- Actor -->
-		<property name="name" value="Antonia"></property>
+		<property name="name" value="Antonio"></property>
 		<property name="middleName" value="a80801"></property>
 		<property name="surname" value="Ruiz"></property>
 		<property name="photo" value="http://tinyurl.com/picture.png"></property>
@@ -192,16 +167,27 @@
 		<property name="spammer" value="false"></property>
 		<property name="userAccount" ref="userAccountMember2"></property>
 		<!-- Member -->
-		<!-- 
-		<property name="finder"></property>
-		 -->
+		<!-- <property name="finder"></property> -->
 	</bean>
-	  <!-- 
-	===================================================================
-	=======                  ADMINISTRATOR                    =========
-	===================================================================
-	-->
-		
+
+	<bean id="member3" class="domain.Member">
+		<!-- Actor -->
+		<property name="name" value="Manuel MALO"></property>
+		<property name="middleName" value="jmsx"></property>
+		<property name="surname" value="SPAMMER"></property>
+		<property name="photo" value="http://tinyurl.com/picture.png"></property>
+		<property name="email" value="HACKER@gmail.es"></property>
+		<property name="phone" value="+34647607406"></property>
+		<property name="address" value="Reina Mercedes"></property>
+		<property name="score" value="0.5"></property>
+		<property name="spammer" value="true"></property>
+		<property name="userAccount" ref="userAccountMember3"></property>
+		<!-- Member no finder -->
+	</bean>
+
+	<!-- =================================================================== 
+		======= ADMINISTRATOR ========= =================================================================== -->
+
 	<bean id="administrator1" class="domain.Administrator">
 		<!-- Actor -->
 		<property name="name" value="Jose Manuel"></property>
@@ -233,12 +219,9 @@
 
 	</bean>
 
-	<!-- 
-	===================================================================
-	=======                  SOCIAL PROFILES                  =========
-	===================================================================
-	-->	
-	
+	<!-- =================================================================== 
+		======= SOCIAL PROFILES ========= =================================================================== -->
+
 	<bean id="socialProfileMember1" class="domain.SocialProfile">
 		<property name="nick" value="nickmember1" />
 		<property name="socialNetwork" value="socialnetworkmember1" />
@@ -259,77 +242,74 @@
 		<property name="profileLink" value="http://www.linkbrotherhood1.com" />
 		<property name="actor" ref="brotherhood1" />
 	</bean>
-	
+
 	<bean id="socialProfileBrotherhood2" class="domain.SocialProfile">
 		<property name="nick" value="nickbrotherhood2" />
 		<property name="socialNetwork" value="socialnetworkbrotherhood2" />
 		<property name="profileLink" value="http://www.linkbrotherhood2.com" />
 		<property name="actor" ref="brotherhood2" />
 	</bean>
-	
-	
 
-	<!-- 
-	===================================================================
-	=======                      FOLDERS                      =========
-	===================================================================
-	-->
-	
+
+
+	<!-- =================================================================== 
+		======= FOLDERS ========= =================================================================== -->
+
 	<bean id="outBoxAdministrator1" class="domain.Folder">
 		<property name="name" value="Out box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="inBoxAdministrator1" class="domain.Folder">
 		<property name="name" value="In box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="trashBoxAdministrator1" class="domain.Folder">
 		<property name="name" value="Trash box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="notificationBoxAdministrator1" class="domain.Folder">
 		<property name="name" value="Notification box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="spamBoxAdministrator1" class="domain.Folder">
 		<property name="name" value="Spam box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- ========================================= -->
 	<bean id="outBoxAdministrator2" class="domain.Folder">
 		<property name="name" value="Out box" />
@@ -337,55 +317,55 @@
 		<property name="actor" ref="administrator2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message2"/>-->
+				<!-- <ref bean="message2"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="inBoxAdministrator2" class="domain.Folder">
 		<property name="name" value="In box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message2"/>-->
+				<!-- <ref bean="message2"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="trashBoxAdministrator2" class="domain.Folder">
 		<property name="name" value="Trash box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message2"/>-->
+				<!-- <ref bean="message2"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="notificationBoxAdministrator2" class="domain.Folder">
 		<property name="name" value="Notification box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message2"/>-->
+				<!-- <ref bean="message2"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="spamBoxAdministrator2" class="domain.Folder">
 		<property name="name" value="Spam box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="administrator2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message2"/>-->
+				<!-- <ref bean="message2"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- ========================================= -->
 	<bean id="outBoxMember1" class="domain.Folder">
 		<property name="name" value="Out box" />
@@ -393,56 +373,56 @@
 		<property name="actor" ref="member1" />
 		<property name="messages">
 			<list>
-			   <ref bean="message1"/>
-			   <ref bean="message3"/>
+				<ref bean="message1" />
+				<ref bean="message3" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="inBoxMember1" class="domain.Folder">
 		<property name="name" value="In box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="trashBoxMember1" class="domain.Folder">
 		<property name="name" value="Trash box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<ref bean="message5" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="notificationBoxMember1" class="domain.Folder">
 		<property name="name" value="Notification box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="spamBoxMember1" class="domain.Folder">
 		<property name="name" value="Spam box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- ========================================= -->
 	<bean id="outBoxMember2" class="domain.Folder">
 		<property name="name" value="Out box" />
@@ -450,111 +430,132 @@
 		<property name="actor" ref="member2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="inBoxMember2" class="domain.Folder">
 		<property name="name" value="In box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member2" />
 		<property name="messages">
 			<list>
-			   <ref bean="message1"/>
-			   <ref bean="message4"/>
+				<ref bean="message1" />
+				<ref bean="message4" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="trashBoxMember2" class="domain.Folder">
 		<property name="name" value="Trash box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="notificationBoxMember2" class="domain.Folder">
 		<property name="name" value="Notification box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="spamBoxMember2" class="domain.Folder">
 		<property name="name" value="Spam box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
-	<!-- ========================================= 
+
+	<!-- ============================================== -->
+
 	<bean id="outBoxMember3" class="domain.Folder">
 		<property name="name" value="Out box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			   <ref bean="message1"/>
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="inBoxMember3" class="domain.Folder">
 		<property name="name" value="In box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
+				<ref bean="message1" />
+				<ref bean="message4" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="trashBoxMember3" class="domain.Folder">
 		<property name="name" value="Trash box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			     <ref bean="message1"/>
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="notificationBoxMember3" class="domain.Folder">
 		<property name="name" value="Notification box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			     <ref bean="message1"/>
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="spamBoxMember3" class="domain.Folder">
 		<property name="name" value="Spam box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="member3" />
 		<property name="messages">
 			<list>
-			     <ref bean="message1"/>
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	-->
+
+	<!-- ========================================= <bean id="outBoxMember3" 
+		class="domain.Folder"> <property name="name" value="Out box" /> <property 
+		name="isSystemFolder" value="true" /> <property name="actor" ref="member3" 
+		/> <property name="messages"> <list> <ref bean="message1"/> </list> </property> 
+		</bean> <bean id="inBoxMember3" class="domain.Folder"> <property name="name" 
+		value="In box" /> <property name="isSystemFolder" value="true" /> <property 
+		name="actor" ref="member3" /> <property name="messages"> <list> </list> </property> 
+		</bean> <bean id="trashBoxMember3" class="domain.Folder"> <property name="name" 
+		value="Trash box" /> <property name="isSystemFolder" value="true" /> <property 
+		name="actor" ref="member3" /> <property name="messages"> <list> <ref bean="message1"/> 
+		</list> </property> </bean> <bean id="notificationBoxMember3" class="domain.Folder"> 
+		<property name="name" value="Notification box" /> <property name="isSystemFolder" 
+		value="true" /> <property name="actor" ref="member3" /> <property name="messages"> 
+		<list> <ref bean="message1"/> </list> </property> </bean> <bean id="spamBoxMember3" 
+		class="domain.Folder"> <property name="name" value="Spam box" /> <property 
+		name="isSystemFolder" value="true" /> <property name="actor" ref="member3" 
+		/> <property name="messages"> <list> <ref bean="message1"/> </list> </property> 
+		</bean> -->
 	<!-- ========================================= -->
 	<bean id="outBoxBrotherhood1" class="domain.Folder">
 		<property name="name" value="Out box" />
@@ -562,173 +563,133 @@
 		<property name="actor" ref="brotherhood1" />
 		<property name="messages">
 			<list>
-			   <ref bean="message2"/>
-			   <ref bean="message4"/>
+				<ref bean="message2" />
+				<ref bean="message4" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="inBoxBrotherhood1" class="domain.Folder">
 		<property name="name" value="In box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood1" />
 		<property name="messages">
 			<list>
-			   <ref bean="message3"/>
+				<ref bean="message3" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="trashBoxBrotherhood1" class="domain.Folder">
 		<property name="name" value="Trash box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="notificationBoxBrotherhood1" class="domain.Folder">
 		<property name="name" value="Notification box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="spamBoxBrotherhood1" class="domain.Folder">
 		<property name="name" value="Spam box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood1" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="outBoxBrotherhood2" class="domain.Folder">
 		<property name="name" value="Out box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="inBoxBrotherhood2" class="domain.Folder">
 		<property name="name" value="In box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood2" />
 		<property name="messages">
 			<list>
-			   <ref bean="message2"/>
+				<ref bean="message2" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="trashBoxBrotherhood2" class="domain.Folder">
 		<property name="name" value="Trash box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="notificationBoxBrotherhood2" class="domain.Folder">
 		<property name="name" value="Notification box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="spamBoxBrotherhood2" class="domain.Folder">
 		<property name="name" value="Spam box" />
 		<property name="isSystemFolder" value="true" />
 		<property name="actor" ref="brotherhood2" />
 		<property name="messages">
 			<list>
-			   <!--  <ref bean="message1"/>-->
+				<!-- <ref bean="message1"/> -->
 			</list>
 		</property>
 	</bean>
-	
-	<!-- ========================================= 
-		<bean id="outBoxBrotherhood3" class="domain.Folder">
-		<property name="name" value="Out box" />
-		<property name="isSystemFolder" value="true" />
-		<property name="actor" ref="brotherhood3" />
-		<property name="messages">
-			<list>
-			  <ref bean="message1"/>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="inBoxBrotherhood3" class="domain.Folder">
-		<property name="name" value="In box" />
-		<property name="isSystemFolder" value="true" />
-		<property name="actor" ref="brotherhood3" />
-		<property name="messages">
-			<list>
-			    <ref bean="message1"/>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="trashBoxBrotherhood3" class="domain.Folder">
-		<property name="name" value="Trash box" />
-		<property name="isSystemFolder" value="true" />
-		<property name="actor" ref="brotherhood3" />
-		<property name="messages">
-			<list>
-			   <ref bean="message1"/>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="notificationBoxBrotherhood3" class="domain.Folder">
-		<property name="name" value="Notification box" />
-		<property name="isSystemFolder" value="true" />
-		<property name="actor" ref="brotherhood3" />
-		<property name="messages">
-			<list>
-			   <ref bean="message1"/>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="spamBoxBrotherhood3" class="domain.Folder">
-		<property name="name" value="Spam box" />
-		<property name="isSystemFolder" value="true" />
-		<property name="actor" ref="brotherhood3" />
-		<property name="messages">
-			<list>
-			   <ref bean="message1"/>
-			</list>
-		</property>
-	</bean>
-	-->
-	<!-- 
-	===================================================================
-	=======                     MESSAGES                      =========
-	===================================================================
-	-->
-	
+
+	<!-- ========================================= <bean id="outBoxBrotherhood3" 
+		class="domain.Folder"> <property name="name" value="Out box" /> <property 
+		name="isSystemFolder" value="true" /> <property name="actor" ref="brotherhood3" 
+		/> <property name="messages"> <list> <ref bean="message1"/> </list> </property> 
+		</bean> <bean id="inBoxBrotherhood3" class="domain.Folder"> <property name="name" 
+		value="In box" /> <property name="isSystemFolder" value="true" /> <property 
+		name="actor" ref="brotherhood3" /> <property name="messages"> <list> <ref 
+		bean="message1"/> </list> </property> </bean> <bean id="trashBoxBrotherhood3" 
+		class="domain.Folder"> <property name="name" value="Trash box" /> <property 
+		name="isSystemFolder" value="true" /> <property name="actor" ref="brotherhood3" 
+		/> <property name="messages"> <list> <ref bean="message1"/> </list> </property> 
+		</bean> <bean id="notificationBoxBrotherhood3" class="domain.Folder"> <property 
+		name="name" value="Notification box" /> <property name="isSystemFolder" value="true" 
+		/> <property name="actor" ref="brotherhood3" /> <property name="messages"> 
+		<list> <ref bean="message1"/> </list> </property> </bean> <bean id="spamBoxBrotherhood3" 
+		class="domain.Folder"> <property name="name" value="Spam box" /> <property 
+		name="isSystemFolder" value="true" /> <property name="actor" ref="brotherhood3" 
+		/> <property name="messages"> <list> <ref bean="message1"/> </list> </property> 
+		</bean> -->
+	<!-- =================================================================== 
+		======= MESSAGES ========= =================================================================== -->
+
 	<bean id="message1" class="domain.Message">
 		<property name="moment" value="2017/10/01 15:20" />
 		<property name="subject" value="subject 1" />
@@ -741,11 +702,11 @@
 		<property name="sender" ref="member1" />
 		<property name="recipients">
 			<list>
-				<ref bean="member2"/>
+				<ref bean="member2" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="message2" class="domain.Message">
 		<property name="moment" value="2017/11/02 15:20" />
 		<property name="subject" value="subject 2" />
@@ -758,11 +719,11 @@
 		<property name="sender" ref="brotherhood1" />
 		<property name="recipients">
 			<list>
-				<ref bean="brotherhood2"/>
+				<ref bean="brotherhood2" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="message3" class="domain.Message">
 		<property name="moment" value="2018/09/01 15:20" />
 		<property name="subject" value="subject 3" />
@@ -775,11 +736,11 @@
 		<property name="sender" ref="member1" />
 		<property name="recipients">
 			<list>
-				<ref bean="brotherhood1"/>
+				<ref bean="brotherhood1" />
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="message4" class="domain.Message">
 		<property name="moment" value="2018/04/16 15:20" />
 		<property name="subject" value="subject 4" />
@@ -792,206 +753,218 @@
 		<property name="sender" ref="brotherhood1" />
 		<property name="recipients">
 			<list>
-				<ref bean="member2"/>
+				<ref bean="member2" />
 			</list>
 		</property>
 	</bean>
-	
-	
-	
-	
-	
-	<!-- 
-	===================================================================
-	=======                     PROCESSIONS                   =========
-	===================================================================
-	-->
-	
+
+	<bean id="message5" class="domain.Message">
+		<property name="moment" value="2018/04/16 12:20" />
+		<property name="subject" value="subject 5" />
+		<property name="body" value="body 5" />
+		<property name="priority" value="HIGH" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="sender" ref="brotherhood1" />
+		<property name="recipients">
+			<list>
+				<ref bean="member1" />
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- =================================================================== 
+		======= PROCESSIONS ========= =================================================================== -->
+
 	<bean id="procession1" class="domain.Procession">
 		<property name="title" value="El gran poder" />
 		<property name="description" value="This is a description of a procession1" />
-		<property name="moment"  value="2020/04/24 00:00"/>
-		<property name="ticker" value="200424-TUEBG"/>
-		<property name="mode" value="FINAL"/>
+		<property name="moment" value="2020/04/24 00:00" />
+		<property name="ticker" value="200424-TUEBG" />
+		<property name="mode" value="FINAL" />
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float1"/>
-				<ref bean="float1"/>
+				<ref bean="float1" />
+				<ref bean="float1" />
 			</list>
 		</property>
-		<property name="brotherhood" ref="brotherhood1"/>
+		<property name="brotherhood" ref="brotherhood1" />
 	</bean>
 	<bean id="procession2" class="domain.Procession">
 		<property name="title" value="Esperanza de triana" />
 		<property name="description" value="This is a description of a procession2" />
-		<property name="moment"  value="2020/04/26 00:00"/>
-		<property name="ticker" value="200426-DOUBG"/>
-		<property name="mode" value="DRAFT"/>
+		<property name="moment" value="2020/04/26 00:00" />
+		<property name="ticker" value="200426-DOUBG" />
+		<property name="mode" value="DRAFT" />
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3"/>
+				<ref bean="float3" />
 			</list>
 		</property>
-		<property name="brotherhood" ref="brotherhood2"/>
-	</bean>
-	
-	
-	
-	
-	<!-- 
-	===================================================================
-	=======                      REQUEST                      =========
-	===================================================================
-	-->
-	
-	
-	<bean id="request1" class="domain.Request">
-		<property name="status" value="PENDING"/>
-		<property name="moment" value="2018/04/16 15:20"/>
-		<!-- 
-		<property name="row" value=""/>
-		<property name="column" value=""/>
-		-->
-		<property name="explanation" value=""/>
-		 
-		<!-- Relations -->
-		<property name="member" ref="member1"/>
-		<property name="procession" ref="procession1"/>
-	</bean>
-	
-	<bean id="request2" class="domain.Request">
-		<property name="status" value="APPROVED"/>
-		<property name="moment" value="2018/02/16 15:20"/>
-		<property name="row" value="1"/>
-		<property name="column" value="2"/>
-		<property name="explanation" value=""/>
-		<!-- Relations -->
-		<property name="member" ref="member2"/>
-		<property name="procession" ref="procession2"/>
-	</bean>
-	
-	<!-- 
-	===================================================================
-	=======                      AREA                         =========
-	===================================================================
-	-->
-	
-	<bean id="area1" class="domain.Area">
-		<property name="name" value="Capilla San Jorge"/>
-		<property name="pictures">
-			<list>
-			   <value>https://upload.wikimedia.org/wikipedia/commons/1/15/Cantabria_BarcenaCicero_retablo_capilla_palacioRugama_lou.JPG</value>
-			   <value>http://www.casabeneficencia.es/wp-content/uploads/2017/03/capilla-rec.jpg</value>
-			   <value>http://images.adsttc.com/media/images/5570/fc61/e58e/ce23/c800/008e/large_jpg/capilla-3910.jpg?1433467987</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="area2" class="domain.Area">
-		<property name="name" value="Capilla La Estrella"/>
-		<property name="pictures">
-			<list>
-			   <value>http://1.bp.blogspot.com/--XhoeQjNsb8/T9IDuLD1dLI/AAAAAAAAX9A/2OFZ8YQHkNk/s1600/Vista+general.jpg</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="area3" class="domain.Area">
-		<property name="name" value="Capilla Mexico"/>
-		<property name="pictures">
-			<list>
-			   <value>https://3.bp.blogspot.com/-1Ru7y6uKptQ/WMX3Xg9KbnI/AAAAAAAAADc/NiD2xdEeC-4qN-9bsAFL3wlUuQiO_xzyACLcB/s1600/Texcoco-Capilla%2Bde%2Bla%2BTercera%2Borden.jpg</value>
-			   </list>
-		</property>
-	</bean>
-	
-	<bean id="area4" class="domain.Area">
-		<property name="name" value="Capilla San Enrique"/>
-		<property name="pictures">
-			<list>
-				<value>https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Henry7Chapel_09.jpg/1200px-Henry7Chapel_09.jpg</value>
-			</list>
-		</property>
-	</bean>
-	
-	<!-- 
-	===================================================================
-	=======                  FLOATPROCESSION                  =========
-	===================================================================
-	-->
-	
-	<bean id="float1" class="domain.Float">
-		<property name="title" value="Cristo de las Almas"/>
-		<property name="description" value="Cristo de José  Pires Azcárraga (1947)"/>
-		<property name="pictures">
-			<list>
-				<value>https://www.semana-santa.org/wp-content/uploads/2017/02/cristodelasalmas.jpg</value>
-			</list>
-		</property>
-		<!-- Relations -->
-		<property name="brotherhood" ref="brotherhood1"/>
-	</bean>
-	
-	<bean id="float2" class="domain.Float">
-		<property name="title" value="Virgen de Gracia y Amparo"/>
-		<property name="description" value="Virgen de Fernández Andés (1936) restaurada por Manuel Ramos Corona en 1992."/>
-		<property name="pictures">
-			<list>
-				<value>https://lh5.ggpht.com/-ZDiNKFYfaFo/Ts1j0aYu1HI/AAAAAAAABY8/aSjcCksNUNM/Virgen%252520de%252520Gracia%252520y%252520Amparo%252520-%252520Los%252520Javieres%252520-%252520Sevillanvbre2011%252520%2525281%252529.jpg?imgmax=640</value>
-			</list>
-		</property>
-		<!-- Relations -->
-		<property name="brotherhood" ref="brotherhood1"/>
-	</bean>
-	
-	<bean id="float3" class="domain.Float">
-		<property name="title" value="Divina Misericordia"/>
-		<property name="description" value="El Nazareno es de Felipe de Ribas (1641) restaurado por Ortega Bru."/>
-		<property name="pictures">
-			<list>
-				<value>https://www.semana-santa.org/wp-content/uploads/2017/03/senor-divina-misericordia.jpg</value>
-			</list>
-		</property>
-		<!-- Relations -->
-		<property name="brotherhood" ref="brotherhood1"/>
-	</bean>
-	
-	<bean id="float4" class="domain.Float">
-		<property name="title" value="Siete Palabras y Virgen de los Remedios"/>
-		<property name="description" value="El Crucificado de Felipe Martínez, 1682). La Virgen de los Remedios y el Misterio (Manuel Gutiérrez, 1865) excepto San Juan (José Sánchez, 1859)."/>
-		<property name="pictures">
-			<list>
-				<value>https://archivos.wikanda.es/sevillapedia/thumb/Paso_cristo_siete_palabras.jpg/700px-Paso_cristo_siete_palabras.jpg</value>
-			</list>
-		</property>
-		<!-- Relations -->
-		<property name="brotherhood" ref="brotherhood1"/>
-	</bean>
-	
-	<bean id="float5" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza"/>
-		<property name="description" value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956."/>
-		<property name="pictures">
-			<list>
-				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg</value>
-				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg</value>
-			</list>
-		</property>
-		<!-- Relations -->
-		<property name="brotherhood" ref="brotherhood1"/>
+		<property name="brotherhood" ref="brotherhood2" />
 	</bean>
 
-	
-	
-	
-	<!-- 
-	===================================================================
-	=======                     POSITION                      =========
-	===================================================================
-	-->
-	
+
+
+
+	<!-- =================================================================== 
+		======= REQUEST ========= =================================================================== -->
+
+
+	<bean id="request1" class="domain.Request">
+		<property name="status" value="PENDING" />
+		<property name="moment" value="2018/04/16 15:20" />
+		<!-- <property name="row" value=""/> <property name="column" value=""/> -->
+		<property name="explanation" value="" />
+
+		<!-- Relations -->
+		<property name="member" ref="member1" />
+		<property name="procession" ref="procession1" />
+	</bean>
+
+	<bean id="request2" class="domain.Request">
+		<property name="status" value="APPROVED" />
+		<property name="moment" value="2018/02/16 15:20" />
+		<property name="row" value="1" />
+		<property name="column" value="2" />
+		<property name="explanation" value="" />
+		<!-- Relations -->
+		<property name="member" ref="member2" />
+		<property name="procession" ref="procession2" />
+	</bean>
+
+	<!-- =================================================================== 
+		======= AREA ========= =================================================================== -->
+
+	<bean id="area1" class="domain.Area">
+		<property name="name" value="Capilla San Jorge" />
+		<property name="pictures">
+			<list>
+				<value>https://upload.wikimedia.org/wikipedia/commons/1/15/Cantabria_BarcenaCicero_retablo_capilla_palacioRugama_lou.JPG
+				</value>
+				<value>http://www.casabeneficencia.es/wp-content/uploads/2017/03/capilla-rec.jpg
+				</value>
+				<value>http://images.adsttc.com/media/images/5570/fc61/e58e/ce23/c800/008e/large_jpg/capilla-3910.jpg?1433467987
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="area2" class="domain.Area">
+		<property name="name" value="Capilla La Estrella" />
+		<property name="pictures">
+			<list>
+				<value>http://1.bp.blogspot.com/--XhoeQjNsb8/T9IDuLD1dLI/AAAAAAAAX9A/2OFZ8YQHkNk/s1600/Vista+general.jpg
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="area3" class="domain.Area">
+		<property name="name" value="Capilla Mexico" />
+		<property name="pictures">
+			<list>
+				<value>https://3.bp.blogspot.com/-1Ru7y6uKptQ/WMX3Xg9KbnI/AAAAAAAAADc/NiD2xdEeC-4qN-9bsAFL3wlUuQiO_xzyACLcB/s1600/Texcoco-Capilla%2Bde%2Bla%2BTercera%2Borden.jpg
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="area4" class="domain.Area">
+		<property name="name" value="Capilla San Enrique" />
+		<property name="pictures">
+			<list>
+				<value>https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Henry7Chapel_09.jpg/1200px-Henry7Chapel_09.jpg
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- =================================================================== 
+		======= FLOATPROCESSION ========= =================================================================== -->
+
+	<bean id="float1" class="domain.Float">
+		<property name="title" value="Cristo de las Almas" />
+		<property name="description" value="Cristo de José  Pires Azcárraga (1947)" />
+		<property name="pictures">
+			<list>
+				<value>https://www.semana-santa.org/wp-content/uploads/2017/02/cristodelasalmas.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float2" class="domain.Float">
+		<property name="title" value="Virgen de Gracia y Amparo" />
+		<property name="description"
+			value="Virgen de Fernández Andés (1936) restaurada por Manuel Ramos Corona en 1992." />
+		<property name="pictures">
+			<list>
+				<value>https://lh5.ggpht.com/-ZDiNKFYfaFo/Ts1j0aYu1HI/AAAAAAAABY8/aSjcCksNUNM/Virgen%252520de%252520Gracia%252520y%252520Amparo%252520-%252520Los%252520Javieres%252520-%252520Sevillanvbre2011%252520%2525281%252529.jpg?imgmax=640
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float3" class="domain.Float">
+		<property name="title" value="Divina Misericordia" />
+		<property name="description"
+			value="El Nazareno es de Felipe de Ribas (1641) restaurado por Ortega Bru." />
+		<property name="pictures">
+			<list>
+				<value>https://www.semana-santa.org/wp-content/uploads/2017/03/senor-divina-misericordia.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float4" class="domain.Float">
+		<property name="title" value="Siete Palabras y Virgen de los Remedios" />
+		<property name="description"
+			value="El Crucificado de Felipe Martínez, 1682). La Virgen de los Remedios y el Misterio (Manuel Gutiérrez, 1865) excepto San Juan (José Sánchez, 1859)." />
+		<property name="pictures">
+			<list>
+				<value>https://archivos.wikanda.es/sevillapedia/thumb/Paso_cristo_siete_palabras.jpg/700px-Paso_cristo_siete_palabras.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float5" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+
+
+
+	<!-- =================================================================== 
+		======= POSITION ========= =================================================================== -->
+
 	<bean id="position1" class="domain.Position">
 		<property name="nameEnglish" value="President" />
 		<property name="nameSpanish" value="Presidente" />
@@ -1028,39 +1001,33 @@
 	</bean>
 
 
-	<!-- 
-	===================================================================
-	=======                       FINDER                      =========
-	===================================================================
-	-->
-	
-	
+	<!-- =================================================================== 
+		======= FINDER ========= =================================================================== -->
+
+
 	<bean id="finder1" class="domain.Finder">
 		<!-- Finder -->
 		<property name="keyword" value="Triana"></property>
 		<property name="areaName" value="Triana"></property>
 		<property name="minDate" value="2018/04/16 15:20"></property>
 		<property name="maxDate" value="2019/04/16 15:20"></property>
-		
+
 		<!-- Reletions -->
 		<property name="processions">
 			<list>
-				<ref bean="procession1"/>
-				<ref bean="procession2"/>
+				<ref bean="procession1" />
+				<ref bean="procession2" />
 			</list>
 		</property>
 
 	</bean>
-	
-	
-	
-	
-	<!-- 
-	===================================================================
-	=======                    BROTHERHOODS                   =========
-	===================================================================
-	-->
-	
+
+
+
+
+	<!-- =================================================================== 
+		======= BROTHERHOODS ========= =================================================================== -->
+
 	<bean id="brotherhood1" class="domain.Brotherhood">
 		<property name="name" value="Esperanza de triana"></property>
 		<property name="middleName" value="Triana"></property>
@@ -1083,8 +1050,8 @@
 		</property>
 		<property name="area" ref="area1"></property>
 	</bean>
-	
-	
+
+
 	<bean id="brotherhood2" class="domain.Brotherhood">
 		<property name="name" value="Gran poder"></property>
 		<property name="title" value="El gran poder"></property>
@@ -1107,57 +1074,53 @@
 		</property>
 		<property name="area" ref="area1"></property>
 	</bean>
-	
-	
-	
-	
-	<!-- 
-	===================================================================
-	=======                      ENROLMENT                    =========
-	===================================================================
-	-->
-	
+
+
+
+
+	<!-- =================================================================== 
+		======= ENROLMENT ========= =================================================================== -->
+
 	<bean id="enrolment1" class="domain.Enrolment">
 		<!-- Atributes -->
 		<property name="moment" value="2018/03/16 15:20"></property>
 		<property name="position" ref="position1"></property>
-		
+
 		<!-- Relations -->
 		<property name="member" ref="member1"></property>
 		<property name="brotherhood" ref="brotherhood1"></property>
 	</bean>
-	
+
 	<bean id="enrolment2" class="domain.Enrolment">
 		<!-- Atributes -->
 		<property name="moment" value="2018/03/14 17:30"></property>
 		<property name="position" ref="position2"></property>
-		
+
 		<!-- Relations -->
 		<property name="member" ref="member2"></property>
 		<property name="brotherhood" ref="brotherhood2"></property>
 	</bean>
-	
-	<!-- 
-	===================================================================
-	=======              ConfigurationParameters              =========
-	===================================================================
-	-->
+
+	<!-- =================================================================== 
+		======= ConfigurationParameters ========= =================================================================== -->
 
 	<bean id="configurationParameters" class="domain.ConfigurationParameters">
 		<property name="sysName" value="Acme Madrugá" />
 		<property name="banner" value="https://tinyurl.com/acme-madruga" />
-		<property name="welcomeMessageEn" value="Welcome to Acme Madrugá!  The site to organise your processions" />
-		<property name="welcomeMessageEsp" value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
+		<property name="welcomeMessageEn"
+			value="Welcome to Acme Madrugá!  The site to organise your processions" />
+		<property name="welcomeMessageEsp"
+			value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
 		<property name="countryPhoneCode" value="+34" />
 		<property name="positionList">
 			<list>
-				<ref bean="position1"/>
-				<ref bean="position2"/>
-				<ref bean="position3"/>
-				<ref bean="position4"/>
-				<ref bean="position5"/>
-				<ref bean="position6"/>
-				<ref bean="position7"/>
+				<ref bean="position1" />
+				<ref bean="position2" />
+				<ref bean="position3" />
+				<ref bean="position4" />
+				<ref bean="position5" />
+				<ref bean="position6" />
+				<ref bean="position7" />
 			</list>
 		</property>
 		<property name="spamWords">
@@ -1207,10 +1170,10 @@
 		</property>
 		<property name="maxFinderResults" value="10" />
 		<property name="finderTime" value="1" />
-		
+
 	</bean>
 
-	
-	
-	
+
+
+
 </beans>

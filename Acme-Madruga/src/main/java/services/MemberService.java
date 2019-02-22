@@ -24,12 +24,16 @@ public class MemberService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private FolderService		folderService;
+
 
 	public Member create() {
 		return new Member();
 	}
 
 	public Collection<Member> findAll() {
+
 		final Collection<Member> result = this.memberRepository.findAll();
 		Assert.notNull(result);
 		return result;
@@ -44,12 +48,15 @@ public class MemberService {
 
 	public Member save(final Member member) {
 		Assert.notNull(member);
+
 		Member result;
 		this.actorService.checkForSpamWords(member);
-		if (member.getId() == 0)
+		if (member.getId() == 0) {
+			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
 			result = this.memberRepository.save(member);
-		else
-			result = (Member) this.actorService.update(member);
+			this.folderService.setFoldersByDefault(result);
+		} else
+			result = (Member) this.actorService.save(member);
 
 		return result;
 	}

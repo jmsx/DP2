@@ -24,9 +24,6 @@ public class ActorService {
 	private ActorRepository					actorRepository;
 
 	@Autowired
-	private FolderService					folderService;
-
-	@Autowired
 	private UserAccountService				userAccountService;
 
 	@Autowired
@@ -56,18 +53,6 @@ public class ActorService {
 		return result;
 	}
 
-	public Actor update(final Actor a) {
-		Assert.notNull(a);
-		Assert.isTrue(a.getId() != 0);
-
-		final Actor principal = this.findByPrincipal();
-		//Un admin puede banear a actores por lo que tiene acceso a actualizar un usuario
-		final boolean isAdmin = this.checkAuthority(principal, Authority.ADMIN);
-		Assert.isTrue(principal.getUserAccount().getId() == a.getUserAccount().getId() || isAdmin);
-
-		return this.actorRepository.save(a);
-	}
-
 	public int countByMessageId(final Integer id) {
 		Assert.isTrue(id != 0);
 		return this.actorRepository.countByMessageId(id);
@@ -86,6 +71,62 @@ public class ActorService {
 		Assert.notNull(a);
 
 		return a;
+	}
+
+	/**
+	 * Update an actor. Its important that it checks actor object isn't new, id != 0, and that the actor who is modifying himself, not another system actor.
+	 * 
+	 * @param actor
+	 *            Actor to update
+	 * @author a8081
+	 * */
+	public Actor save(final Actor actor) {
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getId() != 0);
+
+		final Actor principal = this.findByPrincipal();
+		Assert.notNull(principal);
+
+		Assert.isTrue(actor.equals(principal));
+
+		Actor result;
+		result = this.actorRepository.save(actor);
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
+	/**
+	 * Initializes the user account and authority atributes to a NEW actor (it checks it has ID = 0). You can't save an new actor in the system as an actor, because actor is an abstract class, you only create
+	 * Members, Brotherhoods or Administrators.
+	 * 
+	 * @param authority
+	 *            String of the authority you want actor to have
+	 * @param actor
+	 *            New actor object
+	 * @return The new actor with its atributes initialized
+	 * @author a8081
+	 * */
+	public Actor setAuthorityUserAccount(final String authority, final Actor actor) {
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getId() == 0);
+		final UserAccount userAccount = this.userAccountService.create();
+		final Collection<Authority> authorities = new ArrayList<>();
+		final Authority auth = new Authority();
+		auth.setAuthority(authority);
+
+		if (!authorities.contains(auth))
+			authorities.add(auth);
+		userAccount.setAuthorities(authorities);
+		final UserAccount saved = this.userAccountService.save(userAccount);
+		actor.setUserAccount(saved);
+
+		actor.setSpammer(false);
+
+		//this.folderService.setFoldersByDefault(actor); it references to an actor that not exists
+
+		return actor;
 	}
 
 	/**
@@ -118,37 +159,7 @@ public class ActorService {
 		return auths.contains(newAuth);
 	}
 
-	/**
-	 * Initializes the atributes common to every actor (system folders, user account and its authority).
-	 * 
-	 * @param authority
-	 *            String of the authority you want the actor to have
-	 * @param actor
-	 *            The new actor
-	 * @return The new actor with its atributes initialized
-	 * @author a8081
-	 * */
-	public Actor setNewActor(final String authority, final Actor actor) {
-		final UserAccount userAccount = this.userAccountService.create();
-		final Collection<Authority> authorities = new ArrayList<>();
-		final Authority auth = new Authority();
-		auth.setAuthority(authority);
-
-		if (!authorities.contains(auth))
-			authorities.add(auth);
-		userAccount.setAuthorities(authorities);
-		final UserAccount saved = this.userAccountService.save(userAccount);
-		actor.setUserAccount(saved);
-
-		/* final Collection<Folder> defaultFolders = */this.folderService.setFoldersByDefault(actor);
-		//this.folderService.saveAll(defaultFolders);
-
-		actor.setSpammer(false);
-
-		return actor;
-	}
-
-	/* Admin */
+	// =========================================== Admin =================================================
 
 	public void banActor(final Actor a) {
 		Assert.notNull(a);
@@ -190,14 +201,16 @@ public class ActorService {
 
 	public Collection<Actor> findAllSpammers() {
 		this.administratorService.findByPrincipal();
-
-		return this.actorRepository.findAllSpammer();
+		final Collection<Actor> result = this.actorRepository.findAllSpammer();
+		Assert.notNull(result);
+		return result;
 	}
 
 	public void checkForSpamWords(final Actor a) {
 		final Collection<String> words = new ArrayList<>();
 
-		words.add(a.getAddress());
+		if (a.getAddress() != null)
+			words.add(a.getAddress());
 		words.add(a.getEmail());
 		words.add(a.getMiddleName());
 		words.add(a.getName());
@@ -206,8 +219,6 @@ public class ActorService {
 		if (this.configurationParametersService.checkForSpamWords(words))
 			a.setSpammer(true);
 	}
-
-	// TODO: Score
 
 	public double computeScore(final Actor a) {
 		final boolean isBrotherhood = this.checkAuthority(a, Authority.BROTHERHOOD);
@@ -256,6 +267,60 @@ public class ActorService {
 			normRes = 0;
 
 		return normRes;
+	}
+
+	/**
+	 * An administrator can ban system actors, so he must be able to modify them. That's an ancilliary method to "banActor" and "unbanActor", it checks administrator only changes actor's spammer attribute.
+	 * 
+	 * @param a
+	 *            Actor who will be modified
+	 * @author a8081
+	 * */
+	private Actor update(final Actor a) {
+		Assert.notNull(a);
+		Assert.isTrue(a.getId() != 0);
+		this.administratorService.findByPrincipal();
+		Assert.isTrue(this.equalsLessSpammer(this.findByUserId(a.getUserAccount().getId()), a));
+		return this.actorRepository.save(a);
+	}
+
+	private boolean equalsLessSpammer(final Actor a1, final Actor a2) {
+		if (a1.getAddress() == null) {
+			if (a2.getAddress() != null)
+				return false;
+		} else if (!a1.getAddress().equals(a2.getAddress()))
+			return false;
+		if (a1.getEmail() == null) {
+			if (a2.getEmail() != null)
+				return false;
+		} else if (!a1.getEmail().equals(a2.getEmail()))
+			return false;
+		if (a1.getMiddleName() == null) {
+			if (a2.getMiddleName() != null)
+				return false;
+		} else if (!a1.getMiddleName().equals(a2.getMiddleName()))
+			return false;
+		if (a1.getName() == null) {
+			if (a2.getName() != null)
+				return false;
+		} else if (!a1.getName().equals(a2.getName()))
+			return false;
+		if (a1.getPhone() == null) {
+			if (a2.getPhone() != null)
+				return false;
+		} else if (!a1.getPhone().equals(a2.getPhone()))
+			return false;
+		if (a1.getPhoto() == null) {
+			if (a2.getPhoto() != null)
+				return false;
+		} else if (!a1.getPhoto().equals(a2.getPhoto()))
+			return false;
+		if (a1.getSurname() == null) {
+			if (a2.getSurname() != null)
+				return false;
+		} else if (!a1.getSurname().equals(a2.getSurname()))
+			return false;
+		return true;
 	}
 
 }

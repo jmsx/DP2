@@ -119,7 +119,7 @@ public class MessageService {
 
 		if (containsSpamWords) {
 			sender.setSpammer(true);
-			this.actorService.update(sender);
+			this.actorService.save(sender);
 
 			for (final Actor r : recipients) {
 				spambox = this.folderService.findSpamboxByUserId(r.getUserAccount().getId());

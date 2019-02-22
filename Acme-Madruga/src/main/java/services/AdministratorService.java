@@ -22,27 +22,33 @@ public class AdministratorService {
 	@Autowired
 	private ActorService			actorService;
 
+	@Autowired
+	private FolderService			folderService;
+
 
 	public Administrator create() {
 		final Administrator a = new Administrator();
 
-		this.actorService.setNewActor(Authority.ADMIN, a);
+		this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
 
 		return a;
 	}
 
 	public Administrator save(final Administrator a) {
+		// It must be an administrator who create another one, or who modify himself
+		this.findByPrincipal();
 		Assert.notNull(a);
 		Administrator result;
 		this.actorService.checkForSpamWords(a);
-		if (a.getId() == 0)
+		if (a.getId() == 0) {
+			this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
 			result = this.administratorRepository.save(a);
-		else
-			result = (Administrator) this.actorService.update(a);
+			this.folderService.setFoldersByDefault(result);
+		} else
+			result = (Administrator) this.actorService.save(a);
 
 		return result;
 	}
-
 	public Administrator findOne(final int id) {
 		Assert.isTrue(id != 0);
 		final Administrator result = this.administratorRepository.findOne(id);

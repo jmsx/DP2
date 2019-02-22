@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -186,25 +185,17 @@ public class FolderServiceTest extends AbstractTest {
 		super.authenticate("member1");
 		final Actor principal = this.actorService.findByPrincipal();
 
-		final Collection<Folder> folders = this.folderService.findAllByUserId(principal.getUserAccount().getId());
-		final Folder folder = (Folder) folders.toArray()[0];
-		this.folderService.delete(folder);
+		final Collection<Message> messages = new ArrayList<>();
+		final Folder folder1 = this.folderService.create();
+		folder1.setName("test1");
+		folder1.setIsSystemFolder(false);
+		folder1.setMessages(messages);
+		folder1.setActor(principal);
+		final Folder saved = this.folderService.save(folder1, principal);
+
+		this.folderService.delete(saved);
 		final Collection<Folder> updated = this.folderService.findAllByUserId(principal.getUserAccount().getId());
 
-		Assert.isTrue(!updated.contains(folder));
-	}
-
-	@Test
-	public void testSetFoldersByDefault() {
-		super.authenticate("member1");
-		final Actor principal = this.actorService.findByPrincipal();
-		this.folderService.setFoldersByDefault(principal);
-		final List<Folder> actorFolders = new ArrayList<>(this.folderService.findAllByUserId(principal.getUserAccount().getId()));
-		Assert.isTrue(actorFolders.size() == 5);
-		Assert.isTrue(actorFolders.get(0).getName().equals("In box"));
-		Assert.isTrue(actorFolders.get(1).getName().equals("Out box"));
-		Assert.isTrue(actorFolders.get(2).getName().equals("Trash box"));
-		Assert.isTrue(actorFolders.get(3).getName().equals("Spam box"));
-		Assert.isTrue(actorFolders.get(4).getName().equals("Notification box"));
+		Assert.isTrue(!updated.contains(saved));
 	}
 }
