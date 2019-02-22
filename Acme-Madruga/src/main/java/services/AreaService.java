@@ -28,6 +28,9 @@ public class AreaService {
 
 
 	public Area create() {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		return new Area();
 	}
 
@@ -46,6 +49,9 @@ public class AreaService {
 	}
 
 	public Area save(final Area area) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(area);
 		final Area result = this.areaRepository.save(area);
 		return result;

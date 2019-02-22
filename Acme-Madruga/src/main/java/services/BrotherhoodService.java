@@ -13,7 +13,9 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
+import domain.Area;
 import domain.Brotherhood;
+import domain.Member;
 
 @Service
 @Transactional
@@ -27,6 +29,9 @@ public class BrotherhoodService {
 
 	@Autowired
 	private FolderService			folderService;
+	
+	@Autowired
+	private MemberService memberService;
 
 
 	public Brotherhood create() {
@@ -42,7 +47,7 @@ public class BrotherhoodService {
 	public Brotherhood findOne(final int brotherhoodId) {
 		Assert.isTrue(brotherhoodId != 0);
 		final Brotherhood result = this.brotherhoodRepository.findOne(brotherhoodId);
-		Assert.notNull(result);
+		Assert.notNull(result,"Find One de brotherhood es nulo");
 		return result;
 	}
 
@@ -61,6 +66,7 @@ public class BrotherhoodService {
 	}
 	public void delete(final Brotherhood brotherhood) {
 		Assert.notNull(brotherhood);
+		Assert.isTrue(this.findByPrincipal().equals(brotherhood));
 		Assert.isTrue(brotherhood.getId() != 0);
 		Assert.isTrue(this.brotherhoodRepository.exists(brotherhood.getId()));
 		this.brotherhoodRepository.delete(brotherhood);
@@ -87,9 +93,18 @@ public class BrotherhoodService {
 	}
 
 	public Collection<Brotherhood> findAllBrotherHoodByMember() {
-		final Actor principal = this.actorService.findByPrincipal();
+		final Actor principal = this.memberService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
-		return this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getUserAccount().getId());
+		return this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getId());
+	}
+	
+	public void areaSet(final Area area){
+		Assert.notNull(area);
+		final Brotherhood principal = this.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
+		Assert.isTrue(principal.getArea() == null);
+		principal.setArea(area);
+		this.save(principal);
 	}
 
 }

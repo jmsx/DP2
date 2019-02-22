@@ -1072,7 +1072,7 @@
 				<value>http://tyniurl.com/dsfe2435rwsd.png</value>
 			</list>
 		</property>
-		<property name="area" ref="area1"></property>
+		
 	</bean>
 
 
@@ -1100,6 +1100,18 @@
 		<property name="member" ref="member2"></property>
 		<property name="brotherhood" ref="brotherhood2"></property>
 	</bean>
+	
+	<bean id="enrolment3" class="domain.Enrolment">
+		<!-- Atributes -->
+		<property name="moment" value="2018/03/14 17:30"></property>
+		<property name="position" ref="position3"></property>
+
+		<!-- Relations -->
+		<property name="member" ref="member1"></property>
+		<property name="brotherhood" ref="brotherhood2"></property>
+	</bean>
+	
+	
 
 	<!-- =================================================================== 
 		======= ConfigurationParameters ========= =================================================================== -->
