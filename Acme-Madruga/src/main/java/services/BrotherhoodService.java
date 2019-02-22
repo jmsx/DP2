@@ -50,7 +50,7 @@ public class BrotherhoodService {
 		if (brotherhood.getId() == 0)
 			result = this.brotherhoodRepository.save(brotherhood);
 		else
-			result = (Brotherhood) this.actorService.update(brotherhood);
+			result = (Brotherhood) this.actorService.save(brotherhood);
 
 		return result;
 	}

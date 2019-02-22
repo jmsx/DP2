@@ -51,7 +51,7 @@ public class MemberService {
 		if (member.getId() == 0)
 			result = this.memberRepository.save(member);
 		else
-			result = (Member) this.actorService.update(member);
+			result = (Member) this.actorService.save(member);
 
 		return result;
 	}

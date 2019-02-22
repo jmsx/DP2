@@ -77,6 +77,61 @@ public class ActorService {
 	}
 
 	/**
+	 * Initializes the atributes common to every actor (system folders, user account and its authority) to a NEW actor (it checks it has ID = 0)
+	 * 
+	 * @param authority
+	 *            String of the authority you want actor to have
+	 * @param actor
+	 *            New actor object
+	 * @return The new actor with its atributes initialized
+	 * @author a8081
+	 * */
+	public Actor save(final String authority, final Actor actor) {
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getId() == 0);
+		final UserAccount userAccount = this.userAccountService.create();
+		final Collection<Authority> authorities = new ArrayList<>();
+		final Authority auth = new Authority();
+		auth.setAuthority(authority);
+
+		if (!authorities.contains(auth))
+			authorities.add(auth);
+		userAccount.setAuthorities(authorities);
+		final UserAccount saved = this.userAccountService.save(userAccount);
+		actor.setUserAccount(saved);
+
+		this.folderService.setFoldersByDefault(actor);
+
+		actor.setSpammer(false);
+
+		return actor;
+	}
+
+	/**
+	 * Update an actor. Its important that it checks actor object isn't new, id != 0, and that the actor who is modifying himself, not another system actor.
+	 * 
+	 * @param actor
+	 *            Actor to update
+	 * @author a8081
+	 * */
+	public Actor save(final Actor actor) {
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getId() != 0);
+
+		final Actor principal = this.findByPrincipal();
+		Assert.notNull(principal);
+
+		Assert.isTrue(actor.equals(principal));
+
+		Actor result;
+		result = this.actorRepository.save(actor);
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
+	/**
 	 * Check if a user account authorities of an actor contains a specific authority, checking that this actor isn't banned
 	 * 
 	 * @param actor
@@ -104,35 +159,6 @@ public class ActorService {
 		newAuth.setAuthority(auth);
 
 		return auths.contains(newAuth);
-	}
-
-	/**
-	 * Initializes the atributes common to every actor (system folders, user account and its authority).
-	 * 
-	 * @param authority
-	 *            String of the authority you want the actor to have
-	 * @param actor
-	 *            The new actor
-	 * @return The new actor with its atributes initialized
-	 * @author a8081
-	 * */
-	public Actor setNewActor(final String authority, final Actor actor) {
-		final UserAccount userAccount = this.userAccountService.create();
-		final Collection<Authority> authorities = new ArrayList<>();
-		final Authority auth = new Authority();
-		auth.setAuthority(authority);
-
-		if (!authorities.contains(auth))
-			authorities.add(auth);
-		userAccount.setAuthorities(authorities);
-		final UserAccount saved = this.userAccountService.save(userAccount);
-		actor.setUserAccount(saved);
-
-		this.folderService.setFoldersByDefault(actor);
-
-		actor.setSpammer(false);
-
-		return actor;
 	}
 
 	// =========================================== Admin =================================================
@@ -251,7 +277,7 @@ public class ActorService {
 	 *            Actor who will be modified
 	 * @author a8081
 	 * */
-	public Actor update(final Actor a) {
+	private Actor update(final Actor a) {
 		Assert.notNull(a);
 		Assert.isTrue(a.getId() != 0);
 		this.administratorService.findByPrincipal();

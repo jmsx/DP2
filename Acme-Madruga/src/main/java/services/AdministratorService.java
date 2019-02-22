@@ -26,19 +26,21 @@ public class AdministratorService {
 	public Administrator create() {
 		final Administrator a = new Administrator();
 
-		this.actorService.setNewActor(Authority.ADMIN, a);
+		this.actorService.save(Authority.ADMIN, a);
 
 		return a;
 	}
 
 	public Administrator save(final Administrator a) {
+		// It must be an administrator who create another one, or who modify himself
+		this.findByPrincipal();
 		Assert.notNull(a);
 		Administrator result;
 		this.actorService.checkForSpamWords(a);
 		if (a.getId() == 0)
 			result = this.administratorRepository.save(a);
 		else
-			result = (Administrator) this.actorService.update(a);
+			result = (Administrator) this.actorService.save(a);
 
 		return result;
 	}
