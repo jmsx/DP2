@@ -33,6 +33,9 @@ public class ProcessionService {
 	@Autowired
 	private ActorService			actorService;
 
+	@Autowired
+	private RequestService			requestService;
+
 
 	public Procession create() {
 		final Procession procession = new Procession();
@@ -74,7 +77,7 @@ public class ProcessionService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Procession result;
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
-		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
+		final Brotherhood bro = this.brotherhoodService.findByUserId(principal.getId());
 
 		if (isBrotherhood && bro.getArea() != null)
 			if (procession.getId() == 0) {
@@ -95,7 +98,7 @@ public class ProcessionService {
 
 		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
 		Assert.isTrue(procession.getBrotherhood().equals(principal));
-
+		this.requestService.findByBrotherhood(principal.getId());
 		this.processionRepository.delete(procession);
 
 	}

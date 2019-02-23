@@ -65,10 +65,10 @@ public class ActorService {
 
 	public Actor findByPrincipal() {
 		final UserAccount user = LoginService.getPrincipal();
-		Assert.notNull(user);
+		Assert.notNull(user, "Este es");
 
 		final Actor a = this.findByUserId(user.getId());
-		Assert.notNull(a);
+		Assert.notNull(a, "O es este");
 
 		return a;
 	}

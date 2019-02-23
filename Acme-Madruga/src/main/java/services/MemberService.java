@@ -12,6 +12,7 @@ import repositories.MemberRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Actor;
 import domain.Member;
 
 @Service
@@ -29,7 +30,10 @@ public class MemberService {
 
 
 	public Member create() {
-		return new Member();
+		final Member member = new Member();
+		this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
+
+		return member;
 	}
 
 	public Collection<Member> findAll() {
@@ -87,6 +91,13 @@ public class MemberService {
 		Assert.isTrue(id != 0);
 		final Member member = this.memberRepository.findByUserId(id);
 		return member;
+	}
+
+	public Collection<Member> allMembersFromBrotherhood() {
+		final Actor principal = this.actorService.findByPrincipal();
+		final Collection<Member> res = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
 	}
 
 }
