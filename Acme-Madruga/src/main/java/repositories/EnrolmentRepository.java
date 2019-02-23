@@ -13,9 +13,12 @@ import domain.Enrolment;
 public interface EnrolmentRepository extends JpaRepository<Enrolment, Integer> {
 
 	@Query("select e from Enrolment e where e.member.userAccount.id=?1")
-	Collection<Enrolment> findAllByMemberId(Integer id);
+	Collection<Enrolment> findAllByMemberId(Integer memberUAId);
 
 	@Query("select e from Enrolment e where e.brotherhood.userAccount.id=?1")
-	Collection<Enrolment> findAllByBrotherHoodId(Integer id);
+	Collection<Enrolment> findAllByBrotherHoodId(Integer broUAId);
+
+	@Query("select e from Enrolment e where e.brotherhood.userAccount.id=?1 and e.member.userAccount.id=?2")
+	Enrolment findEnrolmentFromBroMember(Integer broUAId, Integer memberUAId);
 
 }
