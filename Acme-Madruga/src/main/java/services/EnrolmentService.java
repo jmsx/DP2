@@ -34,16 +34,11 @@ public class EnrolmentService {
 	private BrotherhoodService	brotherhoodService;
 
 
-	//Metodos:
-	//	Drop-Out (Una hdad echa a un miembro)
-	//	Reconstruct
-	//	Leave (Un miembro sale de una hdad)
-
 	public Enrolment create(final int btoherhoodId) {
 		final Enrolment enrolment = new Enrolment();
 
-		final Brotherhood brotherhood = new Brotherhood();
-		enrolment.setBrotherhood(brotherhood);
+		final Brotherhood bro = this.brotherhoodService.findByUserId(btoherhoodId);
+		enrolment.setBrotherhood(bro);
 
 		final Member principal = this.memberService.findByPrincipal();
 		enrolment.setMember(principal);
@@ -110,5 +105,34 @@ public class EnrolmentService {
 	}
 
 	/* ========================= OTHER METHODS =========================== */
+
+	/* Una hermandad elimina a un miembro */
+	public void dropOut(final Member member) {
+		Assert.notNull(member);
+		Assert.isTrue(this.memberService.findAll().contains(member));
+		final Actor principal = this.actorService.findByPrincipal();
+		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+		Enrolment enrolment;
+
+		if (isBrotherhood) {
+			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(principal.getUserAccount().getId(), member.getUserAccount().getId());
+			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
+		}
+	}
+
+	/* Un miembro sale de una hermandad */
+	public void leave(final Brotherhood brotherhood) {
+		Assert.notNull(brotherhood);
+		Assert.isTrue(this.brotherhoodService.findAll().contains(brotherhood));
+		final Actor principal = this.actorService.findByPrincipal();
+		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
+		Assert.isTrue(this.brotherhoodService.findAllBrotherHoodByMember().contains(brotherhood));
+		Enrolment enrolment;
+
+		if (isMember) {
+			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(principal.getUserAccount().getId(), principal.getUserAccount().getId());
+			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
+		}
+	}
 
 }
