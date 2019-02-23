@@ -1,6 +1,8 @@
 
 package controllers;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,23 @@ public class ProcessionController {
 			result.addObject("banner", banner);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		final ModelAndView result;
+		final Collection<Procession> processions;
+
+		processions = this.processionService.findAll();
+
+		result = new ModelAndView("procession/list");
+		result.addObject("processions", processions);
+		result.addObject("requetURI", "procession/list.do");
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
 
 		return result;
 	}

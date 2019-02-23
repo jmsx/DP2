@@ -785,6 +785,8 @@
 		<property name="moment" value="2020/04/24 00:00" />
 		<property name="ticker" value="200424-TUEBG" />
 		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="200"/>
+		<property name="maxColumns" value="200"/>
 		<!-- Relations -->
 		<property name="floats">
 			<list>
@@ -800,6 +802,8 @@
 		<property name="moment" value="2020/04/26 00:00" />
 		<property name="ticker" value="200426-DOUBG" />
 		<property name="mode" value="DRAFT" />
+		<property name="maxRows" value="120"/>
+		<property name="maxColumns" value="300"/>
 		<!-- Relations -->
 		<property name="floats">
 			<list>
