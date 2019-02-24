@@ -18,39 +18,46 @@
 
 <p><spring:message code="brotherhood.display.msg" /></p>
 
+
+<spring:message code="brotherhood.display.msg"/>: 
+	<a href="brotherhood/display.do?brotherhoodId=${id}">
+		<jstl:out value="${brotherhood.title}" />
+	</a>
+<br/>
+
 <spring:message code="actor.name" var="name"/>
 <jstl:out value="${name}"/>:
-<jstl:out value="${name1}"/>
+<jstl:out value="${brotherhood.name}"/>
 <br>
 <spring:message code="actor.middleName" var="middleName"/>
 <jstl:out value="${middleName}"/>:
-<jstl:out value="${middleName1}"/>
+<jstl:out value="${brotherhood.middleName}"/>
 <br>
 <spring:message code="actor.surname" var="surname"/>
 <jstl:out value="${surname}"/>:
-<jstl:out value="${surname1}"/>
+<jstl:out value="${brotherhood.surname}"/>
 <br>
 <spring:message code="actor.photo" var="photo"/>
 <jstl:out value="${photo}"/>:
-<img src="${photoPic}" alt="Foto" width="10%" height="10%"/>
+<img src="${brotherhood.photo}" alt="Foto" width="10%" height="10%"/>
 <br>
 <spring:message code="actor.email" var="email"/>
 <jstl:out value="${email}"/>:
-<jstl:out value="${email1}"/>
+<jstl:out value="${brotherhood.email}"/>
 <br>
 <spring:message code="actor.phone" var="phoneNumber"/>
 <jstl:out value="${phone}"/>:
-<jstl:out value="${phone}"/>
+<jstl:out value="${brotherhood.phone}"/>
 <br>
 <spring:message code="actor.address" var="address"/>
 <jstl:out value="${address}"/>:
-<jstl:out value="${address1}"/>
+<jstl:out value="${brotherhood.address}"/>
 <br>
 <spring:message code="actor.score" var="score"/>
 <jstl:out value="${score}"/>:
-<jstl:out value="${score1}"/>
+<jstl:out value="${brotherhood.score}"/>
 <br>
 <spring:message code="actor.spammer" var="spammer"/>
 <jstl:out value="${spammer}"/>:
-<jstl:out value="${spammer1}"/>
+<jstl:out value="${brotherhood.spammer}"/>
 <br>

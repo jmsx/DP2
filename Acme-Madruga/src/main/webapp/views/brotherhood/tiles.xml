@@ -16,9 +16,9 @@
        
 <tiles-definitions>
 
-	<definition name="brotherhood/register" extends="master.page">	
+	<definition name="brotherhood/create" extends="master.page">	
 		<put-attribute name="title" value="Brotherhood: Register" />
-		<put-attribute name="body" value="/views/brotherhood/register.jsp" />
+		<put-attribute name="body" value="/views/brotherhood/create.jsp" />
 	</definition>
 	
 	<definition name="brotherhood/edit" extends="master.page">	

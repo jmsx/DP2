@@ -39,11 +39,12 @@
 					<li><a href="brotherhood/display.do"><spring:message code="master.page.brotherhood.display" /></a></li>					
 				</ul>
 			</li>
+			<li><a href="procession/list.do"><spring:message code="master.page.brotherhood.edit" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
-			<li><a class="fNiv" href="brotherhood/register.do"><spring:message code="master.page.brotherhood.register" /></a></li>
+			<li><a class="fNiv" href="brotherhood/create.do"><spring:message code="master.page.brotherhood.register" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">
