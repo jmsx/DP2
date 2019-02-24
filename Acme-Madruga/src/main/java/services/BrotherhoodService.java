@@ -3,10 +3,8 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -120,19 +118,19 @@ public class BrotherhoodService {
 		this.save(principal);
 	}
 
-	public void registerAsBrotherhood(Brotherhood brotherhood) {
-		brotherhood = this.create();
-		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
-		brotherhood.getUserAccount().setPassword(hash);
-		brotherhood.setSpammer(false);
-		brotherhood.setScore(0.0);
-		brotherhood.setPictures(new ArrayList<String>());
-		brotherhood.setDate(new Date(System.currentTimeMillis() - 1));
-
-		final Brotherhood saved = this.brotherhoodRepository.save(brotherhood);
-		this.folderService.setFoldersByDefault(saved);
-	}
+	//	public void registerAsBrotherhood(Brotherhood brotherhood) {
+	//		brotherhood = this.create();
+	//		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+	//		final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
+	//		brotherhood.getUserAccount().setPassword(hash);
+	//		brotherhood.setSpammer(false);
+	//		brotherhood.setScore(0.0);
+	//		brotherhood.setPictures(new ArrayList<String>());
+	//		brotherhood.setDate(new Date(System.currentTimeMillis() - 1));
+	//
+	//		final Brotherhood saved = this.brotherhoodRepository.save(brotherhood);
+	//		this.folderService.setFoldersByDefault(saved);
+	//	}
 
 	public Brotherhood reconstruct(final ActorFrom actorForm, BindingResult binding) {
 		binding = binding;

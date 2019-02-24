@@ -19,8 +19,14 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <p><spring:message code="brotherhood.edit.msg" /></p>
+<jstl:if test="${alert}">
+	<script>
+		alert('holq2');
+	</script>
+</jstl:if>
 
 <form:form modelAttribute="actorForm" action="brotherhood/edit.do" method="POST">
+
 	<acme:textbox code="brotherhood.edit.userAccountuser" path="userAccountuser" />
 	<acme:textbox code="brotherhood.edit.userAccountpassword" path="userAccountpassword" />
 
