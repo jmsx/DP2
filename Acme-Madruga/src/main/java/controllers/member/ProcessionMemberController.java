@@ -12,11 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ConfigurationParametersService;
 import services.ProcessionService;
+import controllers.AbstractController;
 import domain.Procession;
 
 @Controller
 @RequestMapping("/procession/member")
-public class ProcessionMemberController {
+public class ProcessionMemberController extends AbstractController {
 
 	@Autowired
 	private ProcessionService				processionService;

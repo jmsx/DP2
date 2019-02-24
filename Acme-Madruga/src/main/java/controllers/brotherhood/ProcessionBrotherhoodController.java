@@ -17,12 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ConfigurationParametersService;
 import services.ProcessionService;
 import services.RequestService;
+import controllers.AbstractController;
 import domain.Procession;
 import domain.Request;
 
 @Controller
 @RequestMapping("/procession/brotherhood")
-public class ProcessionBrotherhoodController {
+public class ProcessionBrotherhoodController extends AbstractController {
 
 	@Autowired
 	private ProcessionService				processionService;

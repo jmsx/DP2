@@ -18,6 +18,7 @@ import security.Authority;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Float;
+import domain.Member;
 import domain.Procession;
 
 @Service
@@ -32,6 +33,9 @@ public class ProcessionService {
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private MemberService			memberService;
 
 
 	public Procession create() {
@@ -135,6 +139,23 @@ public class ProcessionService {
 		}
 
 		return res;
+	}
+
+	/**
+	 * It returns all processions which principal isn't enrolled. The principal must be a member.
+	 * 
+	 * @author a8081
+	 * */
+	public Collection<Procession> processionsAvailable() {
+		final Member principal = this.memberService.findByPrincipal();
+		final Collection<Procession> memberProcessions = this.processionRepository.findAllProcessionByBMemberId(principal.getUserAccount().getId());
+		final Collection<Procession> processions = this.findAll();
+		processions.removeAll(memberProcessions);
+		return processions;
+	}
+
+	public boolean exists(final Integer processionId) {
+		return this.processionRepository.exists(processionId);
 	}
 
 }
