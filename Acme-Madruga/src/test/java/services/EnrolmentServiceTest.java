@@ -26,6 +26,9 @@ public class EnrolmentServiceTest extends AbstractTest {
 	@Autowired
 	private MemberService		memberService;
 
+	@Autowired
+	private PositionService		positionService;
+
 	//Repository
 
 	//	@Test
@@ -55,9 +58,19 @@ public class EnrolmentServiceTest extends AbstractTest {
 	//
 	//	@Test
 	//	public void testSave() {
-	//		//		super.authenticate("member1");
 	//		super.authenticate("brotherhood1");
-	//		
+	//		final List<Enrolment> enrolments = (List<Enrolment>) this.enrolmentService.findAll();
+	//		Assert.notEmpty(enrolments);
+	//		final int id = enrolments.get(0).getId();
+	//		final Enrolment enrol = this.enrolmentService.findOne(id);
+	//		Assert.notNull(enrol);
+	//		final Position newPos = this.positionService.create("Hola", "Hello");
+	//		enrol.setPosition(newPos);
+	//		final Enrolment saved = this.enrolmentService.save(enrol);
+	//		Assert.isTrue(saved.getPosition() == newPos);
+	//
+	//		//		super.authenticate("member1");
+	//
 	//	}
 	//
 	//	@Test

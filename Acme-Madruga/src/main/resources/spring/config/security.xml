@@ -51,8 +51,9 @@
 		
 		
 		
-		<security:intercept-url pattern="/customer/action-1.do" access="hasRole('CUSTOMER')" /> 
-		<security:intercept-url pattern="/customer/action-2.do" access="hasRole('CUSTOMER')" /> 
+		<security:intercept-url pattern="/brotherhood/register.do" access="hasRole('BROTHERHOOD')" /> 
+		<security:intercept-url pattern="/brotherhood/edit.do" access="hasRole('BROTHERHOOD')" /> 
+		<security:intercept-url pattern="/brotherhood/display.do" access="hasRole('BROTHERHOOD')" /> 
 
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/profile/action-2.do" access="isAuthenticated()" /> 
