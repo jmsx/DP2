@@ -5,25 +5,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
 import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import forms.ActorFrom;
 
 @Service
 @Transactional
 public class AdministratorService {
 
 	@Autowired
-	private AdministratorRepository	administratorRepository;
+	private AdministratorRepository						administratorRepository;
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService								actorService;
 
 	@Autowired
-	private FolderService			folderService;
+	private FolderService								folderService;
+
+	@Autowired
+	private UserAccountService							userAccountService;
+	@Autowired
+	private org.springframework.validation.Validator	validator;
 
 
 	public Administrator create() {
@@ -74,4 +81,34 @@ public class AdministratorService {
 		return a;
 	}
 
+	public Administrator reconstruct(final ActorFrom actorForm, final BindingResult binding) {
+		Administrator admin;
+		if (actorForm.getId() == 0) {
+			admin = this.create();
+			admin.setName(actorForm.getName());
+			admin.setMiddleName(actorForm.getMiddleName());
+			admin.setSurname(actorForm.getSurname());
+			admin.setPhoto(actorForm.getPhoto());
+			admin.setPhone(actorForm.getPhone());
+			admin.setEmail(actorForm.getEmail());
+			admin.setAddress(actorForm.getAddress());
+			admin.setScore(0.0);
+			admin.setSpammer(false);
+
+		} else {
+			admin = this.administratorRepository.findOne(actorForm.getId());
+			admin.setName(actorForm.getName());
+			admin.setMiddleName(actorForm.getMiddleName());
+			admin.setSurname(actorForm.getSurname());
+			admin.setPhoto(actorForm.getPhoto());
+			admin.setPhone(actorForm.getPhone());
+			admin.setEmail(actorForm.getEmail());
+			admin.setAddress(actorForm.getAddress());
+			final UserAccount account = this.userAccountService.findOne(admin.getUserAccount().getId());
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
+			admin.setUserAccount(account);
+		}
+		return admin;
+	}
 }

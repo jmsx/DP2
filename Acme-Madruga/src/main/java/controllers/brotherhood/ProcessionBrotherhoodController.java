@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ConfigurationParametersService;
 import services.ProcessionService;
+import services.RequestService;
 import domain.Procession;
+import domain.Request;
 
 @Controller
 @RequestMapping("/procession/brotherhood")
@@ -24,6 +26,9 @@ public class ProcessionBrotherhoodController {
 
 	@Autowired
 	private ProcessionService				processionService;
+
+	@Autowired
+	private RequestService					requestService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
@@ -35,7 +40,7 @@ public class ProcessionBrotherhoodController {
 		final Collection<Procession> processions;
 		String rol;
 
-		processions = this.processionService.findAll();
+		processions = this.processionService.findAllByPrincipal();
 		rol = "brotherhood";
 
 		result = new ModelAndView("task/list");
@@ -52,13 +57,16 @@ public class ProcessionBrotherhoodController {
 	public ModelAndView display(@RequestParam final int processionId) {
 		final ModelAndView result;
 		Procession procession;
+		Collection<Request> requests;
 
 		procession = this.processionService.findOne(processionId);
+		requests = this.requestService.findAll();
 
 		if (procession != null) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
 			result.addObject("rol", "brotherhood");
+			result.addObject("requests", requests);
 
 			final String banner = this.configurationParametersService.findBanner();
 			result.addObject("banner", banner);

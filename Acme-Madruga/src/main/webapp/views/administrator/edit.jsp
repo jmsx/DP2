@@ -9,7 +9,23 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <h2><spring:message code="administrator.edit.msg"/></h2>
+<jstl:if test="${alert}">
+	<script>
+		alert('holq2');
+	</script>
+</jstl:if>
 
-<form:form modelAttribute="administrator" action="/administrator/edit.do">
+
+<form:form modelAttribute="actorForm" action="administrator/edit.do" method="POST">
+	<acme:textbox code="administrator.edit.userAccountuser" path="userAccountuser" />
+	<acme:textbox code="administrator.edit.userAccountpassword" path="userAccountpassword" />
+
 	<acme:textbox code="administrator.edit.name" path="name" />
+	<acme:textbox code="administrator.edit.middleName" path="middleName" />
+	<acme:textbox code="administrator.edit.surname" path="surname" />
+	<acme:textbox code="administrator.edit.photo" path="photo" />
+	<acme:textbox code="administrator.edit.email" path="email" />
+	<acme:textbox code="administrator.edit.phone" path="phone" />
+	<acme:textbox code="administrator.edit.address" path="address" />
+	<acme:submit code="administrator.edit.submit" name="submit"/>
 </form:form>
