@@ -1,6 +1,8 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,5 +16,5 @@ public interface SocialProfileRepository extends JpaRepository<SocialProfile, In
 	//SocialProfile findByUserId(Integer id);
 
 	@Query("select s from SocialProfile s where s.actor.userAccount.id=?1")
-	SocialProfile findByUserId(Integer id);
+	Collection<SocialProfile> findByUserId(Integer id);
 }

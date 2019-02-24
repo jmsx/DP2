@@ -1,7 +1,10 @@
 
 package forms;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -10,6 +13,8 @@ import org.hibernate.validator.constraints.URL;
 
 import domain.DomainEntity;
 
+@Entity
+@Access(AccessType.PROPERTY)
 public class ActorFrom extends DomainEntity {
 
 	private String	name;

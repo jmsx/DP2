@@ -13,6 +13,7 @@ package controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +32,8 @@ public class AdministratorController extends AbstractController {
 	private AdministratorService	administratorService;
 	@Autowired
 	private UserAccountService		accountService;
+	@Autowired
+	private Validator				validator;
 
 
 	// Constructors -----------------------------------------------------------
@@ -68,16 +71,20 @@ public class AdministratorController extends AbstractController {
 		Administrator admin;
 		if (binding.hasErrors())
 			result.addObject("errors", binding.getFieldErrors());
-		else {
-			admin = this.administratorService.reconstruct(actorForm, binding);
-			UserAccount ua = admin.getUserAccount();
-			ua = this.accountService.save(ua);
-			admin.setUserAccount(ua);
-			admin = this.administratorService.save(admin);
-			result.addObject("alert", true);
-			result.addObject("actorForm", admin);
-
-		}
+		else
+			try{
+				UserAccount ua = this.accountService.reconstruct(actorForm, binding);
+				admin = this.administratorService.reconstruct(actorForm, binding);
+				admin.setUserAccount(ua);
+				this.validator.validate(admin, binding);
+				ua = this.accountService.save(ua);
+				admin.setUserAccount(ua);
+				admin = this.administratorService.save(admin);
+				result.addObject("alert", true);
+				result.addObject("actorForm", admin);
+			} catch (final Throwable e) {
+				result = this.cre
+			}
 
 		return result;
 	}

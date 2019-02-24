@@ -1,15 +1,20 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.Validator;
 
+import security.Authority;
 import security.UserAccount;
 import security.UserAccountRepository;
+import domain.Actor;
+import forms.ActorFrom;
 
 @Service
 @Transactional
@@ -17,6 +22,10 @@ public class UserAccountService {
 
 	@Autowired
 	private UserAccountRepository	userAccountRepository;
+	@Autowired
+	private ActorService			actorService;
+	@Autowired
+	private Validator				validator;
 
 
 	public UserAccount create() {
@@ -39,5 +48,27 @@ public class UserAccountService {
 	public UserAccount save(final UserAccount ua) {
 		Assert.notNull(ua);
 		return this.userAccountRepository.save(ua);
+	}
+
+	public UserAccount reconstruct(final ActorFrom actorForm, final Object bind) {
+		UserAccount ua;
+		if (actorForm.getId() == 0) {
+			ua = this.create();
+			final Collection<Authority> authorities = new ArrayList<>();
+			final Authority auth = new Authority();
+			auth.setAuthority(Authority.ADMIN);
+			authorities.add(auth);
+			ua.setAuthorities(authorities);
+			ua.setUsername(actorForm.getUserAccountuser());
+			ua.setPassword(actorForm.getUserAccountpassword());
+		} else {
+			final Actor actor = this.actorService.findOne(actorForm.getId());
+			ua = this.userAccountRepository.findOne(actor.getUserAccount().getId());
+			ua.setUsername(actorForm.getUserAccountuser());
+			ua.setPassword(actorForm.getUserAccountpassword());
+
+		}
+		this.validator.validate(ua, bind);
+		return ua;
 	}
 }
