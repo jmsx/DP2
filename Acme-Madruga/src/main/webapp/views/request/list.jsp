@@ -11,7 +11,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <style type="text/css">
-.pendingPeriodPassed {
+.PENDING {
 	color: grey;
 }
 
@@ -24,46 +24,42 @@
 }
 </style>
 
+<jstl:if test="${not empty rol}">
+	<jstl:set var="rolURL" value="/${rol}" />
+</jstl:if>
+
 <jstl:choose>
-	<jstl:when test="${empty applications }">
-		<spring:message code="application.no.list" />
+	<jstl:when test="${empty requests }">
+		<spring:message code="request.no.list" />
 	</jstl:when>
 	<jstl:otherwise>
-		<display:table name="applications" id="row"
-			requestURI="application/${rol}/list.do" pagesize="5"
+		<display:table name="requests" id="row"
+			requestURI="request${rolURL}/list.do" pagesize="5"
 			class="displaytag">
 
-			<security:authorize access="hasRole('CUSTOMER')">
+			<security:authorize access="hasRole('BROTHERHOOD')">
 				<display:column>
-					<a href="application/customer/edit.do?applicationId=${row.id}">
-						<spring:message code="application.display" />
+					<a href="request/brotherhood/edit.do?requestId=${row.id}">
+						<spring:message code="request.display" />
 					</a>
 				</display:column>
 			</security:authorize>
 
 			<jstl:set value="${row.status} " var="colorStyle" />
-			<jsp:useBean id="currentDate" class="java.util.Date" />
-			<fmt:formatDate var="now" value="${currentDate}"
-				pattern="dd/MM/yyyy HH:mm" />
-			<jstl:if
-				test="${(row.status eq 'PENDING') and (now > row.task.endDate)}">
-				<jstl:set value="pendingPeriodPassed" var="colorStyle" />
-			</jstl:if>
 
-			<display:column property="moment" titleKey="application.moment"
-				sortable="true" format="{0,date,dd/MM/yyyy HH:mm}" />
+			<acme:dataTableColumn code="request.moment" property="moment"/>
 
-			<display:column property="status" titleKey="application.status"
+			<display:column property="status" titleKey="request.status"
 				class="${colorStyle}" />
 
 			<display:column property="task.ticker"
-				titleKey="application.task.ticker" />
+				titleKey="request.task.ticker" />
 
-			<security:authorize access="hasRole('HANDYWORKER')">
+			<security:authorize access="hasRole('MEMBER')">
 				<display:column>
 					<a
-						href="application/handyWorker/display.do?applicationId=${row.id}">
-						<spring:message code="application.display" />
+						href="request/member/display.do?requestId=${row.id}">
+						<spring:message code="request.display" />
 					</a>
 				</display:column>
 			</security:authorize>
@@ -73,19 +69,15 @@
 	</jstl:otherwise>
 </jstl:choose>
 
-<security:authorize access="hasRole('HANDYWORKER')">
+<security:authorize access="hasRole('MEMBER')">
 	<jstl:choose>
-		<jstl:when test="${theresTasksAvailable}">
+		<jstl:when test="${theresProcessionAvailable}">
 			<input type="button" name="create"
-				value="<spring:message code="application.create" />"
-				onclick="javascript: relativeRedir('application/handyWorker/create.do');" />
+				value="<spring:message code="request.create" />"
+				onclick="javascript: relativeRedir('request/member/create.do');" />
 		</jstl:when>
 		<jstl:otherwise>
-			<spring:message code="application.create.no" />
+			<spring:message code="request.create.no" />
 		</jstl:otherwise>
 	</jstl:choose>
 </security:authorize>
-
-<jstl:if test="${noCards}">
-	<spring:message code="application.creditCard.no" />
-</jstl:if>
