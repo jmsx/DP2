@@ -39,14 +39,14 @@ public class FolderController extends AbstractController {
 		final ModelAndView res;
 		Collection<Folder> folders;
 
-		folders = this.folderService.findAll();
+		folders = this.folderService.findAllByUserId(this.actorService.findByPrincipal().getId());
 
 		res = new ModelAndView("folder/list");
 		res.addObject("folders", folders);
 		//No necesitamos el objeto requestURI ya que lo hemos puesto directamente en la vista
-		//res.addObject("requestURI", "folder/list.do");
-		final String banner = this.configurationParametersService.find().getBanner();
-		res.addObject("banner", banner);
+		res.addObject("requestURI", "folder/list.do");
+		//		final String banner = this.configurationParametersService.find().getBanner();
+		//		res.addObject("banner", banner);
 
 		return res;
 
@@ -60,6 +60,7 @@ public class FolderController extends AbstractController {
 
 		folder = this.folderService.create();
 		res = this.createEditModelAndView(folder);
+		res.addObject("new", false);
 
 		return res;
 
