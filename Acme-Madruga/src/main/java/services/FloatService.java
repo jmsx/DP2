@@ -58,7 +58,7 @@ public class FloatService {
 	}
 
 	public Float save(final Float f) {
-		Assert.notNull(fo);
+		Assert.notNull(f);
 		Assert.isTrue(f.getId() != 0);
 		final Actor me = this.brotherhoodService.findByPrincipal();
 		Assert.notNull(me);

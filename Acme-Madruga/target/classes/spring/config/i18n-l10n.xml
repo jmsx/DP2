@@ -29,6 +29,8 @@
 		<value>/views/socialProfile/messages</value>
 		<value>/views/procession/messages</value>
 		<value>/views/request/messages</value>
+		<value>/views/folder/messages</value>
+		<value>/views/message/messages</value>
 	</util:list>
 
 </beans>

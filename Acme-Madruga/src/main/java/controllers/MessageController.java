@@ -368,7 +368,7 @@ public class MessageController extends AbstractController {
 		priorities.add("NEUTRAL");
 		priorities.add("LOW");
 
-		res = new ModelAndView("message/send");
+		res = new ModelAndView("message/edit");
 		res.addObject("m", message);
 		res.addObject("recipients", recipients);
 		res.addObject("priorities", priorities);

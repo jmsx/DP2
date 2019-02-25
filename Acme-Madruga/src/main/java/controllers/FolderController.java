@@ -40,13 +40,14 @@ public class FolderController extends AbstractController {
 		Collection<Folder> folders;
 
 		folders = this.folderService.findAllByUserId(this.actorService.findByPrincipal().getId());
+		folders = this.folderService.setFoldersByDefault(this.actorService.findByPrincipal());
 
 		res = new ModelAndView("folder/list");
 		res.addObject("folders", folders);
 		//No necesitamos el objeto requestURI ya que lo hemos puesto directamente en la vista
-		res.addObject("requestURI", "folder/list.do");
-		//		final String banner = this.configurationParametersService.find().getBanner();
-		//		res.addObject("banner", banner);
+		//		res.addObject("requestURI", "folder/list.do");
+		final String banner = this.configurationParametersService.find().getBanner();
+		res.addObject("banner", banner);
 
 		return res;
 
@@ -104,6 +105,25 @@ public class FolderController extends AbstractController {
 		return res;
 	}
 
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int folderId) {
+		ModelAndView result;
+		final Folder folder = this.folderService.findOne(folderId);
+		if (folder.getName().equals("Inbox") || folder.getName().equals("Outbox") || folder.getName().equals("Spambox") || folder.getName().equals("Trashbox")) {
+			result = new ModelAndView("administrator/error");
+			result.addObject("trace", "You can't edit or delete system folder");
+		} else
+			try {
+				//folder.setMezzages(null);
+				this.folderService.delete(folder);
+				result = new ModelAndView("redirect:list.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(folder, "general.commit.error");
+				result.addObject("id", folder.getId());
+			}
+
+		return result;
+	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Folder folder, final BindingResult binding) {
 

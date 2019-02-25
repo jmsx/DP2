@@ -16,24 +16,32 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
 <p><spring:message code="folder.edit" /></p>
 
+    
+
+<form:form action="folder/edit.do" modelAttribute="folder">
+
+	<form:hidden path="id"/>
+    <form:hidden path="version"/>
     <form:hidden path="isSystemFolder"/>
     <form:hidden path="actor"/>
     <form:hidden path="messages"/>
-    
-<form:form>
-    <acme:textbox path="name" code="folder.list"/>
+
+    <acme:textbox path="name" code="folder.name"/>
     <br/>
 
     <!---------------------------- BOTONES -------------------------->
 
-    <acme:submit name="save" code="folder.list"/>
-
-
+ 	<button name="save" type="submit" class="button2">
+        <spring:message code="general.save"/>
+    </button>
     <input type="button" class="btn btn-danger" name="cancel"
            value="<spring:message code="general.cancel" />"
            onclick="relativeRedir('folder/list.do');"/>
+
 
 
 </form:form>
