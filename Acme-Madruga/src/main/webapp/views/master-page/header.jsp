@@ -67,6 +67,12 @@
 					<li><a href="brotherhood/allBrotherhoodsFree.do"><spring:message code="master.page.brotherhood.allFree" /></a></li>
 				</ul>
 			</li>
+			<li><a class="fNiv"><spring:message	code="master.page.request" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="request/list.do"><spring:message code="master.page.request.list" /></a></li>
+				</ul>
+			</li>
 		</security:authorize>
 		
 		<security:authorize access="isAnonymous()">

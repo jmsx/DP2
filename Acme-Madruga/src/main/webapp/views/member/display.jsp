@@ -20,9 +20,7 @@
 
 
 <spring:message code="member.display.msg"/>: 
-	<a href="member/display.do?memberId=${id}">
-		<!-- <jstl:out value="${member.title}" /> -->
-	</a>
+	<a href="member/display.do?memberId=${id}">	</a>
 <br/>
 
 <spring:message code="actor.name" var="name"/>
