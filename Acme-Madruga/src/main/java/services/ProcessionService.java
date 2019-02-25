@@ -18,6 +18,7 @@ import security.Authority;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Float;
+import domain.Member;
 import domain.Procession;
 
 @Service
@@ -34,7 +35,7 @@ public class ProcessionService {
 	private ActorService			actorService;
 
 	@Autowired
-	private RequestService			requestService;
+	private MemberService			memberService;
 
 
 	public Procession create() {
@@ -51,6 +52,15 @@ public class ProcessionService {
 	}
 
 	public Collection<Procession> findAll() {
+
+		final Collection<Procession> result = this.processionRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
+	public Collection<Procession> findAllByPrincipal() {
 		Collection<Procession> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
@@ -85,6 +95,7 @@ public class ProcessionService {
 				procession.setMode("DRAFT");
 				final Date moment = new Date(System.currentTimeMillis() - 1);
 				procession.setMoment(moment);
+				procession.setTicker(this.generateTicker(moment));
 			} else
 				Assert.isTrue(procession.getBrotherhood() == this.brotherhoodService.findByPrincipal());
 
@@ -98,7 +109,6 @@ public class ProcessionService {
 
 		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
 		Assert.isTrue(procession.getBrotherhood().equals(principal));
-		this.requestService.findByBrotherhood(principal.getId());
 		this.processionRepository.delete(procession);
 
 	}
@@ -129,6 +139,23 @@ public class ProcessionService {
 		}
 
 		return res;
+	}
+
+	/**
+	 * It returns all processions which principal isn't enrolled. The principal must be a member.
+	 * 
+	 * @author a8081
+	 * */
+	public Collection<Procession> processionsAvailable() {
+		final Member principal = this.memberService.findByPrincipal();
+		final Collection<Procession> memberProcessions = this.processionRepository.findAllProcessionByBMemberId(principal.getUserAccount().getId());
+		final Collection<Procession> processions = this.findAll();
+		processions.removeAll(memberProcessions);
+		return processions;
+	}
+
+	public boolean exists(final Integer processionId) {
+		return this.processionRepository.exists(processionId);
 	}
 
 }

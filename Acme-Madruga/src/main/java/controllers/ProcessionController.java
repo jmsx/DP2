@@ -16,7 +16,7 @@ import domain.Procession;
 
 @Controller
 @RequestMapping("/procession")
-public class ProcessionController {
+public class ProcessionController extends AbstractController {
 
 	@Autowired
 	private ProcessionService				processionService;
