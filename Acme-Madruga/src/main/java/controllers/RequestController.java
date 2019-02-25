@@ -46,7 +46,7 @@ public class RequestController extends AbstractController {
 	// Display --------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int requestId) {
+	public ModelAndView display(@RequestParam final int id) {
 		ModelAndView result;
 		Request request;
 

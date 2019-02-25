@@ -72,7 +72,7 @@ public class AdministratorController extends AbstractController {
 		if (binding.hasErrors())
 			result.addObject("errors", binding.getFieldErrors());
 		else
-			try{
+			try {
 				UserAccount ua = this.accountService.reconstruct(actorForm, binding);
 				admin = this.administratorService.reconstruct(actorForm, binding);
 				admin.setUserAccount(ua);
@@ -83,7 +83,7 @@ public class AdministratorController extends AbstractController {
 				result.addObject("alert", true);
 				result.addObject("actorForm", admin);
 			} catch (final Throwable e) {
-				result = this.cre
+				//result = this.cre
 			}
 
 		return result;
