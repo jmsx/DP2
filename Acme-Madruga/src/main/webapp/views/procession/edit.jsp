@@ -66,7 +66,7 @@
 	<jstl:if test="${procession.id != 0}">
 		<input type="submit" name="delete" value="<spring:message code="procession.delete" />" />
 	</jstl:if>
-	<input type="button" name="cancel" value="<spring:message code="procession.cancel" />"  
-		onclick="javascript:relativeRedir('procession/brotherhood/list.do');"/>
+	
+	<acme:button url="procession/brotherhood/list.do" name="cancel" code="procession.cancel"/>
 		
 </form:form>

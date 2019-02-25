@@ -97,8 +97,6 @@
 	<br/>
 </security:authorize>
 
-<div>
-<input type="button" name="back" value="<spring:message code="procession.back" />"  
-		onclick="javascript:relativeRedir('procession${rolURL}/list.do');"/>
+
+<acme:button url="procession${rolURL}/list.do" name="back" code="procession.back"/>
 <br />
-</div>

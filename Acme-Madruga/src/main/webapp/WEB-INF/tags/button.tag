@@ -1,5 +1,5 @@
 <%--
- * dateTableColumn.tag
+ * button.tag
  *
  * Copyright (C) 2019 a8081 
  * 
@@ -17,32 +17,19 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <%-- Attributes --%>
 
-<%@ attribute name="property" required="true"%>
+<%@ attribute name="name" required="true"%>
 <%@ attribute name="code" required="true"%>
-
-<%@ attribute name="sortable" required="false" %>
-
-<jstl:if test="${sortable == null}">
-	<jstl:set var="sortable" value="true" />
-</jstl:if>
+<%@ attribute name="url" required="true"%>
 
 
 <%-- Definition --%>
 
-<jstl:choose>
-	<jstl:when test="${lang eq 'es' }">
-		<display:column property="${property}" titleKey="${code}"
-			sortable="${sortable}" format="{0,date,dd/MM/yyyy HH:mm}" />
-	</jstl:when>
-	<jstl:otherwise>
-		<display:column property="${property}" titleKey="${code}"
-			sortable="${sortable}" format="{0,date,yyyy/MM/dd HH:mm}" />
-	</jstl:otherwise>
-</jstl:choose>
+<input type="button" name="${name}"
+				value="<spring:message code="${code}" />"
+				onclick="javascript: relativeRedir('${url}');" />

@@ -87,15 +87,14 @@ public class RequestService {
 			if (req.getStatus().equals(Request.REJECTED))
 				Assert.isTrue(!(req.getExplanation() == "" || req.getExplanation() == null), "If Request is REJECTED must have a explanation");
 			if (req.getStatus().equals(Request.APPROVED)) {
-				final boolean rowIsNull = req.getRow() == null;
-				final boolean columnIsNull = req.getColumn() == null;
-				Assert.isTrue(!(rowIsNull || columnIsNull), "If Reuqest is APPROVED, row and column cannot be null ");
+				final boolean rowIsNull = req.getRow() == null && req.getRow() < req.getProcession().getMaxRows();
+				final boolean columnIsNull = req.getColumn() == null && req.getColumn() < req.getProcession().getMaxColumns();
+				Assert.isTrue(!(rowIsNull || columnIsNull), "If Reuqest is APPROVED, row and column cannot be null or greater than maximum allowed");
 			}
 		}
 		req = this.requestRepository.save(req);
 		return req;
 	}
-
 	public void delete(final Request req) {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
