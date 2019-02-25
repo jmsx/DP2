@@ -71,7 +71,7 @@
 
 <security:authorize access="hasRole('MEMBER')">
 	<jstl:choose>
-		<jstl:when test="${theresProcessionAvailable}">
+		<jstl:when test="${theresProcessionsAvailable}">
 			<input type="button" name="create"
 				value="<spring:message code="request.create" />"
 				onclick="javascript: relativeRedir('request/member/create.do');" />
