@@ -20,9 +20,7 @@
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<display:column>
-			<a href="procession/brotherhood/edit.do?processionId=${row.id}">
-				<spring:message code="procession.edit" />
-			</a>
+			<acme:link url="procession/brotherhood/edit.do?processionId=${row.id}" code="procession.edit"/>
 		</display:column>
 	</security:authorize>
 
@@ -41,9 +39,7 @@
 
 
 	<display:column>
-		<a href="procession${rolURL}/display.do?processionId=${row.id}"> <spring:message
-				code="procession.display" />
-		</a>
+		<acme:link url="procession${rolURL}/display.do?processionId=${row.id}" code="procession.display"/>
 	</display:column>
 
 
@@ -58,9 +54,7 @@
 		<display:column>
 			<jstl:choose>
 				<jstl:when test="${ctrl == 0}">
-					<a href="request/member/create.do?processionId=${row.id}"> <spring:message
-							code="procession.apply" />
-					</a>
+					<acme:link url="request/member/create.do?processionId=${row.id}" code="procession.apply"/>
 				</jstl:when>
 				<jstl:otherwise>
 					<spring:message code="procession.applied" />
@@ -72,7 +66,5 @@
 </display:table>
 
 <security:authorize access="hasRole('BROTHERHOOD')">
-	<a href="procession/brotherhood/create.do"> <spring:message
-			code="procession.create" />
-	</a>
+	<acme:link url="procession/brotherhood/create.do" code="procession.create"/>
 </security:authorize>

@@ -29,35 +29,25 @@
 </jstl:if>
 
 <jstl:choose>
-	<jstl:when test="${empty requests }">
+	<jstl:when test="${empty requests}">
 		<spring:message code="request.no.list" />
 	</jstl:when>
 	<jstl:otherwise>
-		<display:table name="requests" id="row"
-			requestURI="request${rolURL}/list.do" pagesize="5" class="displaytag">
+		<display:table name="requests" id="row" requestURI="request${rolURL}/list.do" pagesize="5" class="displaytag">
 
 			<security:authorize access="hasRole('BROTHERHOOD')">
 				<display:column>
-					<a href="request/brotherhood/edit.do?requestId=${row.id}"> <spring:message
-							code="request.edit" />
-					</a>
+					<acme:link url="request/brotherhood/edit.do?requestId=${row.id}" code="request.edit"/>
 				</display:column>
 			</security:authorize>
 
 			<jstl:set value="${row.status} " var="colorStyle" />
-
+			
 			<acme:dataTableColumn code="request.moment" property="moment" />
-
-			<display:column property="status" titleKey="request.status"
-				class="${colorStyle}" />
-
-			<display:column property="procession.title"
-				titleKey="request.procession.title" />
-
+			<display:column property="status" titleKey="request.status" class="${colorStyle}" />
+			<display:column property="procession.title" titleKey="request.procession.title" />
 			<display:column>
-				<a href="request${rolURL}/display.do?requestId=${row.id}"> <spring:message
-						code="request.display" />
-				</a>
+				<acme:link url="request${rolURL}/display.do?requestId=${row.id}" code="request.display"/>
 			</display:column>
 
 			<security:authorize access="hasRole('BROTHERHOOD')">
@@ -70,8 +60,7 @@
 					</display:column>
 				</jstl:if>
 			</security:authorize>
-
-
+			
 		</display:table>
 	</jstl:otherwise>
 </jstl:choose>

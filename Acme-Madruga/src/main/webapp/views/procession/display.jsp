@@ -29,26 +29,13 @@
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
 
-<spring:message code="procession.title"/>: <jstl:out value="${procession.title}" />
-<br/>
-
-<spring:message code="procession.description"/>: <jstl:out value="${procession.description}" />
-<br/>
-
+<acme:display code="procession.title" value="${procession.title}"/>
+<acme:display code="procession.description" value="${procession.description}"/>
 <acme:date value="procession.moment" code="procession.moment"/>
-
-<spring:message code="procession.ticker"/>: <jstl:out value="${procession.ticker}" />
-<br/>
-
-<spring:message code="procession.mode"/>: <jstl:out value="${procession.mode}" />
-<br/>
-
-<spring:message code="procession.maxRows"/>: <jstl:out value="${procession.maxRows}" />
-<br/>
-
-<spring:message code="procession.maxColumns"/>: <jstl:out value="${procession.maxColumns}" />
-<br/>
-
+<acme:display code="procession.ticker" value="${procession.ticker}"/>
+<acme:display code="procession.mode" value="${procession.mode}"/>
+<acme:display code="procession.maxRows" value="${procession.maxRows}"/>
+<acme:display code="procession.maxColumns" value="${procession.maxColumns}"/>
 
 <jstl:choose>
 	<jstl:when test="${not empty procession.floats}">
@@ -83,9 +70,7 @@
 		<jstl:choose>
 			<jstl:when test="${fila.status eq 'PENDING'}">
 				<display:column>
-					<a href="request/brotherhood/edit.do?requestId=${fila.id}">
-						<spring:message code="procession.request.edit"/>
-					</a>
+					<acme:link url="request/brotherhood/edit.do?requestId=${fila.id}" code="procession.request.edit"/>
 				</display:column>
 			</jstl:when>
 			<jstl:otherwise>
@@ -96,7 +81,6 @@
 	</display:table>
 	<br/>
 </security:authorize>
-
 
 <acme:button url="procession${rolURL}/list.do" name="back" code="procession.back"/>
 <br />

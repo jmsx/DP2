@@ -1,5 +1,5 @@
 <%--
- * display.tag
+ * link.tag
  *
  * Copyright (C) 2019 a8081 
  * 
@@ -24,11 +24,10 @@
 
 <%-- Attributes --%>
 
-<%@ attribute name="value" required="true"%>
+<%@ attribute name="url" required="true"%>
 <%@ attribute name="code" required="true"%>
 
 <%-- Definition --%>
 
-<spring:message code="${code}" />:
-<jstl:out value="${value}" />
-<br />
+<a href="${url}"><spring:message code="${code}"/></a>
+					
