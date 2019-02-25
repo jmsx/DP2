@@ -68,7 +68,8 @@ public class UserAccountService {
 			ua.setPassword(actorForm.getUserAccountpassword());
 
 		}
-		this.validator.validate(ua, bind);
+		// TODO
+		// this.validator.validate(ua, bind);
 		return ua;
 	}
 }

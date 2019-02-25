@@ -42,7 +42,7 @@
 	
 	<jstl:if test="${procession.id != 0}">	
 		<spring:message code="procession.requests"/>:
-			<display:table name="procession.requests" id="row"
+			<display:table name="requests" id="row"
 			requestURI="procession/brotherhood/edit.do?processionId=${procession.id}" pagesize="5" class="displaytag">
 			<jstl:set value="${row.status} " var="colorStyle" />
 			<jstl:choose>
@@ -56,8 +56,8 @@
 				<jstl:otherwise>
 				</jstl:otherwise>
 			</jstl:choose>
-			<acme:dataTableColumn property="moment" code="request.moment"/>
-			<display:column property="status" titleKey="procession.application.status" class="${colorStyle}"/>
+			<acme:dataTableColumn property="moment" code="procession.request.moment"/>
+			<display:column property="status" titleKey="procession.request.status" class="${colorStyle}"/>
 		</display:table>
 		<br/>
 	</jstl:if>

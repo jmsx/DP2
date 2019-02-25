@@ -44,9 +44,9 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		processions = this.processionService.findAllByPrincipal();
 		rol = "brotherhood";
 
-		result = new ModelAndView("task/list");
+		result = new ModelAndView("procession/list");
 		result.addObject("processions", processions);
-		result.addObject("requetURI", "task/brotherhood/list.do");
+		result.addObject("requetURI", "procession/brotherhood/list.do");
 		result.addObject("rol", rol);
 
 		final String banner = this.configurationParametersService.findBanner();

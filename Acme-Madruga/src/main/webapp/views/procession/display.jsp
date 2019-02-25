@@ -43,6 +43,11 @@
 <spring:message code="procession.mode"/>: <jstl:out value="${procession.mode}" />
 <br/>
 
+<spring:message code="procession.maxRows"/>: <jstl:out value="${procession.maxRows}" />
+<br/>
+
+<spring:message code="procession.maxColumns"/>: <jstl:out value="${procession.maxColumns}" />
+<br/>
 
 
 <jstl:choose>

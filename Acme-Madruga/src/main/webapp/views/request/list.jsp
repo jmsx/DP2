@@ -40,7 +40,7 @@
 			<security:authorize access="hasRole('BROTHERHOOD')">
 				<display:column>
 					<a href="request/brotherhood/edit.do?requestId=${row.id}">
-						<spring:message code="request.display" />
+						<spring:message code="request.edit" />
 					</a>
 				</display:column>
 			</security:authorize>
@@ -52,8 +52,8 @@
 			<display:column property="status" titleKey="request.status"
 				class="${colorStyle}" />
 
-			<display:column property="task.ticker"
-				titleKey="request.task.ticker" />
+			<display:column property="procession.title"
+				titleKey="request.procession.title" />
 
 			<security:authorize access="hasRole('MEMBER')">
 				<display:column>

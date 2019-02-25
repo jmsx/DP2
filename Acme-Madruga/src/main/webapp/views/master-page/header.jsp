@@ -31,6 +31,16 @@
 			</li>
 		</security:authorize>
 		
+		<security:authorize access="hasRole('MEMBER')">
+			<li><a class="fNiv"><spring:message	code="master.page.member" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="procession/member/list.do"><spring:message code="master.page.procession.member.list" /></a></li>
+					<li><a href="request/member/list.do"><spring:message code="master.page.request.member.list" /></a></li>	
+				</ul>
+			</li>
+		</security:authorize>
+		
 		<security:authorize access="hasRole('BROTHERHOOD')">
 			<li><a class="fNiv"><spring:message	code="master.page.brotherhood" /></a>
 				<ul>
@@ -39,7 +49,8 @@
 					<li><a href="brotherhood/display.do"><spring:message code="master.page.brotherhood.display" /></a></li>					
 				</ul>
 			</li>
-			<li><a href="procession/list.do"><spring:message code="master.page.brotherhood.edit" /></a></li>
+			<li><a href="procession/brotherhood/list.do"><spring:message code="master.page.procession.brotherhood.list" /></a></li>
+			<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>		
 		</security:authorize>
 		
 		<security:authorize access="isAnonymous()">
