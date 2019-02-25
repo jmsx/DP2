@@ -66,6 +66,8 @@
 		<security:intercept-url pattern="/brotherhood/create.do" access="permitAll" /> 
 		<security:intercept-url pattern="/brotherhood/edit.do" access="hasRole('BROTHERHOOD')" /> 
 		<security:intercept-url pattern="/brotherhood/display.do" access="hasAnyRole('BROTHERHOOD')"/>
+		<security:intercept-url pattern="/member/list.do" access="hasAnyRole('BROTHERHOOD')"/>
+		
 		
 		<security:intercept-url pattern="/brotherhood/displayTabla.do" access="hasAnyRole('MEMBER')"/>
 		
@@ -74,6 +76,11 @@
 		<security:intercept-url pattern="/brotherhood/allBrotherhoodsFree.do" access="hasRole('MEMBER')" /> 
 		
 		
+		<security:intercept-url pattern="/brotherhood/display.do" access="hasRole('BROTHERHOOD')" /> 
+		
+		<security:intercept-url pattern="/member/create.do" access="permitAll" /> 
+		<security:intercept-url pattern="/member/edit.do" access="hasRole('MEMBER')" /> 
+		<security:intercept-url pattern="/member/display.do" access="hasRole('MEMBER')" />
 
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/profile/action-2.do" access="isAuthenticated()" /> 
