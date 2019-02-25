@@ -31,6 +31,8 @@
 					<li><a href="administrator/create.do"><spring:message code="master.page.administrator.create" /></a></li>					
 				</ul>
 			</li>
+			<li><a href="brotherhood/listAll.do"><spring:message code="master.page.brotherhood.allBrotherhoods" /></a></li>
+			
 		</security:authorize>
 		
 		<security:authorize access="hasRole('BROTHERHOOD')">
@@ -43,6 +45,16 @@
 			</li>
 			<li><a href="procession/list.do"><spring:message code="master.page.brotherhood.edit" /></a></li>
 		</security:authorize>
+		
+		<security:authorize access="hasRole('MEMBER')">
+			<li><a href="brotherhood/list.do"><spring:message code="master.page.brotherhood.list" /></a></li>
+			<li><a href="brotherhood/allBrotherhoodsFree.do"><spring:message code="master.page.brotherhood.allFree" /></a></li>
+			
+			
+			
+		
+		</security:authorize>
+		
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>

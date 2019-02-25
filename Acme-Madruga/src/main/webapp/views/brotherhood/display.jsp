@@ -16,22 +16,13 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><spring:message code="brotherhood.display.msg" /></p>
-
-
-<spring:message code="brotherhood.display.msg"/>: 
-	<a href="brotherhood/display.do?brotherhoodId=${id}">
-		<jstl:out value="${brotherhood.title}" />
-	</a>
-<br/>
 
 <spring:message code="actor.name" var="name"/>
 <jstl:out value="${name}"/>:
 <jstl:out value="${brotherhood.name}"/>
 <br>
 <spring:message code="actor.middleName" var="middleName"/>
-<jstl:out value="${middleName}"/>:
-<jstl:out value="${brotherhood.middleName}"/>
+<jstl:out value="${middleName}"/>:<jstl:out value="${brotherhood.middleName}"/>
 <br>
 <spring:message code="actor.surname" var="surname"/>
 <jstl:out value="${surname}"/>:
@@ -45,7 +36,7 @@
 <jstl:out value="${email}"/>:
 <jstl:out value="${brotherhood.email}"/>
 <br>
-<spring:message code="actor.phone" var="phoneNumber"/>
+<spring:message code="actor.phone" var="phone"/>
 <jstl:out value="${phone}"/>:
 <jstl:out value="${brotherhood.phone}"/>
 <br>

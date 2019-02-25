@@ -57,6 +57,7 @@
 		<security:intercept-url pattern="/message/create.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/edit.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/send.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/brotherhood/listAll.do" access="hasAnyRole('ADMIN')" /> 
 		
 		 
 		
@@ -64,7 +65,15 @@
 		
 		<security:intercept-url pattern="/brotherhood/create.do" access="permitAll" /> 
 		<security:intercept-url pattern="/brotherhood/edit.do" access="hasRole('BROTHERHOOD')" /> 
-		<security:intercept-url pattern="/brotherhood/display.do" access="hasRole('BROTHERHOOD')" /> 
+		<security:intercept-url pattern="/brotherhood/display.do" access="hasAnyRole('BROTHERHOOD')"/>
+		
+		<security:intercept-url pattern="/brotherhood/displayTabla.do" access="hasAnyRole('MEMBER')"/>
+		
+		
+		<security:intercept-url pattern="/brotherhood/list.do" access="hasRole('MEMBER')" /> 
+		<security:intercept-url pattern="/brotherhood/allBrotherhoodsFree.do" access="hasRole('MEMBER')" /> 
+		
+		
 
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/profile/action-2.do" access="isAuthenticated()" /> 
