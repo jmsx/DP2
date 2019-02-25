@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationParametersService;
 import services.FolderService;
-import domain.Actor;
 import domain.Folder;
 
 @Controller
@@ -69,47 +69,94 @@ public class FolderController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int folderId) {
-		ModelAndView res;
+		ModelAndView result;
 		Folder folder;
-		Collection<Folder> folders;
 
 		folder = this.folderService.findOne(folderId);
-		folders = this.folderService.findAll();
-
-		if (folder != null && folders.contains(folder))
-			res = this.createEditModelAndView(folder);
-		else
-			res = new ModelAndView("redirect:/misc/403.jsp");
-
-		return res;
-
+		if (folder.getName().equals("In box") || folder.getName().equals("Out box") || folder.getName().equals("Spam box") || folder.getName().equals("Trash box") || folder.getName().equals("Notification box")) {
+			result = new ModelAndView("administrator/error");
+			result.addObject("trace", "You can't edit or delete system folder");
+			return result;
+		} else if (!folder.getActor().equals(this.actorService.findByPrincipal())) {
+			result = new ModelAndView("administrator/error");
+			result.addObject("trace", "You can't edit or delete anyone else's folder");
+			return result;
+		} else {
+			Assert.notNull(folder);
+			Assert.isTrue(!this.folderService.findAllByUserId(this.actorService.findByPrincipal().getId()).contains(folder));
+			result = this.createEditModelAndView(folder);
+			result.addObject("id", folder.getId());
+		}
+		return result;
 	}
+
+	//	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	//	public ModelAndView edit(@RequestParam final int folderId) {
+	//		ModelAndView res;
+	//		Folder folder;
+	//		Collection<Folder> folders;
+	//
+	//		folder = this.folderService.findOne(folderId);
+	//		folders = this.folderService.findAll();
+	//
+	//		if (folder != null && folders.contains(folder))
+	//			res = this.createEditModelAndView(folder);
+	//		else
+	//			res = new ModelAndView("redirect:/misc/403.jsp");
+	//
+	//		return res;
+	//
+	//	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Folder folder, final BindingResult binding) {
-
-		ModelAndView res;
-		final Actor principal = this.actorService.findByPrincipal();
-
-		if (binding.hasErrors())
-			res = this.createEditModelAndView(folder);
+		ModelAndView result;
+		if (binding.hasErrors()) {
+			result = this.createEditModelAndView(folder);
+			result.addObject("id", folder.getId());
+		} else if (folder.getName().equals("In box") || folder.getName().equals("Out box") || folder.getName().equals("Spam box") || folder.getName().equals("Trash box") || folder.getName().equals("Notification box"))
+			result = this.createEditModelAndView(folder, "general.commit.cantEditSystemFolders");
 		else
 			try {
-				this.folderService.save(folder, principal);
-				res = new ModelAndView("redirect:list.do");
-				final String banner = this.configurationParametersService.find().getBanner();
-				res.addObject("banner", banner);
+				folder.setActor(this.actorService.findByPrincipal());
+				final Folder saved = this.folderService.save(folder, this.actorService.findByPrincipal());
+				if (!this.folderService.findAllByUserId(this.actorService.findByPrincipal().getId()).contains(folder)) {
+					this.folderService.save(saved, this.actorService.findByPrincipal());
+					//					this.folderService.findAllByUserId(this.actorService.findByPrincipal().getId()).add(saved);
+					this.actorService.save(this.actorService.findByPrincipal());
+				}
+				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
-				res = this.createEditModelAndView(folder, "folder.commit.error");
+				result = this.createEditModelAndView(folder, "general.commit.error");
+				result.addObject("id", folder.getId());
 			}
-		return res;
+		return result;
 	}
+	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	//	public ModelAndView save(@Valid final Folder folder, final BindingResult binding) {
+	//
+	//		ModelAndView res;
+	//		final Actor principal = this.actorService.findByPrincipal();
+	//
+	//		if (binding.hasErrors())
+	//			res = this.createEditModelAndView(folder);
+	//		else
+	//			try {
+	//				this.folderService.save(folder, principal);
+	//				res = new ModelAndView("redirect:list.do");
+	//				final String banner = this.configurationParametersService.find().getBanner();
+	//				res.addObject("banner", banner);
+	//			} catch (final Throwable oops) {
+	//				res = this.createEditModelAndView(folder, "folder.commit.error");
+	//			}
+	//		return res;
+	//	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int folderId) {
 		ModelAndView result;
 		final Folder folder = this.folderService.findOne(folderId);
-		if (folder.getName().equals("Inbox") || folder.getName().equals("Outbox") || folder.getName().equals("Spambox") || folder.getName().equals("Trashbox")) {
+		if (folder.getName().equals("In box") || folder.getName().equals("Out box") || folder.getName().equals("Spam box") || folder.getName().equals("Trash box") || folder.getName().equals("Notification box")) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", "You can't edit or delete system folder");
 		} else
@@ -124,21 +171,21 @@ public class FolderController extends AbstractController {
 
 		return result;
 	}
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Folder folder, final BindingResult binding) {
-
-		ModelAndView res;
-
-		try {
-			this.folderService.delete(folder);
-			res = new ModelAndView("redirect:list.do");
-			final String banner = this.configurationParametersService.find().getBanner();
-			res.addObject("banner", banner);
-		} catch (final Throwable oops) {
-			res = this.createEditModelAndView(folder, "folder.commit.error");
-		}
-		return res;
-	}
+	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	//	public ModelAndView delete(final Folder folder, final BindingResult binding) {
+	//
+	//		ModelAndView res;
+	//
+	//		try {
+	//			this.folderService.delete(folder);
+	//			res = new ModelAndView("redirect:list.do");
+	//			final String banner = this.configurationParametersService.find().getBanner();
+	//			res.addObject("banner", banner);
+	//		} catch (final Throwable oops) {
+	//			res = this.createEditModelAndView(folder, "folder.commit.error");
+	//		}
+	//		return res;
+	//	}
 
 	protected ModelAndView createEditModelAndView(final Folder folder) {
 
