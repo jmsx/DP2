@@ -38,11 +38,15 @@
 	<acme:textbox code="procession.description" path="description" />
 	<acme:numberbox code="procession.maxRows" path="maxRows" min="1" />
 	<acme:numberbox code="procession.maxColumns" path="maxColumns" min="1" />
-
-	<form:checkboxes items="${procession.floats}" path="floats" /> 
-	</br>
-
+	<acme:textbox code="procession.moment" path="moment" placeholder="yyyy/MM/dd HH:mm:ss"/>
+	<jstl:if test="${procession.id == 0}">
+	<acme:select items="${floatsAvailable}" itemLabel="title"
+		code="procession.floats" path="floats" />
+	</jstl:if>
 	<jstl:if test="${procession.id != 0}">
+		<acme:select items="${procession.floats}" itemLabel="title"
+			code="procession.floats" path="floats" />
+
 		<spring:message code="procession.requests" />:
 			<display:table name="requests" id="row"
 			requestURI="procession/brotherhood/edit.do?processionId=${procession.id}"

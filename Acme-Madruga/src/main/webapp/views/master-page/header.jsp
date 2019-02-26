@@ -20,15 +20,17 @@
 <div>
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
+		
+		<!-- ========================================================================================================= -->
+		<!-- ========================================  ADMINISTRATOR  ================================================ -->
+		<!-- ========================================================================================================= -->
+		
 		<security:authorize access="hasRole('ADMIN')">
 			
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>
 					<li><a href="folder/list.do"><spring:message code="folder.list" /></a></li>					
-					<li><a href="administrator/create.do"><spring:message code="master.page.administrator.create" /></a></li>					
 					<li><a href="administrator/create.do"><spring:message code="master.page.administrator.create" /></a></li>					
 				</ul>
 			</li>
@@ -61,6 +63,10 @@
 			
 		</security:authorize>
 		
+		<!-- ========================================================================================================= -->
+		<!-- ========================================= BROTHERHOOD =================================================== -->
+		<!-- ========================================================================================================= -->	
+	
 		<security:authorize access="hasRole('BROTHERHOOD')">
 			
 		<%-- FLOATS --%>
@@ -77,8 +83,9 @@
 			<li><a class="fNiv"><spring:message	code="master.page.procession" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="procession/list.do"><spring:message code="master.page.procession.list" /></a></li>
-					<li><a href="procession/create.do"><spring:message code="master.page.procession.create" /></a></li>
+					<li><a href="procession/list.do"><spring:message code="master.page.all.processions" /></a></li>
+					<li><a href="procession/brotherhood/create.do"><spring:message code="master.page.procession.create" /></a></li>
+					<li><a href="procession/brotherhood/list.do"><spring:message code="master.page.procession.list" /></a></li>
 				</ul>
 			</li>
 			
@@ -107,15 +114,22 @@
 			</li>
 			
 		</security:authorize>
+		
+		<!-- ========================================================================================================= -->
+		<!-- ============================================   MEMBER   ================================================= -->
+		<!-- ========================================================================================================= -->
 				
 		<security:authorize access="hasRole('MEMBER')">
 			
-			
-		
 			<%-- PROCESSIONS --%>
-		
-			<li><a href="procession/member/list.do"><spring:message	code="master.page.procession.member.list" /></a>
-				
+			
+			<li><a class="fNiv"><spring:message	code="master.page.procession" /></a>
+				<ul>
+					<li><a href="procession/list.do"><spring:message code="master.page.all.processions" /></a></li>
+					<li><a href="procession/member/list.do"><spring:message	code="master.page.procession.member.list" /></a>
+				</ul>
+			</li>
+			
 			<%-- REQUESTS --%>
 						
 			<li><a href="request/member/list.do"><spring:message code="master.page.request.member.list" /></a></li>	
@@ -137,6 +151,7 @@
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
+			<li><a class="fNiv" href="procession/list.do"><spring:message code="master.page.all.processions" /></a></li>
 			<li><a class="fNiv" href="brotherhood/create.do"><spring:message code="master.page.brotherhood.register" /></a></li>
 			<li><a class="fNiv" href="member/create.do"><spring:message code="master.page.member.register" /></a></li>
 		</security:authorize>
