@@ -91,7 +91,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.request" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="member/list.do"><spring:message code="master.page.request.list" /></a></li>
+					<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>
 				</ul>
 			</li>
 			

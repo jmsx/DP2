@@ -35,27 +35,9 @@
 
 	<display:column property="name" titleKey="actor.name" />
 	
-	<display:column property="middleName" titleKey="actor.middleName" />
-	
-	<display:column property="surname" titleKey="actor.surname" />
-	
-	<display:column property="photo" titleKey="actor.photo" />
-	
-	<display:column property="email" titleKey="actor.email" />
-	
-	<display:column property="phone" titleKey="actor.phone" />
-	
-	<display:column property="address" titleKey="actor.address" />
-	
-	<display:column property="score" titleKey="actor.spammer" />
-	
 	<display:column property="title" titleKey="actor.title" />
 	
 	<acme:dataTableColumn code="actor.date" property="date" />
-	
-	<display:column property="pictures" titleKey="actor.pictures" />
-	
-	<display:column property="area.name" titleKey="actor.area" />
 	
 	<display:column>
 		<a href="brotherhood/displayTabla.do?brotherhoodId=${row.id}"> <spring:message

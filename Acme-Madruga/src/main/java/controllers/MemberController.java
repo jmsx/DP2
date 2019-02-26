@@ -77,6 +77,25 @@ public class MemberController extends AbstractController {
 		return result;
 
 	}
+	
+	@RequestMapping(value = "/displayTabla", method = RequestMethod.GET)
+	public ModelAndView displayTabla(@RequestParam final int memberId) {
+		final ModelAndView result;
+
+		Member member;
+		member = this.memberService.findOne(memberId);
+
+		if (member != null) {
+			result = new ModelAndView("member/display");
+			result.addObject("member", member);
+
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+	}
 
 	// Save -----------------------------------------------------------
 

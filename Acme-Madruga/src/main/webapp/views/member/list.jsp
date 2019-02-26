@@ -25,21 +25,9 @@
 	</jstl:if>
 	</security:authorize>
 
-	<display:column property="name" titleKey="member.name" />
+	<display:column property="name" titleKey="actor.name" />
 	
-	<display:column property="middleName" titleKey="member.middleName" />
-	
-	<display:column property="surname" titleKey="member.surname" />
-	
-	<display:column property="photo" titleKey="member.photo" />
-	
-	<display:column property="email" titleKey="member.email" />
-	
-	<display:column property="phone" titleKey="member.phone" />
-	
-	<display:column property="address" titleKey="member.address" />
-	
-	<display:column property="score" titleKey="member.spammer" />
+	<display:column property="surname" titleKey="actor.surname" />
 	
 	<display:column>
 		<a href="member/displayTabla.do?memberId=${row.id}"> <spring:message
