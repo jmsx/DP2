@@ -19,9 +19,13 @@
 	class="displaytag">
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-		<display:column>
-			<acme:link url="procession/brotherhood/edit.do?processionId=${row.id}" code="procession.edit"/>
-		</display:column>
+		<jstl:if test="${not empty rol}">
+			<display:column>
+				<acme:link
+					url="procession/brotherhood/edit.do?processionId=${row.id}"
+					code="procession.edit" />
+			</display:column>
+		</jstl:if>
 	</security:authorize>
 
 	<display:column titleKey="procession.brotherhood">
@@ -39,32 +43,36 @@
 
 
 	<display:column>
-		<acme:link url="procession${rolURL}/display.do?processionId=${row.id}" code="procession.display"/>
+		<acme:link url="procession${rolURL}/display.do?processionId=${row.id}"
+			code="procession.display" />
 	</display:column>
 
 
 	<security:authorize access="hasRole('MEMBER')">
-
-		<jstl:set var="ctrl" value="0" />
-		<jstl:forEach var="r" items="${memberProcessions}">
-			<jstl:if test="${r eq row}">
-				<jstl:set var="ctrl" value="1" />
-			</jstl:if>
-		</jstl:forEach>
-		<display:column>
-			<jstl:choose>
-				<jstl:when test="${ctrl == 0}">
-					<acme:link url="request/member/create.do?processionId=${row.id}" code="procession.apply"/>
-				</jstl:when>
-				<jstl:otherwise>
-					<spring:message code="procession.applied" />
-				</jstl:otherwise>
-			</jstl:choose>
-		</display:column>
+		<jstl:if test="${not empty rol}">
+			<jstl:set var="ctrl" value="0" />
+			<jstl:forEach var="r" items="${memberProcessions}">
+				<jstl:if test="${r eq row}">
+					<jstl:set var="ctrl" value="1" />
+				</jstl:if>
+			</jstl:forEach>
+			<display:column>
+				<jstl:choose>
+					<jstl:when test="${ctrl == 0}">
+						<acme:link url="request/member/create.do?processionId=${row.id}"
+							code="procession.apply" />
+					</jstl:when>
+					<jstl:otherwise>
+						<spring:message code="procession.applied" />
+					</jstl:otherwise>
+				</jstl:choose>
+			</display:column>
+		</jstl:if>
 	</security:authorize>
 
 </display:table>
 
 <security:authorize access="hasRole('BROTHERHOOD')">
-	<acme:link url="procession/brotherhood/create.do" code="procession.create"/>
+	<acme:link url="procession/brotherhood/create.do"
+		code="procession.create" />
 </security:authorize>
