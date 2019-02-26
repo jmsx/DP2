@@ -206,6 +206,13 @@ public class ActorService {
 		return result;
 	}
 
+	public Collection<Actor> findAllTooNegativeScore() {
+		this.administratorService.findByPrincipal();
+		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
+		Assert.notNull(result);
+		return result;
+	}
+
 	public void checkForSpamWords(final Actor a) {
 		final Collection<String> words = new ArrayList<>();
 
@@ -270,7 +277,8 @@ public class ActorService {
 	}
 
 	/**
-	 * An administrator can ban system actors, so he must be able to modify them. That's an ancilliary method to "banActor" and "unbanActor", it checks administrator only changes actor's spammer attribute.
+	 * An administrator can ban system actors, so he must be able to modify them. That's an ancilliary method to "banActor" and "unbanActor", it checks
+	 * administrator only changes actor's spammer attribute or that the score is too negative (<-0.5)
 	 * 
 	 * @param a
 	 *            Actor who will be modified
@@ -280,7 +288,7 @@ public class ActorService {
 		Assert.notNull(a);
 		Assert.isTrue(a.getId() != 0);
 		this.administratorService.findByPrincipal();
-		Assert.isTrue(this.equalsLessSpammer(this.findByUserId(a.getUserAccount().getId()), a));
+		Assert.isTrue(this.equalsLessSpammer(this.findByUserId(a.getUserAccount().getId()), a) || (a.getScore() < -0.5));
 		return this.actorRepository.save(a);
 	}
 
@@ -321,6 +329,29 @@ public class ActorService {
 		} else if (!a1.getSurname().equals(a2.getSurname()))
 			return false;
 		return true;
+	}
+
+	/**
+	 * A user is considered to be a spammer if at least 10% of the messages
+	 * that he or she's sent contain at least one spam word
+	 */
+	public void spamActor(final Actor a) {
+		final Collection<Message> messages = this.messageService.findAll(); //messages of actor a
+		for (final Message m : messages)
+			if (!m.getSender().equals(a))
+				messages.remove(m);
+
+		final int totalMessages = messages.size();
+		int spamMessages = 0;
+		for (final Message me : messages)
+			if (this.messageService.checkForSpamWords(me))
+				spamMessages += 1;
+
+		if ((spamMessages / totalMessages) >= 0.1) {
+			a.setSpammer(true);
+			this.update(a);//TODO
+		}
+
 	}
 
 }
