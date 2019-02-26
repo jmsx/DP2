@@ -56,6 +56,14 @@
 				</ul>
 			</li>
 			
+			<li><a class="fNiv"><spring:message	code="master.page.ban" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="ban/administrator/listSpammer.do"><spring:message code="master.page.ban.spammer" /></a></li>
+					<li><a href="ban/administrator/listNegative.do"><spring:message code="master.page.ban.negative" /></a></li>
+				</ul>
+			</li>
+			
 			<li><a class="fNiv"><a href="dashboard/administrator/list.do"><spring:message	code="master.page.dashboard" /></a></a>
 			</li>
 			

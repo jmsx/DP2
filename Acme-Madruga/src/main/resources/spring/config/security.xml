@@ -51,6 +51,8 @@
 		<security:intercept-url pattern="/configurationParameters/administrator/edit.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/position/administrator/**" access="hasRole('ADMIN')" />   
 		<security:intercept-url pattern="/area/administrator/**" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/ban/administrator/**" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/dashboard/administrator/**" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/folder/list.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/folder/edit.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/folder/create.do" access="hasRole('ADMIN')" />
