@@ -111,6 +111,7 @@ public class MemberController extends AbstractController {
 		result = new ModelAndView("member/list");
 		result.addObject("members", members);
 		result.addObject("brotherhood", brotherhood);
+		result.addObject("ok", true);
 		result.addObject("requetURI", "member/list.do");
 
 		final String banner = this.configurationParametersService.findBanner();
