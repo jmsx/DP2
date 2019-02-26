@@ -46,6 +46,52 @@
 		</security:authorize>
 		
 		<security:authorize access="hasRole('BROTHERHOOD')">
+			
+		<%-- FLOATS --%>
+			
+			<li><a class="fNiv"><spring:message	code="master.page.float" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="float/list.do"><spring:message code="master.page.float.list" /></a></li>
+					<li><a href="float/create.do"><spring:message code="master.page.float.create" /></a></li>
+				</ul>
+			</li>
+
+		<%-- PROCESSIONS --%>
+			<li><a class="fNiv"><spring:message	code="master.page.procession" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="procession/list.do"><spring:message code="master.page.procession.list" /></a></li>
+					<li><a href="procession/create.do"><spring:message code="master.page.procession.create" /></a></li>
+				</ul>
+			</li>
+			
+		<%-- MEMBERS --%>
+			
+			<li><a href="member/list.do"><spring:message code="master.page.member.list" /></a></li>
+		
+		<%-- REQUESTS --%>
+			
+			<li><a class="fNiv"><spring:message	code="master.page.request" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="member/list.do"><spring:message code="master.page.request.list" /></a></li>
+				</ul>
+			</li>
+			
+		<%-- AREA --%>
+			
+			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="area/display.do"><spring:message code="master.page.area.display" /></a></li>
+					<li><a href="area/allAreasFree.do"><spring:message code="master.page.area.allAreasFree" /></a></li>
+					
+				</ul>
+			</li>
+			
+		<%-- PROFILE --%>
+			
 			<li><a class="fNiv"><spring:message	code="master.page.brotherhood" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -53,15 +99,6 @@
 					<li><a href="brotherhood/display.do"><spring:message code="master.page.brotherhood.display" /></a></li>					
 				</ul>
 			</li>
-			<li><a href="procession/brotherhood/list.do"><spring:message code="master.page.procession.brotherhood.list" /></a></li>
-			<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>		
-			<li><a class="fNiv"><spring:message	code="master.page.member" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="member/list.do"><spring:message code="master.page.member.list" /></a></li>
-				</ul>
-			</li>
-			<li><a href="procession/list.do"><spring:message code="master.page.brotherhood.edit" /></a></li>
 		</security:authorize>
 				
 		<security:authorize access="hasRole('MEMBER')">
