@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -206,10 +207,14 @@ public class BrotherhoodController extends AbstractController {
 
 		brotherhoods = this.brotherhoodService.findAllBrotherHoodByMember();
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		result = new ModelAndView("brotherhood/list");
+		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("ok", false);
+		result.addObject("leave", true);
 		result.addObject("requetURI", "brotherhood/list.do");
 
 		final String banner = this.configurationParametersService.findBanner();
@@ -228,7 +233,10 @@ public class BrotherhoodController extends AbstractController {
 
 		brotherhoods = this.brotherhoodService.AllBrotherhoodsFree();
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		result = new ModelAndView("brotherhood/list");
+		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("ok", true);
@@ -250,7 +258,10 @@ public class BrotherhoodController extends AbstractController {
 
 		brotherhoods = this.brotherhoodService.findAll();
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		result = new ModelAndView("brotherhood/list");
+		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("requetURI", "brotherhood/listAll.do");
@@ -267,16 +278,11 @@ public class BrotherhoodController extends AbstractController {
 	@RequestMapping(value = "/dropOut", method = RequestMethod.GET)
 	public ModelAndView dropOut(@RequestParam final int memberId) {
 		final ModelAndView result;
-		//		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
 		final Member member = this.memberService.findOne(memberId);
 
 		this.enrolmentService.dropOut(member);
 
 		result = this.memberController.list();
-		//		result.addObject("brotherhood", brotherhood);
-		//		result.addObject("member", member);
-		//		result.addObject("requetURI", "brotherhood/listAll.do");
-		//		result.addObject("ok", false);
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);

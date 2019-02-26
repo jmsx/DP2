@@ -135,4 +135,10 @@ public class EnrolmentService {
 		}
 	}
 
+	public Enrolment getEnrolment(final Actor brotherhood, final Actor member) {
+		final Enrolment res = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), member.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
+	}
+
 }

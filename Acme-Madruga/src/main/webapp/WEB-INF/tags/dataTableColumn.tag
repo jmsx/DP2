@@ -27,7 +27,7 @@
 <%@ attribute name="property" required="true"%>
 <%@ attribute name="code" required="true"%>
 
-<%@ attribute name="sortable" required="false" %>
+<%@ attribute name="sortable" required="false"%>
 
 <jstl:if test="${sortable == null}">
 	<jstl:set var="sortable" value="true" />
@@ -37,12 +37,13 @@
 <%-- Definition --%>
 
 <jstl:choose>
-	<jstl:when test="${lang eq 'es' }">
-		<display:column property="${property}" titleKey="${code}"
-			sortable="${sortable}" format="{0,date,dd/MM/yyyy HH:mm}" />
-	</jstl:when>
-	<jstl:otherwise>
+	<jstl:when test="${lang eq 'en' }">
 		<display:column property="${property}" titleKey="${code}"
 			sortable="${sortable}" format="{0,date,yyyy/MM/dd HH:mm}" />
+	</jstl:when>
+	<jstl:otherwise>
+
+		<display:column property="${property}" titleKey="${code}"
+			sortable="${sortable}" format="{0,date,dd/MM/yyyy HH:mm}" />
 	</jstl:otherwise>
 </jstl:choose>

@@ -23,20 +23,22 @@ import forms.ActorFrom;
 public class MemberService {
 
 	@Autowired
-	private MemberRepository	memberRepository;
+	private MemberRepository							memberRepository;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService								actorService;
 
 	@Autowired
-	private FolderService		folderService;
-	
+	private FolderService								folderService;
+
 	@Autowired
 	private UserAccountService							userAccountService;
 
 	@Autowired
 	private org.springframework.validation.Validator	validator;
 
+	@Autowired
+	private EnrolmentService							enrolmentService;
 
 
 	public Member create() {
@@ -105,12 +107,16 @@ public class MemberService {
 
 	public Collection<Member> allMembersFromBrotherhood() {
 		final Actor principal = this.actorService.findByPrincipal();
-		final Collection<Member> res = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
-		Assert.notNull(res);
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
+		final Collection<Member> all = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
+		final Collection<Member> res = new ArrayList<>();
+		for (final Member m : all)
+			if (this.enrolmentService.getEnrolment(principal, m).getDropOut() == null)
+				res.add(m);
 		return res;
 	}
-	
-	public Member reconstruct(final ActorFrom actorForm, BindingResult binding) {
+
+	public Member reconstruct(final ActorFrom actorForm, final BindingResult binding) {
 		Member member;
 		if (actorForm.getId() == 0) {
 			member = this.create();
@@ -150,6 +156,5 @@ public class MemberService {
 		this.validator.validate(member, binding);
 		return member;
 	}
-	
 
 }

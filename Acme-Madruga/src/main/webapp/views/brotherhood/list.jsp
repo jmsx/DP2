@@ -23,6 +23,14 @@
 			</a>
 		</display:column>
 	</jstl:if>
+	
+	<jstl:if test="${leave}">
+		<display:column>
+			<a href="member/leave.do?brotherhoodId=${row.id}">
+				<spring:message code="brotherhood.member.leave" />
+			</a>
+		</display:column>
+	</jstl:if>
 	</security:authorize>
 
 	<display:column property="name" titleKey="actor.name" />
