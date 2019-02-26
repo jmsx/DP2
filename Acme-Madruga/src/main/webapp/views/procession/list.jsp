@@ -28,26 +28,23 @@
 		</jstl:if>
 	</security:authorize>
 
+	<display:column property="title" titleKey="procession.title" />
+	
+	<display:column property="ticker" titleKey="procession.ticker" />
+
+	<acme:dataTableColumn code="procession.moment" property="moment" />
+	
 	<display:column titleKey="procession.brotherhood">
 		<a href="brotherhood/display.do?brotherhoodId=${row.brotherhood.id}">
 			<jstl:out value="${row.brotherhood.title}" />
 		</a>
 	</display:column>
-
-	<display:column property="ticker" titleKey="procession.ticker" />
-
-	<acme:dataTableColumn code="procession.moment" property="moment" />
-
-	<display:column property="description"
-		titleKey="procession.description" />
-
-
+	
 	<display:column>
 		<acme:link url="procession${rolURL}/display.do?processionId=${row.id}"
 			code="procession.display" />
 	</display:column>
-
-
+	
 	<security:authorize access="hasRole('MEMBER')">
 		<jstl:if test="${not empty rol}">
 			<jstl:set var="ctrl" value="0" />

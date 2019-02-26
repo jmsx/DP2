@@ -71,11 +71,14 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		procession = this.processionService.findOne(processionId);
 		requests = this.requestService.findAll();
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
 
 		if (procession != null && (procession.getMode().equals("FINAL") || procession.getBrotherhood() == bro)) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
+			result.addObject("lang", lang);
 			result.addObject("rol", "brotherhood");
 			result.addObject("requests", requests);
 

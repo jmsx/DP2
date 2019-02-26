@@ -16,6 +16,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import domain.DomainEntity;
 import domain.Float;
@@ -35,6 +37,7 @@ public class ProcessionForm extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getTitle() {
 		return this.title;
 	}
@@ -43,7 +46,7 @@ public class ProcessionForm extends DomainEntity {
 	}
 
 	@NotBlank
-	//@SafeHtml
+	@SafeHtml
 	public String getDescription() {
 		return this.description;
 	}
@@ -84,6 +87,7 @@ public class ProcessionForm extends DomainEntity {
 	@NotNull
 	@Future
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}

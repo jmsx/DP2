@@ -33,11 +33,13 @@ public class ProcessionMemberController extends AbstractController {
 		Procession procession;
 
 		procession = this.processionService.findOne(processionId);
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		if (procession != null && procession.getMode().equals("FINAL")) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
 			result.addObject("rol", "member");
+			result.addObject("lang", lang);
 
 			final String banner = this.configurationParametersService.findBanner();
 			result.addObject("banner", banner);
