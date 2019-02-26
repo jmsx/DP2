@@ -18,6 +18,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import cz.jirutka.validator.collection.constraints.EachNotBlank;
 
@@ -38,6 +39,7 @@ public class Message extends DomainEntity {
 
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}

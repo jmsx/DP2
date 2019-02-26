@@ -42,7 +42,7 @@ public class Brotherhood extends Actor {
 
 	@Past
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date getDate() {
 		return this.date;
 	}

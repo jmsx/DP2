@@ -47,7 +47,7 @@ public class Finder extends DomainEntity {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date getMinDate() {
 		return this.minDate;
 	}
@@ -57,7 +57,7 @@ public class Finder extends DomainEntity {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date getMaxDate() {
 		return this.maxDate;
 	}

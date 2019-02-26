@@ -30,7 +30,7 @@ public class Enrolment extends DomainEntity {
 
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}
@@ -49,7 +49,7 @@ public class Enrolment extends DomainEntity {
 
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	public Date getDropOut() {
 		return this.dropOut;
 	}
