@@ -130,7 +130,7 @@ public class EnrolmentService {
 		Enrolment enrolment;
 
 		if (isMember) {
-			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(principal.getUserAccount().getId(), principal.getUserAccount().getId());
+			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), principal.getUserAccount().getId());
 			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
 		}
 	}

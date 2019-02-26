@@ -123,11 +123,11 @@ public class MemberController extends AbstractController {
 	// LEAVE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/leave", method = RequestMethod.GET)
-	public ModelAndView dropOut(@RequestParam final int memberId) {
+	public ModelAndView leave(@RequestParam final int brotherhoodId) {
 		final ModelAndView result;
-		final Member member = this.memberService.findOne(memberId);
+		final Brotherhood brotherhood = this.brotherhoodService.findOne(brotherhoodId);
 
-		this.enrolmentService.dropOut(member);
+		this.enrolmentService.leave(brotherhood);
 
 		result = this.brotherhoodController.list();
 
