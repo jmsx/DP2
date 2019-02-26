@@ -4,6 +4,7 @@ package controllers.member;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,9 +55,11 @@ public class ProcessionMemberController extends AbstractController {
 
 		processions = this.processionService.findAllFinalMode();
 		memberProcessions = this.processionService.findAllByPrincipal();
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		result = new ModelAndView("procession/list");
 		result.addObject("processions", processions);
+		result.addObject("lang", lang);
 		result.addObject("rol", "member");
 		result.addObject("memberProcessions", memberProcessions);
 		result.addObject("requetURI", "procession/member/list.do");

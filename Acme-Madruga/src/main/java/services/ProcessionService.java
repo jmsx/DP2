@@ -98,14 +98,13 @@ public class ProcessionService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Procession result;
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
-		final Brotherhood bro = this.brotherhoodService.findByUserId(principal.getId());
+		final Brotherhood bro = this.brotherhoodService.findByUserId(principal.getUserAccount().getId());
 
 		if (isBrotherhood && bro.getArea() != null)
 			if (procession.getId() == 0) {
 				procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
 				procession.setMode("DRAFT");
-				final Date moment = new Date(System.currentTimeMillis() - 1);
-				procession.setMoment(moment);
+				final Date moment = new Date(System.currentTimeMillis());
 				procession.setTicker(this.generateTicker(moment));
 			} else
 				Assert.isTrue(procession.getBrotherhood() == this.brotherhoodService.findByPrincipal());
@@ -132,7 +131,7 @@ public class ProcessionService {
 		String res = "";
 		final SimpleDateFormat myFormat = new SimpleDateFormat("yyMMdd", Locale.ENGLISH);
 		final String YYMMMDDD = myFormat.format(date);
-		final String word = RandomStringUtils.randomAlphabetic(5);
+		final String word = RandomStringUtils.randomAlphabetic(5).toUpperCase();
 		final String tickr = YYMMMDDD + '-' + word;
 		res = tickr;
 
@@ -185,9 +184,11 @@ public class ProcessionService {
 	public Procession reconstruct(final ProcessionForm pform, final BindingResult binding) {
 		Procession result;
 
-		if (pform.getId() == 0)
+		if (pform.getId() == 0) {
 			result = this.create();
-		else
+			final Date moment = new Date(System.currentTimeMillis());
+			result.setTicker(this.generateTicker(moment));
+		} else
 			result = this.findOne(pform.getId());
 
 		result.setTitle(pform.getTitle());
@@ -195,6 +196,7 @@ public class ProcessionService {
 		result.setMaxRows(pform.getMaxRows());
 		result.setMaxColumns(pform.getMaxColumns());
 		result.setFloats(pform.getFloats());
+		result.setMoment(pform.getMoment());
 
 		this.validator.validate(result, binding);
 
