@@ -30,6 +30,4 @@
 
 <%-- Definition --%>
 
-<input type="button" name="${name}"
-				value="<spring:message code="${code}" />"
-				onclick="javascript: relativeRedir('${url}');" />
+<input type="button" name="${name}" value="<spring:message code="${code}" />" onclick="javascript: relativeRedir('${url}');" />

@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.BrotherhoodService;
 import services.ConfigurationParametersService;
 import services.ProcessionService;
 import services.RequestService;
 import controllers.AbstractController;
+import domain.Brotherhood;
 import domain.Procession;
 import domain.Request;
+import forms.ProcessionForm;
 
 @Controller
 @RequestMapping("/procession/brotherhood")
@@ -30,6 +33,9 @@ public class ProcessionBrotherhoodController extends AbstractController {
 
 	@Autowired
 	private RequestService					requestService;
+
+	@Autowired
+	private BrotherhoodService				brotherhoodService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
@@ -63,7 +69,9 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		procession = this.processionService.findOne(processionId);
 		requests = this.requestService.findAll();
 
-		if (procession != null) {
+		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
+
+		if (procession != null && (procession.getMode().equals("FINAL") || procession.getBrotherhood() == bro)) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
 			result.addObject("rol", "brotherhood");
@@ -94,27 +102,34 @@ public class ProcessionBrotherhoodController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int processionId) {
 		ModelAndView result;
 		Procession procession;
-		Collection<Procession> processions;
 
 		procession = this.processionService.findOne(processionId);
 
-		if (procession != null) {
-			processions = this.processionService.findAll();
+		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
 
-			if (processions.contains(procession))
-				result = this.createEditModelAndView(procession);
-			else
-				result = new ModelAndView("redirect:/misc/403.jsp");
-
-		} else
+		if (procession != null && (procession.getMode().equals("FINAL") || procession.getBrotherhood() == bro))
+			result = this.createEditModelAndView(procession);
+		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
 
+	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)
+	public ModelAndView finalMode(@RequestParam final int processionId) {
+		final ModelAndView result;
+		if (this.brotherhoodService.findByPrincipal().getArea() != null) {
+			this.processionService.toFinalMode(processionId);
+			result = new ModelAndView("redirect:list.do");
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		return result;
+	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Procession procession, final BindingResult binding) {
+	public ModelAndView save(@Valid final ProcessionForm pform, final BindingResult binding) {
 		ModelAndView result;
+
+		final Procession procession = this.processionService.reconstruct(pform, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(procession);
@@ -126,7 +141,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
 				final Date current = new Date(System.currentTimeMillis());
-				if (procession.getMoment().before(current))
+				if (procession.getMoment().after(current))
 					result = this.createEditModelAndView(procession, "procession.date.error");
 				else
 					result = this.createEditModelAndView(procession, "procession.commit.error");

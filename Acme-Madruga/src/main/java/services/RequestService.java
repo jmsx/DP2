@@ -37,9 +37,9 @@ public class RequestService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Collection<Request> res = new HashSet<>();
 		if (this.actorService.checkAuthority(principal, Authority.MEMBER))
-			res.addAll(this.requestRepository.findByMember(principal.getId()));
+			res.addAll(this.requestRepository.findByMember(principal.getUserAccount().getId()));
 		else if (this.actorService.checkAuthority(principal, Authority.BROTHERHOOD))
-			res.addAll(this.requestRepository.findByBrotherhood(principal.getId()));
+			res.addAll(this.requestRepository.findByBrotherhood(principal.getUserAccount().getId()));
 		return res;
 	}
 	/**
@@ -54,9 +54,9 @@ public class RequestService {
 		Assert.notNull(res, "Not found Request to this id");
 		Boolean isAccepted = false;
 		if (this.actorService.checkAuthority(principal, Authority.MEMBER))
-			isAccepted = res.getMember().getId() == principal.getId();
+			isAccepted = res.getMember().getId() == principal.getUserAccount().getId();
 		else if (this.actorService.checkAuthority(principal, Authority.BROTHERHOOD))
-			isAccepted = this.requestRepository.checkBrotherhoodAccess(principal.getId(), idRequest);
+			isAccepted = this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), idRequest);
 		Assert.isTrue(isAccepted, "RequesService - findOne - Access Denied");
 		res = isAccepted ? res : null;
 		return res;
@@ -83,7 +83,7 @@ public class RequestService {
 		else {
 			Assert.isTrue(!isMember, "A member cannot update the request");
 			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request");
-			Assert.isTrue(!this.requestRepository.checkBrotherhoodAccess(principal.getId(), req.getId()), "This Brotherhood haven't access to this request");
+			Assert.isTrue(!this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), req.getId()), "This Brotherhood haven't access to this request");
 			if (req.getStatus().equals(Request.REJECTED))
 				Assert.isTrue(!(req.getExplanation() == "" || req.getExplanation() == null), "If Request is REJECTED must have a explanation");
 			if (req.getStatus().equals(Request.APPROVED)) {
@@ -99,7 +99,7 @@ public class RequestService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 		Assert.isTrue(isMember, "Only a member can delete a request");
-		Assert.isTrue(req.getMember().getId() == principal.getId(), "Member must be the own of the request");
+		Assert.isTrue(req.getMember().getId() == principal.getUserAccount().getId(), "Member must be the own of the request");
 		final Request request = this.requestRepository.findOne(req.getId());
 		Assert.isTrue(request.getStatus().equals(Request.PENDING), "The Request must be PENDING");
 		this.requestRepository.delete(req.getId());

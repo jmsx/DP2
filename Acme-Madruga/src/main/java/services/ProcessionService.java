@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ProcessionRepository;
 import security.Authority;
@@ -20,6 +22,7 @@ import domain.Brotherhood;
 import domain.Float;
 import domain.Member;
 import domain.Procession;
+import forms.ProcessionForm;
 
 @Service
 @Transactional
@@ -37,6 +40,9 @@ public class ProcessionService {
 	@Autowired
 	private MemberService			memberService;
 
+	@Autowired
+	private Validator				validator;
+
 
 	public Procession create() {
 		final Procession procession = new Procession();
@@ -52,12 +58,17 @@ public class ProcessionService {
 	}
 
 	public Collection<Procession> findAll() {
-
 		final Collection<Procession> result = this.processionRepository.findAll();
 		Assert.notNull(result);
 
 		return result;
+	}
 
+	public Collection<Procession> findAllFinalMode() {
+		final Collection<Procession> result = this.processionRepository.findAllFinalMode();
+		Assert.notNull(result);
+
+		return result;
 	}
 
 	public Collection<Procession> findAllByPrincipal() {
@@ -107,8 +118,10 @@ public class ProcessionService {
 		Assert.notNull(procession);
 		Assert.isTrue(procession.getId() != 0);
 
+		final Procession retrieved = this.findOne(procession.getId());
+
 		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
-		Assert.isTrue(procession.getBrotherhood().equals(principal));
+		Assert.isTrue(retrieved.getBrotherhood().equals(principal));
 		this.processionRepository.delete(procession);
 
 	}
@@ -149,7 +162,7 @@ public class ProcessionService {
 	public Collection<Procession> processionsAvailable() {
 		final Member principal = this.memberService.findByPrincipal();
 		final Collection<Procession> memberProcessions = this.processionRepository.findAllProcessionByBMemberId(principal.getUserAccount().getId());
-		final Collection<Procession> processions = this.findAll();
+		final Collection<Procession> processions = this.findAllFinalMode();
 		processions.removeAll(memberProcessions);
 		return processions;
 	}
@@ -158,4 +171,32 @@ public class ProcessionService {
 		return this.processionRepository.exists(processionId);
 	}
 
+	public Procession toFinalMode(final int processionId) {
+		final Procession procession = this.findOne(processionId);
+		final Procession result;
+		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
+		Assert.isTrue(procession.getBrotherhood() == bro, "Actor who want to edit procession mode to FINAL is not his owner");
+		Assert.isTrue(procession.getMode().equals("DRAFT"));
+		if (bro.getArea() != null)
+			procession.setMode("FINAL");
+		result = this.processionRepository.save(procession);
+		return result;
+	}
+	public Procession reconstruct(final ProcessionForm pform, final BindingResult binding) {
+		Procession result;
+
+		if (pform.getId() == 0)
+			result = this.create();
+		else
+			result = this.findOne(pform.getId());
+
+		result.setTitle(pform.getTitle());
+		result.setDescription(pform.getDescription());
+		result.setMaxRows(pform.getMaxRows());
+		result.setMaxColumns(pform.getMaxColumns());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
 }

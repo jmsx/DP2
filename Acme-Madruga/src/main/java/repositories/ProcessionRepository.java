@@ -21,4 +21,7 @@ public interface ProcessionRepository extends JpaRepository<Procession, Integer>
 	@Query("select p from Procession p where p.ticker = ?1")
 	Collection<Procession> getProcessionWithTicker(String ticker);
 
+	@Query("select p from Procession p where p.mode = 'FINAL'")
+	Collection<Procession> findAllFinalMode();
+
 }

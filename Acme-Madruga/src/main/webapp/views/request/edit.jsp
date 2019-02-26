@@ -15,14 +15,11 @@
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
 
-<form:form action="request/${rol}/edit.do"
-	modelAttribute="request">
+<form:form action="request${rolURL}/edit.do" modelAttribute="request">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-
-
-
+	
 	<security:authorize access="hasRole('MEMBER')">
 
 		<form:label path="price">

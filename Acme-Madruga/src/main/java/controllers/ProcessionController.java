@@ -32,7 +32,7 @@ public class ProcessionController extends AbstractController {
 
 		procession = this.processionService.findOne(processionId);
 
-		if (procession != null) {
+		if (procession != null && procession.getMode().equals("FINAL")) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
 
@@ -49,7 +49,7 @@ public class ProcessionController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Procession> processions;
 
-		processions = this.processionService.findAll();
+		processions = this.processionService.findAllFinalMode();
 
 		result = new ModelAndView("procession/list");
 		result.addObject("processions", processions);
