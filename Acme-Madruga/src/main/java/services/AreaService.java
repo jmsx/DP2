@@ -18,8 +18,8 @@ import domain.Area;
 public class AreaService {
 
 	@Autowired
-	private AreaRepository	areaRepository;
-	
+	private AreaRepository			areaRepository;
+
 	@Autowired
 	private AdministratorService	administratorService;
 
@@ -50,8 +50,7 @@ public class AreaService {
 
 	public Area save(final Area area) {
 		final Actor principal = this.administratorService.findByPrincipal();
-		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-		Assert.isTrue(isAdmin);
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.ADMIN), "The logged actor is not an admin");
 		Assert.notNull(area);
 		final Area result = this.areaRepository.save(area);
 		return result;
@@ -59,22 +58,17 @@ public class AreaService {
 
 	public void delete(final Area area) {
 		final Actor principal = this.administratorService.findByPrincipal();
-		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.ADMIN));
 		Assert.notNull(area);
 		Assert.isTrue(area.getId() != 0);
-		Assert.isTrue(this.areaRepository.exists(area.getId()) 
-				&& !this.AllAreasSettled().contains(area));
-		if (isAdmin){
-			this.areaRepository.delete(area);
-		}
+		Assert.isTrue(this.areaRepository.exists(area.getId()) && !this.AllAreasSettled().contains(area), "Not possible to delete a settled area");
+		this.areaRepository.delete(area);
 	}
-	
+
 	/* ========================= OTHER METHODS =========================== */
-	
-	public Collection<Area> AllAreasSettled(){
+
+	public Collection<Area> AllAreasSettled() {
 		return this.areaRepository.AllAreasSettled();
 	}
-	
-	
 
 }

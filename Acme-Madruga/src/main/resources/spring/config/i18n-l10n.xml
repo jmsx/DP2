@@ -26,6 +26,11 @@
 		<value>/views/administrator/messages</value>
 		<value>/views/customer/messages</value>
 		<value>/views/profile/messages</value>
+		
+		<!-- Administrador -->
+		<value>/views/configurationParameters/messages</value>
+		<value>/views/position/messages</value>
+		<value>/views/area/messages</value>
 	</util:list>
 
 </beans>
