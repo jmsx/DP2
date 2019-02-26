@@ -25,10 +25,14 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>	
+					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>
+					<li><a href="folder/list.do"><spring:message code="folder.list" /></a></li>					
+					<li><a href="administrator/create.do"><spring:message code="master.page.administrator.create" /></a></li>					
 					<li><a href="administrator/create.do"><spring:message code="master.page.administrator.create" /></a></li>					
 				</ul>
 			</li>
+			<li><a href="brotherhood/listAll.do"><spring:message code="master.page.brotherhood.allBrotherhoods" /></a></li>
+			
 		</security:authorize>
 		
 		<security:authorize access="hasRole('MEMBER')">
@@ -51,11 +55,42 @@
 			</li>
 			<li><a href="procession/brotherhood/list.do"><spring:message code="master.page.procession.brotherhood.list" /></a></li>
 			<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>		
+			<li><a class="fNiv"><spring:message	code="master.page.member" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="member/list.do"><spring:message code="master.page.member.list" /></a></li>
+				</ul>
+			</li>
+			<li><a href="procession/list.do"><spring:message code="master.page.brotherhood.edit" /></a></li>
+		</security:authorize>
+				
+		<security:authorize access="hasRole('MEMBER')">
+			<li><a class="fNiv"><spring:message	code="master.page.member" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="member/edit.do"><spring:message code="master.page.member.edit" /></a></li>
+					<li><a href="member/display.do"><spring:message code="master.page.member.display" /></a></li>					
+				</ul>
+			</li>
+			<li><a class="fNiv"><spring:message	code="master.page.brotherhood" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="brotherhood/list.do"><spring:message code="master.page.brotherhood.list" /></a></li>
+					<li><a href="brotherhood/allBrotherhoodsFree.do"><spring:message code="master.page.brotherhood.allFree" /></a></li>
+				</ul>
+			</li>
+			<li><a class="fNiv"><spring:message	code="master.page.request" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="request/list.do"><spring:message code="master.page.request.list" /></a></li>
+				</ul>
+			</li>
 		</security:authorize>
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 			<li><a class="fNiv" href="brotherhood/create.do"><spring:message code="master.page.brotherhood.register" /></a></li>
+			<li><a class="fNiv" href="member/create.do"><spring:message code="master.page.member.register" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">

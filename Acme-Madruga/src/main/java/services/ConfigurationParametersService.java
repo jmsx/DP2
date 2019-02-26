@@ -69,8 +69,7 @@ public class ConfigurationParametersService {
 		for (final String s : strings)
 			for (final String spamWord : spamWords) {
 				final boolean bool = s.matches(".*" + spamWord + ".*");
-
-				if (bool) {
+				if (s.contentEquals(spamWord)) {
 					res = true;
 					break;
 				}
