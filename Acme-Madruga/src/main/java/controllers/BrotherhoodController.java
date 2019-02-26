@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.AreaService;
 import services.BrotherhoodService;
 import services.ConfigurationParametersService;
+import services.EnrolmentService;
 import services.MemberService;
 import services.UserAccountService;
 import domain.Area;
@@ -42,6 +43,12 @@ public class BrotherhoodController extends AbstractController {
 
 	@Autowired
 	private MemberService					memberService;
+
+	@Autowired
+	private EnrolmentService				enrolmentService;
+
+	@Autowired
+	private MemberController				memberController;
 
 
 	// CONSTRUCTOR -----------------------------------------------------------
@@ -257,4 +264,23 @@ public class BrotherhoodController extends AbstractController {
 
 	// DROP OUT  ---------------------------------------------------------------		
 
+	@RequestMapping(value = "/dropOut", method = RequestMethod.GET)
+	public ModelAndView dropOut(@RequestParam final int memberId) {
+		final ModelAndView result;
+		//		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
+		final Member member = this.memberService.findOne(memberId);
+
+		this.enrolmentService.dropOut(member);
+
+		result = this.memberController.list();
+		//		result.addObject("brotherhood", brotherhood);
+		//		result.addObject("member", member);
+		//		result.addObject("requetURI", "brotherhood/listAll.do");
+		//		result.addObject("ok", false);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
 }
