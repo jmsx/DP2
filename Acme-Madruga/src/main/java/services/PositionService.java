@@ -30,11 +30,10 @@ public class PositionService {
 	private ConfigurationParametersService	configurationParametersService;
 
 
-	Position create(final String nameSpanish, final String nameEnglish) {
+	public Position create() {
 		final Position res = new Position();
-		Assert.isTrue(!(this.configurationParametersService.findSpamWords().contains(nameEnglish) || this.configurationParametersService.findSpamWords().contains(nameSpanish)));
-		res.setNameEnglish(nameEnglish);
-		res.setNameSpanish(nameSpanish);
+		res.setNameEnglish("");
+		res.setNameSpanish("");
 		return res;
 	}
 
@@ -55,19 +54,25 @@ public class PositionService {
 	public Position save(final Position position) {
 		Assert.notNull(position);
 		if (position.getId() != 0)
-			Assert.isTrue(!(this.configurationParametersService.findSpamWords().contains(position.getNameEnglish()) || this.configurationParametersService.findSpamWords().contains(position.getNameSpanish())));
+			Assert.isTrue(!(this.configurationParametersService.findSpamWords().contains(position.getNameEnglish()) || this.configurationParametersService.findSpamWords().contains(position.getNameSpanish())), "Position cannot be a spam word");
+		for (final Position p : this.positionRepository.findAll()) {
+			Assert.isTrue(!p.getNameEnglish().equals(position.getNameEnglish()), "This english name already exists");
+			Assert.isTrue(!p.getNameSpanish().equals(position.getNameSpanish()), "This spanish name already exists");
+		}
+
 		final Position res = this.positionRepository.save(position);
 		return res;
 	}
 
 	public void delete(final Position position) {
 		final Actor principal = this.actorService.findByPrincipal();
-		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-		Assert.notNull(position);
-		Assert.isTrue(position.getId() != 0);
-		if ((!this.AllPositionUsed().contains(position)) && isAdmin)
-			this.positionRepository.delete(position);
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.ADMIN), "Logged user is not an admin");
+		Assert.notNull(position, "Position cannot be null");
+		Assert.isTrue(position.getId() != 0, "Position id cannot be 0");
+		Assert.isTrue(!this.AllPositionUsed().contains(position), "Not possible to delete a position in use");
+		this.positionRepository.delete(position);
 	}
+
 	/* ========================= OTHER METHODS =========================== */
 
 	public Collection<Position> AllPositionUsed() {

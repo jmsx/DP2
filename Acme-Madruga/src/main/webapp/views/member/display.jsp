@@ -15,13 +15,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<p><spring:message code="member.display.msg" /></p>
-
-
-<spring:message code="member.display.msg"/>: 
-	<a href="member/display.do?memberId=${id}">	</a>
-<br/>
 
 <spring:message code="actor.name" var="name"/>
 <jstl:out value="${name}"/>:
@@ -43,7 +38,7 @@
 <jstl:out value="${email}"/>:
 <jstl:out value="${member.email}"/>
 <br>
-<spring:message code="actor.phone" var="phoneNumber"/>
+<spring:message code="actor.phone" var="phone"/>
 <jstl:out value="${phone}"/>:
 <jstl:out value="${member.phone}"/>
 <br>
@@ -59,3 +54,7 @@
 <jstl:out value="${spammer}"/>:
 <jstl:out value="${member.spammer}"/>
 <br>
+
+<security:authorize access="hasRole('BROTHERHOOD')">
+	<acme:button url="/member/list.do" name="back" code="member.back"/>
+</security:authorize>

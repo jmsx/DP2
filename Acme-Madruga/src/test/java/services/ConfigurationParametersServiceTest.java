@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -12,23 +13,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import utilities.AbstractTest;
 import domain.ConfigurationParameters;
 import domain.Position;
-
-import utilities.AbstractTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
 })
 @Transactional
-public class ConfigurationParametersServiceTest extends AbstractTest{
-	
+public class ConfigurationParametersServiceTest extends AbstractTest {
+
 	@Autowired
-	private ConfigurationParametersService configurationParametersService;
-	
+	private ConfigurationParametersService	configurationParametersService;
+
 	@Autowired
-	private PositionService positionService;
+	private PositionService					positionService;
+
 
 	@Test
 	public void testCreate() {
@@ -47,8 +48,7 @@ public class ConfigurationParametersServiceTest extends AbstractTest{
 	@Test
 	public void testFindOne() {
 		super.authenticate("admin1");
-		final List<ConfigurationParameters> confs = (List<ConfigurationParameters>)
-				this.configurationParametersService.findAll();
+		final List<ConfigurationParameters> confs = (List<ConfigurationParameters>) this.configurationParametersService.findAll();
 		final int id = confs.get(0).getId();
 		final ConfigurationParameters conf = this.configurationParametersService.findOne(id);
 		Assert.notNull(conf);
@@ -137,8 +137,7 @@ public class ConfigurationParametersServiceTest extends AbstractTest{
 		Assert.notNull(confSaved.getWelcomeMessageEn());
 		Assert.notNull(confSaved.getWelcomeMessageEsp());
 		Assert.notNull(confSaved.getSysName());
-		
-		
+
 	}
 
 	@Test
@@ -175,9 +174,9 @@ public class ConfigurationParametersServiceTest extends AbstractTest{
 	@Test
 	public void testAddPosition() {
 		super.authenticate("admin1");
-		final String sp = "Español";
-		final String en = "English";
-		final Position pos = this.positionService.create(sp, en);
+		final Position pos = this.positionService.create();
+		pos.setNameEnglish("en");
+		pos.setNameSpanish("sp");
 		final Position posSv = this.positionService.save(pos);
 		final Collection<Position> res = this.configurationParametersService.addPosition(posSv);
 		Assert.isTrue(res.contains(res.contains(posSv)));

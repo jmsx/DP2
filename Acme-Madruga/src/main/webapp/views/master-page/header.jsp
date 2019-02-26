@@ -21,6 +21,7 @@
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 		<security:authorize access="hasRole('ADMIN')">
+			
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -31,7 +32,32 @@
 					<li><a href="administrator/create.do"><spring:message code="master.page.administrator.create" /></a></li>					
 				</ul>
 			</li>
+
 			<li><a href="brotherhood/listAll.do"><spring:message code="master.page.brotherhood.allBrotherhoods" /></a></li>
+			
+			<li><a class="fNiv"><spring:message	code="master.page.configurationParameters" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="configurationParameters/administrator/edit.do"><spring:message code="master.page.configurationParameters.edit" /></a></li>
+				</ul>
+			</li>
+			
+			<li><a class="fNiv"><spring:message	code="master.page.position" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="position/administrator/list.do"><spring:message code="master.page.position.list" /></a></li>
+				</ul>
+			</li>
+			
+			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="area/administrator/list.do"><spring:message code="master.page.area.list" /></a></li>
+				</ul>
+			</li>
+			
+			<li><a class="fNiv"><a href="dashboard/administrator/list.do"><spring:message	code="master.page.dashboard" /></a></a>
+			</li>
 			
 		</security:authorize>
 		
@@ -65,7 +91,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.request" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="member/list.do"><spring:message code="master.page.request.list" /></a></li>
+					<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>
 				</ul>
 			</li>
 			
