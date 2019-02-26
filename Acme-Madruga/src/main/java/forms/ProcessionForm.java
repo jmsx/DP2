@@ -55,6 +55,18 @@ public class ProcessionForm extends DomainEntity {
 		this.description = description;
 	}
 
+	@NotNull
+	@Future
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	public Date getMoment() {
+		return this.moment;
+	}
+
+	public void setMoment(final Date moment) {
+		this.moment = moment;
+	}
+
 	//Relational Methods
 	@Valid
 	@ManyToMany
@@ -84,15 +96,4 @@ public class ProcessionForm extends DomainEntity {
 		this.maxColumns = maxColumns;
 	}
 
-	@NotNull
-	@Future
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
-	public Date getMoment() {
-		return this.moment;
-	}
-
-	public void setMoment(final Date moment) {
-		this.moment = moment;
-	}
 }
