@@ -1,7 +1,9 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +71,15 @@ public class AreaService {
 
 	public Collection<Area> AllAreasSettled() {
 		return this.areaRepository.AllAreasSettled();
+	}
+
+	public Collection<Area> AllAreasFree() {
+		final List<Area> all = this.areaRepository.findAll();
+		final List<Area> ocupadas = (List<Area>) this.AllAreasSettled();
+		all.removeAll(ocupadas);
+		final List<Area> libres = new ArrayList<Area>(all);
+		Assert.notEmpty(libres);
+		return libres;
 	}
 
 }

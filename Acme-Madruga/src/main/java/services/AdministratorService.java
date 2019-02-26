@@ -1,9 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,8 +81,7 @@ public class AdministratorService {
 		return a;
 	}
 
-	public Administrator reconstruct(final ActorFrom actorForm, BindingResult binding) {
-		binding = binding;
+	public Administrator reconstruct(final ActorFrom actorForm, final BindingResult binding) {
 		Administrator admin;
 		if (actorForm.getId() == 0) {
 			admin = this.create();
@@ -98,15 +94,7 @@ public class AdministratorService {
 			admin.setAddress(actorForm.getAddress());
 			admin.setScore(0.0);
 			admin.setSpammer(false);
-			final UserAccount account = this.userAccountService.create();
-			final Collection<Authority> authorities = new ArrayList<>();
-			final Authority auth = new Authority();
-			auth.setAuthority(Authority.ADMIN);
-			authorities.add(auth);
-			account.setAuthorities(authorities);
-			account.setUsername(actorForm.getUserAccountuser());
-			account.setPassword(actorForm.getUserAccountpassword());
-			admin.setUserAccount(account);
+
 		} else {
 			admin = this.administratorRepository.findOne(actorForm.getId());
 			admin.setName(actorForm.getName());
@@ -121,8 +109,6 @@ public class AdministratorService {
 			account.setPassword(actorForm.getUserAccountpassword());
 			admin.setUserAccount(account);
 		}
-		this.validator.validate(admin.getUserAccount(), binding);
-		this.validator.validate(admin, binding);
 		return admin;
 	}
 }

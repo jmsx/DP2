@@ -1,12 +1,15 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
 import repositories.BrotherhoodRepository;
 import security.Authority;
@@ -15,27 +18,39 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Area;
 import domain.Brotherhood;
-import domain.Member;
+import forms.ActorFrom;
 
 @Service
 @Transactional
 public class BrotherhoodService {
 
 	@Autowired
-	private BrotherhoodRepository	brotherhoodRepository;
+	private BrotherhoodRepository						brotherhoodRepository;
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService								actorService;
 
 	@Autowired
-	private FolderService			folderService;
-	
+	private FolderService								folderService;
+
 	@Autowired
-	private MemberService memberService;
+	private MemberService								memberService;
+
+	@Autowired
+	private UserAccountService							userAccountService;
+
+	@Autowired
+	private org.springframework.validation.Validator	validator;
+
+	@Autowired
+	private EnrolmentService							enrolmentService;
 
 
 	public Brotherhood create() {
-		return new Brotherhood();
+		final Brotherhood brotherhood = new Brotherhood();
+		this.actorService.setAuthorityUserAccount(Authority.BROTHERHOOD, brotherhood);
+
+		return brotherhood;
 	}
 
 	public Collection<Brotherhood> findAll() {
@@ -47,7 +62,7 @@ public class BrotherhoodService {
 	public Brotherhood findOne(final int brotherhoodId) {
 		Assert.isTrue(brotherhoodId != 0);
 		final Brotherhood result = this.brotherhoodRepository.findOne(brotherhoodId);
-		Assert.notNull(result,"Find One de brotherhood es nulo");
+		Assert.notNull(result, "Find One de brotherhood es nulo");
 		return result;
 	}
 
@@ -93,12 +108,17 @@ public class BrotherhoodService {
 	}
 
 	public Collection<Brotherhood> findAllBrotherHoodByMember() {
-		final Actor principal = this.memberService.findByPrincipal();
+		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
-		return this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getId());
+		final Collection<Brotherhood> all = this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getUserAccount().getId());
+		final Collection<Brotherhood> res = new ArrayList<>();
+		for (final Brotherhood b : all)
+			if (this.enrolmentService.getEnrolment(b, principal).getDropOut() == null)
+				res.add(b);
+		return res;
 	}
-	
-	public void areaSet(final Area area){
+
+	public void areaSet(final Area area) {
 		Assert.notNull(area);
 		final Brotherhood principal = this.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
@@ -107,4 +127,66 @@ public class BrotherhoodService {
 		this.save(principal);
 	}
 
+	//	public void registerAsBrotherhood(Brotherhood brotherhood) {
+	//		brotherhood = this.create();
+	//		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+	//		final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
+	//		brotherhood.getUserAccount().setPassword(hash);
+	//		brotherhood.setSpammer(false);
+	//		brotherhood.setScore(0.0);
+	//		brotherhood.setPictures(new ArrayList<String>());
+	//		brotherhood.setDate(new Date(System.currentTimeMillis() - 1));
+	//
+	//		final Brotherhood saved = this.brotherhoodRepository.save(brotherhood);
+	//		this.folderService.setFoldersByDefault(saved);
+	//	}
+
+	public Brotherhood reconstruct(final ActorFrom actorForm, BindingResult binding) {
+		binding = binding;
+		Brotherhood brotherhood;
+		if (actorForm.getId() == 0) {
+			brotherhood = this.create();
+			brotherhood.setName(actorForm.getName());
+			brotherhood.setMiddleName(actorForm.getMiddleName());
+			brotherhood.setSurname(actorForm.getSurname());
+			brotherhood.setPhoto(actorForm.getPhoto());
+			brotherhood.setPhone(actorForm.getPhone());
+			brotherhood.setEmail(actorForm.getEmail());
+			brotherhood.setAddress(actorForm.getAddress());
+			brotherhood.setScore(0.0);
+			brotherhood.setSpammer(false);
+			final UserAccount account = this.userAccountService.create();
+			final Collection<Authority> authorities = new ArrayList<>();
+			final Authority auth = new Authority();
+			auth.setAuthority(Authority.BROTHERHOOD);
+			authorities.add(auth);
+			account.setAuthorities(authorities);
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
+			brotherhood.setUserAccount(account);
+		} else {
+			brotherhood = this.brotherhoodRepository.findOne(actorForm.getId());
+			brotherhood.setName(actorForm.getName());
+			brotherhood.setMiddleName(actorForm.getMiddleName());
+			brotherhood.setSurname(actorForm.getSurname());
+			brotherhood.setPhoto(actorForm.getPhoto());
+			brotherhood.setPhone(actorForm.getPhone());
+			brotherhood.setEmail(actorForm.getEmail());
+			brotherhood.setAddress(actorForm.getAddress());
+			final UserAccount account = this.userAccountService.findOne(brotherhood.getUserAccount().getId());
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
+			brotherhood.setUserAccount(account);
+		}
+		this.validator.validate(brotherhood.getUserAccount(), binding);
+		this.validator.validate(brotherhood, binding);
+		return brotherhood;
+	}
+
+	public Collection<Brotherhood> AllBrotherhoodsFree() {
+		final List<Brotherhood> all = this.brotherhoodRepository.findAll();
+		final List<Brotherhood> ocupadas = (List<Brotherhood>) this.findAllBrotherHoodByMember();
+		all.removeAll(ocupadas);
+		return all;
+	}
 }

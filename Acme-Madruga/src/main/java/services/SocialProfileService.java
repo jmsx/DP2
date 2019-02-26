@@ -85,8 +85,11 @@ public class SocialProfileService {
 
 	// Other business methods -------------------------------------------------
 
-	public SocialProfile findByUserId(final int userAccountId) {
+	public Collection<SocialProfile> findByUserId(final int userAccountId) {
 		return this.socialProfileRepository.findByUserId(userAccountId);
+	}
+	public Collection<SocialProfile> findAllByPrincipal() {
+		return this.socialProfileRepository.findByUserId(this.actorService.findByPrincipal().getId());
 	}
 
 }

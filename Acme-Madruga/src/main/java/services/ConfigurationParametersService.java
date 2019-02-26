@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ConfigurationParametersRepository;
+import security.Authority;
+import domain.Actor;
 import domain.Administrator;
 import domain.ConfigurationParameters;
 import domain.Position;
@@ -31,18 +33,29 @@ public class ConfigurationParametersService {
 	@Autowired
 	private AdministratorService				administratorService;
 
+	@Autowired
+	private ActorService			actorService;
 
 	public ConfigurationParameters create() {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		return new ConfigurationParameters();
 	}
 
 	public Collection<ConfigurationParameters> findAll() {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		final Collection<ConfigurationParameters> res = this.configurationParametersRepository.findAll();
 		Assert.notNull(res);
 		return res;
 	}
 
 	public ConfigurationParameters findOne(final int id) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.isTrue(id != 0);
 		final ConfigurationParameters res = this.configurationParametersRepository.findOne(id);
 		Assert.notNull(res);
@@ -56,8 +69,7 @@ public class ConfigurationParametersService {
 		for (final String s : strings)
 			for (final String spamWord : spamWords) {
 				final boolean bool = s.matches(".*" + spamWord + ".*");
-
-				if (bool) {
+				if (s.contentEquals(spamWord)) {
 					res = true;
 					break;
 				}
@@ -116,9 +128,11 @@ public class ConfigurationParametersService {
 	}
 
 	public ConfigurationParameters save(final ConfigurationParameters c) {
+		
 		Assert.notNull(c);
-
 		final Administrator a = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(a, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		System.out.println(a.getUserAccount().getAuthorities());
 
 		if (c.getId() == 0) {
@@ -210,6 +224,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<String> addNegativeWord(final String nword) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(nword);
 		final Collection<String> nwords = this.findNegativeWords();
 
@@ -217,6 +234,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<String> addPositiveWord(final String pword) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(pword);
 		final Collection<String> pwords = this.findPositiveWords();
 
@@ -224,6 +244,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<String> addSpamWord(final String sword) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(sword);
 		final Collection<String> swords = this.findSpamWords();
 
@@ -231,6 +254,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<Position> addPosition(final Position position) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(position);
 
 		final Collection<Position> positions = this.findPositionList();
@@ -241,6 +267,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<String> deleteNegativeWord(final String nword) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(nword);
 		final Collection<String> nwords = this.findNegativeWords();
 
@@ -248,6 +277,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<String> deletePositiveWord(final String pword) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(pword);
 		final Collection<String> pwords = this.findPositiveWords();
 
@@ -255,6 +287,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<String> deleteSpamWord(final String sword) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(sword);
 		final Collection<String> swords = this.findSpamWords();
 
@@ -262,6 +297,9 @@ public class ConfigurationParametersService {
 	}
 
 	public Collection<Position> deletePosition(final Position position) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.notNull(position);
 
 		final Collection<Position> positions = this.findPositionList();
@@ -272,6 +310,9 @@ public class ConfigurationParametersService {
 	}
 
 	private Collection<String> addWord(final String word, final Collection<String> words) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.isTrue(!words.contains(word));
 		words.add(word);
 
@@ -279,6 +320,9 @@ public class ConfigurationParametersService {
 	}
 
 	private Collection<String> deleteWord(final String word, final Collection<String> words) {
+		final Actor principal = this.administratorService.findByPrincipal();
+		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		Assert.isTrue(isAdmin);
 		Assert.isTrue(words.contains(word));
 		words.remove(word);
 

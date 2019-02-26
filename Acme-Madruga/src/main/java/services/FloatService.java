@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.FloatRepository;
+import domain.Actor;
 import domain.Brotherhood;
 import domain.Float;
 import domain.Procession;
@@ -27,28 +28,41 @@ public class FloatService {
 	@Autowired
 	private ConfigurationParametersService	configuracionParametersService;
 
+	@Autowired
+	private BrotherhoodService				brotherhoodService;
+
 
 	//Métodos CRUD
 
 	public Float create() {
 		final Float fProcession = new Float();
 		final Collection<String> pictures = new ArrayList<>();
-		final Brotherhood bhood = new Brotherhood();
+		final Brotherhood bhood = this.brotherhoodService.findByPrincipal();
 		fProcession.setBrotherhood(bhood);
 		fProcession.setPictures(pictures);
+		Assert.notNull(fProcession);
 		return fProcession;
 	}
-
 	public Collection<Float> findAll() {
 		final Collection<Float> res = this.floatRepository.findAll();
 		Assert.notNull(res);
 		return res;
 	}
 
-	public Float save(final int floatId) {
+	public Float findOne(final int floatId) {
 		Assert.notNull(floatId);
 		Assert.isTrue(floatId != 0);
 		final Float res = this.floatRepository.findOne(floatId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Float save(final Float f) {
+		Assert.notNull(f);
+		Assert.isTrue(f.getId() != 0);
+		final Actor me = this.brotherhoodService.findByPrincipal();
+		Assert.notNull(me);
+		final Float res = this.floatRepository.save(f);
 		Assert.notNull(res);
 		return res;
 	}

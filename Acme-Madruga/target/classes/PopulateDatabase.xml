@@ -43,7 +43,7 @@
 
 	<bean id="userAccountMember1" class="security.UserAccount">
 		<property name="username" value="member1" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
+		<property name="password" value="c7764cfed23c5ca3bb393308a0da2306" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -55,7 +55,7 @@
 
 	<bean id="userAccountMember2" class="security.UserAccount">
 		<property name="username" value="member2" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
+		<property name="password" value="88ed421f060aadcacbd63f28d889797f" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -84,7 +84,7 @@
 
 	<bean id="userAccountBrotherhood1" class="security.UserAccount">
 		<property name="username" value="brotherhood1" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
+		<property name="password" value="479e3180a45b21ea8e88beb0c45aa8ed" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -96,7 +96,7 @@
 
 	<bean id="userAccountBrotherhood2" class="security.UserAccount">
 		<property name="username" value="brotherhood2" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
+		<property name="password" value="88f1b810c40cd63107fb758fef4d77db" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -785,6 +785,8 @@
 		<property name="moment" value="2020/04/24 00:00" />
 		<property name="ticker" value="200424-TUEBG" />
 		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="200"/>
+		<property name="maxColumns" value="200"/>
 		<!-- Relations -->
 		<property name="floats">
 			<list>
@@ -800,6 +802,8 @@
 		<property name="moment" value="2020/04/26 00:00" />
 		<property name="ticker" value="200426-DOUBG" />
 		<property name="mode" value="DRAFT" />
+		<property name="maxRows" value="120"/>
+		<property name="maxColumns" value="300"/>
 		<!-- Relations -->
 		<property name="floats">
 			<list>

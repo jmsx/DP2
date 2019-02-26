@@ -1,12 +1,14 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
 import repositories.MemberRepository;
 import security.Authority;
@@ -14,19 +16,29 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.Member;
+import forms.ActorFrom;
 
 @Service
 @Transactional
 public class MemberService {
 
 	@Autowired
-	private MemberRepository	memberRepository;
+	private MemberRepository							memberRepository;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService								actorService;
 
 	@Autowired
-	private FolderService		folderService;
+	private FolderService								folderService;
+
+	@Autowired
+	private UserAccountService							userAccountService;
+
+	@Autowired
+	private org.springframework.validation.Validator	validator;
+
+	@Autowired
+	private EnrolmentService							enrolmentService;
 
 
 	public Member create() {
@@ -95,9 +107,54 @@ public class MemberService {
 
 	public Collection<Member> allMembersFromBrotherhood() {
 		final Actor principal = this.actorService.findByPrincipal();
-		final Collection<Member> res = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
-		Assert.notNull(res);
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
+		final Collection<Member> all = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
+		final Collection<Member> res = new ArrayList<>();
+		for (final Member m : all)
+			if (this.enrolmentService.getEnrolment(principal, m).getDropOut() == null)
+				res.add(m);
 		return res;
+	}
+
+	public Member reconstruct(final ActorFrom actorForm, final BindingResult binding) {
+		Member member;
+		if (actorForm.getId() == 0) {
+			member = this.create();
+			member.setName(actorForm.getName());
+			member.setMiddleName(actorForm.getMiddleName());
+			member.setSurname(actorForm.getSurname());
+			member.setPhoto(actorForm.getPhoto());
+			member.setPhone(actorForm.getPhone());
+			member.setEmail(actorForm.getEmail());
+			member.setAddress(actorForm.getAddress());
+			member.setScore(0.0);
+			member.setSpammer(false);
+			final UserAccount account = this.userAccountService.create();
+			final Collection<Authority> authorities = new ArrayList<>();
+			final Authority auth = new Authority();
+			auth.setAuthority(Authority.MEMBER);
+			authorities.add(auth);
+			account.setAuthorities(authorities);
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
+			member.setUserAccount(account);
+		} else {
+			member = this.memberRepository.findOne(actorForm.getId());
+			member.setName(actorForm.getName());
+			member.setMiddleName(actorForm.getMiddleName());
+			member.setSurname(actorForm.getSurname());
+			member.setPhoto(actorForm.getPhoto());
+			member.setPhone(actorForm.getPhone());
+			member.setEmail(actorForm.getEmail());
+			member.setAddress(actorForm.getAddress());
+			final UserAccount account = this.userAccountService.findOne(member.getUserAccount().getId());
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
+			member.setUserAccount(account);
+		}
+		this.validator.validate(member.getUserAccount(), binding);
+		this.validator.validate(member, binding);
+		return member;
 	}
 
 }

@@ -64,26 +64,6 @@ public class PositionService {
 		return res;
 	}
 
-	//	public void delete(final Position position) {
-	//		//		final Actor principal = this.administratorService.findByPrincipal();
-	//		//		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-	//		//		Assert.notNull(principal);
-	//		//		Assert.isTrue(position.getId() != 0);
-	//		//		//		final Collection<Position> all = this.AllPositionUsed();
-	//		//		//		Assert.isTrue(!.contains(position)); /* Una position se puede borrar siempre y cuando no se esté usando */
-	//		//		if (isAdmin)
-	//		//			this.positionRepository.delete(position);
-	//
-	//		final Actor principal = this.administratorService.findByPrincipal();
-	//		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-	//		Assert.notNull(position);
-	//		Assert.isTrue(position.getId() != 0);
-	//		Assert.isTrue(!this.AllPositionUsed().contains(position));
-	//		if (isAdmin)
-	//			this.positionRepository.delete(position);
-	//
-	//	}
-
 	public void delete(final Position position) {
 		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.ADMIN), "Logged user is not an admin");
