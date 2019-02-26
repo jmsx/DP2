@@ -39,19 +39,7 @@
 	<acme:numberbox code="procession.maxRows" path="maxRows" min="1" />
 	<acme:numberbox code="procession.maxColumns" path="maxColumns" min="1" />
 
-	<jstl:choose>
-		<jstl:when test="${not empty procession.floats}">
-		<spring:message code="procession.float"/></br>
-			<jstl:forEach items="${procession.floats}" var="f">
-				<form:checkbox path="floats" value="${f}" />
-				<jstl:out value="${f.title}" />
-			</jstl:forEach>
-			<form:errors path="floats" cssClass="error" />
-		</jstl:when>
-		<jstl:otherwise>
-			<spring:message code="procession.no.float" />
-		</jstl:otherwise>
-	</jstl:choose>
+	<form:checkboxes items="${procession.floats}" path="floats" /> 
 	</br>
 
 	<jstl:if test="${procession.id != 0}">
