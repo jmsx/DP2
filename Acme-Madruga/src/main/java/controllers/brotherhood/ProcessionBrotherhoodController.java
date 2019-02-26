@@ -177,8 +177,18 @@ public class ProcessionBrotherhoodController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Procession procession, final String messageCode) {
 		final ModelAndView result;
+
+		final ProcessionForm pruned = new ProcessionForm();
+		pruned.setId(procession.getId());
+		pruned.setVersion(procession.getVersion());
+		pruned.setTitle(procession.getTitle());
+		pruned.setDescription(procession.getDescription());
+		pruned.setMaxRows(procession.getMaxRows());
+		pruned.setMaxColumns(procession.getMaxColumns());
+		pruned.setFloats(procession.getFloats());
+
 		result = new ModelAndView("procession/edit");
-		result.addObject("procession", procession);
+		result.addObject("procession", pruned);
 
 		result.addObject("message", messageCode);
 		final String banner = this.configurationParametersService.findBanner();

@@ -194,6 +194,7 @@ public class ProcessionService {
 		result.setDescription(pform.getDescription());
 		result.setMaxRows(pform.getMaxRows());
 		result.setMaxColumns(pform.getMaxColumns());
+		result.setFloats(pform.getFloats());
 
 		this.validator.validate(result, binding);
 
