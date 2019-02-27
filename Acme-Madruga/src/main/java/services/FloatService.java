@@ -90,4 +90,20 @@ public class FloatService {
 			return new ArrayList<>();
 		}
 	}
+
+	/**
+	 * This method returns all floats associated to a brotherhood
+	 * 
+	 * @param b
+	 *            Brotherhood
+	 * 
+	 * @author a8081
+	 * */
+	public Collection<Float> findByBrotherhood(final Brotherhood b) {
+		Assert.notNull(b);
+		Assert.isTrue(b.getId() != 0);
+		final Collection<Float> res = this.floatRepository.findByBrotherhood(b.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
+	}
 }

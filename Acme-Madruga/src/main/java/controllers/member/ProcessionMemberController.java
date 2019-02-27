@@ -4,6 +4,7 @@ package controllers.member;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,11 +33,13 @@ public class ProcessionMemberController extends AbstractController {
 		Procession procession;
 
 		procession = this.processionService.findOne(processionId);
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
-		if (procession != null) {
+		if (procession != null && procession.getMode().equals("FINAL")) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
 			result.addObject("rol", "member");
+			result.addObject("lang", lang);
 
 			final String banner = this.configurationParametersService.findBanner();
 			result.addObject("banner", banner);
@@ -52,11 +55,13 @@ public class ProcessionMemberController extends AbstractController {
 		final Collection<Procession> processions;
 		Collection<Procession> memberProcessions;
 
-		processions = this.processionService.findAll();
+		processions = this.processionService.findAllFinalMode();
 		memberProcessions = this.processionService.findAllByPrincipal();
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		result = new ModelAndView("procession/list");
 		result.addObject("processions", processions);
+		result.addObject("lang", lang);
 		result.addObject("rol", "member");
 		result.addObject("memberProcessions", memberProcessions);
 		result.addObject("requetURI", "procession/member/list.do");

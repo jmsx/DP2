@@ -15,6 +15,9 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+
+
 
 
 <spring:message code="actor.name" var="name"/>
@@ -52,3 +55,10 @@
 <jstl:out value="${spammer}"/>:
 <jstl:out value="${brotherhood.spammer}"/>
 <br>
+<br>
+
+<security:authorize access="hasRole('MEMBER')">
+	<acme:button url="procession/member/list.do" name="back" code="procession.back"/>
+</security:authorize>
+
+

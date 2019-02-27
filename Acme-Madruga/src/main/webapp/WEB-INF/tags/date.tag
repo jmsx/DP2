@@ -28,13 +28,11 @@
 
 
 <%-- Definition --%>
-
 <jstl:choose>
-	<jstl:when test="${lang eq 'es' }">
-		<spring:message code="${code}" />: <fmt:formatDate value="${value}"
-			type="both" pattern="dd/MM/yyyy HH:mm" />
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="${code}"/>: <fmt:formatDate value="${value}" type="both" pattern="yyyy/MM/dd HH:mm"/>
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="${code}" />: <jstl:out value="${value}" />
+		<spring:message code="${code}"/>: <fmt:formatDate value="${value}" type="both" pattern="dd/MM/yyyy HH:mm"/>
 	</jstl:otherwise>
 </jstl:choose>

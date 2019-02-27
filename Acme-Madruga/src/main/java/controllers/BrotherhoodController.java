@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.AreaService;
 import services.BrotherhoodService;
 import services.ConfigurationParametersService;
+import services.EnrolmentService;
 import services.MemberService;
 import services.UserAccountService;
 import domain.Area;
@@ -42,6 +44,12 @@ public class BrotherhoodController extends AbstractController {
 
 	@Autowired
 	private MemberService					memberService;
+
+	@Autowired
+	private EnrolmentService				enrolmentService;
+
+	@Autowired
+	private MemberController				memberController;
 
 
 	// CONSTRUCTOR -----------------------------------------------------------
@@ -199,10 +207,14 @@ public class BrotherhoodController extends AbstractController {
 
 		brotherhoods = this.brotherhoodService.findAllBrotherHoodByMember();
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		result = new ModelAndView("brotherhood/list");
+		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("ok", false);
+		result.addObject("leave", true);
 		result.addObject("requetURI", "brotherhood/list.do");
 
 		final String banner = this.configurationParametersService.findBanner();
@@ -221,7 +233,10 @@ public class BrotherhoodController extends AbstractController {
 
 		brotherhoods = this.brotherhoodService.AllBrotherhoodsFree();
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		result = new ModelAndView("brotherhood/list");
+		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("ok", true);
@@ -243,7 +258,10 @@ public class BrotherhoodController extends AbstractController {
 
 		brotherhoods = this.brotherhoodService.findAll();
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		result = new ModelAndView("brotherhood/list");
+		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("requetURI", "brotherhood/listAll.do");
@@ -257,4 +275,18 @@ public class BrotherhoodController extends AbstractController {
 
 	// DROP OUT  ---------------------------------------------------------------		
 
+	@RequestMapping(value = "/dropOut", method = RequestMethod.GET)
+	public ModelAndView dropOut(@RequestParam final int memberId) {
+		final ModelAndView result;
+		final Member member = this.memberService.findOne(memberId);
+
+		this.enrolmentService.dropOut(member);
+
+		result = this.memberController.list();
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
 }

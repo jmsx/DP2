@@ -36,7 +36,9 @@ public class PositionServiceTest extends AbstractTest {
 	@Test
 	public void testCreateStringString() {
 		super.authenticate("admin1");
-		final Position pos = this.positionService.create("Hola", "Hello");
+		final Position pos = this.positionService.create();
+		pos.setNameEnglish("en");
+		pos.setNameSpanish("sp");
 		Assert.notNull(pos);
 	}
 
@@ -55,8 +57,10 @@ public class PositionServiceTest extends AbstractTest {
 	@Test
 	public void testSave() {
 		super.authenticate("admin1");
-		final Position position = this.positionService.create("Hola", "Hello");
-		final Position saved = this.positionService.save(position);
+		final Position pos = this.positionService.create();
+		pos.setNameEnglish("en");
+		pos.setNameSpanish("sp");
+		final Position saved = this.positionService.save(pos);
 		Assert.notNull(saved);
 	}
 

@@ -1,11 +1,13 @@
-<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 
-<%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
@@ -26,47 +28,59 @@
 
 <!-- Only brotherhood can access to this view -->
 
-<form:form action="procession/brotherhood/edit.do" modelAttribute="procession">
+<form:form action="procession/brotherhood/edit.do"
+	modelAttribute="procession">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="moment" />
-	<form:hidden path="ticker" />
-	<form:hidden path="brotherhood" />
-	<form:hidden path="floats" />
+
+	<acme:textbox code="procession.title" path="title" />
+	<acme:textbox code="procession.description" path="description" />
+	<acme:numberbox code="procession.maxRows" path="maxRows" min="1" />
+	<acme:numberbox code="procession.maxColumns" path="maxColumns" min="1" />
+	<acme:textbox code="procession.moment" path="moment" placeholder="yyyy-MM-dd HH:mm"/>
 	
-	<acme:textbox code="procession.title" path="title"/>
-	<acme:textbox code="procession.description" path="description"/>
-	<acme:numberbox code="procession.maxRows" path="maxRows" min="1"/>
-	<acme:numberbox code="procession.maxColumns" path="maxColumns" min="1"/>
 	
-	<jstl:if test="${procession.id != 0}">	
-		<spring:message code="procession.requests"/>:
-			<display:table name="procession.requests" id="row"
-			requestURI="procession/brotherhood/edit.do?processionId=${procession.id}" pagesize="5" class="displaytag">
+	<jstl:if test="${procession.id == 0}">
+		<acme:select items="${floatsAvailable}" itemLabel="title"
+			code="procession.floats" path="floats" />
+	</jstl:if>
+	<jstl:if test="${procession.id != 0}">
+		<acme:select items="${procession.floats}" itemLabel="title"
+			code="procession.floats" path="floats" />
+
+		<spring:message code="procession.requests" />:
+			<display:table name="requests" id="row"
+			requestURI="procession/brotherhood/edit.do?processionId=${procession.id}"
+			pagesize="5" class="displaytag">
 			<jstl:set value="${row.status} " var="colorStyle" />
 			<jstl:choose>
 				<jstl:when test="${row.status eq 'PENDING' }">
 					<display:column>
-						<a href="request/brotherhood/edit.do?requestId=${row.id}">
-							<spring:message code="procession.request.edit"/>
+						<a href="request/brotherhood/edit.do?requestId=${row.id}"> <spring:message
+								code="procession.request.edit" />
 						</a>
 					</display:column>
 				</jstl:when>
 				<jstl:otherwise>
 				</jstl:otherwise>
 			</jstl:choose>
-			<acme:dataTableColumn property="moment" code="request.moment"/>
-			<display:column property="status" titleKey="procession.application.status" class="${colorStyle}"/>
+			<acme:dataTableColumn property="moment"
+				code="procession.request.moment" />
+			<display:column property="status"
+				titleKey="procession.request.status" class="${colorStyle}" />
 		</display:table>
-		<br/>
+		<br />
 	</jstl:if>
-	
-	<input type="submit" name="save" value="<spring:message code="procession.save" />" />
+
+	<input type="submit" name="save"
+		value="<spring:message code="procession.save" />" />
 	<jstl:if test="${procession.id != 0}">
-		<input type="submit" name="delete" value="<spring:message code="procession.delete" />" />
+		<input type="submit" name="delete"
+			value="<spring:message code="procession.delete" />" />
 	</jstl:if>
-	<input type="button" name="cancel" value="<spring:message code="procession.cancel" />"  
-		onclick="javascript:relativeRedir('procession/brotherhood/list.do');"/>
-		
+
+	<acme:button url="procession/brotherhood/list.do" name="cancel"
+		code="procession.cancel" />
+
 </form:form>

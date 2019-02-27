@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
 import security.UserAccount;
@@ -35,6 +36,7 @@ public class Actor extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getName() {
 		return this.name;
 	}
@@ -43,6 +45,7 @@ public class Actor extends DomainEntity {
 		this.name = name;
 	}
 
+	@SafeHtml
 	public String getMiddleName() {
 		return this.middleName;
 	}
@@ -52,6 +55,7 @@ public class Actor extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getSurname() {
 		return this.surname;
 	}
@@ -61,6 +65,7 @@ public class Actor extends DomainEntity {
 	}
 
 	@URL
+	@SafeHtml
 	public String getPhoto() {
 		return this.photo;
 	}
@@ -70,6 +75,7 @@ public class Actor extends DomainEntity {
 	}
 
 	@Email
+	@SafeHtml
 	public String getEmail() {
 		return this.email;
 	}
@@ -90,6 +96,7 @@ public class Actor extends DomainEntity {
 	}
 
 	// @NotBlank incluye NotNull, y addres es optional
+	@SafeHtml
 	public String getAddress() {
 		return this.address;
 	}

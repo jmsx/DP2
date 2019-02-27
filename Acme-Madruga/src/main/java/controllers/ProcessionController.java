@@ -4,6 +4,7 @@ package controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,7 @@ public class ProcessionController extends AbstractController {
 
 		procession = this.processionService.findOne(processionId);
 
-		if (procession != null) {
+		if (procession != null && procession.getMode().equals("FINAL")) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
 
@@ -49,10 +50,12 @@ public class ProcessionController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Procession> processions;
 
-		processions = this.processionService.findAll();
+		processions = this.processionService.findAllFinalMode();
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		result = new ModelAndView("procession/list");
 		result.addObject("processions", processions);
+		result.addObject("lang", lang);
 		result.addObject("requetURI", "procession/list.do");
 
 		final String banner = this.configurationParametersService.findBanner();

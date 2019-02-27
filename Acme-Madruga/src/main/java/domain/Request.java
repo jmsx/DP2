@@ -16,6 +16,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Request extends DomainEntity {
@@ -48,6 +51,7 @@ public class Request extends DomainEntity {
 	@NotNull
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}
@@ -56,7 +60,7 @@ public class Request extends DomainEntity {
 		this.moment = moment;
 	}
 
-	//@SafeHtml
+	@SafeHtml
 	public String getExplanation() {
 		return this.explanation;
 	}

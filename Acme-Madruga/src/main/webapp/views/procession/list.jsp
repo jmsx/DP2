@@ -19,60 +19,57 @@
 	class="displaytag">
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-		<display:column>
-			<a href="procession/brotherhood/edit.do?processionId=${row.id}">
-				<spring:message code="procession.edit" />
-			</a>
-		</display:column>
+		<jstl:if test="${not empty rol}">
+			<display:column>
+				<acme:link
+					url="procession/brotherhood/edit.do?processionId=${row.id}"
+					code="procession.edit" />
+			</display:column>
+		</jstl:if>
 	</security:authorize>
 
+	<display:column property="title" titleKey="procession.title" />
+	
+	<display:column property="ticker" titleKey="procession.ticker" />
+
+	<acme:dataTableColumn code="procession.moment" property="moment" />
+	
 	<display:column titleKey="procession.brotherhood">
 		<a href="brotherhood/display.do?brotherhoodId=${row.brotherhood.id}">
 			<jstl:out value="${row.brotherhood.title}" />
 		</a>
 	</display:column>
-
-	<display:column property="ticker" titleKey="procession.ticker" />
-
-	<acme:dataTableColumn code="procession.moment" property="moment" />
-
-	<display:column property="description"
-		titleKey="procession.description" />
-
-
+	
 	<display:column>
-		<a href="procession${rolURL}/display.do?processionId=${row.id}"> <spring:message
-				code="procession.display" />
-		</a>
+		<acme:link url="procession${rolURL}/display.do?processionId=${row.id}"
+			code="procession.display" />
 	</display:column>
-
-
+	
 	<security:authorize access="hasRole('MEMBER')">
-
-		<jstl:set var="ctrl" value="0" />
-		<jstl:forEach var="r" items="${memberProcessions}">
-			<jstl:if test="${r eq row}">
-				<jstl:set var="ctrl" value="1" />
-			</jstl:if>
-		</jstl:forEach>
-		<display:column>
-			<jstl:choose>
-				<jstl:when test="${ctrl == 0}">
-					<a href="request/member/create.do?processionId=${row.id}"> <spring:message
+		<jstl:if test="${not empty rol}">
+			<jstl:set var="ctrl" value="0" />
+			<jstl:forEach var="r" items="${memberProcessions}">
+				<jstl:if test="${r eq row}">
+					<jstl:set var="ctrl" value="1" />
+				</jstl:if>
+			</jstl:forEach>
+			<display:column>
+				<jstl:choose>
+					<jstl:when test="${ctrl == 0}">
+						<acme:link url="request/member/create.do?processionId=${row.id}"
 							code="procession.apply" />
-					</a>
-				</jstl:when>
-				<jstl:otherwise>
-					<spring:message code="procession.applied" />
-				</jstl:otherwise>
-			</jstl:choose>
-		</display:column>
+					</jstl:when>
+					<jstl:otherwise>
+						<spring:message code="procession.applied" />
+					</jstl:otherwise>
+				</jstl:choose>
+			</display:column>
+		</jstl:if>
 	</security:authorize>
 
 </display:table>
 
 <security:authorize access="hasRole('BROTHERHOOD')">
-	<a href="procession/brotherhood/create.do"> <spring:message
-			code="procession.create" />
-	</a>
+	<acme:link url="procession/brotherhood/create.do"
+		code="procession.create" />
 </security:authorize>

@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.BrotherhoodService;
 import services.ConfigurationParametersService;
+import services.FloatService;
 import services.ProcessionService;
 import services.RequestService;
 import controllers.AbstractController;
+import domain.Brotherhood;
 import domain.Procession;
 import domain.Request;
+import forms.ProcessionForm;
 
 @Controller
 @RequestMapping("/procession/brotherhood")
@@ -32,28 +37,31 @@ public class ProcessionBrotherhoodController extends AbstractController {
 	private RequestService					requestService;
 
 	@Autowired
+	private BrotherhoodService				brotherhoodService;
+
+	@Autowired
+	private FloatService					floatService;
+
+	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
 
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
-		final ModelAndView result;
-		final Collection<Procession> processions;
-		String rol;
+	// CREATE
 
-		processions = this.processionService.findAllByPrincipal();
-		rol = "brotherhood";
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		Procession procession;
 
-		result = new ModelAndView("task/list");
-		result.addObject("processions", processions);
-		result.addObject("requetURI", "task/brotherhood/list.do");
-		result.addObject("rol", rol);
+		// String lang = LocaleContextHolder.getLocale().getLanguage();
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
+		procession = this.processionService.create();
+		result = this.createEditModelAndView(procession);
 		return result;
 	}
+
+	// LIST
+
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int processionId) {
 		final ModelAndView result;
@@ -63,9 +71,14 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		procession = this.processionService.findOne(processionId);
 		requests = this.requestService.findAll();
 
-		if (procession != null) {
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
+		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
+
+		if (procession != null && (procession.getMode().equals("FINAL") || procession.getBrotherhood() == bro)) {
 			result = new ModelAndView("procession/display");
 			result.addObject("procession", procession);
+			result.addObject("lang", lang);
 			result.addObject("rol", "brotherhood");
 			result.addObject("requests", requests);
 
@@ -77,44 +90,54 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
-		Procession procession;
+	// DISPLAY
 
-		// String lang = LocaleContextHolder.getLocale().getLanguage();
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		final ModelAndView result;
+		final Collection<Procession> processions;
+		String rol;
 
-		procession = this.processionService.create();
-		result = this.createEditModelAndView(procession);
+		processions = this.processionService.findAllByPrincipal();
+		rol = "brotherhood";
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
+		result = new ModelAndView("procession/list");
+		result.addObject("processions", processions);
+		result.addObject("lang", lang);
+		result.addObject("requetURI", "procession/brotherhood/list.do");
+		result.addObject("rol", rol);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
 
 		return result;
 	}
+
+	// EDIT
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int processionId) {
 		ModelAndView result;
 		Procession procession;
-		Collection<Procession> processions;
 
 		procession = this.processionService.findOne(processionId);
 
-		if (procession != null) {
-			processions = this.processionService.findAll();
+		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
 
-			if (processions.contains(procession))
-				result = this.createEditModelAndView(procession);
-			else
-				result = new ModelAndView("redirect:/misc/403.jsp");
-
-		} else
+		if (procession != null && (procession.getMode().equals("FINAL") || procession.getBrotherhood() == bro))
+			result = this.createEditModelAndView(procession);
+		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Procession procession, final BindingResult binding) {
+	public ModelAndView save(@Valid final ProcessionForm pform, final BindingResult binding) {
 		ModelAndView result;
+
+		final Procession procession = this.processionService.reconstruct(pform, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(procession);
@@ -126,14 +149,29 @@ public class ProcessionBrotherhoodController extends AbstractController {
 				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
 				final Date current = new Date(System.currentTimeMillis());
-				if (procession.getMoment().before(current))
+				if (procession.getMoment().after(current))
 					result = this.createEditModelAndView(procession, "procession.date.error");
+				else if (procession.getBrotherhood().getArea() == null)
+					result = this.createEditModelAndView(procession, "procession.area.error");
 				else
 					result = this.createEditModelAndView(procession, "procession.commit.error");
 			}
 
 		return result;
 	}
+
+	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)
+	public ModelAndView finalMode(@RequestParam final int processionId) {
+		final ModelAndView result;
+		if (this.brotherhoodService.findByPrincipal().getArea() != null) {
+			this.processionService.toFinalMode(processionId);
+			result = new ModelAndView("redirect:list.do");
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		return result;
+	}
+
+	// DELETE
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Procession procession, final BindingResult binding) {
@@ -152,6 +190,8 @@ public class ProcessionBrotherhoodController extends AbstractController {
 
 	}
 
+	// ANCILLIARY METHODS
+
 	protected ModelAndView createEditModelAndView(final Procession procession) {
 		ModelAndView result;
 
@@ -162,14 +202,31 @@ public class ProcessionBrotherhoodController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Procession procession, final String messageCode) {
 		final ModelAndView result;
+
 		result = new ModelAndView("procession/edit");
-		result.addObject("procession", procession);
+		result.addObject("procession", this.constructPruned(procession));
+
+		if (procession.getId() == 0)
+			result.addObject("floatsAvailable", this.floatService.findByBrotherhood(procession.getBrotherhood()));
 
 		result.addObject("message", messageCode);
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
 
 		return result;
+	}
+
+	private ProcessionForm constructPruned(final Procession procession) {
+		final ProcessionForm pruned = new ProcessionForm();
+		pruned.setId(procession.getId());
+		pruned.setVersion(procession.getVersion());
+		pruned.setTitle(procession.getTitle());
+		pruned.setDescription(procession.getDescription());
+		pruned.setMaxRows(procession.getMaxRows());
+		pruned.setMaxColumns(procession.getMaxColumns());
+		pruned.setMoment(procession.getMoment());
+		pruned.setFloats(procession.getFloats());
+		return pruned;
 	}
 
 }

@@ -130,9 +130,15 @@ public class EnrolmentService {
 		Enrolment enrolment;
 
 		if (isMember) {
-			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(principal.getUserAccount().getId(), principal.getUserAccount().getId());
+			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), principal.getUserAccount().getId());
 			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
 		}
+	}
+
+	public Enrolment getEnrolment(final Actor brotherhood, final Actor member) {
+		final Enrolment res = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), member.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
 	}
 
 }

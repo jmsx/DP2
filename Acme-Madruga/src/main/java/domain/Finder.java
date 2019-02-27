@@ -12,6 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -26,6 +27,7 @@ public class Finder extends DomainEntity {
 
 
 	@NotNull
+	@SafeHtml
 	public String getKeyword() {
 		return this.keyword;
 	}
@@ -35,6 +37,7 @@ public class Finder extends DomainEntity {
 	}
 
 	@NotNull
+	@SafeHtml
 	public String getAreaName() {
 		return this.areaName;
 	}
@@ -44,7 +47,7 @@ public class Finder extends DomainEntity {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date getMinDate() {
 		return this.minDate;
 	}
@@ -54,7 +57,7 @@ public class Finder extends DomainEntity {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date getMaxDate() {
 		return this.maxDate;
 	}

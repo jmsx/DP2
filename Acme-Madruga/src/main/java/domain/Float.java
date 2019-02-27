@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import cz.jirutka.validator.collection.constraints.EachURL;
 
@@ -27,6 +28,7 @@ public class Float extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getTitle() {
 		return this.title;
 	}
@@ -36,6 +38,7 @@ public class Float extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getDescription() {
 		return this.description;
 	}

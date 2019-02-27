@@ -42,6 +42,9 @@ public class BrotherhoodService {
 	@Autowired
 	private org.springframework.validation.Validator	validator;
 
+	@Autowired
+	private EnrolmentService							enrolmentService;
+
 
 	public Brotherhood create() {
 		final Brotherhood brotherhood = new Brotherhood();
@@ -76,6 +79,8 @@ public class BrotherhoodService {
 
 		return result;
 	}
+
+	// TODO: delete all information but name including folders and their messages (but no as senders!!)
 	public void delete(final Brotherhood brotherhood) {
 		Assert.notNull(brotherhood);
 		Assert.isTrue(this.findByPrincipal().equals(brotherhood));
@@ -105,9 +110,14 @@ public class BrotherhoodService {
 	}
 
 	public Collection<Brotherhood> findAllBrotherHoodByMember() {
-		final Actor principal = this.memberService.findByPrincipal();
+		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
-		return this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getId());
+		final Collection<Brotherhood> all = this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getUserAccount().getId());
+		final Collection<Brotherhood> res = new ArrayList<>();
+		for (final Brotherhood b : all)
+			if (this.enrolmentService.getEnrolment(b, principal).getDropOut() == null)
+				res.add(b);
+		return res;
 	}
 
 	public void areaSet(final Area area) {
