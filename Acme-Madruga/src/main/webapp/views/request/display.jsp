@@ -10,6 +10,20 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<style type="text/css">
+.PENDING {
+	color: grey;
+}
+
+.APPROVED {
+	color: green;
+}
+
+.REJECTED {
+	color: orange;
+}
+</style>
+
 <jstl:if test="${not empty rol}">
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
@@ -21,7 +35,13 @@
 <acme:display code="request.procession.title" value="${request.procession.title}"/>
 <acme:display code="request.member.name" value="${request.member.name}${middlename} ${request.member.surname}"/>
 <acme:display code="request.moment" value="${request.moment}"/>
-<acme:display code="request.status" value="${request.status}"/>
+
+<spring:message code="request.status" />:
+<span class="${request.status}">
+	<jstl:out value="${request.status}" />
+</span>
+<br />
+
 
 <jstl:choose>
 	<jstl:when test="${request.status eq 'REJECTED'}">
@@ -33,9 +53,10 @@
 	</jstl:when>
 	<jstl:otherwise>
 		<spring:message code="request.status.pending"/>
-		</br>
 	</jstl:otherwise>
 </jstl:choose>
+<br />
+<br />
 
 <acme:button name="back" code="request.back" url="request${rolURL}/list.do"/>
 

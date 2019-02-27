@@ -19,43 +19,26 @@
 
 
 
+<acme:display code="actor.name" value="${brotherhood.name}"/>
+<spring:message code="actor.photo"/>:<br>
+<img src="${brotherhood.photo}" alt="Foto" width="20%" height="20%"/>
+<br>
+<acme:display code="actor.middleName" value="${brotherhood.middleName}"/>
+<acme:display code="actor.surname" value="${brotherhood.surname}"/>
+<acme:display code="actor.email" value="${brotherhood.email}"/>
+<acme:display code="actor.phone" value="${brotherhood.phone}"/>
+<acme:display code="actor.email" value="${brotherhood.email}"/>
+<acme:display code="actor.address" value="${brotherhood.address}"/>
+<acme:display code="actor.score" value="${brotherhood.score}"/>
 
-<spring:message code="actor.name" var="name"/>
-<jstl:out value="${name}"/>:
-<jstl:out value="${brotherhood.name}"/>
-<br>
-<spring:message code="actor.middleName" var="middleName"/>
-<jstl:out value="${middleName}"/>:<jstl:out value="${brotherhood.middleName}"/>
-<br>
-<spring:message code="actor.surname" var="surname"/>
-<jstl:out value="${surname}"/>:
-<jstl:out value="${brotherhood.surname}"/>
-<br>
-<spring:message code="actor.photo" var="photo"/>
-<jstl:out value="${photo}"/>:
-<img src="${brotherhood.photo}" alt="Foto" width="10%" height="10%"/>
-<br>
-<spring:message code="actor.email" var="email"/>
-<jstl:out value="${email}"/>:
-<jstl:out value="${brotherhood.email}"/>
-<br>
-<spring:message code="actor.phone" var="phone"/>
-<jstl:out value="${phone}"/>:
-<jstl:out value="${brotherhood.phone}"/>
-<br>
-<spring:message code="actor.address" var="address"/>
-<jstl:out value="${address}"/>:
-<jstl:out value="${brotherhood.address}"/>
-<br>
-<spring:message code="actor.score" var="score"/>
-<jstl:out value="${score}"/>:
-<jstl:out value="${brotherhood.score}"/>
-<br>
-<spring:message code="actor.spammer" var="spammer"/>
-<jstl:out value="${spammer}"/>:
-<jstl:out value="${brotherhood.spammer}"/>
-<br>
-<br>
+<jstl:choose>
+	<jstl:when test="${brotherhood.spammer}">
+		<spring:message code="actor.spammer"/>
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="actor.spammer.no"/>
+	</jstl:otherwise>
+</jstl:choose>
 
 <security:authorize access="hasRole('MEMBER')">
 	<acme:button url="procession/member/list.do" name="back" code="procession.back"/>

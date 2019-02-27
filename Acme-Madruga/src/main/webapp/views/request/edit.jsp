@@ -11,6 +11,20 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
+<style type="text/css">
+.PENDING {
+	background-color: #d9d9d9;
+}
+
+.APPROVED {
+	background-color: green;
+}
+
+.REJECTED {
+	background-color: orange;
+}
+</style>
+
 <jstl:if test="${not empty rol}">
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
