@@ -57,7 +57,7 @@ public class RequestService {
 		Assert.notNull(res, "Not found Request to this id");
 		Boolean isAccepted = false;
 		if (this.actorService.checkAuthority(principal, Authority.MEMBER))
-			isAccepted = res.getMember().getId() == principal.getUserAccount().getId();
+			isAccepted = res.getMember().getUserAccount().getId() == principal.getUserAccount().getId();
 		else if (this.actorService.checkAuthority(principal, Authority.BROTHERHOOD))
 			isAccepted = this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), idRequest);
 		Assert.isTrue(isAccepted, "RequesService - findOne - Access Denied");
