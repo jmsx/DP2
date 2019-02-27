@@ -1,8 +1,10 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +15,7 @@ import org.springframework.util.Assert;
 import repositories.RequestRepository;
 import security.Authority;
 import domain.Actor;
+import domain.Procession;
 import domain.Request;
 
 @Service
@@ -73,23 +76,25 @@ public class RequestService {
 	}
 
 	public Request save(Request req) {
-		//TODO: Falta comprobar las restricciones de quien guarda el request y en que condiciones.
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
-		if (req.getId() == 0)
+		if (req.getId() == 0) {
 			//Creacion de Request, esta debe estar PENDING
 			Assert.isTrue(req.getStatus().equals(Request.PENDING), "Request must be create as PENDING");
-		else {
+			Assert.isTrue(this.requestRepository.hasMemberRequestToProcession(req.getProcession().getId(), req.getMember().getUserAccount().getId()), "A member cannot request twice to the same procession");
+		} else {
 			Assert.isTrue(!isMember, "A member cannot update the request");
 			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request");
 			Assert.isTrue(!this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), req.getId()), "This Brotherhood haven't access to this request");
 			if (req.getStatus().equals(Request.REJECTED))
 				Assert.isTrue(!(req.getExplanation() == "" || req.getExplanation() == null), "If Request is REJECTED must have a explanation");
 			if (req.getStatus().equals(Request.APPROVED)) {
-				final boolean rowIsNull = req.getRow() == null && req.getRow() < req.getProcession().getMaxRows();
-				final boolean columnIsNull = req.getColumn() == null && req.getColumn() < req.getProcession().getMaxColumns();
-				Assert.isTrue(!(rowIsNull || columnIsNull), "If Reuqest is APPROVED, row and column cannot be null or greater than maximum allowed");
+				Assert.isTrue((req.getExplanation() == "" || req.getExplanation() == null), "A explanation musn't be written if you approve the request");
+				final boolean rowIsNull = req.getRow() == null && req.getRow() <= req.getProcession().getMaxRows();
+				final boolean columnIsNull = req.getColumn() == null && req.getColumn() <= req.getProcession().getMaxColumns();
+				Assert.isTrue(!(rowIsNull || columnIsNull), "If Request is APPROVED, row and column cannot be null or greater than maximum allowed");
+				Assert.isTrue(this.requestRepository.availableRowColumn(req.getRow(), req.getColumn(), req.getProcession().getId()), "If Request is APPROVED, row and column assigned by brotherhood must be unique");
 			}
 		}
 		req = this.requestRepository.save(req);
@@ -103,5 +108,22 @@ public class RequestService {
 		final Request request = this.requestRepository.findOne(req.getId());
 		Assert.isTrue(request.getStatus().equals(Request.PENDING), "The Request must be PENDING");
 		this.requestRepository.delete(req.getId());
+	}
+
+	public List<Integer> suggestPosition(final Procession procession) {
+		final int processionId = procession.getId();
+		final List<Integer> res = new ArrayList<>();
+		for (int i = 1; i <= procession.getMaxRows(); i++) {
+			for (int j = 1; j <= procession.getMaxColumns(); j++) {
+				if (this.requestRepository.availableRowColumn(i, j, processionId)) {
+					res.add(i);
+					res.add(j);
+					break;
+				}
+				j++;
+			}
+			i++;
+		}
+		return res;
 	}
 }

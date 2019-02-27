@@ -22,6 +22,8 @@
 	
 	<security:authorize access="hasRole('MEMBER')">
 
+		<acme:textbox code="request.explanation" path="explanation"/>		
+		
 		<form:label path="price">
 			<spring:message code="request.price" />:
 		</form:label>

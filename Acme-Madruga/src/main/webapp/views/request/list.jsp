@@ -15,7 +15,7 @@
 	color: grey;
 }
 
-.ACCEPTED {
+.APPROVED {
 	color: green;
 }
 

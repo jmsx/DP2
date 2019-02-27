@@ -38,7 +38,7 @@
 	<acme:textbox code="procession.description" path="description" />
 	<acme:numberbox code="procession.maxRows" path="maxRows" min="1" />
 	<acme:numberbox code="procession.maxColumns" path="maxColumns" min="1" />
-			<acme:textbox code="procession.moment" path="moment" placeholder="yyyy-MM-dd HH:mm"/>
+	<acme:textbox code="procession.moment" path="moment" placeholder="yyyy-MM-dd HH:mm"/>
 	
 	
 	<jstl:if test="${procession.id == 0}">
