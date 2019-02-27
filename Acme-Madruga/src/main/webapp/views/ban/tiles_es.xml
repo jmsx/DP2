@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+	<definition name="ban/listBannedSpammer" extends="master.page">	
+		<put-attribute name="title" value="Listado de usuarios baneados spammers" />
+		<put-attribute name="body" value="/views/ban/listBannedSpammer.jsp" />
+	</definition>
+	
+	<definition name="ban/listNotBannedSpammer" extends="master.page">	
+		<put-attribute name="title" value="Listado de usuarios no baneados spammers" />
+		<put-attribute name="body" value="/views/ban/listNotBannedSpammer.jsp" />
+	</definition>
+	
+	<definition name="ban/listBannedNegative" extends="master.page">	
+		<put-attribute name="title" value="Listado de usuarios baneados con puntuación muy negativa" />
+		<put-attribute name="body" value="/views/ban/listBannedNegative.jsp" />
+	</definition>
+	
+	<definition name="ban/listNotBannedNegative" extends="master.page">	
+		<put-attribute name="title" value="Listado de usuarios no baneados con puntuación muy negativa" />
+		<put-attribute name="body" value="/views/ban/listNotBannedNegative.jsp" />
+	</definition>
+	
+	
+</tiles-definitions>

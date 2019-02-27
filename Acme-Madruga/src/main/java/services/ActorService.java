@@ -206,6 +206,55 @@ public class ActorService {
 		return result;
 	}
 
+	public Collection<Actor> findAllBannedSpammers() {
+		this.administratorService.findByPrincipal();
+		final Collection<Actor> result = this.actorRepository.findAllSpammer();
+		for (final Actor a : result)
+			if (!this.isBan(a).equals(false))
+				result.remove(a);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Actor> findAllNotBannedSpammers() {
+		this.administratorService.findByPrincipal();
+		final Collection<Actor> result = this.actorRepository.findAllSpammer();
+		for (final Actor a : result)
+			if (this.isBan(a).equals(false))
+				result.remove(a);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Actor> findAllBannedNegative() {
+		this.administratorService.findByPrincipal();
+		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
+		for (final Actor a : result)
+			if (!this.isBan(a).equals(false))
+				result.remove(a);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Actor> findAllNotBannedNegative() {
+		this.administratorService.findByPrincipal();
+		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
+		for (final Actor a : result)
+			if (this.isBan(a).equals(false))
+				result.remove(a);
+		Assert.notNull(result);
+		return result;
+	}
+
+	private Boolean isBan(final Actor a) {
+		Boolean result = false;
+		final Actor actor = this.findOne(a.getId());
+		final Collection<Authority> auths = actor.getUserAccount().getAuthorities();
+		if (auths.contains(Authority.BANNED))
+			result = true;
+		return result;
+	}
+
 	public Collection<Actor> findAllTooNegativeScore() {
 		this.administratorService.findByPrincipal();
 		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
