@@ -77,6 +77,7 @@ public class MemberService {
 		return result;
 	}
 
+	// TODO: delete all information but name including folders and their messages (but no as senders!!)
 	public void delete(final Member member) {
 		Assert.notNull(member);
 		Assert.isTrue(this.findByPrincipal().equals(member));

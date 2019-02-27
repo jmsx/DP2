@@ -79,6 +79,8 @@ public class BrotherhoodService {
 
 		return result;
 	}
+
+	// TODO: delete all information but name including folders and their messages (but no as senders!!)
 	public void delete(final Brotherhood brotherhood) {
 		Assert.notNull(brotherhood);
 		Assert.isTrue(this.findByPrincipal().equals(brotherhood));
