@@ -42,17 +42,17 @@
     </div>
 </security:authorize>
 
-<!-- Listing grid -->
-<display:table pagesize="5" class="displaytag" keepStatus="true"
+	<!-- Listing grid -->
+	<display:table pagesize="10" class="displaytag" keepStatus="true"
                name="folders" requestURI="${requestURI}" id="row">
-    <%-- <security:authorize access="hasAnyRole('ADMIN')">
+    <security:authorize access="hasAnyRole('ADMIN')">
     <display:column>
         <input type="button" class="btn btn-danger" name="open"
                value="<spring:message code="general.open" />"
                onclick="relativeRedir('folder/view.do?folderId=${row.id}');"/>
 
     </display:column>
-    </security:authorize>--%>
+    </security:authorize>
     <!-- Attributes -->
 
 

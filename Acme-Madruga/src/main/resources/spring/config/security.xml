@@ -51,12 +51,14 @@
 		<security:intercept-url pattern="/folder/list.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/folder/edit.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/folder/create.do" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/folder/edit" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/folder/view.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/folder/hola.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/folder/delete.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/create.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/edit.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/send.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/message/hola.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/message/display.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/brotherhood/listAll.do" access="hasAnyRole('ADMIN')" /> 
 		
 		 

@@ -28,11 +28,11 @@
     </div>
 </security:authorize> --%>
 
-    <div>
+    <!--<div>
         <input type="button" class="btn btn-danger" name="createFolder"
                value="<spring:message code="general.createFolder" />"
                onclick="relativeRedir('folder/create.do');"/>
-    </div>
+    </div>-->
 
 <security:authorize access="hasRole('ADMIN')">
     <div>

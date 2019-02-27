@@ -34,6 +34,7 @@ public class FolderService {
 	public Folder create() {
 		final Folder folder = new Folder();
 		final Collection<Message> ms = new ArrayList<>();
+		folder.setIsSystemFolder(false);
 		folder.setMessages(ms);
 		return folder;
 	}
@@ -55,6 +56,7 @@ public class FolderService {
 	public Folder save(final Folder f, final Actor a) {
 		Assert.notNull(f);
 		Assert.notNull(a);
+		f.setIsSystemFolder(false);
 
 		Folder saved;
 		final boolean bool = this.checkForSpamWords(f);
@@ -134,7 +136,7 @@ public class FolderService {
 		notification.setMessages(messages);
 		folders.add(notification);
 
-		return this.saveAll(folders);
+		return folders;
 	}
 
 	public Collection<Folder> saveAll(final Collection<Folder> fs) {

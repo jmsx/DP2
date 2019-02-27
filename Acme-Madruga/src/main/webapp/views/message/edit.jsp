@@ -25,20 +25,24 @@
 <%--
   ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
   --%>
+  
+<p><spring:message code="message.edit" /></p>
 
-<form:form action="message/edit" modelAttribute="message">
+<form:form action="message/edit.do" modelAttribute="m">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
+    <form:hidden path="moment" value="2019-02-02 16:00"/>
     <form:hidden path="sender"/>
-    <form:hidden path="moment"/>
-    <form:hidden path="sender"/>
-    <form:hidden path="tags"/>
-    <form:hidden path="priority"/>
     
-
-
-    <acme:textbox path="recipients" code="message.receiver"/>
+	<acme:select items="${recipients}" itemLabel="name" code="message.recipients" path="recipients"/>
+	
+	<!--<form:label path="recipients">
+        <spring:message code="message.receiver"/>:
+    </form:label>
+    <form:select path="recipients" code="message.recipients">
+        <form:options items="${recipients}" itemLabel="name" itemValue="id"/>
+    </form:select>-->
     <br/>
 
     <acme:textbox path="subject" code="message.subject"/>
@@ -48,19 +52,21 @@
     <br/>
 
 
-    <!--<form:label path="priority">
+    <form:label path="priority">
         <spring:message code="message.priority"/>:
     </form:label>
     <form:select path="priority" code="message.priority">
-        <form:options/>
+        <form:options items="${priorities}"/>
     </form:select>
-    <br/>-->
+    <br/>
+    
+    <acme:textbox code="message.tags" path="tags"/>
 
 
     <!---------------------------- BOTONES -------------------------->
 
 
-    <button name="save" type="submit" class="button2">
+    <button name="send" type="submit" class="button2">
         <spring:message code="general.send"/>
     </button>
 

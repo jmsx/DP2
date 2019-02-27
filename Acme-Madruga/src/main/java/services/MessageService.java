@@ -39,7 +39,6 @@ public class MessageService {
 		final Message message = new Message();
 		final Collection<String> tags = new ArrayList<>();
 		message.setTags(tags);
-
 		final Actor principal = this.actorService.findByPrincipal();
 		message.setSender(principal);
 
@@ -81,7 +80,7 @@ public class MessageService {
 
 	public Message save(final Message m) {
 		Assert.notNull(m);
-
+		m.setMoment(new Date(System.currentTimeMillis() - 100));
 		return this.messageRepository.save(m);
 	}
 
@@ -102,9 +101,9 @@ public class MessageService {
 
 		//== Create method set the sender ==
 		//final Actor sender = this.actorService.findByPrincipal();
-		//m.setSender(sender);
-		final Date moment = new Date(System.currentTimeMillis() - 1000);
-		m.setMoment(moment);
+		m.setSender(sender);
+		//		final Date moment = new Date(System.currentTimeMillis() - 1000);
+		//		m.setMoment(moment);
 
 		final boolean containsSpamWords = this.checkForSpamWords(m);
 

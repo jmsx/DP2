@@ -26,17 +26,12 @@
 
 	<form:hidden path="id"/>
     <form:hidden path="version"/>
+    <form:hidden path="isSystemFolder"/>
+    <form:hidden path="actor"/>
     
 
     <acme:textbox path="name" code="folder.name"/>
-    
-	<form:label path="isSystemFolder">
-        <spring:message code="folder.name"/>:
-    </form:label>
-    <form:select path="isSystemFolder" code="folder.name">
-        <form:option value="true"/>
-        <form:option value="false"/>
-    </form:select>
+   
 
     <br/>
 
