@@ -18,7 +18,7 @@
 	<security:authorize access="hasRole('MEMBER')">
 	<jstl:if test="${ok}">
 		<display:column>
-			<a href="enrolment/create.do">
+			<a href="enrolment/member/create.do?brotherhoodId="${row.id}>
 				<spring:message code="brotherhood.enrolment.edit" />
 			</a>
 		</display:column>
@@ -38,6 +38,14 @@
 	<display:column property="title" titleKey="actor.title" />
 	
 	<acme:dataTableColumn code="actor.date" property="date" />
+	
+	<jstl:if test="${displayEnrolment}">
+	<display:column>
+	<a href="enrolment/brotherhood/display.do?memberId=${row.id}"> <spring:message
+				code="member.enrolment"/>
+		</a>
+	</display:column>
+	</jstl:if>
 	
 	<display:column>
 		<a href="brotherhood/displayTabla.do?brotherhoodId=${row.id}"> <spring:message
