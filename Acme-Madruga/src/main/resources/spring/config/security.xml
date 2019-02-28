@@ -87,6 +87,8 @@
 		<security:intercept-url pattern="/request/brotherhood/list.do" access="hasRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/request/brotherhood/display.do" access="hasRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/request/brotherhood/edit.do" access="hasRole('BROTHERHOOD')"/>
+		<security:intercept-url pattern="/enrolment/brotherhood/edit.do" access="hasRole('BROTHERHOOD')"/>
+		<security:intercept-url pattern="/enrolment/brotherhood/display.do" access="hasRole('BROTHERHOOD')"/>
 		
 		<security:intercept-url pattern="/brotherhood/displayTabla.do" access="hasRole('MEMBER')"/>
 		<security:intercept-url pattern="/brotherhood/list.do" access="hasRole('MEMBER')" /> 
@@ -100,6 +102,11 @@
 		<security:intercept-url pattern="/request/member/display.do" access="hasRole('MEMBER')"/>
 		<security:intercept-url pattern="/procession/member/display.do" access="hasRole('MEMBER')"/>
 		<security:intercept-url pattern="/request/member/create.do" access="hasRole('MEMBER')"/>
+		<security:intercept-url pattern="/enrolment/member/display.do" access="hasRole('MEMBER')"/>
+		<security:intercept-url pattern="/enrolment/member/create.do" access="hasRole('MEMBER')"/>
+		
+		
+
 		
 		
 
