@@ -96,6 +96,27 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("banner", banner);
 		return result;
 	}
+
+	// Display --------------------------------------------------------
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int requestId) {
+		ModelAndView result;
+		Request request;
+
+		request = this.requestService.findOne(requestId);
+		if (request == null)
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		else {
+			result = new ModelAndView("request/display");
+			result.addObject("request", request);
+			result.addObject("rol", "brotherhood");
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
+		}
+		return result;
+	}
+
 	// Ancillary methods --------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Request request) {
