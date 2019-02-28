@@ -40,8 +40,8 @@
 	<acme:dataTableColumn code="actor.date" property="date" />
 	
 	<jstl:if test="${displayEnrolment}">
-	<display:column>
-	<a href="enrolment/brotherhood/display.do?memberId=${row.id}"> <spring:message
+	<display:column titleKey="member.enrolment">
+	<a href="enrolment/member/display.do?brotherhoodId=${row.id}"> <spring:message
 				code="member.enrolment"/>
 		</a>
 	</display:column>
