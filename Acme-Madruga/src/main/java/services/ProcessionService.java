@@ -167,6 +167,7 @@ public class ProcessionService {
 	}
 
 	public boolean exists(final Integer processionId) {
+		Assert.isTrue(processionId != 0, "Procession id cannot be zero");
 		return this.processionRepository.exists(processionId);
 	}
 
@@ -181,6 +182,8 @@ public class ProcessionService {
 		result = this.processionRepository.save(procession);
 		return result;
 	}
+
+	// This method is not used because it doesn't make sense to have a pruned object in Procession
 	public Procession reconstruct(final ProcessionForm pform, final BindingResult binding) {
 		Procession result;
 

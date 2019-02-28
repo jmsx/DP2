@@ -134,10 +134,10 @@ public class ProcessionBrotherhoodController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final ProcessionForm pform, final BindingResult binding) {
+	public ModelAndView save(@Valid final Procession procession, final BindingResult binding) {
 		ModelAndView result;
 
-		final Procession procession = this.processionService.reconstruct(pform, binding);
+		// final Procession procession = this.processionService.reconstruct(pform, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(procession);
@@ -149,7 +149,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
 				final Date current = new Date(System.currentTimeMillis());
-				if (procession.getMoment().after(current))
+				if (procession.getMoment().before(current))
 					result = this.createEditModelAndView(procession, "procession.date.error");
 				else if (procession.getBrotherhood().getArea() == null)
 					result = this.createEditModelAndView(procession, "procession.area.error");
@@ -204,7 +204,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("procession/edit");
-		result.addObject("procession", this.constructPruned(procession));
+		result.addObject("procession", procession); // this.constructPruned(procession));
 
 		if (procession.getId() == 0)
 			result.addObject("floatsAvailable", this.floatService.findByBrotherhood(procession.getBrotherhood()));
@@ -216,6 +216,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		return result;
 	}
 
+	// This method is not used because it doesn't make sense to have a pruned object in Procession
 	private ProcessionForm constructPruned(final Procession procession) {
 		final ProcessionForm pruned = new ProcessionForm();
 		pruned.setId(procession.getId());

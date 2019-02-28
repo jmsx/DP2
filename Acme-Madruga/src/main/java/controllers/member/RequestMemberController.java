@@ -17,7 +17,6 @@ import services.ConfigurationParametersService;
 import services.ProcessionService;
 import services.RequestService;
 import controllers.AbstractController;
-import domain.Procession;
 import domain.Request;
 
 @Controller
@@ -58,22 +57,19 @@ public class RequestMemberController extends AbstractController {
 	// Creation --------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam(required = false, defaultValue = "0") final Integer processionId) {
+	public ModelAndView create(@RequestParam final Integer processionId) {
 		ModelAndView result;
-		Request request;
-		Procession procession;
-		boolean exists;
-
-		request = this.requestService.create();
-
-		result = this.createEditModelAndView(request);
-		result.addObject("processionsAvailable", this.processionService.processionsAvailable());
-
-		exists = this.processionService.exists(processionId);
-
-		if (processionId != 0 && exists) {
-			procession = this.processionService.findOne(processionId);
-			result.addObject("procession", procession);
+		try {
+			this.requestService.requestToProcession(processionId);
+			result = new ModelAndView("redirect:/request/member/list.do");
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
+		} catch (final Throwable oops) {
+			String errorMessage = "request.create.error";
+			if (oops.getMessage().contains("message.error"))
+				errorMessage = oops.getMessage();
+			result = new ModelAndView("redirect:/misc/error.jsp");
+			result.addObject("errorMessage", errorMessage);
 		}
 
 		return result;
@@ -158,7 +154,7 @@ public class RequestMemberController extends AbstractController {
 		result.addObject("rol", rol);
 		result.addObject("message", messageCode);
 		// the message code references an error message or null
-		final String banner = this.configurationParametersService.find().getBanner();
+		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
 
 		return result;

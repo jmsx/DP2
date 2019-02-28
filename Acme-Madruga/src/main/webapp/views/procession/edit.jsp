@@ -33,6 +33,8 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
+	<form:hidden path="mode" />
+	<form:hidden path="ticker" />
 
 	<acme:textbox code="procession.title" path="title" />
 	<acme:textbox code="procession.description" path="description" />

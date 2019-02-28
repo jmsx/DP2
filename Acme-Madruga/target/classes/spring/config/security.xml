@@ -81,12 +81,8 @@
 		<security:intercept-url pattern="/member/list.do" access="hasAnyRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/member/displayTabla.do" access="hasAnyRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/brotherhood/dropOut.do" access="hasAnyRole('BROTHERHOOD')"/>
-		<security:intercept-url pattern="/procession/member/display.do" access="hasRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/float/display.do" access="hasRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/float/list.do" access="hasRole('BROTHERHOOD')"/>
-		<security:intercept-url pattern="/request/brotherhood/list.do" access="hasRole('BROTHERHOOD')"/>
-		<security:intercept-url pattern="/request/brotherhood/display.do" access="hasRole('BROTHERHOOD')"/>
-		<security:intercept-url pattern="/request/brotherhood/edit.do" access="hasRole('BROTHERHOOD')"/>
 		
 		<security:intercept-url pattern="/brotherhood/displayTabla.do" access="hasRole('MEMBER')"/>
 		<security:intercept-url pattern="/brotherhood/list.do" access="hasRole('MEMBER')" /> 
@@ -95,11 +91,6 @@
 		<security:intercept-url pattern="/member/edit.do" access="hasRole('MEMBER')" /> 
 		<security:intercept-url pattern="/member/display.do" access="hasRole('MEMBER')" />
 		<security:intercept-url pattern="/member/leave.do" access="hasAnyRole('MEMBER')"/>
-		<security:intercept-url pattern="/procession/member/list.do" access="hasRole('MEMBER')"/>
-		<security:intercept-url pattern="/request/member/list.do" access="hasRole('MEMBER')"/>
-		<security:intercept-url pattern="/request/member/display.do" access="hasRole('MEMBER')"/>
-		<security:intercept-url pattern="/procession/member/display.do" access="hasRole('MEMBER')"/>
-		<security:intercept-url pattern="/request/member/create.do" access="hasRole('MEMBER')"/>
 		
 		
 

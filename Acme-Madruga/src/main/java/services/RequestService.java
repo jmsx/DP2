@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class RequestService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private ProcessionService	processionService;
 
 
 	// ======================= CRUD ================================
@@ -81,11 +85,15 @@ public class RequestService {
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
 		if (req.getId() == 0) {
 			//Creacion de Request, esta debe estar PENDING
-			Assert.isTrue(req.getStatus().equals(Request.PENDING), "Request must be create as PENDING");
-			Assert.isTrue(this.requestRepository.hasMemberRequestToProcession(req.getProcession().getId(), req.getMember().getUserAccount().getId()), "A member cannot request twice to the same procession");
+			// Assert.isTrue(req.getStatus().equals(Request.PENDING), "Request must be create as PENDING");
+			req.setStatus("PENDING");
+			final Date moment = new Date(System.currentTimeMillis() - 1);
+			req.setMoment(moment);
+			Assert.isTrue(!this.requestRepository.hasMemberRequestToProcession(req.getProcession().getId(), req.getMember().getUserAccount().getId()), "A member cannot request twice to the same procession");
+			Assert.isTrue((req.getRow() == null && req.getColumn() == null && req.getExplanation() == null), "Row, column and explanation attributes only can be set by brotherhood");
 		} else {
 			Assert.isTrue(!isMember, "A member cannot update the request");
-			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request");
+			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request (to change it's status)");
 			Assert.isTrue(!this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), req.getId()), "This Brotherhood haven't access to this request");
 			if (req.getStatus().equals(Request.REJECTED))
 				Assert.isTrue(!(req.getExplanation() == "" || req.getExplanation() == null), "If Request is REJECTED must have a explanation");
@@ -125,5 +133,20 @@ public class RequestService {
 			i++;
 		}
 		return res;
+	}
+	/**
+	 * This method allow members request to a procession, creating a new Request with principal member
+	 * and procession given as id parameter, as its attributes.
+	 * 
+	 * @author a8081
+	 * */
+	public Request requestToProcession(final Integer processionId) {
+		final Request req = this.create();
+		final Procession procession = this.processionService.findOne(processionId);
+		Assert.isTrue(procession.getMode().equals("FINAL"), "A member cannot access to a final procession, so he or she cannot request to it");
+		req.setProcession(procession);
+		final Request retrieved = this.save(req);
+		return retrieved;
+
 	}
 }
