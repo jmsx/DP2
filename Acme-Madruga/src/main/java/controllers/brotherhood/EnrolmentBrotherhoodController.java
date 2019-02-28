@@ -20,6 +20,7 @@ import services.EnrolmentService;
 import services.MemberService;
 import services.PositionService;
 import controllers.AbstractController;
+import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
@@ -52,32 +53,6 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 		super();
 	}
 
-	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
-
-	protected ModelAndView createEditModelAndView(final Enrolment enrolment) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(enrolment, null);
-
-		return result;
-	}
-
-	protected ModelAndView createEditModelAndView(final Enrolment enrolment, final String messageCode) {
-		final ModelAndView result;
-
-		final Collection<Position> positions = this.positionService.findAll();
-
-		result = new ModelAndView("enrolment/edit");
-		result.addObject("enrolment", enrolment);
-		result.addObject("positions", positions);
-
-		result.addObject("message", messageCode);
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
-		return result;
-	}
 	// DISPLAY PARA VISTA DE BROTHERHOOD  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -105,6 +80,25 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 		return result;
 	}
 
+	// EDIT  ---------------------------------------------------------------		
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int memberId) {
+		ModelAndView result;
+		final Actor principal = this.brotherhoodService.findByPrincipal();
+		final Actor member = this.memberService.findByUserId(memberId);
+		Enrolment enrolment;
+
+		enrolment = this.enrolmentService.getEnrolment(principal, member);
+
+		if (enrolment != null)
+			result = this.createEditModelAndView(enrolment);
+		else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+	}
+
 	// SAVE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
@@ -126,5 +120,42 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 			}
 
 		return result;
+	}
+
+	// ANCILLARY METHODS  ---------------------------------------------------------------		
+
+	protected ModelAndView createEditModelAndView(final Enrolment enrolment) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(enrolment, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Enrolment enrolment, final String messageCode) {
+		final ModelAndView result;
+
+		final Collection<Position> positions = this.positionService.findAll();
+
+		result = new ModelAndView("enrolment/edit");
+		result.addObject("enrolment", this.constructPruned(enrolment));
+		result.addObject("positions", positions);
+
+		result.addObject("message", messageCode);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	public EnrolmentForm constructPruned(final Enrolment enrolment) {
+		final EnrolmentForm pruned = new EnrolmentForm();
+
+		pruned.setId(enrolment.getId());
+		pruned.setVersion(enrolment.getVersion());
+		pruned.setPosition(enrolment.getPosition());
+
+		return pruned;
 	}
 }

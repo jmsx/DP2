@@ -15,10 +15,10 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="enrolment/brotherhood/edit.do" modelAttribute="enrolment">
+
+<form:form action="enrolment/brotherhood/edit.do" modelAttribute="enrolment" method="POST">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
