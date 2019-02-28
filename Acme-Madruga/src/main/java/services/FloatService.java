@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.FloatRepository;
+import security.Authority;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Float;
@@ -30,6 +31,9 @@ public class FloatService {
 
 	@Autowired
 	private BrotherhoodService				brotherhoodService;
+
+	@Autowired
+	private ActorService					actorService;
 
 
 	//Métodos CRUD
@@ -57,21 +61,31 @@ public class FloatService {
 		return res;
 	}
 
-	public Float save(final Float f) {
-		Assert.notNull(f);
-		Assert.isTrue(f.getId() != 0);
+	public Float save(Float f) {
 		final Actor me = this.brotherhoodService.findByPrincipal();
-		Assert.notNull(me);
-		final Float res = this.floatRepository.save(f);
-		Assert.notNull(res);
-		return res;
+		Assert.notNull(me, "You must be logged in the system");
+		Assert.isTrue(this.actorService.checkAuthority(me, Authority.BROTHERHOOD), "You must be BROTHERHOO");
+		if (f.getId() == 0) {
+			f.setBrotherhood(this.brotherhoodService.findOne(me.getId()));
+			f = this.floatRepository.save(f);
+		} else {
+			final Float old = this.floatRepository.findOne(f.getId());
+			Assert.isTrue(me.getId() == old.getBrotherhood().getId(), "You must be the owner of the float");
+			f = this.floatRepository.save(f);
+		}
+
+		return f;
 	}
 
-	public void delete(final Float fProcession) {
-		Assert.notNull(fProcession);
-		Assert.isTrue(fProcession.getId() != 0);
-		Assert.isTrue(this.floatRepository.exists(fProcession.getId()));
-		this.floatRepository.delete(fProcession);
+	public void delete(final Float f) {
+		final Actor me = this.brotherhoodService.findByPrincipal();
+		Assert.notNull(me, "You must be logged in the system");
+		Assert.isTrue(this.actorService.checkAuthority(me, Authority.BROTHERHOOD), "You must be BROTHERHOO");
+		if (f.getId() != 0) {
+			final Float old = this.floatRepository.findOne(f.getId());
+			Assert.isTrue(me.getId() == old.getBrotherhood().getId(), "You must be the owner of the float");
+			this.floatRepository.delete(f);
+		}
 	}
 
 	public Collection<Procession> find(final String fProcession) {
@@ -103,6 +117,14 @@ public class FloatService {
 		Assert.notNull(b);
 		Assert.isTrue(b.getId() != 0);
 		final Collection<Float> res = this.floatRepository.findByBrotherhood(b.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Float> findByBrotherhoodPrincipal() {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD), "The principal actor must be a BROTHEHOOD");
+		final Collection<Float> res = this.floatRepository.findByBrotherhood(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}

@@ -26,6 +26,8 @@
 		<value>/views/administrator/tiles.xml</value>
 		<value>/views/brotherhood/tiles.xml</value>
 		<value>/views/profile/tiles.xml</value>
+		<value>/views/float/tiles.xml</value>
+		
 		
 		<!--  Administrador -->
 		<value>/views/configurationParameters/tiles.xml</value>

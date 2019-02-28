@@ -64,13 +64,13 @@ public class AdministratorController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView edit(final ActorFrom actorForm, final BindingResult binding) {
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(/* @Valid */final ActorFrom actorForm, final BindingResult binding) {
 		ModelAndView result;
 		result = new ModelAndView("administrator/edit");
 		Administrator admin;
 		if (binding.hasErrors())
-			result.addObject("errors", binding.getFieldErrors());
+			result.addObject("errors", binding.getAllErrors());
 		else
 			try {
 				UserAccount ua = this.accountService.reconstruct(actorForm, binding);
@@ -83,9 +83,7 @@ public class AdministratorController extends AbstractController {
 				result.addObject("alert", true);
 				result.addObject("actorForm", admin);
 			} catch (final Throwable e) {
-				// TODO
-				// result = this.cre
-
+				result.addObject("errors", binding.getAllErrors());
 			}
 
 		return result;

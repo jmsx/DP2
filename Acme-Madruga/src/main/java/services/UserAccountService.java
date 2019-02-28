@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import security.Authority;
@@ -70,8 +69,8 @@ public class UserAccountService {
 			ua.setPassword(actorForm.getUserAccountpassword());
 
 		}
-		// TODO
-		// this.validator.validate(ua, bind);
+
+		this.validator.validate(ua, bind);
 		return ua;
 	}
 }

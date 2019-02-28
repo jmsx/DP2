@@ -26,6 +26,7 @@
 		<value>/views/administrator/messages</value>
 		<value>/views/brotherhood/messages</value>
 		<value>/views/profile/messages</value>
+		<value>/views/float/messages</value>
 		
 		<!-- Administrador -->
 		<value>/views/configurationParameters/messages</value>

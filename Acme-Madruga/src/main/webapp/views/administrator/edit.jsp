@@ -17,6 +17,8 @@
 
 
 <form:form modelAttribute="actorForm" action="administrator/edit.do" method="POST">
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
 	<acme:textbox code="administrator.edit.userAccountuser" path="userAccountuser" />
 	<acme:textbox code="administrator.edit.userAccountpassword" path="userAccountpassword" />
 
@@ -27,5 +29,5 @@
 	<acme:textbox code="administrator.edit.email" path="email" />
 	<acme:textbox code="administrator.edit.phone" path="phone" />
 	<acme:textbox code="administrator.edit.address" path="address" />
-	<acme:submit code="administrator.edit.submit" name="submit"/>
+	<acme:submit code="administrator.edit.submit" name="save"/>
 </form:form>
