@@ -15,6 +15,6 @@ public interface SocialProfileRepository extends JpaRepository<SocialProfile, In
 	//@Query("select a from Actor a where a.userAccount.id=?1")
 	//SocialProfile findByUserId(Integer id);
 
-	@Query("select s from SocialProfile s where s.actor.userAccount.id=?1")
-	Collection<SocialProfile> findByUserId(Integer id);
+	@Query("select s from SocialProfile s where s.actor.id=?1")
+	Collection<SocialProfile> findByActorId(Integer id);
 }
