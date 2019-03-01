@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -175,6 +176,8 @@ public class ActorService {
 		auth.setAuthority(Authority.BANNED);
 		auths.add(auth);
 		user.setAuthorities(auths);
+
+		Assert.isTrue(a.getSpammer() || (a.getScore() < -0.5), "Para banear un actor este debe ser spammer o tener una puntuación menor que -0.5");
 		this.userAccountService.save(user);
 
 		this.update(a);
@@ -206,53 +209,29 @@ public class ActorService {
 		return result;
 	}
 
-	public Collection<Actor> findAllBannedSpammers() {
-		this.administratorService.findByPrincipal();
-		final Collection<Actor> result = this.actorRepository.findAllSpammer();
-		for (final Actor a : result)
-			if (!this.isBan(a).equals(false))
-				result.remove(a);
-		Assert.notNull(result);
+	public List<Boolean> getBannedList(final List<Actor> actors) {
+		Assert.notNull(actors);
+		final List<Boolean> result = new ArrayList<Boolean>();
+
+		for (int i = 0; i < actors.size(); i++)
+			result.add(i, this.isBan(actors.get(i)));
+
 		return result;
 	}
 
-	public Collection<Actor> findAllNotBannedSpammers() {
-		this.administratorService.findByPrincipal();
-		final Collection<Actor> result = this.actorRepository.findAllSpammer();
-		for (final Actor a : result)
-			if (this.isBan(a).equals(false))
-				result.remove(a);
-		Assert.notNull(result);
-		return result;
-	}
+	public boolean isBan(final Actor a) {
 
-	public Collection<Actor> findAllBannedNegative() {
-		this.administratorService.findByPrincipal();
-		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
-		for (final Actor a : result)
-			if (!this.isBan(a).equals(false))
-				result.remove(a);
-		Assert.notNull(result);
-		return result;
-	}
+		final UserAccount user = a.getUserAccount();
+		final Actor retrieved = this.findByUserId(user.getId());
+		Assert.notNull(retrieved);
 
-	public Collection<Actor> findAllNotBannedNegative() {
-		this.administratorService.findByPrincipal();
-		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
-		for (final Actor a : result)
-			if (this.isBan(a).equals(false))
-				result.remove(a);
-		Assert.notNull(result);
-		return result;
-	}
+		final Collection<Authority> auths = user.getAuthorities();
+		Assert.notEmpty(auths);
 
-	private Boolean isBan(final Actor a) {
-		Boolean result = false;
-		final Actor actor = this.findOne(a.getId());
-		final Collection<Authority> auths = actor.getUserAccount().getAuthorities();
-		if (auths.contains(Authority.BANNED))
-			result = true;
-		return result;
+		final Authority newAuth = new Authority();
+		newAuth.setAuthority("BANNED");
+
+		return auths.contains(newAuth);
 	}
 
 	public Collection<Actor> findAllTooNegativeScore() {
@@ -337,7 +316,7 @@ public class ActorService {
 		Assert.notNull(a);
 		Assert.isTrue(a.getId() != 0);
 		this.administratorService.findByPrincipal();
-		Assert.isTrue(this.equalsLessSpammer(this.findByUserId(a.getUserAccount().getId()), a) || (a.getScore() < -0.5));
+		Assert.isTrue(this.equalsLessSpammer(this.findByUserId(a.getUserAccount().getId()), a));
 		return this.actorRepository.save(a);
 	}
 
