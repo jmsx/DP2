@@ -53,10 +53,10 @@
 			<security:authorize access="hasRole('BROTHERHOOD')">
 				<jstl:if test="${row.status eq 'PENDING'}">
 					<display:column>
-						<acme:button url="" name="approve" code="request.approve"/>
+						<acme:button url="request/brotherhood/approve.do?requestId=${row.id}&processionId=${row.procession.id}" name="approve" code="request.approve"/>
 					</display:column>
 					<display:column>
-						<acme:button url="" name="reject" code="request.reject"/>
+						<acme:button url="request/brotherhood/reject.do?requestId=${row.id}&processionId=${row.procession.id}" name="reject" code="request.reject"/>
 					</display:column>
 				</jstl:if>
 			</security:authorize>

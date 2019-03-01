@@ -112,7 +112,7 @@ public class RequestService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 		Assert.isTrue(isMember, "Only a member can delete a request");
-		Assert.isTrue(req.getMember().getId() == principal.getUserAccount().getId(), "Member must be the own of the request");
+		Assert.isTrue(req.getMember().getUserAccount().getId() == principal.getUserAccount().getId(), "Member must be the request owner");
 		final Request request = this.requestRepository.findOne(req.getId());
 		Assert.isTrue(request.getStatus().equals(Request.PENDING), "The Request must be PENDING");
 		this.requestRepository.delete(req.getId());
@@ -143,7 +143,7 @@ public class RequestService {
 	public Request requestToProcession(final Integer processionId) {
 		final Request req = this.create();
 		final Procession procession = this.processionService.findOne(processionId);
-		Assert.isTrue(procession.getMode().equals("FINAL"), "A member cannot access to a final procession, so he or she cannot request to it");
+		Assert.isTrue(procession.getMode().equals("FINAL"), "A member cannot access to a procession in draft mode, so he or she cannot request to it");
 		req.setProcession(procession);
 		final Request retrieved = this.save(req);
 		return retrieved;

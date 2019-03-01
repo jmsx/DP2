@@ -60,7 +60,8 @@
 							code="procession.apply" />
 					</jstl:when>
 					<jstl:otherwise>
-						<spring:message code="procession.applied" />
+						<acme:link url="request/member/display.do?processionId=${row.id}"
+							code="procession.applied" />
 					</jstl:otherwise>
 				</jstl:choose>
 			</display:column>

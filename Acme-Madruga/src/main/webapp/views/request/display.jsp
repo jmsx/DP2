@@ -53,6 +53,9 @@
 	</jstl:when>
 	<jstl:otherwise>
 		<spring:message code="request.status.pending"/>
+		<security:authorize access="hasRole('MEMBER')">
+			<acme:submit name="delete" code="request.delete"/>
+		</security:authorize>
 	</jstl:otherwise>
 </jstl:choose>
 <br />

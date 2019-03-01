@@ -2,6 +2,7 @@
 package controllers.brotherhood;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -56,19 +57,43 @@ public class RequestBrotherhoodController extends AbstractController {
 
 	// Edition --------------------------------------------------------
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int requestId, final String mostrarTarjetas) {
+	@RequestMapping(value = "/approve", method = RequestMethod.GET)
+	public ModelAndView approve(@RequestParam final int requestId, @RequestParam final int processionId) {
 		ModelAndView result;
 		Request request;
 
+		// access controlled in findOne method implemented by jmsx
 		request = this.requestService.findOne(requestId);
-		if (request == null)
+		if (request == null || !request.getStatus().equals("PENDING"))
 			result = new ModelAndView("redirect:/misc/403.jsp");
-		else
+		else {
 			result = this.createEditModelAndView(request);
+			request.setStatus("APPROVED");
+			final List<Integer> ls = this.requestService.suggestPosition(this.processionService.findOne(processionId));
+			result.addObject("suggestedRow", ls.get(0));
+			result.addObject("suggestedColumn", ls.get(1));
+		}
 
 		return result;
 	}
+
+	@RequestMapping(value = "/reject", method = RequestMethod.GET)
+	public ModelAndView reject(@RequestParam final int requestId, @RequestParam final int processionId) {
+		ModelAndView result;
+		Request request;
+
+		// access controlled in findOne method implemented by jmsx
+		request = this.requestService.findOne(requestId);
+
+		if (request == null || !request.getStatus().equals("PENDING"))
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		else {
+			result = this.createEditModelAndView(request);
+			request.setStatus("REJECTED");
+		}
+		return result;
+	}
+
 	// Save --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
