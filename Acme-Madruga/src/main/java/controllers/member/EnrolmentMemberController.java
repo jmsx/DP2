@@ -61,7 +61,7 @@ public class EnrolmentMemberController extends AbstractController {
 		final ModelAndView result;
 		//			final List<Area> libres = (List<Area>) this.areaService.AllAreasFree();
 
-		result = new ModelAndView("brotherhood/edit");
+		result = new ModelAndView("enrolment/edit");
 		result.addObject("enrolment", enrolment);
 		//			result.addObject("areas", libres);
 

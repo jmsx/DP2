@@ -42,8 +42,8 @@
 
 	<jstl:otherwise> 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-		<a href="enrolment/brotherhood/edit.do">
-			<spring:message code="enrolment.member.position.enrole" />
+		<a href="enrolment/brotherhood/edit.do?memberId="${enrolment.member.id}>
+			<spring:message code="enrolment.member.position.assign" />
 		</a>
 		<br>
 	</security:authorize>
