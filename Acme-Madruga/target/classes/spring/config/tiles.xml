@@ -33,6 +33,8 @@
 		<value>/views/configurationParameters/tiles.xml</value>
 		<value>/views/position/tiles.xml</value>
 		<value>/views/area/tiles.xml</value>
+		<value>/views/ban/tiles.xml</value>
+		<value>/views/dashboard/tiles.xml</value>
 		
 		<value>/views/folder/tiles.xml</value>
 		<value>/views/socialProfile/tiles.xml</value>

@@ -44,18 +44,16 @@
 				</ul>
 			</li>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.position" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="position/administrator/list.do"><spring:message code="master.page.position.list" /></a></li>
-				</ul>
+			<li><a class="fNiv"><a href="position/administrator/list.do"><spring:message	code="master.page.position" /></a></a>
+				
 			</li>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="area/administrator/list.do"><spring:message code="master.page.area.list" /></a></li>
-				</ul>
+			<li><a class="fNiv"><a href="area/administrator/list.do"><spring:message	code="master.page.area" /></a></a>
+				
+			</li>
+			
+			<li><a class="fNiv"><a href="ban/administrator/list.do"><spring:message	code="master.page.ban" /></a></a>
+				
 			</li>
 			
 			<li><a class="fNiv"><a href="dashboard/administrator/list.do"><spring:message	code="master.page.dashboard" /></a></a>

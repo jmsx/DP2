@@ -11,7 +11,7 @@
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<display:table pagesize="10" class="displaytag" keepStatus="true"
+<display:table pagesize="10" class="displayarea" keepStatus="true"
 	name="areas" requestURI="${requestURI}" id="row">
 	
 	<!-- Action links -->
@@ -24,25 +24,17 @@
 				<spring:param name="areaId" value="${row.id}"/> <!-- es el parámetro que va a acompañar a la url -->
 			</spring:url>
 			<a href="${editURL}"><spring:message code="area.edit"/></a>
-		</display:column>
-		
-	</security:authorize>		
-		
-		<spring:message code="area.display.header" var="displayHeader"></spring:message>
-		<display:column title="${displayHeader}" sortable="false">
-			<spring:url value="area/administrator/display.do" var="displayURL">
-				<spring:param name="areaId" value="${row.id}"/> <!-- es el parámetro que va a acompañar a la url -->
-			</spring:url>
-			<a href="${displayURL}"><spring:message code="area.display"/></a>
-		</display:column>
+		</display:column>	
+		</security:authorize>		
 	
 	
 		<!-- Attributes of the positions -->
  
 		<spring:message code="area.name" var="nameHeader" />
-		<display:column property="name" title="${nameHeader}" sortable="true" />
+		<display:column property="name" title="${nameHeader}" sortable="false" />
 		
-		
+		<spring:message code="area.pictures" var="picturesHeader" />
+		<display:column property="pictures" title="${picturesHeader}" sortable="false" />
 
 	
 </display:table>
