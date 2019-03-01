@@ -14,15 +14,15 @@
 
 <style type="text/css">
 .PENDING {
-	color: grey;
+	background-color: #d9d9d9;
 }
 
 .APPROVED {
-	color: green;
+	background-color: green;
 }
 
 .REJECTED {
-	color: orange;
+	background-color: orange;
 }
 </style>
 
@@ -31,8 +31,7 @@
 </jstl:if>
 
 <acme:display code="procession.title" value="${procession.title}" />
-<acme:display code="procession.description"
-	value="${procession.description}" />
+<acme:display code="procession.description" value="${procession.description}" />
 	
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">

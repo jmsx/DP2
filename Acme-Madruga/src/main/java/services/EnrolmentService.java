@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.EnrolmentRepository;
 import security.Authority;
@@ -16,6 +18,7 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
+import forms.EnrolmentForm;
 
 @Service
 @Transactional
@@ -33,18 +36,17 @@ public class EnrolmentService {
 	@Autowired
 	private BrotherhoodService	brotherhoodService;
 
+	@Autowired
+	private Validator			validator;
 
-	public Enrolment create(final int btoherhoodId) {
+
+	public Enrolment create() {
 		final Enrolment enrolment = new Enrolment();
-
-		final Brotherhood bro = this.brotherhoodService.findByUserId(btoherhoodId);
-		enrolment.setBrotherhood(bro);
-
-		final Member principal = this.memberService.findByPrincipal();
-		enrolment.setMember(principal);
-
+		this.memberService.findByPrincipal();
 		return enrolment;
+
 	}
+
 	public Collection<Enrolment> findAll() {
 		Collection<Enrolment> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();
@@ -71,7 +73,6 @@ public class EnrolmentService {
 		Assert.notNull(enrolment);
 		final Actor principal = this.actorService.findByPrincipal();
 		final Enrolment result;
-		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 
 		if (isMember) {
@@ -79,6 +80,7 @@ public class EnrolmentService {
 				Assert.isTrue(!this.brotherhoodService.findAllBrotherHoodByMember().contains(enrolment.getBrotherhood()));
 				final Date moment = new Date(System.currentTimeMillis() - 1);
 				enrolment.setMoment(moment);
+				enrolment.setEnrolled(false);
 				enrolment.setMember(this.memberService.findByPrincipal());
 				enrolment.setDropOut(null);
 			} else
@@ -86,7 +88,7 @@ public class EnrolmentService {
 			if (enrolment.getDropOut() != null)
 				Assert.isTrue(enrolment.getMoment().before(enrolment.getDropOut()));
 
-		} else if (isBrotherhood) {
+		} else { // BROTHERHOOD
 			Assert.isTrue(enrolment.getBrotherhood() == this.brotherhoodService.findByPrincipal());
 			Assert.notNull(enrolment.getPosition());
 			enrolment.setEnrolled(true);
@@ -139,6 +141,47 @@ public class EnrolmentService {
 		final Enrolment res = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), member.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
+	}
+
+	public Collection<Enrolment> findAllByMemberId(final Integer memberUAId) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		final Collection<Enrolment> res = this.enrolmentRepository.findAllByMemberId(memberUAId);
+		return res;
+	}
+
+	public Collection<Enrolment> findAllByBrotherHoodId(final Integer broUAId) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
+		final Collection<Enrolment> res = this.enrolmentRepository.findAllByBrotherHoodId(broUAId);
+		return res;
+	}
+
+	public Enrolment reconstruct(final EnrolmentForm enrolmentForm, final BindingResult binding) {
+		Enrolment result;
+
+		Assert.isTrue(enrolmentForm.getId() != 0);
+
+		result = this.findOne(enrolmentForm.getId());
+
+		result.setId(enrolmentForm.getId());
+		result.setVersion(enrolmentForm.getVersion());
+		result.setPosition(enrolmentForm.getPosition());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public Enrolment enrole(final int brotherhoodId) {
+		final Enrolment enrolment = this.create();
+
+		final Brotherhood bro = this.brotherhoodService.findByUserId(brotherhoodId);
+		enrolment.setBrotherhood(bro);
+
+		final Enrolment retrieved = this.save(enrolment);
+
+		return retrieved;
 	}
 
 }

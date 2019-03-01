@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -175,6 +176,8 @@ public class ActorService {
 		auth.setAuthority(Authority.BANNED);
 		auths.add(auth);
 		user.setAuthorities(auths);
+
+		Assert.isTrue(a.getSpammer() || (a.getScore() < -0.5), "Para banear un actor este debe ser spammer o tener una puntuación menor que -0.5");
 		this.userAccountService.save(user);
 
 		this.update(a);
@@ -202,6 +205,38 @@ public class ActorService {
 	public Collection<Actor> findAllSpammers() {
 		this.administratorService.findByPrincipal();
 		final Collection<Actor> result = this.actorRepository.findAllSpammer();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public List<Boolean> getBannedList(final List<Actor> actors) {
+		Assert.notNull(actors);
+		final List<Boolean> result = new ArrayList<Boolean>();
+
+		for (int i = 0; i < actors.size(); i++)
+			result.add(i, this.isBan(actors.get(i)));
+
+		return result;
+	}
+
+	public boolean isBan(final Actor a) {
+
+		final UserAccount user = a.getUserAccount();
+		final Actor retrieved = this.findByUserId(user.getId());
+		Assert.notNull(retrieved);
+
+		final Collection<Authority> auths = user.getAuthorities();
+		Assert.notEmpty(auths);
+
+		final Authority newAuth = new Authority();
+		newAuth.setAuthority("BANNED");
+
+		return auths.contains(newAuth);
+	}
+
+	public Collection<Actor> findAllTooNegativeScore() {
+		this.administratorService.findByPrincipal();
+		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
 		Assert.notNull(result);
 		return result;
 	}
@@ -270,7 +305,8 @@ public class ActorService {
 	}
 
 	/**
-	 * An administrator can ban system actors, so he must be able to modify them. That's an ancilliary method to "banActor" and "unbanActor", it checks administrator only changes actor's spammer attribute.
+	 * An administrator can ban system actors, so he must be able to modify them. That's an ancilliary method to "banActor" and "unbanActor", it checks
+	 * administrator only changes actor's spammer attribute or that the score is too negative (<-0.5)
 	 * 
 	 * @param a
 	 *            Actor who will be modified
@@ -321,6 +357,29 @@ public class ActorService {
 		} else if (!a1.getSurname().equals(a2.getSurname()))
 			return false;
 		return true;
+	}
+
+	/**
+	 * A user is considered to be a spammer if at least 10% of the messages
+	 * that he or she's sent contain at least one spam word
+	 */
+	public void spamActor(final Actor a) {
+		final Collection<Message> messages = this.messageService.findAll(); //messages of actor a
+		for (final Message m : messages)
+			if (!m.getSender().equals(a))
+				messages.remove(m);
+
+		final int totalMessages = messages.size();
+		int spamMessages = 0;
+		for (final Message me : messages)
+			if (this.messageService.checkForSpamWords(me))
+				spamMessages += 1;
+
+		if ((spamMessages / totalMessages) >= 0.1) {
+			a.setSpammer(true);
+			this.update(a);//TODO
+		}
+
 	}
 
 }

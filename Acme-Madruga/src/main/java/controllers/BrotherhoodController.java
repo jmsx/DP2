@@ -20,7 +20,6 @@ import services.BrotherhoodService;
 import services.ConfigurationParametersService;
 import services.EnrolmentService;
 import services.MemberService;
-import services.UserAccountService;
 import domain.Area;
 import domain.Brotherhood;
 import domain.Member;
@@ -32,9 +31,6 @@ public class BrotherhoodController extends AbstractController {
 
 	@Autowired
 	private BrotherhoodService				brotherhoodService;
-
-	@Autowired
-	private UserAccountService				userAccountService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
@@ -215,6 +211,7 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("member", member);
 		result.addObject("ok", false);
 		result.addObject("leave", true);
+		result.addObject("displayEnrolment", true);
 		result.addObject("requetURI", "brotherhood/list.do");
 
 		final String banner = this.configurationParametersService.findBanner();
@@ -240,6 +237,7 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("ok", true);
+		result.addObject("displayEnrolment", false);
 		result.addObject("requetURI", "brotherhood/allBrotherhoodsFree.do");
 
 		final String banner = this.configurationParametersService.findBanner();

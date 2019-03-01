@@ -40,8 +40,8 @@ public class SocialProfileController extends AbstractController {
 	@RequestMapping("/list")
 	public ModelAndView list() {
 		final ModelAndView result = new ModelAndView("socialProfile/list");
-		//		final Actor actor = this.actorService.findByPrincipal();
-		final Collection<SocialProfile> list = this.socialProfileService.findAll();
+		//final Actor actor = this.actorService.findByPrincipal();
+		final Collection<SocialProfile> list = this.socialProfileService.findAllByPrincipal();
 		result.addObject("socialProfiles", list);
 		return result;
 	}
@@ -58,21 +58,28 @@ public class SocialProfileController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView edit(@Valid final SocialProfile socialProfile, final BindingResult binding) {
 		ModelAndView result;
-		result = new ModelAndView("socialProfile/list");
-		try {
-			if (socialProfile.getId() == 0) {
-				socialProfile.setActor(this.actorService.findByPrincipal());
-				this.socialProfileService.save(socialProfile);
-			} else {
-				Assert.isTrue(socialProfile.getActor().getId() == this.actorService.findByPrincipal().getId(), "Only the owner of the Social Profile can edit it");
-				this.socialProfileService.save(socialProfile);
+		if (binding.hasErrors()) {
+			result = new ModelAndView("socialProfile/edit");
+			result.addObject("socialProfile", socialProfile);
+			result.addObject("errors", binding.getAllErrors());
+		} else {
+			result = new ModelAndView("socialProfile/list");
+			try {
+				if (socialProfile.getId() == 0) {
+					socialProfile.setActor(this.actorService.findByPrincipal());
+					this.socialProfileService.save(socialProfile);
+				} else {
+					Assert.isTrue(socialProfile.getActor().getId() == this.actorService.findByPrincipal().getId(), "Only the owner of the Social Profile can edit it");
+					this.socialProfileService.save(socialProfile);
+				}
+			} catch (final Exception e) {
+				result.addObject("alert", "socialProfile.edit.error");
 			}
-		} catch (final Exception e) {
-			result.addObject("alert", "socialProfile.edit.error");
+
+			final Collection<SocialProfile> list = this.socialProfileService.findAllByPrincipal();
+			result.addObject("socialProfiles", list);
 		}
 
-		final Collection<SocialProfile> list = this.socialProfileService.findAll();
-		result.addObject("socialProfiles", list);
 		return result;
 	}
 
@@ -83,7 +90,7 @@ public class SocialProfileController extends AbstractController {
 		this.socialProfileService.delete(profile);
 
 		result = new ModelAndView("socialProfile/list");
-		final Collection<SocialProfile> list = this.socialProfileService.findAll();
+		final Collection<SocialProfile> list = this.socialProfileService.findAllByPrincipal();
 		result.addObject("socialProfiles", list);
 		return result;
 	}

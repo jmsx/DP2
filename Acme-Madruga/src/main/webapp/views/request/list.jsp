@@ -12,15 +12,15 @@
 
 <style type="text/css">
 .PENDING {
-	color: grey;
+	background-color: #d9d9d9;
 }
 
 .APPROVED {
-	color: green;
+	background-color: green;
 }
 
 .REJECTED {
-	color: orange;
+	background-color: orange;
 }
 </style>
 

@@ -26,11 +26,15 @@
 		<value>/views/administrator/tiles.xml</value>
 		<value>/views/brotherhood/tiles.xml</value>
 		<value>/views/profile/tiles.xml</value>
+		<value>/views/float/tiles.xml</value>
+		
 		
 		<!--  Administrador -->
 		<value>/views/configurationParameters/tiles.xml</value>
 		<value>/views/position/tiles.xml</value>
 		<value>/views/area/tiles.xml</value>
+		<value>/views/ban/tiles.xml</value>
+		<value>/views/dashboard/tiles.xml</value>
 		
 		<value>/views/folder/tiles.xml</value>
 		<value>/views/socialProfile/tiles.xml</value>
@@ -38,6 +42,9 @@
 		<value>/views/procession/tiles.xml</value>
 		<value>/views/message/tiles.xml</value>
 		<value>/views/member/tiles.xml</value>
+		<value>/views/enrolment/tiles.xml</value>
+		
+		
 	</util:list>
 
 </beans>

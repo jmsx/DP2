@@ -9,6 +9,11 @@
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<head>
+<style type="text/css">
+.input > textarea{height: 100px; width: 700px}
+</style>
+</head>
 
 <form:form action="${RequestURI }"  modelAttribute="area" >
 
@@ -25,37 +30,44 @@
 	<form:input path="name" />
 	<form:errors cssClass="error" path="name" />
 	
+	<br>
+	<br>
+	
 	<form:label path="pictures">
 		<spring:message code="area.pictures" />
 	</form:label>
-	<form:input path="pictures" />
+	<br>
+	<spring:message code="area.text.area" var="warning" />
+	<jstl:out value="${warning}" />
+	<div class="input">
+	<form:textarea path="pictures" />
 	<form:errors cssClass="error" path="pictures" />
+	</div>
 	
 	
-	
-
-	</security:authorize>
-
 	
 	<!-- BOTONES --> 
 	
 	 <input type="submit" name="save"
 		value="<spring:message code="area.save"/>" />&nbsp;
 		
-	<!--<jstl:if test="${position.id!=0}">
+	<jstl:if test="${area.id!=0}">
 		<input type="submit" name="delete"
-			value="<spring:message code="position.delete"/>"
-			onclick="javascript: return confirm('<spring:message code="position.confirm.delete"/>')" />&nbsp;
-	</jstl:if>-->
+			value="<spring:message code="area.delete"/>"
+			onclick="javascript: return confirm('<spring:message code="area.confirm.delete"/>')" />&nbsp;
+	</jstl:if>
 		
-		<jstl:if test="${area.id!=0}">
+		<!--<jstl:if test="${area.id!=0}">
 		<input type="submit" name="delete"
 			value="<spring:message code="area.delete"/>"  />&nbsp;
-	</jstl:if>
+	</jstl:if>-->
 	
 	  <input type="button" name="cancel"
 		value="<spring:message code="area.cancel"/>"
 		onclick="javascript: window.location.replace('area/administrator/list.do')" />
 	<br />
+	
+	</security:authorize>
 		
 </form:form>
+

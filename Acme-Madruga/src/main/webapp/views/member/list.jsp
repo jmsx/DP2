@@ -29,6 +29,12 @@
 	
 	<display:column property="surname" titleKey="actor.surname" />
 	
+	<display:column titleKey="actor.enrolment">
+	<a href="enrolment/brotherhood/display.do?memberId=${row.id}"> <spring:message
+				code="member.enrolment" />
+		</a>
+	</display:column>
+	
 	<display:column>
 		<a href="member/displayTabla.do?memberId=${row.id}"> <spring:message
 				code="member.display" />
