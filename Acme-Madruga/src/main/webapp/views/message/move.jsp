@@ -26,49 +26,38 @@
   ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
   --%>
   
-<p><spring:message code="message.edit" /></p>
+<p><spring:message code="general.move" /></p>
 
-<form:form action="message/edit.do" modelAttribute="m">
+<form:form action="message/move.do" modelAttribute="m">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
     <form:hidden path="moment"/>
     <form:hidden path="sender"/>
     
-	<acme:select items="${recipients}" itemLabel="name" code="message.recipients" path="recipients"/>
+    <display:table pagesize="5" class="displaytag" keepStatus="true"
+               name="m" requestURI="${requestURI}" id="row">
+
+    <!-- Attributes -->
+
+    <security:authorize access="hasAnyRole('ADMIN')">
+    </security:authorize>
+
+	<display:column property="subject" titleKey="message.subject" />
+	<display:column property="sender" value="name" titleKey="message.sender" />
+	<display:column property="recipients" value="name" titleKey="message.recipients" />
+	<display:column property="priority" titleKey="message.priority" />
+	<display:column>
+		<acme:select items="${folders}" itemLabel="name" code="general.folders" path=""/>
+	</display:column>
 	
-	<!--<form:label path="recipients">
-        <spring:message code="message.receiver"/>:
-    </form:label>
-    <form:select path="recipients" code="message.recipients">
-        <form:options items="${recipients}" itemLabel="name" itemValue="id"/>
-    </form:select>-->
-    <br/>
-
-    <acme:textbox path="subject" code="message.subject"/>
-    <br/>
-
-    <acme:textarea path="body" code="message.body"/>
-    <br/>
-
-
-    <form:label path="priority">
-        <spring:message code="message.priority"/>:
-    </form:label>
-    <form:select path="priority" code="message.priority">
-        <form:options items="${priorities}"/>
-    </form:select>
-    <br/>
-    
-    <acme:textbox code="message.tags" path="tags"/>
-
+</display:table>
 
     <!---------------------------- BOTONES -------------------------->
 
-
-    <button name="send" type="submit" class="button2">
-        <spring:message code="general.send"/>
-    </button>
+	<input type="button" class="btn btn-danger" name="saveMove"
+		value="<spring:message code="general.move" />"
+           onclick="relativeRedir('message/saveMove.do');"/>
 
     <input type="button" class="btn btn-danger" name="cancel"
            value="<spring:message code="general.cancel" />"

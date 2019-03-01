@@ -24,23 +24,27 @@
 
 
 
-<spring:message code="mezzage.subject" var="subject1"/>
+<spring:message code="message.subject" var="subject1"/>
 <h3><jstl:out value="${subject1}"/></h3>
-<jstl:out value="${subject}"/>
+<jstl:out value="${m.subject}"/>
 
 
-<spring:message code="mezzage.body" var="body1"/>
+<spring:message code="message.body" var="body1"/>
 <h3><jstl:out value="${body1}"/></h3>
-<jstl:out value="${body}"/>
+<jstl:out value="${m.body}"/>
 
 
-<spring:message code="mezzage.sender" var="sender1"/>
-<h3><jstl:out value="${sender1}"/></h3>
-<jstl:out value="${recipients}"/>
+<spring:message code="message.receiver" var="receiver1"/>
+<h3><jstl:out value="${receiver1}"/></h3>
+<jstl:out value="${m.recipients}"/>
 
-<spring:message code="mezzage.priority" var="priority1"/>
+<spring:message code="message.priority" var="priority1"/>
 <h3><jstl:out value="${priority1}"/></h3>
-<jstl:out value="${priority}"/>
+<jstl:out value="${m.priority}"/>
+
+<spring:message code="message.tags" var="tags1"/>
+<h3><jstl:out value="${tags1}"/></h3>
+<jstl:out value="${m.tags}"/>
 
 <br>
 <input type="button" class="btn btn-danger" name="folder"

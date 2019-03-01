@@ -53,7 +53,7 @@ public class MessageController extends AbstractController {
 			messages = this.messageService.findAllByFolderIdAndUserId(folderId, userId);
 
 			res = new ModelAndView("message/list");
-			res.addObject("messages", messages);
+			res.addObject("m", messages);
 			res.addObject("folder", folder);
 			res.addObject("requestURI", "message/list.do?folderId=" + folderId);
 			final String banner = this.configurationParametersService.find().getBanner();
@@ -153,6 +153,7 @@ public class MessageController extends AbstractController {
 		try {
 			this.messageService.deleteFromFolder(toDelete, folder);
 			res = new ModelAndView("redirect: list.do?folderId=" + folderId);
+			res.addObject("folder", folder);
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 		} catch (final Throwable oops) {

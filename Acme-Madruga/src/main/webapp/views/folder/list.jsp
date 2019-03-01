@@ -58,7 +58,8 @@
 
     <spring:message var="title" code="folder.name"/>
     <display:column property="name" title="${title}" sortable="true"/>
-
+	
+	
     <security:authorize access="hasAnyRole('ADMIN')">
         <display:column>
             <input type="button" class="btn btn-danger" name="edit"

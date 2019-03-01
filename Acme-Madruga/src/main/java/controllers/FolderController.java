@@ -17,9 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationParametersService;
 import services.FolderService;
+import services.MessageService;
 import domain.Actor;
 import domain.Folder;
-import domain.Message;
 
 @Controller
 @RequestMapping("/folder")
@@ -32,7 +32,13 @@ public class FolderController extends AbstractController {
 	private ActorService					actorService;
 
 	@Autowired
+	private MessageService					messageService;
+
+	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
+
+	@Autowired
+	private MessageController				messageController;
 
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -92,48 +98,6 @@ public class FolderController extends AbstractController {
 		return result;
 	}
 
-	//	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	//	public ModelAndView edit(@RequestParam final int folderId) {
-	//		ModelAndView res;
-	//		Folder folder;
-	//		Collection<Folder> folders;
-	//
-	//		folder = this.folderService.findOne(folderId);
-	//		folders = this.folderService.findAll();
-	//
-	//		if (folder != null && folders.contains(folder))
-	//			res = this.createEditModelAndView(folder);
-	//		else
-	//			res = new ModelAndView("redirect:/misc/403.jsp");
-	//
-	//		return res;
-	//
-	//	}
-
-	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	//	public ModelAndView save(@Valid final Folder folder, final BindingResult binding) {
-	//		ModelAndView result;
-	//		if (binding.hasErrors()) {
-	//			result = this.createEditModelAndView(folder);
-	//			result.addObject("id", folder.getId());
-	//		} else if (folder.getName().equals("In box") || folder.getName().equals("Out box") || folder.getName().equals("Spam box") || folder.getName().equals("Trash box") || folder.getName().equals("Notification box"))
-	//			result = this.createEditModelAndView(folder, "general.commit.cantEditSystemFolders");
-	//		else
-	//			try {
-	//				folder.setActor(this.actorService.findByPrincipal());
-	//				final Actor actor = this.actorService.findByPrincipal();
-	//				if (!this.folderService.findAllByUserId(actor.getUserAccount().getId()).contains(folder.getName())) {
-	//					final Folder saved = this.folderService.save(folder, this.actorService.findByPrincipal());
-	//					this.folderService.findAllByUserId(this.actorService.findByPrincipal().getId()).add(saved);
-	//					this.actorService.save(this.actorService.findByPrincipal());
-	//				}
-	//				result = new ModelAndView("redirect:list.do");
-	//			} catch (final Throwable oops) {
-	//				result = this.createEditModelAndView(folder, "general.commit.error");
-	//				result.addObject("id", folder.getId());
-	//			}
-	//		return result;
-	//	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Folder folder, final BindingResult binding) {
 
@@ -163,7 +127,6 @@ public class FolderController extends AbstractController {
 			result.addObject("trace", "You can't edit or delete system folder");
 		} else
 			try {
-				//folder.setMezzages(null);
 				this.folderService.delete(folder);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
@@ -173,68 +136,22 @@ public class FolderController extends AbstractController {
 
 		return result;
 	}
-	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	//	public ModelAndView delete(final Folder folder, final BindingResult binding) {
-	//
-	//		ModelAndView res;
-	//
-	//		try {
-	//			this.folderService.delete(folder);
-	//			res = new ModelAndView("redirect:list.do");
-	//			final String banner = this.configurationParametersService.find().getBanner();
-	//			res.addObject("banner", banner);
-	//		} catch (final Throwable oops) {
-	//			res = this.createEditModelAndView(folder, "folder.commit.error");
-	//		}
-	//		return res;
-	//	}
 
-	@RequestMapping(value = "/view")
-	public ModelAndView insideFolder(@RequestParam final int folderId) {
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int folderId) {
 		ModelAndView result;
+		Folder folder;
 
-		try {
-			final Folder folder = this.folderService.findOne(folderId);
-			//			final Boolean isTrashBox = folder.getName().equals("Trash box");
-			//			final Boolean isInbox = folder.getName().equals("In box");
-
-			if (!folder.getActor().equals(this.actorService.findByPrincipal())) {
-				result = new ModelAndView("administrator/error");
-				result.addObject("trace", "You can't view anyone else's folder");
-				return result;
-			}
-			//			if (isInbox) {
-			//				final Hutil hutil = hutilService.getHutil();
-			//				final List<Mezzage> mezzages = new ArrayList<>(hutil.getBroadcastMezzages());
-			//
-			//				for (final Mezzage m : mezzages)
-			//					if (this.folderService.mezzageInFolder(folder.getId(), m.getBody()).isEmpty() && !this.actorService.findByPrincipal().getEmail().equals(m.getSenderEmail())) {
-			//						final Mezzage newm = new Mezzage();
-			//						newm.setReceiverEmail(this.actorService.findByPrincipal().getEmail());
-			//						newm.setReceiver(this.actorService.findByPrincipal());
-			//						newm.setSender(m.getSender());
-			//						newm.setSenderEmail(m.getSenderEmail());
-			//						newm.setMoment(m.getMoment());
-			//						newm.setHidden(false);
-			//						newm.setSubject(m.getSubject());
-			//						newm.setBody(m.getBody());
-			//						newm.setPriority(m.getPriority());
-			//						newm.setFolder(folder);
-			//						final Mezzage saved = mezzageService.save(newm);
-			//						folder.getMezzages().add(saved);
-			//					}
-			//			}
-			final Collection<Message> messages = folder.getMessages();
-			//			final Collection<Mezzage> hiddenMezzages = mezzageService.hiddenMezzages(folder.getId());
-			//			mezzages.removeAll(hiddenMezzages);
-
-			result = new ModelAndView("message/list");
-			result.addObject("mezzages", messages);
-			//			result.addObject("isTrashBox", isTrashBox);
-		} catch (final Exception e) {
-			result = new ModelAndView("administrator/error");
-			result.addObject("trace", e.getMessage());
-			return result;
+		folder = this.folderService.findOne(folderId);
+		if (folder == null)
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		else {
+			//			final Collection<Message> m = this.messageService.findAllByFolderIdAndUserId(folderId, this.actorService.findByPrincipal().getUserAccount().getId());
+			result = this.messageController.list(folderId);
+			result.addObject("folder", folder);
+			//			result.addObject("m", m);
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
 		}
 		return result;
 	}
