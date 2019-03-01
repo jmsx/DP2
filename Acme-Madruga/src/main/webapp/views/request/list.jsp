@@ -35,12 +35,6 @@
 	<jstl:otherwise>
 		<display:table name="requests" id="row" requestURI="request${rolURL}/list.do" pagesize="5" class="displaytag">
 
-			<security:authorize access="hasRole('BROTHERHOOD')">
-				<display:column>
-					<acme:link url="request/brotherhood/edit.do?requestId=${row.id}" code="request.edit"/>
-				</display:column>
-			</security:authorize>
-
 			<jstl:set value="${row.status} " var="colorStyle" />
 			
 			<acme:dataTableColumn code="request.moment" property="moment" />

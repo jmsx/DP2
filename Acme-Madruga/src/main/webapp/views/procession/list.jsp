@@ -60,7 +60,7 @@
 							code="procession.apply" />
 					</jstl:when>
 					<jstl:otherwise>
-						<acme:link url="request/member/display.do?processionId=${row.id}"
+						<acme:link url="request/member/displayByProcession.do?processionId=${row.id}"
 							code="procession.applied" />
 					</jstl:otherwise>
 				</jstl:choose>

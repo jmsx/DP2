@@ -16,6 +16,7 @@ import org.springframework.util.Assert;
 import repositories.RequestRepository;
 import security.Authority;
 import domain.Actor;
+import domain.Member;
 import domain.Procession;
 import domain.Request;
 
@@ -31,6 +32,9 @@ public class RequestService {
 
 	@Autowired
 	private ProcessionService	processionService;
+
+	@Autowired
+	private MemberService		memberService;
 
 
 	// ======================= CRUD ================================
@@ -95,9 +99,9 @@ public class RequestService {
 			Assert.isTrue(!isMember, "A member cannot update the request");
 			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request (to change it's status)");
 			Assert.isTrue(!this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), req.getId()), "This Brotherhood haven't access to this request");
-			if (req.getStatus().equals(Request.REJECTED))
+			if (req.getStatus().equals("REJECTED"))
 				Assert.isTrue(!(req.getExplanation() == "" || req.getExplanation() == null), "If Request is REJECTED must have a explanation");
-			if (req.getStatus().equals(Request.APPROVED)) {
+			if (req.getStatus().equals("APPROVED")) {
 				Assert.isTrue((req.getExplanation() == "" || req.getExplanation() == null), "A explanation musn't be written if you approve the request");
 				final boolean rowIsNull = req.getRow() == null && req.getRow() <= req.getProcession().getMaxRows();
 				final boolean columnIsNull = req.getColumn() == null && req.getColumn() <= req.getProcession().getMaxColumns();
@@ -148,5 +152,27 @@ public class RequestService {
 		final Request retrieved = this.save(req);
 		return retrieved;
 
+	}
+
+	public Collection<Request> findByProcession(final Integer processionId) {
+		final int principalId = this.actorService.findByPrincipal().getUserAccount().getId();
+		final Procession p = this.processionService.findOne(processionId);
+		final Collection<Request> cr = this.requestRepository.findByProcesion(processionId);
+		Assert.isTrue(p.getBrotherhood().getUserAccount().getId() == principalId, "Access to request denied, principal hasn't enough privilegies");
+		return cr;
+	}
+
+	public Request findByProcessionMember(final Integer processionId) {
+		Assert.isTrue(processionId != 0);
+		Request res = null;
+		final Member principal = this.memberService.findByPrincipal();
+		final Procession p = this.processionService.findOne(processionId);
+		final Collection<Request> cr = this.requestRepository.findByProcesion(processionId);
+		for (final Request request : cr)
+			if (request.getMember().equals(principal)) {
+				res = request;
+				break;
+			}
+		return res;
 	}
 }

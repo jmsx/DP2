@@ -8,9 +8,6 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<%@page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-
 <style type="text/css">
 .PENDING {
 	background-color: #d9d9d9;

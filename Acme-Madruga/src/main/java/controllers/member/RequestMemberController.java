@@ -93,6 +93,25 @@ public class RequestMemberController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/displayByProcession", method = RequestMethod.GET)
+	public ModelAndView displayByProcession(@RequestParam final int processionId) {
+		ModelAndView result;
+		Request request;
+
+		// only members can use this method
+		request = this.requestService.findByProcessionMember(processionId);
+		if (request == null)
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		else {
+			result = new ModelAndView("request/display");
+			result.addObject("request", request);
+			result.addObject("rol", "member");
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
+		}
+		return result;
+	}
+
 	// Delete --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")

@@ -67,8 +67,8 @@ public class RequestBrotherhoodController extends AbstractController {
 		if (request == null || !request.getStatus().equals("PENDING"))
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
-			result = this.createEditModelAndView(request);
 			request.setStatus("APPROVED");
+			result = this.createEditModelAndView(request);
 			final List<Integer> ls = this.requestService.suggestPosition(this.processionService.findOne(processionId));
 			result.addObject("suggestedRow", ls.get(0));
 			result.addObject("suggestedColumn", ls.get(1));
@@ -88,8 +88,8 @@ public class RequestBrotherhoodController extends AbstractController {
 		if (request == null || !request.getStatus().equals("PENDING"))
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
-			result = this.createEditModelAndView(request);
 			request.setStatus("REJECTED");
+			result = this.createEditModelAndView(request);
 		}
 		return result;
 	}
