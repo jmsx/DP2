@@ -16,47 +16,59 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
+<acme:display code="enrolment.member" value="${enrolment.member.name}"/>
+<acme:display code="enrolment.brotherhood" value="${enrolment.brotherhood.name}"/>
 
-<spring:message code="enrolment.member" var="member"/>
-<jstl:out value="${member}"/>:
-<jstl:out value="${enrolment.member}"/>
-<br>
-
-<spring:message code="enrolment.brotherhood" var="brotherhood"/>
-<jstl:out value="${brotherhood}"/>:
-<jstl:out value="${enrolment.brotherhood}"/>
-<br>
-
-<spring:message code="enrolment.moment" var="moment"/>
-<jstl:out value="${moment}"/>:
-<jstl:out value="${enrolment.moment}"/>
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="enrolment.moment" />: <fmt:formatDate
+			value="${enrolment.moment}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="enrolment.moment" />: <fmt:formatDate
+			value="${enrolment.moment}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
 <br>
 
 <jstl:choose>
 	<jstl:when test="${enrolment.enrolled}">
-		<spring:message code="enrolment.position" var="position"/>
-		<jstl:out value="${position}"/>:
-		<jstl:out value="${enrolment.position}"/>
+		<acme:display code="enrolment.position" value="${enrolment.position}"/>
 		<br>
 	</jstl:when>
 
 	<jstl:otherwise> 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-		<a href="enrolment/member/edit.do">
+		<a href="enrolment/brotherhood/edit.do">
 			<spring:message code="enrolment.member.position.enrole" />
 		</a>
+		<br>
+	</security:authorize>
+	
+	<security:authorize access="hasRole('MEMBER')">
+		<spring:message code="enrolment.member.position" />
+		<br>
 	</security:authorize>
 	</jstl:otherwise>
 </jstl:choose>
 
 
-<spring:message code="enrolment.dropOut" var="dropOut"/>
-<jstl:out value="${dropOut}"/>:
-<jstl:out value="${enrolment.dropOut}"/>
-<br>
+<jstl:choose>
+	<jstl:when test="${enrolment.dropOut ne null}">
+		<acme:display code="enrolment.dropOut" value="${enrolment.dropOut}"/>		
+		<br>
+	</jstl:when>
 
+	<jstl:otherwise> 
+	
+	</jstl:otherwise>
+</jstl:choose>
+
+
+<br>
 <security:authorize access="hasRole('MEMBER')">
 	<acme:button url="brotherhood/list.do" name="back" code="member.back"/>
 </security:authorize>

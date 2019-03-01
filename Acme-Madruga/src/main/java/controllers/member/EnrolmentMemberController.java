@@ -92,11 +92,14 @@ public class EnrolmentMemberController extends AbstractController {
 		final Brotherhood brotherhood = this.brotherhoodService.findOne(brotherhoodId);
 		final Enrolment enrolment = this.enrolmentService.getEnrolment(brotherhood, member);
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		if (member != null) {
 			result = new ModelAndView("enrolment/display");
 			result.addObject("enrolment", enrolment);
 			result.addObject("brotherhood", brotherhood);
 			result.addObject("member", member);
+			result.addObject("lang", lang);
 
 			final String banner = this.configurationParametersService.findBanner();
 			result.addObject("banner", banner);

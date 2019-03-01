@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import services.BrotherhoodService;
 import services.ConfigurationParametersService;
 import services.EnrolmentService;
 import services.MemberService;
+import services.PositionService;
 import controllers.AbstractController;
 import domain.Brotherhood;
 import domain.Enrolment;
@@ -40,6 +42,9 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 	@Autowired
 	private MemberService					memberService;
 
+	@Autowired
+	private PositionService					positionService;
+
 
 	// CONSTRUCTOR -----------------------------------------------------------
 
@@ -60,7 +65,7 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Enrolment enrolment, final String messageCode) {
 		final ModelAndView result;
 
-		final Collection<Position> positions = this.configurationParametersService.findPositionList();
+		final Collection<Position> positions = this.positionService.findAll();
 
 		result = new ModelAndView("enrolment/edit");
 		result.addObject("enrolment", enrolment);
@@ -73,7 +78,6 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 
 		return result;
 	}
-
 	// DISPLAY PARA VISTA DE BROTHERHOOD  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -84,11 +88,14 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 		final Member member = this.memberService.findOne(memberId);
 		final Enrolment enrolment = this.enrolmentService.getEnrolment(brotherhood, member);
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		if (brotherhood != null) {
 			result = new ModelAndView("enrolment/display");
 			result.addObject("enrolment", enrolment);
 			result.addObject("member", member);
 			result.addObject("brotherhood", brotherhood);
+			result.addObject("lang", lang);
 
 			final String banner = this.configurationParametersService.findBanner();
 			result.addObject("banner", banner);
