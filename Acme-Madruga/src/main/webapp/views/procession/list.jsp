@@ -19,13 +19,13 @@
 	class="displaytag">
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-		<jstl:if test="${not empty rol}">
-			<display:column>
+		<display:column>
+			<jstl:if test="${row.mode eq 'DRAFT'}">
 				<acme:link
 					url="procession/brotherhood/edit.do?processionId=${row.id}"
 					code="procession.edit" />
-			</display:column>
-		</jstl:if>
+			</jstl:if>
+		</display:column>
 	</security:authorize>
 
 	<display:column property="title" titleKey="procession.title" />
@@ -65,6 +65,16 @@
 				</jstl:choose>
 			</display:column>
 		</jstl:if>
+	</security:authorize>
+	
+	<security:authorize access="hasRole('BROTHERHOOD')">
+		<display:column>
+			<jstl:if test="${row.mode eq 'DRAFT'}">
+				<acme:link
+					url="procession/brotherhood/finalMode.do?processionId=${row.id}"
+					code="procession.finalMode" />
+			</jstl:if>
+		</display:column>
 	</security:authorize>
 
 </display:table>

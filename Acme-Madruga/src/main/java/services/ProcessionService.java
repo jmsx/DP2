@@ -41,6 +41,9 @@ public class ProcessionService {
 	private MemberService			memberService;
 
 	@Autowired
+	private FloatService			floatService;
+
+	@Autowired
 	private Validator				validator;
 
 
@@ -49,6 +52,11 @@ public class ProcessionService {
 
 		final Collection<Float> floats = new ArrayList<>();
 		procession.setFloats(floats);
+
+		procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
+		procession.setMode("DRAFT");
+		final Date moment = new Date(System.currentTimeMillis());
+		procession.setTicker(this.generateTicker(moment));
 
 		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
 		procession.setBrotherhood(brotherhood);
@@ -100,19 +108,24 @@ public class ProcessionService {
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
 		final Brotherhood bro = this.brotherhoodService.findByUserId(principal.getUserAccount().getId());
 
-		if (isBrotherhood && bro.getArea() != null)
+		if (isBrotherhood && bro.getArea() != null) {
+			final Brotherhood brotherhoodPrincipal = this.brotherhoodService.findByPrincipal();
+			Assert.notEmpty(procession.getFloats());
+			Assert.isTrue(this.floatService.findByBrotherhood(brotherhoodPrincipal).containsAll(procession.getFloats()));
+
 			if (procession.getId() == 0) {
-				procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
+				procession.setBrotherhood(brotherhoodPrincipal);
 				procession.setMode("DRAFT");
 				final Date moment = new Date(System.currentTimeMillis());
 				procession.setTicker(this.generateTicker(moment));
-			} else
+			} else {
+				Assert.isTrue(!procession.getMode().equals("FINAL"), "Cannot edit a procession in FINAL mode");
 				Assert.isTrue(procession.getBrotherhood() == this.brotherhoodService.findByPrincipal());
-
+			}
+		}
 		result = this.processionRepository.save(procession);
 		return result;
 	}
-
 	public void delete(final Procession procession) {
 		Assert.notNull(procession);
 		Assert.isTrue(procession.getId() != 0);

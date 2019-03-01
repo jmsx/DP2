@@ -52,35 +52,16 @@
 <acme:display code="procession.maxColumns"
 	value="${procession.maxColumns}" />
 
-<jstl:choose>
-	<jstl:when test="${not empty procession.floats}">
-		<jstl:forEach items="${procession.floats}" var="f" varStatus="loop">
-			<spring:message code="procession.float" />
-			<jstl:out value=" ${loop.index+1}" />:
-			<a href="float/display.do?floatId=${f.id}"> <jstl:out
-					value="${f.title}" />
-			</a>
-			<br />
-		</jstl:forEach>
-	</jstl:when>
-	<jstl:otherwise>
-		<spring:message code="procession.no.float" />
-	</jstl:otherwise>
-</jstl:choose>
+<jstl:forEach items="${procession.floats}" var="f" varStatus="loop">
+	<jstl:out value="${loop.index+1} " /><spring:message code="procession.float" />
+	: <a href="float/display.do?floatId=${f.id}"><jstl:out value="${f.title}"/></a>
+	<br />
+</jstl:forEach>
 
-
-
-<spring:message code="procession.brotherhood" />
-:
-<a
-	href="brotherhood/display.do?brotherhoodId=${procession.brotherhood.id}">
-	<jstl:out value="${procession.brotherhood.title}" />
-</a>
+<spring:message code="procession.brotherhood" />:
+<a href="brotherhood/display.do?brotherhoodId=${procession.brotherhood.id}"><jstl:out value="${procession.brotherhood.title}"/></a>
 <br />
-
-
 <br />
-
 
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<spring:message code="procession.requests" />:
