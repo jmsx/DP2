@@ -38,7 +38,9 @@
 			<jstl:set value="${row.status} " var="colorStyle" />
 			
 			<acme:dataTableColumn code="request.moment" property="moment" />
-			<display:column property="status" titleKey="request.status" class="${colorStyle}" />
+			<display:column titleKey="request.status" class="${colorStyle}">
+				<acme:statusChoose status="${row.status}"/>
+			</display:column>
 			<display:column property="procession.title" titleKey="request.procession.title" />
 			<display:column>
 				<acme:link url="request${rolURL}/display.do?requestId=${row.id}" code="request.display"/>

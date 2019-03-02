@@ -46,7 +46,9 @@
 </br>
 
 <acme:display code="procession.ticker" value="${procession.ticker}" />
-<acme:display code="procession.mode" value="${procession.mode}" />
+<spring:message code="procession.mode" />:
+<acme:modeChoose mode="${procession.mode}"/>
+<br />
 <acme:display code="procession.maxRows" value="${procession.maxRows}" />
 <acme:display code="procession.maxColumns"
 	value="${procession.maxColumns}" />
@@ -67,8 +69,9 @@
 	<display:table name="requests" id="fila" pagesize="5" class="displaytag" requestURI="procession/brotherhood/display.do?processionId=${procession.id}">
 		<jstl:set var="colorStyle" value="${fila.status}" />
 		<acme:dataTableColumn property="moment" code="request.moment" />
-		<display:column property="status" titleKey="request.status"
-			class="${colorStyle}" />
+		<display:column titleKey="request.status" class="${colorStyle}">
+				<acme:statusChoose status="${fila.status}"/>
+		</display:column>		
 		<display:column>
 			<jstl:if test="${fila.status eq 'PENDING'}">
 				<acme:button url="request/brotherhood/approve.do?requestId=${fila.id}&processionId=${fila.procession.id}" name="approve" code="request.approve"/>
@@ -84,5 +87,5 @@
 </security:authorize>
 
 <acme:button url="procession${rolURL}/list.do" name="back"
-	code="procession.back" />
+	code="procession.list.button" />
 <br />

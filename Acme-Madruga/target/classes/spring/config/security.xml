@@ -112,7 +112,6 @@
 		<security:intercept-url pattern="/float/create.do" access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/float/delete.do" access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/float/display.do" access="hasRole('BROTHERHOOD')"/>
-		<security:intercept-url pattern="/float/list.do" access="hasRole('BROTHERHOOD')"/>
 		
 		<!-- ENROLMENT -->
 		
