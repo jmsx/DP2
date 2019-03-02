@@ -2,6 +2,9 @@
 package services;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,5 +82,24 @@ public class PositionService {
 		final Collection<Position> res = this.positionRepository.AllPositionUsed();
 		Assert.notNull(res);
 		return res;
+	}
+
+	public Map<Position, Integer> getPositionsFrequency() {
+		final List<Map<Position, Integer>> positionsFrequency = this.positionRepository.getPositionFrequency();
+		Assert.notNull(positionsFrequency);
+		final Map<Position, Integer> result = new HashMap<Position, Integer>();
+		System.out.println("AQUIIIIIIIIII" + positionsFrequency.get(0));
+		for (final Map<Position, Integer> pf : positionsFrequency)
+			for (final Map.Entry<Position, Integer> entry : pf.entrySet())
+				result.put(entry.getKey(), entry.getValue());
+
+		/*
+		 * final Map<String, String> result = steps
+		 * .stream()
+		 * .collect(Collectors.toMap(s -> (String) s.get("key"), s -> (String) s.get("value")));
+		 * result.entrySet().forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue()));
+		 */
+
+		return result;
 	}
 }
