@@ -36,13 +36,29 @@
 
 <jstl:choose>
 	<jstl:when test="${enrolment.enrolled}">
-		<acme:display code="enrolment.position" value="${enrolment.position}"/>
-		<br>
+		<jstl:choose>
+			<jstl:when test="${lang eq 'en' }">
+				<acme:display code="enrolment.position" value="${enrolment.position.nameEnglish}"/>
+				<security:authorize access="hasRole('BROTHERHOOD')">
+				<a href="enrolment/brotherhood/edit.do?memberId=${enrolment.member.userAccount.id}">
+				<spring:message code="edit.position" />	</a>
+				<br>
+				</security:authorize>
+			</jstl:when>
+			<jstl:otherwise>
+				<acme:display code="enrolment.position" value="${enrolment.position.nameSpanish}"/>
+				<security:authorize access="hasRole('BROTHERHOOD')">
+				<a href="enrolment/brotherhood/edit.do?memberId=${enrolment.member.userAccount.id}">
+				<spring:message code="edit.position" />	</a>
+				<br>
+				</security:authorize>			
+			</jstl:otherwise>
+			</jstl:choose>
 	</jstl:when>
 
 	<jstl:otherwise> 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-		<a href="enrolment/brotherhood/edit.do?memberId="${enrolment.member.id}>
+		<a href="enrolment/brotherhood/edit.do?memberId=${enrolment.member.userAccount.id}">
 			<spring:message code="enrolment.member.position.assign" />
 		</a>
 		<br>

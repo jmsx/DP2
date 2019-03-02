@@ -20,6 +20,7 @@ import services.EnrolmentService;
 import services.MemberService;
 import services.PositionService;
 import controllers.AbstractController;
+import controllers.MemberController;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
@@ -45,6 +46,9 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 
 	@Autowired
 	private PositionService					positionService;
+
+	@Autowired
+	private MemberController				memberController;
 
 
 	// CONSTRUCTOR -----------------------------------------------------------
@@ -111,8 +115,8 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 			result = this.createEditModelAndView(enrolment);
 		else
 			try {
-				this.enrolmentService.save(enrolment);
-				result = new ModelAndView("redirect:list.do");
+				this.enrolmentService.save(enrolment, enrolment.getBrotherhood().getId());
+				result = this.memberController.list();
 				final String banner = this.configurationParametersService.findBanner();
 				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
@@ -121,7 +125,6 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 
 		return result;
 	}
-
 	// ANCILLARY METHODS  ---------------------------------------------------------------		
 
 	protected ModelAndView createEditModelAndView(final Enrolment enrolment) {
@@ -136,10 +139,12 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 		final ModelAndView result;
 
 		final Collection<Position> positions = this.positionService.findAll();
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		result = new ModelAndView("enrolment/edit");
 		result.addObject("enrolment", this.constructPruned(enrolment));
 		result.addObject("positions", positions);
+		result.addObject("lang", lang);
 
 		result.addObject("message", messageCode);
 

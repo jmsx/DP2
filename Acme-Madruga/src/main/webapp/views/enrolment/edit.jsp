@@ -23,8 +23,16 @@
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 
-	<acme:select items="positions" itemLabel="name" code="enrolment.positions" path="position" />
-	
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<acme:select items="${positions}" itemLabel="nameEnglish" code="enrolment.positions" path="position" />
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:select items="${positions}" itemLabel="nameSpanish" code="enrolment.positions" path="position" />
+	</jstl:otherwise>
+</jstl:choose>
+
+	<br>
 	<input type="submit" name="save" value="<spring:message code="enrolment.save" />" />
 		
 	<acme:button url="member/list.do" name="cancel" code="enrolment.cancel" />
