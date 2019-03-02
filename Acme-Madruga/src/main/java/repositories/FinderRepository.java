@@ -27,4 +27,19 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	@Query("select p from Procession p where p.moment <=?1")
 	List<Procession> findForMaxDate(Date fecha);
 
+	@Query("select AVG(f.processions.size) from Finder f")
+	Double getAverageFinderResults();
+
+	@Query("select MAX(f.processions.size) from Finder f")
+	Integer getMaxFinderResults();
+
+	@Query("select MIN(f.processions.size) from Finder f")
+	Integer getMinFinderResults();
+
+	@Query("select STDDEV(f.processions.size) from Finder f")
+	Double getDesviationFinderResults();
+
+	@Query("select sum(case when(f.processions.size=0) then 1.0 else 0.0 end)/count(f) from Finder f")
+	Double getRatioEmptyFinders();
+
 }
