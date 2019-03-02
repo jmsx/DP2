@@ -3,7 +3,6 @@ package repositories;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +17,5 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
 	Collection<Position> AllPositionUsed();
 
 	@Query("select e.position, count(e) from Enrolment e group by position")
-	List<Map<Position, Integer>> getPositionFrequency();
+	List<Object[]> getPositionFrequency();
 }

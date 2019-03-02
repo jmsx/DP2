@@ -84,22 +84,26 @@ public class PositionService {
 		return res;
 	}
 
-	public Map<Position, Integer> getPositionsFrequency() {
-		final List<Map<Position, Integer>> positionsFrequency = this.positionRepository.getPositionFrequency();
-		Assert.notNull(positionsFrequency);
-		final Map<Position, Integer> result = new HashMap<Position, Integer>();
-		System.out.println("AQUIIIIIIIIII" + positionsFrequency.get(0));
-		for (final Map<Position, Integer> pf : positionsFrequency)
-			for (final Map.Entry<Position, Integer> entry : pf.entrySet())
-				result.put(entry.getKey(), entry.getValue());
-
+	public Map<Position, Long> getPositionsFrequency() {
 		/*
+		 * final List<Map<Position, Integer>> positionsFrequency = this.positionRepository.getPositionFrequency();
+		 * Assert.notNull(positionsFrequency);
+		 * final Map<Position, Integer> result = new HashMap<Position, Integer>();
+		 * System.out.println("AQUIIIIIIIIII" + positionsFrequency.get(0));
+		 * for (final Map<Position, Integer> pf : positionsFrequency)
+		 * for (final Map.Entry<Position, Integer> entry : pf.entrySet())
+		 * result.put(entry.getKey(), entry.getValue());
+		 * 
+		 * /*
 		 * final Map<String, String> result = steps
 		 * .stream()
 		 * .collect(Collectors.toMap(s -> (String) s.get("key"), s -> (String) s.get("value")));
 		 * result.entrySet().forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue()));
 		 */
-
+		final Map<Position, Long> result = new HashMap<Position, Long>();
+		final List<Object[]> posFreq = this.positionRepository.getPositionFrequency();
+		for (final Object[] entry : posFreq)
+			result.put((Position) entry[0], (Long) entry[1]);
 		return result;
 	}
 }
