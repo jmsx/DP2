@@ -17,3 +17,10 @@
 	color: red;
 	font-weight: bolder;
 }
+
+.errorDiv{
+	color: red;
+	font-weight: bolder;
+    border-style: solid;
+ 	border-color: red;
+}

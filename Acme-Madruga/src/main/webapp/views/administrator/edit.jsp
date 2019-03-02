@@ -9,10 +9,23 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <h2><spring:message code="administrator.edit.msg"/></h2>
-<jstl:if test="${alert}">
+<jstl:if test="${not empty alert}">
 	<script>
-		alert('holq2');
+	 $(document).ready(function() {
+		 alert('<spring:message code="${alert}"/>');
+	    });
+		
 	</script>
+</jstl:if>
+
+<jstl:if test="${not empty errors}">
+	<div class="errorDiv">
+		<ul>
+			<jstl:forEach items="${errors}" var="error">
+				<li><spring:message code="administrator.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+			</jstl:forEach>
+		</ul>
+	</div>
 </jstl:if>
 
 

@@ -3,6 +3,8 @@ package controllers;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
 import security.UserAccount;
 import services.BrotherhoodService;
 import services.ConfigurationParametersService;
 import services.EnrolmentService;
 import services.MemberService;
 import services.UserAccountService;
+import services.auxiliary.RegisterService;
 import domain.Brotherhood;
 import domain.Member;
 import forms.ActorFrom;
@@ -42,6 +46,9 @@ public class MemberController extends AbstractController {
 
 	@Autowired
 	private BrotherhoodController			brotherhoodController;
+
+	@Autowired
+	private RegisterService					registerService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -77,7 +84,7 @@ public class MemberController extends AbstractController {
 		return result;
 
 	}
-	
+
 	@RequestMapping(value = "/displayTabla", method = RequestMethod.GET)
 	public ModelAndView displayTabla(@RequestParam final int memberId) {
 		final ModelAndView result;
@@ -99,21 +106,28 @@ public class MemberController extends AbstractController {
 
 	// Save -----------------------------------------------------------
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(final ActorFrom actorForm, final BindingResult binding) {
-		final ModelAndView result = new ModelAndView("member/edit");
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final ActorFrom actorForm, final BindingResult binding) {
+		ModelAndView result;
+		result = new ModelAndView("administrator/edit");
 		Member member;
-		if (binding.hasErrors())
-			result.addObject("errors", binding.getFieldErrors());
-		else {
-			member = this.memberService.reconstruct(actorForm, binding);
-			UserAccount ua = member.getUserAccount();
-			ua = this.userAccountService.save(ua);
-			member.setUserAccount(ua);
-			member = this.memberService.save(member);
-			result.addObject("alert", true);
-			result.addObject("actorForm", member);
-		}
+		if (binding.hasErrors()) {
+			result.addObject("errors", binding.getAllErrors());
+			result.addObject("actorForm", actorForm);
+		} else
+			try {
+				final UserAccount ua = this.userAccountService.reconstruct(actorForm, Authority.MEMBER);
+				member = this.memberService.reconstruct(actorForm);
+				member.setUserAccount(ua);
+				this.registerService.saveMember(member, binding);
+				result.addObject("alert", "member.edit.correct");
+				result.addObject("actorForm", actorForm);
+			} catch (final Throwable e) {
+				if (e.getMessage().contains("username is register"))
+					result.addObject("alert", "member.edit.usernameIsUsed");
+				result.addObject("errors", binding.getAllErrors());
+				result.addObject("actorForm", actorForm);
+			}
 		return result;
 	}
 

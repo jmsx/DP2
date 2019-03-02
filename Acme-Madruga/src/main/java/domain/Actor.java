@@ -5,6 +5,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -127,6 +128,8 @@ public class Actor extends DomainEntity {
 	@NotNull
 	@Valid
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
+	@JoinColumn(nullable = false)
+	//@OneToOne(optional = false)
 	public UserAccount getUserAccount() {
 		return this.userAccount;
 	}
