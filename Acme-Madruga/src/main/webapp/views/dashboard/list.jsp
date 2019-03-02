@@ -11,8 +11,7 @@
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ page import="java.util.*" %>
-<%@ page import="com.google.gson.Gson"%>
-<%@ page import="com.google.gson.JsonObject"%>
+
 
 <head>
   <meta charset="UTF-8">
@@ -20,7 +19,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <title>My Chart.js Chart</title>
 </head>
 <body>
 
@@ -28,6 +26,7 @@
     <canvas id="myChart" ></canvas>
   </div>
   
+  <spring:message code="dashboard.positions.frequency" var="titulo"></spring:message>
   
   <script>
   	
@@ -38,6 +37,7 @@
     Chart.defaults.global.defaultFontFamily = 'Lato';
     Chart.defaults.global.defaultFontSize = 18;
     Chart.defaults.global.defaultFontColor = '#777';
+    
 
     let massPopChart = new Chart(myChart, {
       type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
@@ -66,6 +66,8 @@
             'rgba(255, 159, 64, 0.6)',
             'rgba(255, 99, 132, 0.6)'
           ],
+          width:100,
+          height:100,
           borderWidth:1,
           borderColor:'#777',
           hoverBorderWidth:3,
@@ -75,7 +77,7 @@
       options:{
         title:{
           display:true,
-          text:'Largest Cities In Massachusetts',
+          text:<%="\'" %><jstl:out value="${titulo}" /><%="\'" %>,
           fontSize:25
         },
         legend:{

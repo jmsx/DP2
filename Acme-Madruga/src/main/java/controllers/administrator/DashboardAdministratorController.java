@@ -28,14 +28,14 @@ public class DashboardAdministratorController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView result;
 
-		final Map<Position, Integer> positionsFrequency = this.positionService.getPositionsFrequency();
+		/*final Map<Position, Integer> positionsFrequency = this.positionService.getPositionsFrequency();
 		Assert.notNull(positionsFrequency);
 		final List<Position> positions = new ArrayList<Position>();
 		final List<Integer> frequencies = new ArrayList<Integer>();
 		for (final Map.Entry<Position, Integer> entry : positionsFrequency.entrySet()) {
 			positions.add(entry.getKey());
 			frequencies.add(entry.getValue());
-		}
+		}*/
 
 		final List<String> positions2 = new ArrayList<String>();
 		final List<Integer> frequencies2 = new ArrayList<Integer>();
@@ -47,8 +47,8 @@ public class DashboardAdministratorController extends AbstractController {
 		result = new ModelAndView("dashboard/list"); //lleva al list.jsp
 		//result.addObject("positions", positions);
 		//result.addObject("frequencies", frequencies);
-		result.addObject("positions2", positions);
-		result.addObject("frequencies2", frequencies);
+		result.addObject("positions2", positions2);
+		result.addObject("frequencies2", frequencies2);
 		result.addObject("requestURI", "dashboard/admnistrator/list.do");
 
 		return result;
