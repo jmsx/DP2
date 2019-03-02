@@ -17,7 +17,6 @@ import security.Authority;
 import domain.Actor;
 import domain.Administrator;
 import domain.ConfigurationParameters;
-import domain.Position;
 
 @Service
 @Transactional
@@ -84,12 +83,6 @@ public class ConfigurationParametersService {
 	//======================================================================================================
 	//======================================================================================================
 	//======================================================================================================
-
-	public Collection<Position> findPositionList() {
-		final Collection<Position> res = this.configurationParametersRepository.findPositionList();
-		Assert.notNull(res);
-		return res;
-	}
 
 	public Collection<String> findNegativeWords() {
 		final Collection<String> res = this.configurationParametersRepository.findNegativeWords();
@@ -255,19 +248,6 @@ public class ConfigurationParametersService {
 		return this.addWord(sword, swords);
 	}
 
-	public Collection<Position> addPosition(final Position position) {
-		final Actor principal = this.administratorService.findByPrincipal();
-		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-		Assert.isTrue(isAdmin);
-		Assert.notNull(position);
-
-		final Collection<Position> positions = this.findPositionList();
-		Assert.isTrue(!positions.contains(position));
-		positions.add(position);
-
-		return positions;
-	}
-
 	public Collection<String> deleteNegativeWord(final String nword) {
 		final Actor principal = this.administratorService.findByPrincipal();
 		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
@@ -296,19 +276,6 @@ public class ConfigurationParametersService {
 		final Collection<String> swords = this.findSpamWords();
 
 		return this.deleteWord(sword, swords);
-	}
-
-	public Collection<Position> deletePosition(final Position position) {
-		final Actor principal = this.administratorService.findByPrincipal();
-		final Boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-		Assert.isTrue(isAdmin);
-		Assert.notNull(position);
-
-		final Collection<Position> positions = this.findPositionList();
-		Assert.isTrue(positions.contains(position));
-		positions.remove(position);
-
-		return positions;
 	}
 
 	private Collection<String> addWord(final String word, final Collection<String> words) {

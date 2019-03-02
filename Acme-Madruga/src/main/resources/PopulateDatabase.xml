@@ -1128,17 +1128,6 @@
 		<property name="welcomeMessageEsp"
 			value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
 		<property name="countryPhoneCode" value="+34" />
-		<property name="positionList">
-			<list>
-				<ref bean="position1" />
-				<ref bean="position2" />
-				<ref bean="position3" />
-				<ref bean="position4" />
-				<ref bean="position5" />
-				<ref bean="position6" />
-				<ref bean="position7" />
-			</list>
-		</property>
 		<property name="spamWords">
 			<list>
 				<value>sex</value>
