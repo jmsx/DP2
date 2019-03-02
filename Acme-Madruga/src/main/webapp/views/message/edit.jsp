@@ -32,7 +32,7 @@
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
-    <form:hidden path="moment" value="2019-02-02 16:00"/>
+    <form:hidden path="moment"/>
     <form:hidden path="sender"/>
     
 	<acme:select items="${recipients}" itemLabel="name" code="message.recipients" path="recipients"/>

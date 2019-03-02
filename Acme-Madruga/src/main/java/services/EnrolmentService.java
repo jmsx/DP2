@@ -18,6 +18,7 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
+import domain.Position;
 import forms.EnrolmentForm;
 
 @Service
@@ -38,6 +39,9 @@ public class EnrolmentService {
 
 	@Autowired
 	private Validator			validator;
+
+	@Autowired
+	private PositionService		positionService;
 
 
 	public Enrolment create() {
@@ -69,8 +73,9 @@ public class EnrolmentService {
 		return res;
 	}
 
-	public Enrolment save(final Enrolment enrolment) {
+	public Enrolment save(final Enrolment enrolment, final int brotherhoodId) {
 		Assert.notNull(enrolment);
+		Assert.isTrue(brotherhoodId != 0);
 		final Actor principal = this.actorService.findByPrincipal();
 		final Enrolment result;
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
@@ -83,6 +88,10 @@ public class EnrolmentService {
 				enrolment.setEnrolled(false);
 				enrolment.setMember(this.memberService.findByPrincipal());
 				enrolment.setDropOut(null);
+				final Position position = this.positionService.create();
+				final Position saved = this.positionService.save(position);
+				enrolment.setPosition(saved);
+				enrolment.setBrotherhood(this.brotherhoodService.findOne(brotherhoodId));
 			} else
 				Assert.isTrue(enrolment.getMember() == this.memberService.findByPrincipal());
 			if (enrolment.getDropOut() != null)
@@ -98,7 +107,6 @@ public class EnrolmentService {
 		result = this.enrolmentRepository.save(enrolment);
 		return result;
 	}
-
 	public void delete(final Enrolment enrolment) {
 		Assert.notNull(enrolment);
 		Assert.isTrue(enrolment.getId() != 0);
@@ -179,7 +187,7 @@ public class EnrolmentService {
 		final Brotherhood bro = this.brotherhoodService.findByUserId(brotherhoodId);
 		enrolment.setBrotherhood(bro);
 
-		final Enrolment retrieved = this.save(enrolment);
+		final Enrolment retrieved = this.save(enrolment, brotherhoodId);
 
 		return retrieved;
 	}

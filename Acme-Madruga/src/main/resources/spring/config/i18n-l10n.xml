@@ -26,11 +26,15 @@
 		<value>/views/administrator/messages</value>
 		<value>/views/brotherhood/messages</value>
 		<value>/views/profile/messages</value>
+		<value>/views/float/messages</value>
 		
-		<!-- Administrador -->
+		
 		<value>/views/configurationParameters/messages</value>
 		<value>/views/position/messages</value>
 		<value>/views/area/messages</value>
+		<value>/views/ban/messages</value>
+		<value>/views/dashboard/messages</value>
+		
 		<value>/views/socialProfile/messages</value>
 		<value>/views/procession/messages</value>
 		<value>/views/request/messages</value>

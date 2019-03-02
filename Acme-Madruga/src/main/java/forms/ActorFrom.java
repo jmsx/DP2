@@ -3,7 +3,6 @@ package forms;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Size;
 
@@ -31,7 +30,6 @@ public class ActorFrom extends DomainEntity {
 
 
 	@Size(min = 5, max = 32)
-	@Column(unique = true)
 	public String getUserAccountuser() {
 		return this.userAccountuser;
 	}

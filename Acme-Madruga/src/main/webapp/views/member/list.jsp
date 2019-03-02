@@ -31,7 +31,7 @@
 	
 	<display:column titleKey="actor.enrolment">
 	<a href="enrolment/brotherhood/display.do?memberId=${row.id}"> <spring:message
-				code="member.display" />
+				code="member.enrolment" />
 		</a>
 	</display:column>
 	

@@ -10,8 +10,9 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<display:table pagesize="10" class="displayposition" keepStatus="true"
+<display:table pagesize="5" class="displaytag" keepStatus="true"
 	name="positions" requestURI="${requestURI}" id="row">
 	
 	<!-- Action links -->

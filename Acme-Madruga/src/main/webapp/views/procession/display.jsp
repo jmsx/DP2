@@ -31,8 +31,7 @@
 </jstl:if>
 
 <acme:display code="procession.title" value="${procession.title}" />
-<acme:display code="procession.description"
-	value="${procession.description}" />
+<acme:display code="procession.description" value="${procession.description}" />
 	
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">

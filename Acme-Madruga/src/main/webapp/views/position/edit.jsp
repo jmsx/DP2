@@ -25,6 +25,9 @@
 	<form:input path="nameEnglish" />
 	<form:errors cssClass="error" path="nameEnglish" />
 	
+	<br>
+	<br>
+	
 	<form:label path="nameSpanish">
 		<spring:message code="position.nameSpanish" />
 	</form:label>
@@ -34,7 +37,8 @@
 	
 	
 
-	</security:authorize>
+	<br>
+	<br>
 
 	
 	<!-- BOTONES --> 
@@ -57,5 +61,7 @@
 		value="<spring:message code="position.cancel"/>"
 		onclick="javascript: window.location.replace('position/administrator/list.do')" />
 	<br />
-		
+	
+	</security:authorize>
 </form:form>
+

@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import security.Authority;
@@ -47,18 +45,21 @@ public class UserAccountService {
 		return result;
 	}
 
-	public UserAccount save(final UserAccount ua) {
+	public UserAccount save(UserAccount ua) {
 		Assert.notNull(ua);
-		return this.userAccountRepository.save(ua);
+		if (ua.getUsername() != null && ua.getPassword() != null)
+			ua = this.userAccountRepository.save(ua);
+
+		return ua;
 	}
 
-	public UserAccount reconstruct(final ActorFrom actorForm, final BindingResult bind) {
+	public UserAccount reconstruct(final ActorFrom actorForm, final String autoAuthority) {
 		UserAccount ua;
 		if (actorForm.getId() == 0) {
 			ua = this.create();
 			final Collection<Authority> authorities = new ArrayList<>();
 			final Authority auth = new Authority();
-			auth.setAuthority(Authority.ADMIN);
+			auth.setAuthority(autoAuthority);
 			authorities.add(auth);
 			ua.setAuthorities(authorities);
 			ua.setUsername(actorForm.getUserAccountuser());
@@ -70,8 +71,7 @@ public class UserAccountService {
 			ua.setPassword(actorForm.getUserAccountpassword());
 
 		}
-		// TODO
-		// this.validator.validate(ua, bind);
+
 		return ua;
 	}
 }

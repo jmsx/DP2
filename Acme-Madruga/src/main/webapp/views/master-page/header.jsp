@@ -14,7 +14,7 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="#"><img src="images/logo.png" alt="Acme Madruga Co., Inc." /></a>
+	<a href="#"><img src="${bannerURL}" alt="Acme Madruga Co., Inc." /></a>
 </div>
 
 <div>
@@ -44,18 +44,16 @@
 				</ul>
 			</li>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.position" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="position/administrator/list.do"><spring:message code="master.page.position.list" /></a></li>
-				</ul>
+			<li><a class="fNiv"><a href="position/administrator/list.do"><spring:message	code="master.page.position" /></a></a>
+				
 			</li>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="area/administrator/list.do"><spring:message code="master.page.area.list" /></a></li>
-				</ul>
+			<li><a class="fNiv"><a href="area/administrator/list.do"><spring:message	code="master.page.area" /></a></a>
+				
+			</li>
+			
+			<li><a class="fNiv"><a href="ban/administrator/list.do"><spring:message	code="master.page.ban" /></a></a>
+				
 			</li>
 			
 			<li><a class="fNiv"><a href="dashboard/administrator/list.do"><spring:message	code="master.page.dashboard" /></a></a>
@@ -107,8 +105,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="area/display.do"><spring:message code="master.page.area.display" /></a></li>
-					<li><a href="area/allAreasFree.do"><spring:message code="master.page.area.allAreasFree" /></a></li>
+					<li><a href="area/list.do"><spring:message code="master.page.area.display" /></a></li>
 					
 				</ul>
 			</li>
@@ -164,6 +161,8 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
+					
+					<li><a href="socialProfile/list.do"><spring:message code="master.page.actor.socialProfiles" /></a></li>
 					<security:authorize access="hasRole('MEMBER')">
 					<li><a href="member/edit.do"><spring:message code="master.page.member.edit" /></a></li>
 					<li><a href="member/display.do"><spring:message code="master.page.member.display" /></a></li>

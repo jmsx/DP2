@@ -15,7 +15,6 @@ import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.ConfigurationParameters;
-import domain.Position;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -62,13 +61,6 @@ public class ConfigurationParametersServiceTest extends AbstractTest {
 		spamWords.add("viagra");
 		final Boolean res = this.configurationParametersService.checkForSpamWords(spamWords);
 		Assert.isTrue(res);
-	}
-
-	@Test
-	public void testFindPositionList() {
-		super.authenticate("admin1");
-		final Collection<Position> pos = this.configurationParametersService.findPositionList();
-		Assert.notEmpty(pos);
 	}
 
 	@Test
@@ -128,7 +120,6 @@ public class ConfigurationParametersServiceTest extends AbstractTest {
 		Assert.notNull(confSaved);
 		Assert.notNull(confSaved.getBanner());
 		Assert.notNull(confSaved.getCountryPhoneCode());
-		Assert.notEmpty(confSaved.getPositionList());
 		Assert.notEmpty(confSaved.getPositiveWords());
 		Assert.notEmpty(confSaved.getNegativeWords());
 		Assert.notEmpty(confSaved.getSpamWords());
@@ -172,17 +163,6 @@ public class ConfigurationParametersServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void testAddPosition() {
-		super.authenticate("admin1");
-		final Position pos = this.positionService.create();
-		pos.setNameEnglish("en");
-		pos.setNameSpanish("sp");
-		final Position posSv = this.positionService.save(pos);
-		final Collection<Position> res = this.configurationParametersService.addPosition(posSv);
-		Assert.isTrue(res.contains(res.contains(posSv)));
-	}
-
-	@Test
 	public void testDeleteNegativeWord() {
 		super.authenticate("admin1");
 		final List<String> words = (List<String>) this.configurationParametersService.findNegativeWords();
@@ -207,15 +187,6 @@ public class ConfigurationParametersServiceTest extends AbstractTest {
 		final String w = words.get(0);
 		final List<String> res = (List<String>) this.configurationParametersService.deleteSpamWord(w);
 		Assert.isTrue(!res.contains(w));
-	}
-
-	@Test
-	public void testDeletePosition() {
-		super.authenticate("admin1");
-		final List<Position> positions = (List<Position>) this.configurationParametersService.findPositionList();
-		final Position p = positions.get(0);
-		final List<Position> res = (List<Position>) this.configurationParametersService.deletePosition(p);
-		Assert.isTrue(!res.contains(p));
 	}
 
 }

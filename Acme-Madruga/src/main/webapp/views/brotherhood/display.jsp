@@ -39,7 +39,7 @@
 		<spring:message code="actor.spammer.no"/>
 	</jstl:otherwise>
 </jstl:choose>
-
+<br><br>
 <security:authorize access="hasRole('MEMBER')">
 	<acme:button url="procession/member/list.do" name="back" code="procession.back"/>
 </security:authorize>

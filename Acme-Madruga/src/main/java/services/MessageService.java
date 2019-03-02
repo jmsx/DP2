@@ -102,8 +102,8 @@ public class MessageService {
 		//== Create method set the sender ==
 		//final Actor sender = this.actorService.findByPrincipal();
 		m.setSender(sender);
-		//		final Date moment = new Date(System.currentTimeMillis() - 1000);
-		//		m.setMoment(moment);
+		final Date moment = new Date(System.currentTimeMillis() - 1000);
+		m.setMoment(moment);
 
 		final boolean containsSpamWords = this.checkForSpamWords(m);
 

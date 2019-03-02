@@ -10,6 +10,8 @@
 
 package controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
 import security.UserAccount;
 import services.AdministratorService;
 import services.UserAccountService;
+import services.auxiliary.RegisterService;
 import domain.Administrator;
 import forms.ActorFrom;
 
@@ -34,6 +38,8 @@ public class AdministratorController extends AbstractController {
 	private UserAccountService		accountService;
 	@Autowired
 	private Validator				validator;
+	@Autowired
+	private RegisterService			registerService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -42,54 +48,31 @@ public class AdministratorController extends AbstractController {
 		super();
 	}
 
-	// Action-1 ---------------------------------------------------------------		
-
-	@RequestMapping("/action-1")
-	public ModelAndView action1() {
-		ModelAndView result;
-
-		result = new ModelAndView("administrator/action-1");
-
-		return result;
-	}
-
-	// Action-2 ---------------------------------------------------------------
-
-	@RequestMapping("/action-2")
-	public ModelAndView action2() {
-		ModelAndView result;
-
-		result = new ModelAndView("administrator/action-2");
-
-		return result;
-	}
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView edit(final ActorFrom actorForm, final BindingResult binding) {
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final ActorFrom actorForm, final BindingResult binding) {
 		ModelAndView result;
 		result = new ModelAndView("administrator/edit");
 		Administrator admin;
-		if (binding.hasErrors())
-			result.addObject("errors", binding.getFieldErrors());
-		else
+		if (binding.hasErrors()) {
+			result.addObject("errors", binding.getAllErrors());
+			result.addObject("actorForm", actorForm);
+		} else
 			try {
-				UserAccount ua = this.accountService.reconstruct(actorForm, binding);
-				admin = this.administratorService.reconstruct(actorForm, binding);
+				final UserAccount ua = this.accountService.reconstruct(actorForm, Authority.ADMIN);
+				admin = this.administratorService.reconstruct(actorForm);
 				admin.setUserAccount(ua);
-				this.validator.validate(admin, binding);
-				ua = this.accountService.save(ua);
-				admin.setUserAccount(ua);
-				admin = this.administratorService.save(admin);
-				result.addObject("alert", true);
-				result.addObject("actorForm", admin);
+				this.registerService.saveAdmin(admin, binding);
+				result.addObject("alert", "administartor.edit.correct");
+				result.addObject("actorForm", actorForm);
 			} catch (final Throwable e) {
-				// TODO
-				// result = this.cre
-
+				if (e.getMessage().contains("username is register"))
+					result.addObject("alert", "administartor.edit.usernameIsUsed");
+				result.addObject("errors", binding.getAllErrors());
+				result.addObject("actorForm", actorForm);
 			}
-
 		return result;
 	}
+
 	@RequestMapping("/create")
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView();
