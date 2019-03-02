@@ -21,7 +21,7 @@
 
 <acme:display code="actor.name" value="${brotherhood.name}"/>
 <spring:message code="actor.photo"/>:<br>
-<img src="${brotherhood.photo}" alt="Foto" width="20%" height="20%"/>
+<img src="${brotherhood.photo}" alt="<spring:message code="brotherhood.alt.image"/>" width="20%" height="20%"/>
 <br>
 <acme:display code="actor.middleName" value="${brotherhood.middleName}"/>
 <acme:display code="actor.surname" value="${brotherhood.surname}"/>

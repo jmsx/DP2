@@ -35,12 +35,6 @@
 	<jstl:otherwise>
 		<display:table name="requests" id="row" requestURI="request${rolURL}/list.do" pagesize="5" class="displaytag">
 
-			<security:authorize access="hasRole('BROTHERHOOD')">
-				<display:column>
-					<acme:link url="request/brotherhood/edit.do?requestId=${row.id}" code="request.edit"/>
-				</display:column>
-			</security:authorize>
-
 			<jstl:set value="${row.status} " var="colorStyle" />
 			
 			<acme:dataTableColumn code="request.moment" property="moment" />
@@ -51,14 +45,16 @@
 			</display:column>
 
 			<security:authorize access="hasRole('BROTHERHOOD')">
-				<jstl:if test="${row.status eq 'PENDING'}">
-					<display:column>
-						<acme:button url="" name="approve" code="request.approve"/>
-					</display:column>
-					<display:column>
-						<acme:button url="" name="reject" code="request.reject"/>
-					</display:column>
-				</jstl:if>
+				<display:column>
+					<jstl:if test="${row.status eq 'PENDING'}">
+						<acme:button url="request/brotherhood/approve.do?requestId=${row.id}&processionId=${row.procession.id}" name="approve" code="request.approve"/>
+					</jstl:if>
+				</display:column>
+				<display:column>
+					<jstl:if test="${row.status eq 'PENDING'}">
+						<acme:button url="request/brotherhood/reject.do?requestId=${row.id}" name="reject" code="request.reject"/>
+					</jstl:if>
+				</display:column>
 			</security:authorize>
 			
 		</display:table>
@@ -68,7 +64,7 @@
 <security:authorize access="hasRole('MEMBER')">
 	<jstl:choose>
 		<jstl:when test="${theresProcessionsAvailable}">
-			<acme:button url="request/member/create.do" name="create" code="request.create"/>
+			<acme:button url="procession/member/list.do" name="more" code="request.more"/>
 		</jstl:when>
 		<jstl:otherwise>
 			<spring:message code="request.create.no" />

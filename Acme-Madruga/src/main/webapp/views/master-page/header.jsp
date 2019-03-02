@@ -98,13 +98,8 @@
 		
 		<%-- REQUESTS --%>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.request" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>
-				</ul>
-			</li>
-			
+			<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>
+		
 		<%-- AREA --%>
 			
 			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
@@ -127,7 +122,6 @@
 			
 			<li><a class="fNiv"><spring:message	code="master.page.procession" /></a>
 				<ul>
-					<li><a href="procession/list.do"><spring:message code="master.page.all.processions" /></a></li>
 					<li><a href="procession/member/list.do"><spring:message	code="master.page.procession.member.list" /></a>
 				</ul>
 			</li>
