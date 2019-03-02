@@ -50,7 +50,7 @@
 
 <spring:message code="request.status" />:
 <span class="${request.status}">
-	<jstl:out value="${request.status}" />
+	<acme:statusChoose status="${request.status}"/>
 </span>
 <br />
 
@@ -73,5 +73,5 @@
 <br />
 <br />
 
-<acme:button name="back" code="request.back" url="request${rolURL}/list.do"/>
+<acme:button name="back" code="request.list.button" url="request${rolURL}/list.do"/>
 
