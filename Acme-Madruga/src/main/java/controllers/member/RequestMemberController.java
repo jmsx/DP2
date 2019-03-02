@@ -3,8 +3,6 @@ package controllers.member;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -95,29 +93,25 @@ public class RequestMemberController extends AbstractController {
 		return result;
 	}
 
-	// ------------------------- Save -------------------------------
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Request request, final BindingResult binding) {
+	@RequestMapping(value = "/displayByProcession", method = RequestMethod.GET)
+	public ModelAndView displayByProcession(@RequestParam final int processionId) {
 		ModelAndView result;
+		Request request;
 
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(request);
-		else
-			try {
-				this.requestService.save(request);
-				result = new ModelAndView("redirect:/request/member/list.do");
-				final String banner = this.configurationParametersService.findBanner();
-				result.addObject("banner", banner);
-			} catch (final Throwable oops) {
-				String errorMessage = "request.commit.error";
-				if (oops.getMessage().contains("message.error"))
-					errorMessage = oops.getMessage();
-				result = this.createEditModelAndView(request, errorMessage);
-			}
+		// only members can use this method
+		request = this.requestService.findByProcessionMember(processionId);
+		if (request == null)
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		else {
+			result = new ModelAndView("request/display");
+			result.addObject("request", request);
+			result.addObject("rol", "member");
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
+		}
 		return result;
-
 	}
+
 	// Delete --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
@@ -125,6 +119,7 @@ public class RequestMemberController extends AbstractController {
 		ModelAndView result;
 
 		try {
+			// service controlled that procession deleted has pending status
 			this.requestService.delete(request);
 			result = new ModelAndView("redirect:/member/list.do");
 			final String banner = this.configurationParametersService.findBanner();

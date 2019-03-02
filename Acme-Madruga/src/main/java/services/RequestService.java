@@ -16,6 +16,7 @@ import org.springframework.util.Assert;
 import repositories.RequestRepository;
 import security.Authority;
 import domain.Actor;
+import domain.Member;
 import domain.Procession;
 import domain.Request;
 
@@ -31,6 +32,9 @@ public class RequestService {
 
 	@Autowired
 	private ProcessionService	processionService;
+
+	@Autowired
+	private MemberService		memberService;
 
 
 	// ======================= CRUD ================================
@@ -83,21 +87,25 @@ public class RequestService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+		Assert.isTrue(req.getProcession().getMode().equals("FINAL"));
 		if (req.getId() == 0) {
-			//Creacion de Request, esta debe estar PENDING
+			// Creacion de Request, esta debe estar PENDING
 			// Assert.isTrue(req.getStatus().equals(Request.PENDING), "Request must be create as PENDING");
 			req.setStatus("PENDING");
+			req.setMember(this.memberService.findByPrincipal());
 			final Date moment = new Date(System.currentTimeMillis() - 1);
 			req.setMoment(moment);
-			Assert.isTrue(!this.requestRepository.hasMemberRequestToProcession(req.getProcession().getId(), req.getMember().getUserAccount().getId()), "A member cannot request twice to the same procession");
+			final boolean hasMemberRequestToProcession = this.requestRepository.hasMemberRequestToProcession(req.getProcession().getId(), req.getMember().getUserAccount().getId());
+			Assert.isTrue(!hasMemberRequestToProcession, "A member cannot request twice to the same procession");
 			Assert.isTrue((req.getRow() == null && req.getColumn() == null && req.getExplanation() == null), "Row, column and explanation attributes only can be set by brotherhood");
 		} else {
 			Assert.isTrue(!isMember, "A member cannot update the request");
 			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request (to change it's status)");
-			Assert.isTrue(!this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), req.getId()), "This Brotherhood haven't access to this request");
-			if (req.getStatus().equals(Request.REJECTED))
+			Assert.isTrue(this.requestRepository.checkBrotherhoodAccess(principal.getUserAccount().getId(), req.getId()), "This Brotherhood haven't access to this request");
+			if (req.getStatus().equals("REJECTED"))
 				Assert.isTrue(!(req.getExplanation() == "" || req.getExplanation() == null), "If Request is REJECTED must have a explanation");
-			if (req.getStatus().equals(Request.APPROVED)) {
+			if (req.getStatus().equals("APPROVED")) {
+				Assert.isTrue(!this.processionRequested(req.getProcession().getId()));
 				Assert.isTrue((req.getExplanation() == "" || req.getExplanation() == null), "A explanation musn't be written if you approve the request");
 				final boolean rowIsNull = req.getRow() == null && req.getRow() <= req.getProcession().getMaxRows();
 				final boolean columnIsNull = req.getColumn() == null && req.getColumn() <= req.getProcession().getMaxColumns();
@@ -112,26 +120,40 @@ public class RequestService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 		Assert.isTrue(isMember, "Only a member can delete a request");
-		Assert.isTrue(req.getMember().getId() == principal.getUserAccount().getId(), "Member must be the own of the request");
+		Assert.isTrue(req.getMember().getUserAccount().getId() == principal.getUserAccount().getId(), "Member must be the request owner");
 		final Request request = this.requestRepository.findOne(req.getId());
 		Assert.isTrue(request.getStatus().equals(Request.PENDING), "The Request must be PENDING");
 		this.requestRepository.delete(req.getId());
 	}
 
+	/**
+	 * This method suggest a good position automatically,
+	 * to an approved request to a procession. The system understand
+	 * a good position as a lower number of row-column.
+	 * 
+	 * @return Tuple implemented as a two elements List of Integer.
+	 * 
+	 * @author a8081
+	 * */
 	public List<Integer> suggestPosition(final Procession procession) {
 		final int processionId = procession.getId();
+		boolean availablePosition = false;
 		final List<Integer> res = new ArrayList<>();
 		for (int i = 1; i <= procession.getMaxRows(); i++) {
 			for (int j = 1; j <= procession.getMaxColumns(); j++) {
-				if (this.requestRepository.availableRowColumn(i, j, processionId)) {
+				availablePosition = this.requestRepository.availableRowColumn(i, j, processionId);
+				if (availablePosition) {
 					res.add(i);
 					res.add(j);
 					break;
 				}
 				j++;
 			}
+			if (availablePosition)
+				break;
 			i++;
 		}
+		Assert.isTrue(res.size() == 2, "Suggest position must contains two elements, row and columns - List size != 2");
 		return res;
 	}
 	/**
@@ -143,10 +165,43 @@ public class RequestService {
 	public Request requestToProcession(final Integer processionId) {
 		final Request req = this.create();
 		final Procession procession = this.processionService.findOne(processionId);
-		Assert.isTrue(procession.getMode().equals("FINAL"), "A member cannot access to a final procession, so he or she cannot request to it");
+		Assert.isTrue(procession.getMode().equals("FINAL"), "A member cannot access to a procession in draft mode, so he or she cannot request to it");
 		req.setProcession(procession);
 		final Request retrieved = this.save(req);
 		return retrieved;
 
+	}
+
+	public Collection<Request> findByProcession(final Integer processionId) {
+		final int principalId = this.actorService.findByPrincipal().getUserAccount().getId();
+		final Procession p = this.processionService.findOne(processionId);
+		final Collection<Request> cr = this.requestRepository.findByProcesion(processionId);
+		Assert.isTrue(p.getBrotherhood().getUserAccount().getId() == principalId, "Access to request denied, principal hasn't enough privilegies");
+		return cr;
+	}
+
+	public Request findByProcessionMember(final Integer processionId) {
+		Assert.isTrue(processionId != 0);
+		Request res = null;
+		final Member principal = this.memberService.findByPrincipal();
+		final Procession p = this.processionService.findOne(processionId);
+		final Collection<Request> cr = this.requestRepository.findByProcesion(processionId);
+		for (final Request request : cr)
+			if (request.getMember().equals(principal)) {
+				res = request;
+				break;
+			}
+		return res;
+	}
+
+	/**
+	 * Return true if the procession pass as a parameter is already requested (one approved request).
+	 * 
+	 * @author a8081
+	 * */
+	public Boolean processionRequested(final Integer processionId) {
+		Assert.isTrue(processionId != 0);
+		final boolean res = this.requestRepository.processionRequested(processionId);
+		return res;
 	}
 }
