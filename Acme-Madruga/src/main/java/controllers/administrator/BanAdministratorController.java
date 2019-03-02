@@ -54,7 +54,7 @@ public class BanAdministratorController extends AbstractController {
 			this.actorService.banActor(actor);
 			result = new ModelAndView("redirect:list.do");
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
+			result = new ModelAndView("ban/list");
 			if (oops.getMessage().equals("Para banear un actor este debe ser spammer o tener una puntuación menor que -0.5"))
 				result.addObject("message", "ban.error");
 			else
