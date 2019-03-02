@@ -11,6 +11,10 @@
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<!--<jstl:if test="${not empty message}" >
+	<spring:message code="${message}" var="error" />
+	<jstl:out value="${error}" />
+</jstl:if>-->
 
 
 <table>
@@ -49,9 +53,5 @@
 
 </table>
 	
-<jstl:out value="${message }"/>
-<!--<jstl:if test="${not empty message}" >-->
-	<spring:message code="${message}" var="error" />
-	<jstl:out value="${error}" />
-<!--</jstl:if>-->
+
 
