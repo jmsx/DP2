@@ -45,7 +45,7 @@ public class PositionAdministratorController extends AbstractController {
 
 		result = new ModelAndView("position/list"); //lleva al list.jsp
 		result.addObject("positions", positions);
-		result.addObject("requestURI", "position/admnistrator/list.do");
+		result.addObject("requestURI", "position/administrator/list.do");
 
 		return result;
 
