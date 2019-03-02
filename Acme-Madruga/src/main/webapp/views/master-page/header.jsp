@@ -56,7 +56,12 @@
 				
 			</li>
 			
-			<li><a class="fNiv"><a href="dashboard/administrator/list.do"><spring:message	code="master.page.dashboard" /></a></a>
+			<li><a class="fNiv"><spring:message	code="master.page.dashboard" /></a></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="dashboard/administrator/chart.do"><spring:message code="master.page.dashboard.chart" /></a></li>
+					<li><a href="dashboard/administrator/statistics.do"><spring:message code="master.page.dashboard.statistics" /></a></li>
+				</ul>
 			</li>
 			
 		</security:authorize>

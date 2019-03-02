@@ -187,7 +187,7 @@ public class ActorService {
 		Assert.notNull(a);
 		Assert.isTrue(a.getId() != 0);
 
-		this.administratorService.findByPrincipal();
+		//this.administratorService.findByPrincipal();
 
 		final UserAccount user = a.getUserAccount();
 		final Collection<Authority> auths = user.getAuthorities();

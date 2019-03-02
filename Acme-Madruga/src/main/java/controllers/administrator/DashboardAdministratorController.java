@@ -24,7 +24,7 @@ public class DashboardAdministratorController extends AbstractController {
 	private PositionService	positionService;
 
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/chart", method = RequestMethod.GET)
 	public ModelAndView list() {
 		final ModelAndView result;
 
@@ -44,12 +44,12 @@ public class DashboardAdministratorController extends AbstractController {
 		frequencies2.add(1);
 		frequencies2.add(5);
 
-		result = new ModelAndView("dashboard/list"); //lleva al list.jsp
+		result = new ModelAndView("dashboard/chart"); //lleva al list.jsp
 		//result.addObject("positions", positions);
 		//result.addObject("frequencies", frequencies);
 		result.addObject("positions2", positions);
 		result.addObject("frequencies2", frequencies);
-		result.addObject("requestURI", "dashboard/admnistrator/list.do");
+		result.addObject("requestURI", "dashboard/admnistrator/chart.do");
 
 		return result;
 

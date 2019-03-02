@@ -6,9 +6,14 @@
        
 <tiles-definitions>
 
-	<definition name="dashboard/list" extends="master.page">	
-		<put-attribute name="title" value="Dashboard" />
-		<put-attribute name="body" value="/views/dashboard/list.jsp" />
+	<definition name="dashboard/chart" extends="master.page">	
+		<put-attribute name="title" value="Histogram: positions" />
+		<put-attribute name="body" value="/views/dashboard/chart.jsp" />
+	</definition>
+	
+	<definition name="dashboard/statistics" extends="master.page">	
+		<put-attribute name="title" value="Statistics" />
+		<put-attribute name="body" value="/views/dashboard/statistics.jsp" />
 	</definition>
 	
 	

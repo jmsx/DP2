@@ -49,8 +49,9 @@
 
 </table>
 	
-<jstl:if test="${not empty message}" >
+<jstl:out value="${message }"/>
+<!--<jstl:if test="${not empty message}" >-->
 	<spring:message code="${message}" var="error" />
 	<jstl:out value="${error}" />
-</jstl:if>
+<!--</jstl:if>-->
 
