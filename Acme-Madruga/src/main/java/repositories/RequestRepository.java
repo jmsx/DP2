@@ -21,6 +21,15 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 	@Query("select count(r) from Request r where r.status='APPROVED'")
 	Integer totalApprovedRequest();
 
+	@Query("select r from Request r where r.status='APPROVED' and r.procession.brotherhood.userAccount.id = ?1")
+	Collection<Request> findApprovedBrotherhood(Integer brotherhoodUserAccountId);
+
+	@Query("select r from Request r where r.status='REJECTED' and r.procession.brotherhood.userAccount.id = ?1")
+	Collection<Request> findRejectedBrotherhood(Integer brotherhoodUserAccountId);
+
+	@Query("select r from Request r where r.status='PENDING' and r.procession.brotherhood.userAccount.id = ?1")
+	Collection<Request> findPendingBrotherhood(Integer brotherhoodUserAccountId);
+
 	@Query("select r from Request r where r.procession.id = ?1")
 	Collection<Request> findByProcesion(Integer idProcesion);
 

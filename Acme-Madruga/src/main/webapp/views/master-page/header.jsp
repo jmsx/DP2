@@ -98,8 +98,16 @@
 		
 		<%-- REQUESTS --%>
 			
-			<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>
-		
+			<li><a class="fNiv"><spring:message	code="master.page.request.brotherhood.list" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="request/brotherhood/list.do"><spring:message code="master.page.all.request" /></a></li>
+					<li><a href="request/brotherhood/listApproved.do"><spring:message code="master.page.approved.request" /></a></li>
+					<li><a href="request/brotherhood/listRejected.do"><spring:message code="master.page.rejected.request" /></a></li>
+					<li><a href="request/brotherhood/listPending.do"><spring:message code="master.page.pending.request" /></a></li>
+				</ul>
+			</li>
+			
 		<%-- AREA --%>
 			
 			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>

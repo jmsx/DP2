@@ -16,6 +16,7 @@ import org.springframework.util.Assert;
 import repositories.RequestRepository;
 import security.Authority;
 import domain.Actor;
+import domain.Brotherhood;
 import domain.Member;
 import domain.Procession;
 import domain.Request;
@@ -35,6 +36,9 @@ public class RequestService {
 
 	@Autowired
 	private MemberService		memberService;
+
+	@Autowired
+	private BrotherhoodService	brotherhoodService;
 
 
 	// ======================= CRUD ================================
@@ -202,6 +206,27 @@ public class RequestService {
 	public Boolean processionRequested(final Integer processionId) {
 		Assert.isTrue(processionId != 0);
 		final boolean res = this.requestRepository.processionRequested(processionId);
+		return res;
+	}
+
+	public Collection<Request> findApprovedBrotherhood() {
+		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
+		final Collection<Request> res = this.requestRepository.findApprovedBrotherhood(principal.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Request> findRejectedBrotherhood() {
+		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
+		final Collection<Request> res = this.requestRepository.findRejectedBrotherhood(principal.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Request> findPendingBrotherhood() {
+		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
+		final Collection<Request> res = this.requestRepository.findPendingBrotherhood(principal.getUserAccount().getId());
+		Assert.notNull(res);
 		return res;
 	}
 }

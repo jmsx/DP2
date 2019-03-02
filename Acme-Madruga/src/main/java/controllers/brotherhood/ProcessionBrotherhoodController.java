@@ -61,7 +61,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		return result;
 	}
 
-	// LIST
+	// DISPLAY
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int processionId) {
@@ -91,7 +91,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		return result;
 	}
 
-	// DISPLAY
+	// LIST
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
