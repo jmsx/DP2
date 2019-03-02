@@ -78,8 +78,16 @@
 		<security:intercept-url pattern="/brotherhood/listAll.do" access="hasAnyRole('ADMIN')" /> 
 		
 		 
+		<!-- PROBLEMA 1 -->
 		
+		<security:intercept-url pattern="/area/list.do" access="hasAnyRole('BROTHERHOOD','ADMIN')" /> 
+		<security:intercept-url pattern="/area/display.do" access="hasAnyRole('BROTHERHOOD','ADMIN')" />
+		<security:intercept-url pattern="/area/edit.do" access="hasAnyRole('ADMIN')" />
+		<security:intercept-url pattern="/area/delete.do" access="hasAnyRole('ADMIN')" />
+		<security:intercept-url pattern="/area/create.do" access="hasAnyRole('ADMIN')" />
+		<security:intercept-url pattern="/area/enrol.do" access="hasAnyRole('BROTHERHOOD')" />
 		
+		<!-- PROBLEMA 1 -->
 		
 		<security:intercept-url pattern="/brotherhood/create.do" access="permitAll" /> 
 		<security:intercept-url pattern="/brotherhood/edit.do" access="hasRole('BROTHERHOOD')" /> 

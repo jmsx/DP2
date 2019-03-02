@@ -11,6 +11,13 @@
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<jstl:if test="${not empty error}">
+	<script>
+		alert('<spring:message code="${error}"/>');
+	</script>
+</jstl:if>
+
+
 <display:table pagesize="10" class="displayarea" keepStatus="true"
 	name="areas" requestURI="${requestURI}" id="row">
 	
@@ -20,7 +27,7 @@
 		
 		<spring:message code="area.edit.header" var="editHeader"></spring:message>
 		<display:column title="${editHeader}" sortable="false">
-			<spring:url value="area/administrator/edit.do" var="editURL">
+			<spring:url value="area/edit.do" var="editURL">
 				<spring:param name="areaId" value="${row.id}"/> <!-- es el parámetro que va a acompañar a la url -->
 			</spring:url>
 			<a href="${editURL}"><spring:message code="area.edit"/></a>
@@ -33,8 +40,13 @@
 		<spring:message code="area.name" var="nameHeader" />
 		<display:column property="name" title="${nameHeader}" sortable="false" />
 		
-		<spring:message code="area.pictures" var="picturesHeader" />
-		<display:column property="pictures" title="${picturesHeader}" sortable="false" />
+		
+	<display:column titleKey="area.display">
+		<a href="area/display.do?areaId=${row.id}"> 
+			<spring:message code="area.display"/>
+		</a>
+	</display:column>
+
 
 	
 </display:table>
@@ -43,7 +55,7 @@
 
 <security:authorize access="hasRole('ADMIN')">
 	<div>
-		<a href="area/administrator/create.do"> <spring:message
+		<a href="area/create.do"> <spring:message
 				code="area.create" />
 		</a>
 	</div>

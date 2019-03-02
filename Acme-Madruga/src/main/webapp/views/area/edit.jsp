@@ -10,7 +10,8 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 
-<form:form action="${RequestURI }"  modelAttribute="area" >
+
+<form:form action="area/edit.do"  modelAttribute="area" >
 
 	<form:hidden path="id" />
 	<form:hidden path="version" /> 
@@ -48,14 +49,18 @@
 			onclick="javascript: return confirm('<spring:message code="position.confirm.delete"/>')" />&nbsp;
 	</jstl:if>-->
 		
-		<jstl:if test="${area.id!=0}">
-		<input type="submit" name="delete"
-			value="<spring:message code="area.delete"/>"  />&nbsp;
-	</jstl:if>
+
 	
 	  <input type="button" name="cancel"
 		value="<spring:message code="area.cancel"/>"
-		onclick="javascript: window.location.replace('area/administrator/list.do')" />
+		onclick="javascript: window.location.replace('area/list.do')" />
 	<br />
 		
 </form:form>
+
+	<jstl:if test="${area.id!=0}">
+	<input type="button" name="delete"
+		value="<spring:message code="area.delete"/>"
+		onclick="javascript: window.location.replace('area/delete.do?areaId=${area.id}')" />
+	<br />
+	</jstl:if>
