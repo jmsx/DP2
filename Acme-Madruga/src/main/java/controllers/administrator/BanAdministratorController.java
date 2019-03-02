@@ -50,15 +50,22 @@ public class BanAdministratorController extends AbstractController {
 		final Actor actor = this.actorService.findOne(actorId);
 		Assert.notNull(actor);
 
+		final List<Actor> actors = (List<Actor>) this.actorService.findAll();
+		Assert.notNull(actors);
+		final List<Boolean> bannedList = this.actorService.getBannedList(actors);
+		Assert.notNull(bannedList);
+
 		try {
 			this.actorService.banActor(actor);
 			result = new ModelAndView("redirect:list.do");
 		} catch (final Throwable oops) {
 			result = new ModelAndView("ban/list");
+			result.addObject("actors", actors);
+			result.addObject("bannedList", bannedList);
 			if (oops.getMessage().equals("Para banear un actor este debe ser spammer o tener una puntuación menor que -0.5"))
 				result.addObject("message", "ban.error");
-			else
-				result.addObject("message", "ban.commit.error");
+			//else
+			//result.addObject("message", "ban.commit.error");
 		}
 		return result;
 
