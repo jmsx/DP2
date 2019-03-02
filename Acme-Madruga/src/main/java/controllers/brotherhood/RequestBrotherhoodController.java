@@ -64,12 +64,12 @@ public class RequestBrotherhoodController extends AbstractController {
 
 		// access controlled in findOne method implemented by jmsx
 		request = this.requestService.findOne(requestId);
-		if (request == null || !request.getStatus().equals("PENDING"))
+		if (request == null || !request.getStatus().equals("PENDING") || this.requestService.processionRequested(processionId))
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
-			request.setStatus("APPROVED");
 			result = this.createEditModelAndView(request);
 			final List<Integer> ls = this.requestService.suggestPosition(this.processionService.findOne(processionId));
+			result.addObject("setStatusTo", "APPROVED");
 			result.addObject("suggestedRow", ls.get(0));
 			result.addObject("suggestedColumn", ls.get(1));
 		}
@@ -78,7 +78,7 @@ public class RequestBrotherhoodController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/reject", method = RequestMethod.GET)
-	public ModelAndView reject(@RequestParam final int requestId, @RequestParam final int processionId) {
+	public ModelAndView reject(@RequestParam final int requestId) {
 		ModelAndView result;
 		Request request;
 
@@ -88,8 +88,8 @@ public class RequestBrotherhoodController extends AbstractController {
 		if (request == null || !request.getStatus().equals("PENDING"))
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
-			request.setStatus("REJECTED");
 			result = this.createEditModelAndView(request);
+			result.addObject("setStatusTo", "REJECTED");
 		}
 		return result;
 	}

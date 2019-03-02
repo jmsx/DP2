@@ -31,22 +31,26 @@
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="moment"/>
-	<form:hidden path="status"/>
+	<form:hidden path="member"/>
+	<form:hidden path="procession"/>
+	
 	
 	<security:authorize access="hasRole('BROTHERHOOD')">
-			<jstl:if test="${request.status eq 'APPROVED'}">
+			<jstl:if test="${setStatusTo eq 'APPROVED'}">
+				<form:hidden path="status" value="APPROVED"/>
 				<form:hidden path="explanation"/>
 				<acme:display code="request.suggested.row" value="${suggestedRow}"/>
-				<acme:textbox code="request.row" path="row"/>
+				<acme:numberbox code="request.row" path="row" min="1"/>
 				<br />
 				<acme:display code="request.suggested.column" value="${suggestedColumn}"/>
-				<acme:textbox code="request.column" path="column"/>	
+				<acme:numberbox code="request.column" path="column" min="1"/>	
 				<br />
 			</jstl:if>
-			<jstl:if test="${request.status eq 'REJECTED'}">
+			<jstl:if test="${setStatusTo eq 'REJECTED'}">
+				<form:hidden path="status" value="REJECTED"/>
 				<form:hidden path="row"/>
 				<form:hidden path="column"/>
-				<acme:textbox code="request.explanation" path="explanation"/>
+				<acme:textarea code="request.explanation" path="explanation"/>
 				<br />
 			</jstl:if>
 			<br />

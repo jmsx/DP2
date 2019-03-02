@@ -65,23 +65,21 @@
 
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<spring:message code="procession.requests" />:
-	<display:table name="requests" id="fila" pagesize="5"
-		class="displaytag"
-		requestURI="procession/brotherhood/display.do?processionId=${procession.id}">
+	<display:table name="requests" id="fila" pagesize="5" class="displaytag" requestURI="procession/brotherhood/display.do?processionId=${procession.id}">
 		<jstl:set var="colorStyle" value="${fila.status}" />
-		<jstl:choose>
-			<jstl:when test="${fila.status eq 'PENDING'}">
-				<display:column>
-					<acme:link url="request/brotherhood/edit.do?requestId=${fila.id}"
-						code="procession.request.edit" />
-				</display:column>
-			</jstl:when>
-			<jstl:otherwise>
-			</jstl:otherwise>
-		</jstl:choose>
 		<acme:dataTableColumn property="moment" code="request.moment" />
 		<display:column property="status" titleKey="request.status"
 			class="${colorStyle}" />
+		<display:column>
+			<jstl:if test="${fila.status eq 'PENDING'}">
+				<acme:button url="request/brotherhood/approve.do?requestId=${fila.id}&processionId=${fila.procession.id}" name="approve" code="request.approve"/>
+			</jstl:if>
+		</display:column>
+		<display:column>
+			<jstl:if test="${fila.status eq 'PENDING'}">
+				<acme:button url="request/brotherhood/reject.do?requestId=${fila.id}" name="reject" code="request.reject"/>
+			</jstl:if>
+		</display:column>
 	</display:table>
 	<br />
 </security:authorize>
