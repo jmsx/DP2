@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.FinderService;
 import services.PositionService;
 import controllers.AbstractController;
 import domain.Position;
@@ -22,6 +23,9 @@ public class DashboardAdministratorController extends AbstractController {
 
 	@Autowired
 	private PositionService	positionService;
+
+	@Autowired
+	private FinderService	finderService;
 
 
 	@RequestMapping(value = "/chart", method = RequestMethod.GET)
@@ -59,8 +63,19 @@ public class DashboardAdministratorController extends AbstractController {
 	public ModelAndView statistics() {
 		final ModelAndView result;
 
+		final Double averageResults = this.finderService.getAverageFinderResults();
+		final Integer maxResults = this.finderService.getMaxFinderResults();
+		final Integer minResults = this.finderService.getMinFinderResults();
+		final Double desviationResults = this.finderService.getDesviationFinderResults();
+		final Double ratioFinders = this.finderService.getRatioEmptyFinders();
+
 		result = new ModelAndView("dashboard/statistics"); //lleva al list.jsp
 		result.addObject("requestURI", "dashboard/admnistrator/statistics.do");
+		result.addObject("averageResults", averageResults);
+		result.addObject("minResults", minResults);
+		result.addObject("maxResults", maxResults);
+		result.addObject("desviationResults", desviationResults);
+		result.addObject("ratioFinders", ratioFinders);
 
 		return result;
 

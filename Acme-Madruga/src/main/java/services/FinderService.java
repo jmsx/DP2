@@ -116,4 +116,34 @@ public class FinderService {
 		}
 
 	}
+
+	public Double getAverageFinderResults() {
+		final Double result = this.finderRepository.getAverageFinderResults();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Integer getMaxFinderResults() {
+		final Integer result = this.finderRepository.getMaxFinderResults();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Integer getMinFinderResults() {
+		final Integer result = this.finderRepository.getMinFinderResults();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double getDesviationFinderResults() {
+		final Double result = this.finderRepository.getDesviationFinderResults();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double getRatioEmptyFinders() {
+		final Double result = this.finderRepository.getRatioEmptyFinders();
+		Assert.notNull(result);
+		return result;
+	}
 }
