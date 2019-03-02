@@ -4,6 +4,7 @@ package controllers.member;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,8 @@ public class RequestMemberController extends AbstractController {
 		requests = this.requestService.findAll();
 
 		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
 		result.addObject("theresProcessionsAvailable", !this.processionService.processionsAvailable().isEmpty());
@@ -85,6 +88,8 @@ public class RequestMemberController extends AbstractController {
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
 			result = new ModelAndView("request/display");
+			final String lang = LocaleContextHolder.getLocale().getLanguage();
+			result.addObject("lang", lang);
 			result.addObject("request", request);
 			result.addObject("rol", "member");
 			final String banner = this.configurationParametersService.findBanner();

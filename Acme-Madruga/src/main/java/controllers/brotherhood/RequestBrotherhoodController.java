@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +47,68 @@ public class RequestBrotherhoodController extends AbstractController {
 		requests = this.requestService.findAll();
 
 		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
+		result.addObject("requests", requests);
+		result.addObject("rol", rol);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listApproved", method = RequestMethod.GET)
+	public ModelAndView listApproved() {
+		final ModelAndView result;
+		final Collection<Request> requests;
+		final String rol = "brotherhood";
+
+		requests = this.requestService.findApprovedBrotherhood();
+
+		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
+		result.addObject("requests", requests);
+		result.addObject("rol", rol);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listRejected", method = RequestMethod.GET)
+	public ModelAndView listRejected() {
+		final ModelAndView result;
+		final Collection<Request> requests;
+		final String rol = "brotherhood";
+
+		requests = this.requestService.findRejectedBrotherhood();
+
+		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
+		result.addObject("requests", requests);
+		result.addObject("rol", rol);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listPending", method = RequestMethod.GET)
+	public ModelAndView listPending() {
+		final ModelAndView result;
+		final Collection<Request> requests;
+		final String rol = "brotherhood";
+
+		requests = this.requestService.findPendingBrotherhood();
+
+		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
 
@@ -134,6 +197,8 @@ public class RequestBrotherhoodController extends AbstractController {
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
 			result = new ModelAndView("request/display");
+			final String lang = LocaleContextHolder.getLocale().getLanguage();
+			result.addObject("lang", lang);
 			result.addObject("request", request);
 			result.addObject("rol", "brotherhood");
 			final String banner = this.configurationParametersService.findBanner();
