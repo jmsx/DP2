@@ -11,14 +11,7 @@
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<jstl:if test="${not empty error}">
-	<script>
-		alert('<spring:message code="${error}"/>');
-	</script>
-</jstl:if>
-
-
-<display:table pagesize="10" class="displayarea" keepStatus="true"
+<display:table pagesize="10" class="displaytag" keepStatus="true"
 	name="areas" requestURI="${requestURI}" id="row">
 	
 	<!-- Action links -->
@@ -28,24 +21,28 @@
 		<spring:message code="area.edit.header" var="editHeader"></spring:message>
 		<display:column title="${editHeader}" sortable="false">
 			<spring:url value="area/edit.do" var="editURL">
-				<spring:param name="areaId" value="${row.id}"/> <!-- es el parámetro que va a acompañar a la url -->
+				<spring:param name="areaId" value="${row.id}"/> <!-- es el parï¿½metro que va a acompaï¿½ar a la url -->
 			</spring:url>
 			<a href="${editURL}"><spring:message code="area.edit"/></a>
-		</display:column>	
-		</security:authorize>		
+		</display:column>
+		
+	</security:authorize>		
+		
+		<spring:message code="area.display.header" var="displayHeader"></spring:message>
+		<display:column title="${displayHeader}" sortable="false">
+			<spring:url value="area/administrator/display.do" var="displayURL">
+				<spring:param name="areaId" value="${row.id}"/> <!-- es el parï¿½metro que va a acompaï¿½ar a la url -->
+			</spring:url>
+			<a href="${displayURL}"><spring:message code="area.display"/></a>
+		</display:column>
 	
 	
 		<!-- Attributes of the positions -->
  
 		<spring:message code="area.name" var="nameHeader" />
-		<display:column property="name" title="${nameHeader}" sortable="false" />
+		<display:column property="name" title="${nameHeader}" sortable="true" />
 		
 		
-	<display:column titleKey="area.display">
-		<a href="area/display.do?areaId=${row.id}"> 
-			<spring:message code="area.display"/>
-		</a>
-	</display:column>
 
 
 	

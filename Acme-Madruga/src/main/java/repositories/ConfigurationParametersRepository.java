@@ -7,12 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import domain.ConfigurationParameters;
-import domain.Position;
 
 public interface ConfigurationParametersRepository extends JpaRepository<ConfigurationParameters, Integer> {
-
-	@Query("select cm from ConfigurationParameters cfgp join cfgp.positionList cm")
-	Collection<Position> findPositionList();
 
 	@Query("select nw from ConfigurationParameters cfgp join cfgp.negativeWords nw")
 	Collection<String> findNegativeWords();

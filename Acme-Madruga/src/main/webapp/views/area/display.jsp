@@ -1,4 +1,3 @@
-
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
@@ -7,52 +6,31 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
-
+<head>
 <style type="text/css">
-div.gallery {
-  margin: 5px;
-  border: 1px solid #ccc;
-  float: left;
-  width: 180px;
-}
-
-div.gallery:hover {
-  border: 1px solid #777;
-}
-
-div.gallery img {
-  width: 100%;
-  height: auto;
-}
-
-div.desc {
-  padding: 15px;
-  text-align: center;
-}
-div.galleryContainer{
-	display: inline-block;
-}
+.photo img{max-width: 700px}
 </style>
+</head>
+
+<input type="button" name="back"
+		value="<spring:message code="area.back"/>"
+		onclick="javascript: window.location.replace('area/administrator/list.do')" />
+		
+<br>
+<br>
 
 <h2>
-<acme:display code="area.name" value="${area.name}" />
+<jstl:out value="${area.name}"/>
 </h2>
-<div class="galleryContainer">
-	<jstl:forEach items="${area.pictures}" var="picture" varStatus="loop">
-				<div class="gallery">
-				  <a target="_blank" href="${picture}">
-				    <img src="${picture}" alt="${picture}" width="600" height="400">
-				  </a>
-				</div>
-	</jstl:forEach>
-</div>
-<jstl:if test="${enrol == true}">
-	<input type="button" name="enrol"
-				value="<spring:message code="area.enrol" />"
-				onclick="javascript: relativeRedir('area/enrol.do?areaId=${area.id}');" />
 
-</jstl:if>
+<br>
+<br>
 
-
+<jstl:forEach items="${area.pictures}" var="picture">
+	<div class="photo">
+	<a href="#"><img src="${picture}" alt="Not found" /></a>
+	</div>
+	<br>
+	<br>
+</jstl:forEach>
 

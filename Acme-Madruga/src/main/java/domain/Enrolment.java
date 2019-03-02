@@ -61,7 +61,7 @@ public class Enrolment extends DomainEntity {
 	//Relational getters and setters
 
 	@Valid
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public Position getPosition() {
 		return this.position;
 	}

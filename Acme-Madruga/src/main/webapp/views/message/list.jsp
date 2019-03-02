@@ -18,57 +18,34 @@
 
 <p><spring:message code="message.list" /></p>
 
-<%--<security:authorize access="hasAnyRole('ADMIN')">
-    <div>
-        <H3>
-            <input type="button" class="btn btn-danger" name="createMessage"
-                   value="<spring:message code="message.send" />"
-                   onclick="relativeRedir('message/create.do');"/>
-        </H3>
-    </div>
-</security:authorize> --%>
-
-    <!--<div>
-        <input type="button" class="btn btn-danger" name="createFolder"
-               value="<spring:message code="general.createFolder" />"
-               onclick="relativeRedir('folder/create.do');"/>
-    </div>-->
-
-<security:authorize access="hasRole('ADMIN')">
-    <div>
-        <input type="button" class="btn btn-danger" name="createFolder"
-               value="<spring:message code="message.createMessage" />"
-               onclick="relativeRedir('message/create.do');"/>
-    </div>
-</security:authorize>
+<input type="button" class="btn btn-danger" name="back"
+       value="<spring:message code="general.cancel" />"
+       onclick="relativeRedir('folder/list.do');"/>
+<br>
 
 <!-- Listing grid -->
 <display:table pagesize="5" class="displaytag" keepStatus="true"
-               name="folders" requestURI="${requestURI}" id="row">
-    <%-- <security:authorize access="hasAnyRole('ADMIN')">
-    <display:column>
-        <input type="button" class="btn btn-danger" name="open"
-               value="<spring:message code="general.open" />"
-               onclick="relativeRedir('folder/view.do?folderId=${row.id}');"/>
+               name="m" requestURI="${requestURI}" id="row">
 
-    </display:column>
-    </security:authorize>--%>
     <!-- Attributes -->
-
-
-    <spring:message var="title" code="folder.name"/>
-    <display:column property="name" title="${title}" sortable="true"/>
 
     <security:authorize access="hasAnyRole('ADMIN')">
         <display:column>
-            <input type="button" class="btn btn-danger" name="edit"
-                   value="<spring:message code="general.edit" />"
-                   onclick="relativeRedir('folder/edit.do?folderId=${row.id}');"/>
-
-            <input type="button" class="btn btn-danger" name="edit"
+            <input type="button" class="btn btn-danger" name="deleteMessage"
                    value="<spring:message code="general.delete" />"
-                   onclick="relativeRedir('folder/delete.do?folderId=${row.id}');"/>
+                   onclick="relativeRedir('message/delete.do?messageId=${row.id}&folderId=${folder.id}');"/>
         </display:column>
-
     </security:authorize>
+
+	<display:column property="subject" titleKey="message.subject" />
+	<display:column property="sender" value="name" titleKey="message.sender" />
+	<display:column property="recipients" value="name" titleKey="message.recipients" />
+	<display:column property="priority" titleKey="message.priority" />
+	
+	<display:column>
+            <input type="button" class="btn btn-danger" name="moveMessage"
+                   value="<spring:message code="general.move" />"
+                   onclick="relativeRedir('message/move.do?messageId=${row.id}&folderId=${folder.id}');"/>
+        </display:column>
+	
 </display:table>

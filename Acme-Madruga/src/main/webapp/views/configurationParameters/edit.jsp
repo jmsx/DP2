@@ -20,77 +20,90 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="positionList" />
 	
 	<form:label path="sysName">
 		<spring:message code="configurationParameters.sysName" />:
 	</form:label>
 	<form:input path="sysName"/>
 	<form:errors cssClass="error" path="sysName" />
-	<br />
+	<br>
+	<br>
+	
 	
 	<form:label path="welcomeMessageEsp">
 		<spring:message code="configurationParameters.welcomeMessageEsp" />:
 	</form:label>
-	<form:input path="welcomeMessageEsp"/>
+	<form:input path="welcomeMessageEsp" />
 	<form:errors cssClass="error" path="welcomeMessageEsp" />
-	<br />
+	<br>
+	<br>
 	
 	<form:label path="welcomeMessageEn">
 		<spring:message code="configurationParameters.welcomeMessageEn" />:
 	</form:label>
 	<form:input path="welcomeMessageEn"/>
 	<form:errors cssClass="error" path="welcomeMessageEn" />
-	<br />
+	<br>
+	<br>
 	
 	<form:label path="positiveWords">
 		<spring:message code="configurationParameters.positiveWords" />:
 	</form:label>
-	<form:input path="positiveWords"/>
+	<br>
+	<form:textarea path="positiveWords"/>
 	<form:errors cssClass="error" path="positiveWords" />
-	<br />
+	<br>
+	<br>
 	
 	<form:label path="negativeWords">
 		<spring:message code="configurationParameters.negativeWords" />:
 	</form:label>
-	<form:input path="negativeWords"/>
+	<br>
+	<form:textarea path="negativeWords"/>
 	<form:errors cssClass="error" path="negativeWords" />
-	<br />
+	<br>
+	<br>
 	
 	<form:label path="maxFinderResults">
 		<spring:message code="configurationParameters.maxFinderResults" />:
 	</form:label>
 	<form:input path="maxFinderResults"/>
 	<form:errors cssClass="error" path="maxFinderResults" />
-	<br />
+	<br>
+	<br>
 	
 	<form:label path="finderTime">
 		<spring:message code="configurationParameters.finderTime" />:
 	</form:label>
 	<form:input path="finderTime"/>
 	<form:errors cssClass="error" path="finderTime" />
-	<br />
+	<br>
+	<br>
 	
 	<form:label path="banner">
 		<spring:message code="configurationParameters.banner" />:
 	</form:label>
 	<form:input path="banner" placeholder="http://" />
 	<form:errors cssClass="error" path="banner" />
-	<br />
+	<br>
+	<br>
 
 	<form:label path="spamWords">
 		<spring:message code="configurationParameters.spamWords" />:
 	</form:label>
-	<form:input path="spamWords"/>
+	<br>
+	<form:textarea path="spamWords"/>
 	<form:errors cssClass="error" path="spamWords" />
-	<br />
+	<br>
+	<br>
 	
 	<form:label path="countryPhoneCode">
 		<spring:message code="configurationParameters.countryPhoneCode" />:
 	</form:label>
 	<form:input path="countryPhoneCode"/>
 	<form:errors cssClass="error" path="countryPhoneCode" />
-	<br />
+	<br>
+	<br>
 	
 	<input type="submit" name="save"
 		value="<spring:message code="configurationParameters.save" />" />&nbsp; 
@@ -98,5 +111,5 @@
 	<input type="button" name="cancel"
 		value="<spring:message code="configurationParameters.cancel" />"
 		onclick="javascript:  window.location.replace('welcome/index.do');" />
-	<br />
+	<br>
 </form:form>
