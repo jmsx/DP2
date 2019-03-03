@@ -15,15 +15,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import security.UserAccount;
 import services.AreaService;
 import services.BrotherhoodService;
 import services.ConfigurationParametersService;
 import services.EnrolmentService;
 import services.MemberService;
+import services.UserAccountService;
+import services.auxiliary.RegisterService;
 import domain.Area;
 import domain.Brotherhood;
 import domain.Member;
-import forms.ActorFrom;
+import forms.BrotherhoodForm;
 
 @Controller
 @RequestMapping("/brotherhood")
@@ -46,6 +50,12 @@ public class BrotherhoodController extends AbstractController {
 
 	@Autowired
 	private MemberController				memberController;
+
+	@Autowired
+	private RegisterService					registerService;
+
+	@Autowired
+	private UserAccountService				userAccountService;
 
 
 	// CONSTRUCTOR -----------------------------------------------------------
@@ -84,9 +94,9 @@ public class BrotherhoodController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView();
-		final ActorFrom brotherhood = new ActorFrom();
+		final BrotherhoodForm brotherhoodForm = new BrotherhoodForm();
 		result = new ModelAndView("brotherhood/edit");
-		result.addObject("actorForm", brotherhood);
+		result.addObject("brotherhoodForm", brotherhoodForm);
 		return result;
 	}
 
@@ -131,66 +141,39 @@ public class BrotherhoodController extends AbstractController {
 	}
 
 	// SAVE  ---------------------------------------------------------------		
-	//
-	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	//	public ModelAndView edit(final ActorFrom actorForm, final BindingResult binding) {
-	//		ModelAndView result;
-	//		result = new ModelAndView("brotherhood/edit");
-	//		Brotherhood brotherhood;
-	//		if (binding.hasErrors())
-	//			result.addObject("errors", binding.getFieldErrors());
-	//		else {
-	//			brotherhood = this.brotherhoodService.reconstruct(actorForm, binding);
-	//			UserAccount ua = brotherhood.getUserAccount();
-	//			ua = this.userAccountService.save(ua);
-	//			brotherhood.setUserAccount(ua);
-	//			brotherhood = this.brotherhoodService.save(brotherhood);
-	//			result.addObject("alert", true);
-	//			result.addObject("actorForm", brotherhood);
-	//		}
-	//		return result;
-	//	}
-
-	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	//	public ModelAndView save(final ActorFrom actorForm, final BindingResult binding) {
-	//		ModelAndView result = new ModelAndView();
-	//		Brotherhood brotherhood = new Brotherhood();
-	//
-	//		if (binding.hasErrors())
-	//			result = this.createEditModelAndView(brotherhood);
-	//		else
-	//			try {
-	//				brotherhood = this.brotherhoodService.reconstruct(actorForm, binding);
-	//				UserAccount ua = brotherhood.getUserAccount();
-	//				ua = this.userAccountService.save(ua);
-	//				brotherhood.setUserAccount(ua);
-	//				brotherhood = this.brotherhoodService.save(brotherhood);
-	//				result.addObject("alert", true);
-	//				result.addObject("actorForm", brotherhood);
-	//				result = new ModelAndView("redirect:display.do");
-	//				final String banner = this.configurationParametersService.findBanner();
-	//				result.addObject("banner", banner);
-	//			} catch (final Throwable oops) {
-	//				result = this.createEditModelAndView(brotherhood, "brotherhood.commit.error");
-	//			}
-	//		return result;
-	//	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Brotherhood brotherhood, final BindingResult bindingResult) {
+	public ModelAndView edit(@Valid final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
 		ModelAndView result;
-
-		if (bindingResult.hasErrors())
-			result = this.createEditModelAndView(brotherhood);
-		else
+		result = new ModelAndView("brotherhood/edit");
+		Brotherhood brotherhood;
+		if (binding.hasErrors()) {
+			result.addObject("errors", binding.getAllErrors());
+			result.addObject("brotherhoodForm", brotherhoodForm);
+		} else
 			try {
-				this.brotherhoodService.save(brotherhood);
-				result = new ModelAndView("redirect:display.do");
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(brotherhood, "fixUpTask.commit.error");
+				final UserAccount ua = this.userAccountService.reconstruct(brotherhoodForm, Authority.BROTHERHOOD);
+				brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm);
+				brotherhood.setUserAccount(ua);
+				this.registerService.saveBrotherhood(brotherhood, binding);
+				result.addObject("alert", "brotherhood.edit.correct");
+				result.addObject("brotherhoodForm", brotherhoodForm);
+			} catch (final Throwable e) {
+				if (e.getMessage().contains("username is register"))
+					result.addObject("alert", "brotherhood.edit.usernameIsUsed");
+				result.addObject("errors", binding.getAllErrors());
+				result.addObject("brotherhoodForm", brotherhoodForm);
 			}
-
 		return result;
+	}
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		result = new ModelAndView("brotherhood/edit");
+		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
+		final BrotherhoodForm actor = this.registerService.inyect(brotherhood);
+		result.addObject("brotherhoodForm", actor);
+		return result;
+
 	}
 
 	// LIST MY BROTHERHOODS  ---------------------------------------------------------------		

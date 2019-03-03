@@ -49,7 +49,7 @@ public class AdministratorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final ActorFrom actorForm, final BindingResult binding) {
+	public ModelAndView edit(@Valid final ActorFrom actorForm, final BindingResult binding) {
 		ModelAndView result;
 		result = new ModelAndView("administrator/edit");
 		Administrator admin;
@@ -71,6 +71,17 @@ public class AdministratorController extends AbstractController {
 				result.addObject("actorForm", actorForm);
 			}
 		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		result = new ModelAndView("administrator/edit");
+		final Administrator admin = this.administratorService.findByPrincipal();
+		final ActorFrom actor = this.registerService.inyect(admin);
+		result.addObject("actorForm", actor);
+		return result;
+
 	}
 
 	@RequestMapping("/create")

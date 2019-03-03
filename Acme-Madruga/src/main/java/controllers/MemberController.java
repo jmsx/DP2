@@ -109,7 +109,7 @@ public class MemberController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final ActorFrom actorForm, final BindingResult binding) {
 		ModelAndView result;
-		result = new ModelAndView("administrator/edit");
+		result = new ModelAndView("member/edit");
 		Member member;
 		if (binding.hasErrors()) {
 			result.addObject("errors", binding.getAllErrors());
@@ -129,6 +129,16 @@ public class MemberController extends AbstractController {
 				result.addObject("actorForm", actorForm);
 			}
 		return result;
+	}
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		result = new ModelAndView("member/edit");
+		final Member member = this.memberService.findByPrincipal();
+		final ActorFrom actor = this.registerService.inyect(member);
+		result.addObject("actorForm", actor);
+		return result;
+
 	}
 
 	// LIST MY MEMBERS  ---------------------------------------------------------------		
