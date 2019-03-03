@@ -18,10 +18,6 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<p><spring:message code="folder.edit" /></p>
-
-    
-
 <form:form action="folder/edit.do" modelAttribute="folder">
 
 	<form:hidden path="id"/>

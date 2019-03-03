@@ -26,19 +26,17 @@
   ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
   --%>
   
+<p><spring:message code="message.edit" /></p>
+
 <form:form action="message/edit.do" modelAttribute="m">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
     <form:hidden path="moment"/>
     <form:hidden path="sender"/>
-    
-	<form:label path="recipients">
-        <spring:message code="message.recipients"/>:
-    </form:label>
-    <form:select path="recipients" code="message.recipients">
-        <form:options items="${recipients}" itemLabel="name"/>
-    </form:select>
+    <form:hidden path="recipients"/>
+	
+    <br/>
 
     <acme:textbox path="subject" code="message.subject"/>
     <br/>
@@ -61,8 +59,8 @@
     <!---------------------------- BOTONES -------------------------->
 
 
-    <button name="send" type="submit" class="button2">
-        <spring:message code="general.send"/>
+    <button name="broadcast" type="submit" class="button2">
+        <spring:message code="general.broadcast"/>
     </button>
 
     <input type="button" class="btn btn-danger" name="cancel"

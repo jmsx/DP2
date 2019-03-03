@@ -40,24 +40,23 @@
 
     <!-- Attributes -->
 
-    <security:authorize access="hasAnyRole('ADMIN')">
-    </security:authorize>
-
 	<display:column property="subject" titleKey="message.subject" />
 	<display:column property="sender" value="name" titleKey="message.sender" />
 	<display:column property="recipients" value="name" titleKey="message.recipients" />
 	<display:column property="priority" titleKey="message.priority" />
 	<display:column>
-		<acme:select items="${folders}" itemLabel="name" code="general.folders" path=""/>
+	<form:select path="">
+    <form:options items="${folders}" itemLabel="name" itemValue="id"/>
+	</form:select>
 	</display:column>
 	
 </display:table>
 
     <!---------------------------- BOTONES -------------------------->
-
+	
 	<input type="button" class="btn btn-danger" name="saveMove"
 		value="<spring:message code="general.move" />"
-           onclick="relativeRedir('message/saveMove.do');"/>
+           onclick="relativeRedir('message/saveMove.do?messageId=${row.id}&folderId=${folder.id}&choosedFolderId=${itemValue}');"/>
 
     <input type="button" class="btn btn-danger" name="cancel"
            value="<spring:message code="general.cancel" />"

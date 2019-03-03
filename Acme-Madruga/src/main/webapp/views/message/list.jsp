@@ -16,8 +16,6 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><spring:message code="message.list" /></p>
-
 <input type="button" class="btn btn-danger" name="back"
        value="<spring:message code="general.cancel" />"
        onclick="relativeRedir('folder/list.do');"/>
@@ -29,13 +27,11 @@
 
     <!-- Attributes -->
 
-    <security:authorize access="hasAnyRole('ADMIN')">
         <display:column>
             <input type="button" class="btn btn-danger" name="deleteMessage"
                    value="<spring:message code="general.delete" />"
                    onclick="relativeRedir('message/delete.do?messageId=${row.id}&folderId=${folder.id}');"/>
         </display:column>
-    </security:authorize>
 
 	<display:column property="subject" titleKey="message.subject" />
 	<display:column property="sender" value="name" titleKey="message.sender" />
@@ -46,6 +42,11 @@
             <input type="button" class="btn btn-danger" name="moveMessage"
                    value="<spring:message code="general.move" />"
                    onclick="relativeRedir('message/move.do?messageId=${row.id}&folderId=${folder.id}');"/>
-        </display:column>
+    </display:column>
+    <display:column>
+            <input type="button" class="btn btn-danger" name="copyMessage"
+                   value="<spring:message code="general.copy" />"
+                   onclick="relativeRedir('message/copy.do?messageId=${row.id}&folderId=${folder.id}');"/>
+    </display:column>
 	
 </display:table>

@@ -66,6 +66,13 @@
 		<!-- ========================================================================================================= -->	
 	
 		<security:authorize access="hasRole('BROTHERHOOD')">
+		
+			<li><a class="fNiv"><spring:message	code="master.page.brotherhood" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="folder/list.do"><spring:message code="folder.list" /></a></li>					
+				</ul>
+			</li>
 			
 		<%-- FLOATS --%>
 			
@@ -118,6 +125,13 @@
 		<!-- ========================================================================================================= -->
 				
 		<security:authorize access="hasRole('MEMBER')">
+		
+			<li><a class="fNiv"><spring:message	code="master.page.member" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="folder/list.do"><spring:message code="folder.list" /></a></li>					
+				</ul>
+			</li>
 			
 			<%-- PROCESSIONS --%>
 			

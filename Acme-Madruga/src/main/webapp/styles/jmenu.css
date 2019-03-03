@@ -85,3 +85,11 @@
 	border-bottom: 1px solid #322f32;
 	text-decoration: none;
 }
+
+acme:select{
+	-webkit-appearance: none;
+}
+
+select{
+	-webkit-appearance: none;
+}

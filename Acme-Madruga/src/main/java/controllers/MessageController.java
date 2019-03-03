@@ -132,6 +132,7 @@ public class MessageController extends AbstractController {
 			res = this.createEditModelAndViewBroadcast(m);
 		else
 			try {
+				//				this.messageService.broadcast(m);
 				final Message sent = this.messageService.send(m);
 				res = new ModelAndView("redirect:display.do?messageId=" + sent.getId() + "&folderId=" + outbox.getId());
 				final String banner = this.configurationParametersService.find().getBanner();
@@ -142,7 +143,6 @@ public class MessageController extends AbstractController {
 		return res;
 
 	}
-
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int messageId, @RequestParam final int folderId) {
 
@@ -247,6 +247,7 @@ public class MessageController extends AbstractController {
 		final ModelAndView res;
 		final Message message = this.messageService.findOne(messageId);
 		final Folder actualFolder = this.folderService.findOne(folderId);
+		final Folder fold = this.folderService.create();
 
 		if (message != null && actualFolder != null) {
 			final Collection<Folder> allFolders = this.folderService.findAll();
@@ -255,6 +256,7 @@ public class MessageController extends AbstractController {
 			res.addObject("m", message);
 			res.addObject("folder", actualFolder);
 			res.addObject("folders", allFolders);
+			res.addObject("fold", fold);
 			res.addObject("requestURI", "message/move.do");
 
 			final String banner = this.configurationParametersService.find().getBanner();
@@ -264,7 +266,6 @@ public class MessageController extends AbstractController {
 
 		return res;
 	}
-
 	@RequestMapping(value = "/saveMove", method = RequestMethod.GET)
 	public ModelAndView move(@RequestParam(required = true) final int messageId, @RequestParam(required = true) final int folderId, @RequestParam(required = true) final int choosedFolderId) {
 		ModelAndView res;
@@ -276,7 +277,9 @@ public class MessageController extends AbstractController {
 			try {
 
 				this.messageService.moveFromAToB(message, actualFolder, choosedFolder);
-				res = new ModelAndView("redirect: display.do?messageId=" + messageId + "&folderId=" + choosedFolderId);
+				res = new ModelAndView("folder/list");
+				res.addObject("actualFolder", actualFolder);
+				res.addObject("choosedFolder", choosedFolder);
 
 				final String banner = this.configurationParametersService.find().getBanner();
 				res.addObject("banner", banner);
