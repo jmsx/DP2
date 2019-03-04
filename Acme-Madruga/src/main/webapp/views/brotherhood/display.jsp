@@ -17,6 +17,25 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+
+<script>
+function generatePDF(){
+	alert('<spring:message code="display.document.alert"/>')
+	var doc = new jsPDF()
+	doc.text('<spring:message code="display.document.title"/>', 20, 10)
+	doc.text('', 10, 20)
+	doc.text('<spring:message code="actor.name"/> : <jstl:out value="${brotherhood.name}"/>', 10, 30)
+	doc.text('<spring:message code="actor.middleName"/> : <jstl:out value="${brotherhood.middleName}"/>', 10, 40)
+	doc.text('<spring:message code="actor.surname"/> : <jstl:out value="${brotherhood.surname}"/>', 10, 50)
+	doc.text('<spring:message code="actor.photo"/> : <jstl:out value="${brotherhood.photo}"/>', 10, 60)
+	doc.text('<spring:message code="actor.phone"/> : <jstl:out value="${brotherhood.phone}"/>', 10, 70)
+	doc.text('<spring:message code="actor.email"/> : <jstl:out value="${brotherhood.email}"/>', 10, 80)
+	doc.text('<spring:message code="actor.address"/> : <jstl:out value="${brotherhood.address}"/>', 10, 90)
+	doc.save('<spring:message code="display.document.fileName"/>.pdf')
+}
+</script>
+
 
 
 <acme:display code="actor.name" value="${brotherhood.name}"/>
@@ -27,7 +46,6 @@
 <acme:display code="actor.surname" value="${brotherhood.surname}"/>
 <acme:display code="actor.email" value="${brotherhood.email}"/>
 <acme:display code="actor.phone" value="${brotherhood.phone}"/>
-<acme:display code="actor.email" value="${brotherhood.email}"/>
 <acme:display code="actor.address" value="${brotherhood.address}"/>
 <acme:display code="actor.score" value="${brotherhood.score}"/>
 
@@ -39,7 +57,9 @@
 		<spring:message code="actor.spammer.no"/>
 	</jstl:otherwise>
 </jstl:choose>
-<br><br>
+<br>
+	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
+<br>
 <security:authorize access="hasRole('MEMBER')">
 	<acme:button url="brotherhood/list.do" name="back" code="procession.back"/>
 </security:authorize>

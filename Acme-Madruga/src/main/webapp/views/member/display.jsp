@@ -16,6 +16,13 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script>
+	var doc = new jsPDF()
+	
+	
+	doc.save('doc.pdf')
+</script>
 
 
 <spring:message code="actor.name" var="name"/>
