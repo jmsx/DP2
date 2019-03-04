@@ -39,14 +39,16 @@ public class MemberService {
 	@Autowired
 	private EnrolmentService							enrolmentService;
 
+	@Autowired
+	private FinderService								fidnerService;
+
 
 	public Member create() {
 		final Member member = new Member();
 		this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
-
+		member.setFinder(this.fidnerService.create());
 		return member;
 	}
-
 	public Collection<Member> findAll() {
 
 		final Collection<Member> result = this.memberRepository.findAll();
@@ -109,11 +111,7 @@ public class MemberService {
 		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
 		final Collection<Member> all = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
-		final Collection<Member> res = new ArrayList<>();
-		for (final Member m : all)
-			if (this.enrolmentService.getEnrolment(principal, m).getDropOut() == null)
-				res.add(m);
-		return res;
+		return all;
 	}
 
 	public Member reconstruct(final ActorFrom actorForm) {

@@ -108,15 +108,11 @@ public class BrotherhoodService {
 		return brotherhood;
 	}
 
-	public Collection<Brotherhood> findAllBrotherHoodByMember() {
+	public Collection<Brotherhood> findAllMyBrotherHoodByMember() {
 		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
 		final Collection<Brotherhood> all = this.brotherhoodRepository.findAllBrotherHoodByMember(principal.getUserAccount().getId());
-		final Collection<Brotherhood> res = new ArrayList<>();
-		for (final Brotherhood b : all)
-			if (this.enrolmentService.getEnrolment(b, principal).getDropOut() == null)
-				res.add(b);
-		return res;
+		return all;
 	}
 
 	public void areaSet(final Area area) {
@@ -130,9 +126,16 @@ public class BrotherhoodService {
 
 	public Collection<Brotherhood> AllBrotherhoodsFree() {
 		final List<Brotherhood> all = this.brotherhoodRepository.findAll();
-		final List<Brotherhood> ocupadas = (List<Brotherhood>) this.findAllBrotherHoodByMember();
+		final List<Brotherhood> ocupadas = (List<Brotherhood>) this.findAllMyBrotherHoodByMember();
 		all.removeAll(ocupadas);
 		return all;
+	}
+
+	public Collection<Brotherhood> brotherhoodsHasBelonged() {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		final Collection<Brotherhood> res = this.brotherhoodRepository.brotherhoodsHasBelonged(principal.getUserAccount().getId());
+		return res;
 	}
 
 	public Brotherhood reconstruct(final BrotherhoodForm brotherhoodForm) {

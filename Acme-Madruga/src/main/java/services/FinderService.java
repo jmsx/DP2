@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.FinderRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
 import domain.Finder;
+import domain.Member;
 import domain.Procession;
 
 @Service
@@ -38,10 +42,13 @@ public class FinderService {
 	//Métodos CRUD
 
 	public Finder create() {
-		final Finder finder = new Finder();
-		final Collection<Procession> ps = new ArrayList<>();
-		finder.setProcessions(ps);
-		return finder;
+		final Finder result = new Finder();
+		result.setKeyword("");
+		result.setAreaName("");
+		result.setMinDate(null);
+		result.setMaxDate(null);
+		result.setProcessions(new ArrayList<Procession>());
+		return result;
 	}
 
 	public Collection<Finder> findAll() {
@@ -75,47 +82,81 @@ public class FinderService {
 		this.finderRepository.delete(finder);
 	}
 
-	public Collection<Procession> find(final Finder finder) {
-		Collection<Procession> result;
-
-		try {
-
-			/*
-			 * Crear en el Servicio de ConfigurationParameters:
-			 * public ConfigurationParameters getConfigParas(){
-			 * List<ConfigurationParameters> configParams = new ArrayList<>(configurationParametersRepository.findAll());
-			 * return configParams;
-			 * }
-			 */
-
-			final String keyword = finder.getKeyword();
-			final String areaName = finder.getAreaName();
-			final Date minDate = finder.getMinDate();
-			final Date maxDate = finder.getMaxDate();
-			final Collection<Procession> aux = this.processionService.findAll();
-			if (keyword != null)
-				aux.retainAll(this.finderRepository.findForKeyword(keyword));
-			else if (areaName != null)
-				aux.retainAll(this.finderRepository.findForArea(areaName));
-			else if (minDate != null)
-				aux.retainAll(this.finderRepository.findForMinDate(minDate));
-			else if (maxDate != null)
-				aux.retainAll(this.finderRepository.findForMaxDate(maxDate));
-			else
-				result = aux;
-
-			result = aux;
-
-			//			final Member member = this.memberService.findByPrincipal();
-			//			member.getFinder().add(finder);
-			//			this.memberService.save(member);
-			return result;
-		} catch (final Exception e) {
-			e.printStackTrace();
-			return new ArrayList<Procession>();
-		}
-
+	public void clear(final Finder finder) {
+		Assert.notNull(finder);
+		Assert.isTrue(finder.getId() != 0);
+		Assert.isTrue(this.finderRepository.exists(finder.getId()));
+		finder.setKeyword("");
+		finder.setAreaName("");
+		finder.setMinDate(null);
+		finder.setMaxDate(null);
+		finder.setProcessions(new ArrayList<Procession>());
+		this.finderRepository.save(finder);
 	}
+
+	public Collection<Procession> findProcessions(final String keyword, final Date minDate, final Date maxDate, final String area) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		final UserAccount user = LoginService.getPrincipal();
+		final int id = user.getId();
+		final Member member = this.memberService.findOne(id);
+		Assert.notNull(member);
+
+		final Finder result = this.finderRepository.findMemberFinder(member.getId());
+		Assert.notNull(result);
+
+		result.setKeyword(keyword);
+		result.setAreaName(area);
+		result.setMinDate(minDate);
+		result.setMaxDate(maxDate);
+		final Collection<Procession> proc = new ArrayList<Procession>(this.finderRepository.findProcessions(keyword, minDate, maxDate, area));
+		result.setProcessions(proc);
+		final Finder finderSaved = this.finderRepository.save(result);
+
+		return finderSaved.getProcessions();
+	}
+
+	//	public Collection<Procession> find(final Finder finder) {
+	//		Collection<Procession> result;
+	//
+	//		try {
+	//
+	//			/*
+	//			 * Crear en el Servicio de ConfigurationParameters:
+	//			 * public ConfigurationParameters getConfigParas(){
+	//			 * List<ConfigurationParameters> configParams = new ArrayList<>(configurationParametersRepository.findAll());
+	//			 * return configParams;
+	//			 * }
+	//			 */
+	//
+	//			final String keyword = finder.getKeyword();
+	//			final String areaName = finder.getAreaName();
+	//			final Date minDate = finder.getMinDate();
+	//			final Date maxDate = finder.getMaxDate();
+	//			final Collection<Procession> aux = this.processionService.findAll();
+	//			if (keyword != null)
+	//				aux.retainAll(this.finderRepository.findForKeyword(keyword));
+	//			else if (areaName != null)
+	//				aux.retainAll(this.finderRepository.findForArea(areaName));
+	//			else if (minDate != null)
+	//				aux.retainAll(this.finderRepository.findForMinDate(minDate));
+	//			else if (maxDate != null)
+	//				aux.retainAll(this.finderRepository.findForMaxDate(maxDate));
+	//			else
+	//				result = aux;
+	//
+	//			result = aux;
+	//
+	//			//			final Member member = this.memberService.findByPrincipal();
+	//			//			member.getFinder().add(finder);
+	//			//			this.memberService.save(member);
+	//			return result;
+	//		} catch (final Exception e) {
+	//			e.printStackTrace();
+	//			return new ArrayList<Procession>();
+	//		}
+	//
+	//	}
 
 	public Double getAverageFinderResults() {
 		final Double result = this.finderRepository.getAverageFinderResults();
