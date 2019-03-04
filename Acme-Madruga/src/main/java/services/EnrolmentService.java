@@ -18,7 +18,6 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
-import domain.Position;
 import forms.EnrolmentForm;
 
 @Service
@@ -88,9 +87,9 @@ public class EnrolmentService {
 				enrolment.setEnrolled(false);
 				enrolment.setMember(this.memberService.findByPrincipal());
 				enrolment.setDropOut(null);
-				final Position position = this.positionService.create();
-				final Position saved = this.positionService.save(position);
-				enrolment.setPosition(saved);
+				//				final Position position = this.positionService.create();
+				//				final Position saved = this.positionService.save(position);
+				//				enrolment.setPosition(saved);
 				enrolment.setBrotherhood(this.brotherhoodService.findOne(brotherhoodId));
 			} else
 				Assert.isTrue(enrolment.getMember() == this.memberService.findByPrincipal());
@@ -183,9 +182,6 @@ public class EnrolmentService {
 
 	public Enrolment enrole(final int brotherhoodId) {
 		final Enrolment enrolment = this.create();
-
-		final Brotherhood bro = this.brotherhoodService.findByUserId(brotherhoodId);
-		enrolment.setBrotherhood(bro);
 
 		final Enrolment retrieved = this.save(enrolment, brotherhoodId);
 

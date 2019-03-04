@@ -59,11 +59,9 @@ public class EnrolmentMemberController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Enrolment enrolment, final String messageCode) {
 		final ModelAndView result;
-		//			final List<Area> libres = (List<Area>) this.areaService.AllAreasFree();
 
 		result = new ModelAndView("enrolment/edit");
 		result.addObject("enrolment", enrolment);
-		//			result.addObject("areas", libres);
 
 		result.addObject("message", messageCode);
 		final String banner = this.configurationParametersService.findBanner();
