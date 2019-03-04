@@ -8,63 +8,41 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<h2><spring:message code="brotherhood.edit.msg"/></h2>
+<jstl:if test="${not empty alert}">
+	<script>
+	 $(document).ready(function() {
+		 alert('<spring:message code="${alert}"/>');
+	    });
+		
+	</script>
+</jstl:if>
 
-<%-- 
+<jstl:if test="${not empty errors}">
+	<div class="errorDiv">
+		<ul>
+			<jstl:forEach items="${errors}" var="error">
+				<li><spring:message code="brotherhood.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+			</jstl:forEach>
+		</ul>
+	</div>
+</jstl:if>
 
-<form:form modelAttribute="actorForm" action="brotherhood/edit.do" method="POST">
+
+<form:form modelAttribute="brotherhoodForm" action="brotherhood/edit.do" method="POST">
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
 	<acme:textbox code="brotherhood.edit.userAccountuser" path="userAccountuser" />
 	<acme:textbox code="brotherhood.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="brotherhood.edit.name" path="name" />
 	<acme:textbox code="brotherhood.edit.middleName" path="middleName" />
 	<acme:textbox code="brotherhood.edit.surname" path="surname" />
-	<acme:textbox code="brotherhood.edit.title" path="title" />
-	<acme:textbox code="brotherhood.edit.date" path="date" />
-	<acme:textbox code="brotherhood.edit.pictures" path="pictures" />
-	<form:select code="brotherhood.edit.area" path="area">
-	<form:options items="${areas}" itemLabel="name" itemValue="id"/>
-	</form:select>
 	<acme:textbox code="brotherhood.edit.photo" path="photo" />
 	<acme:textbox code="brotherhood.edit.email" path="email" />
 	<acme:textbox code="brotherhood.edit.phone" path="phone" />
 	<acme:textbox code="brotherhood.edit.address" path="address" />
-	<acme:submit code="brotherhood.edit.submit" name="submit"/>
-</form:form> --%>
-
-
-<form:form action="brotherhood/edit.do" modelAttribute="brotherhood">
-	<form:hidden path="id"/>
-    <form:hidden path="version"/>
-    <form:hidden path="score"/>
-    <form:hidden path="spammer"/>
-    <form:hidden path="userAccount"/>
-    <form:hidden path="date"/>
-    
-    <acme:textbox code="brotherhood.edit.name" path="name" />
-	<acme:textbox code="brotherhood.edit.middleName" path="middleName" />
-	<acme:textbox code="brotherhood.edit.surname" path="surname" />
-	<acme:textbox code="brotherhood.edit.photo" path="photo" />
-	<acme:textbox code="brotherhood.edit.email" path="email" />
-	<acme:textbox code="brotherhood.edit.phone" path="phone" />
-	<acme:textbox code="brotherhood.edit.address" path="address" />
-	
 	<acme:textbox code="brotherhood.edit.title" path="title" />
 	<acme:textbox code="brotherhood.edit.pictures" path="pictures" />
-	
-    <form:select code="brotherhood.edit.area" path="area">
-	<form:options items="${areas}" itemLabel="name" itemValue="id"/>
-	</form:select>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+	<acme:submit code="brotherhood.edit.submit" name="save"/>
 </form:form>

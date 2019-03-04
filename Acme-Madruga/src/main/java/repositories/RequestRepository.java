@@ -45,22 +45,22 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 	@Query("select case when (count(r) > 0) then false else true end from Request r where r.row=?1 and r.column=?2 and r.procession.id=?3")
 	Boolean availableRowColumn(Integer rowNumber, Integer columnNumber, Integer idProcession);
 
-	@Query("select sum(case when request.status='APPROVED' then 1.0 else 0.0 end) / count(r) from Request r")
-	Double getRatioApprovedRequests();
+	@Query("select sum(case when r.status='PENDING' then 1.0 else 0.0 end) / count(r) from Request r")
+	Double findPendingRequestRatio();
 
-	@Query("select sum(case when request.status='PENDING' then 1.0 else 0.0 end) / count(r) from Request r")
-	Double getRatioPendingRequests();
+	@Query("select sum(case when r.status='APPROVED' then 1.0 else 0.0 end) / count(r) from Request r")
+	Double findApprovedRequestRatio();
 
-	@Query("select sum(case when request.status='REJECTED' then 1.0 else 0.0 end) / count(r) from Request r")
-	Double getRatioRejectedRequests();
+	@Query("select sum(case when r.status='REJECTED' then 1.0 else 0.0 end) / count(r) from Request r")
+	Double findRejectedRequestRatio();
 
-	@Query("select sum(case when request.status='APPROVED' then 1.0 else 0.0 end) / count(r) from Request r where r.procession.id=?1")
-	Double getRatioApprovedRequestsByProcession(int processionId);
+	@Query("select sum(case when r.status='REJECTED' then 1.0 else 0.0 end) / count(r) from Request r where r.procession.id=?1")
+	Double findRejectedRequestByProcessionRatio(Integer processionId);
 
-	@Query("select sum(case when request.status='PENDING' then 1.0 else 0.0 end) / count(r) from Request r where r.procession.id=?1")
-	Double getRatioPendingRequestsByProcession(int processionId);
+	@Query("select sum(case when r.status='PENDING' then 1.0 else 0.0 end) / count(r) from Request r where r.procession.id=?1")
+	Double findPendingRequestByProcessionRatio(Integer processionId);
 
-	@Query("select sum(case when request.status='REJECTED' then 1.0 else 0.0 end) / count(r) from Request r where r.procession.id=?1")
-	Double getRatioRejectedRequestsByProcession(int processionId);
+	@Query("select sum(case when r.status='APPROVED' then 1.0 else 0.0 end) / count(r) from Request r where r.procession.id=?1")
+	Double findApprovedRequestByProcessionRatio(Integer processionId);
 
 }

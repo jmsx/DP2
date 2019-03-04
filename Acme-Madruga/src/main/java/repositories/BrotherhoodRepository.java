@@ -13,7 +13,7 @@ public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Intege
 	@Query("select b from Brotherhood b where b.userAccount.id=?1")
 	Brotherhood findByUserId(Integer brotherhoodId);
 
-	@Query("select b from Enrolment e join e.brotherhood b where e.member.userAccount.id=?1")
+	@Query("select b from Enrolment e join e.brotherhood b where e.member.userAccount.id=?1 and e.dropOut=null")
 	Collection<Brotherhood> findAllBrotherHoodByMember(Integer id);
 
 	@Query("select count(e) from Enrolment e where e.dropOut=null group by e.member")
@@ -30,4 +30,6 @@ public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Intege
 	@Query("SELECT brotherhood FROM `acme-madruga`.ENROLMENT GROUP BY brotherhood HAVING COUNT(*) = (SELECT MIN(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member)AS X )")
 	Brotherhood getSmallestBrotherhood();
 
+	@Query("select distinct b from Enrolment e join e.brotherhood b where e.member.userAccount.id=?1 and e.dropOut!=null")
+	Collection<Brotherhood> brotherhoodsHasBelonged(Integer memberUAId);
 }

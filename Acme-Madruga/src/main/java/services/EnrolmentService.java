@@ -18,7 +18,6 @@ import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
-import domain.Position;
 import forms.EnrolmentForm;
 
 @Service
@@ -82,15 +81,12 @@ public class EnrolmentService {
 
 		if (isMember) {
 			if (enrolment.getId() == 0) {
-				Assert.isTrue(!this.brotherhoodService.findAllBrotherHoodByMember().contains(enrolment.getBrotherhood()));
+				Assert.isTrue(!this.brotherhoodService.findAllMyBrotherHoodByMember().contains(enrolment.getBrotherhood()));
 				final Date moment = new Date(System.currentTimeMillis() - 1);
 				enrolment.setMoment(moment);
 				enrolment.setEnrolled(false);
 				enrolment.setMember(this.memberService.findByPrincipal());
 				enrolment.setDropOut(null);
-				final Position position = this.positionService.create();
-				final Position saved = this.positionService.save(position);
-				enrolment.setPosition(saved);
 				enrolment.setBrotherhood(this.brotherhoodService.findOne(brotherhoodId));
 			} else
 				Assert.isTrue(enrolment.getMember() == this.memberService.findByPrincipal());
@@ -122,10 +118,12 @@ public class EnrolmentService {
 		Assert.isTrue(this.memberService.findAll().contains(member));
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
+		Collection<Enrolment> enrolments;
 		Enrolment enrolment;
 
 		if (isBrotherhood) {
-			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(principal.getUserAccount().getId(), member.getUserAccount().getId());
+			enrolments = this.enrolmentRepository.findEnrolmentFromBroMember(principal.getUserAccount().getId(), member.getUserAccount().getId());
+			enrolment = this.enrolmentActive(enrolments);
 			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
 		}
 	}
@@ -136,19 +134,22 @@ public class EnrolmentService {
 		Assert.isTrue(this.brotherhoodService.findAll().contains(brotherhood));
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
-		Assert.isTrue(this.brotherhoodService.findAllBrotherHoodByMember().contains(brotherhood));
+		Assert.isTrue(this.brotherhoodService.findAllMyBrotherHoodByMember().contains(brotherhood));
+		Collection<Enrolment> enrolments;
 		Enrolment enrolment;
 
 		if (isMember) {
-			enrolment = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), principal.getUserAccount().getId());
+			enrolments = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), principal.getUserAccount().getId());
+			enrolment = this.enrolmentActive(enrolments);
 			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
 		}
 	}
 
 	public Enrolment getEnrolment(final Actor brotherhood, final Actor member) {
-		final Enrolment res = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), member.getUserAccount().getId());
+		final Collection<Enrolment> res = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), member.getUserAccount().getId());
+		final Enrolment enrolment = this.enrolmentActive(res);
 		Assert.notNull(res);
-		return res;
+		return enrolment;
 	}
 
 	public Collection<Enrolment> findAllByMemberId(final Integer memberUAId) {
@@ -163,6 +164,16 @@ public class EnrolmentService {
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
 		final Collection<Enrolment> res = this.enrolmentRepository.findAllByBrotherHoodId(broUAId);
 		return res;
+	}
+
+	public Enrolment enrolmentActive(final Collection<Enrolment> enrolments) {
+		Enrolment enrolment = null;
+		for (final Enrolment e : enrolments)
+			if (e.getDropOut() == null) {
+				enrolment = e;
+				break;
+			}
+		return enrolment;
 	}
 
 	public Enrolment reconstruct(final EnrolmentForm enrolmentForm, final BindingResult binding) {
@@ -183,9 +194,6 @@ public class EnrolmentService {
 
 	public Enrolment enrole(final int brotherhoodId) {
 		final Enrolment enrolment = this.create();
-
-		final Brotherhood bro = this.brotherhoodService.findByUserId(brotherhoodId);
-		enrolment.setBrotherhood(bro);
 
 		final Enrolment retrieved = this.save(enrolment, brotherhoodId);
 

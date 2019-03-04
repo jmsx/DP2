@@ -1,0 +1,19 @@
+Deployed Resources -> webapp -> WEB-INF -> web.xml
+	display-name
+	servlet -> servlet-name
+	servlet-mapping -> servlet-name
+
+src/main/resources -> META-INF -> persistence.xml
+	persistence-unit name
+	property value=jdbc:mysql://localhost:3306/
+
+src/main/java -> utilities -> DatabaseConfig.java
+	PersistenceUnit
+
+src/main/resources -> spring -> config -> data.xml
+	bean dataSource -> property value=jdbc:mysql://localhost:3306/
+	bean persistenceUnit -> constructor-arg
+
+Deployed Resources -> webapp -> views -> master-page
+	footer.jsp
+	header.jsp -> img alt
