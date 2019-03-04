@@ -19,4 +19,15 @@ public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Intege
 	@Query("select count(e) from Enrolment e where e.dropOut=null group by e.member")
 	Collection<Integer> getNumberOfMembersPerBrotherhood();
 
+	@Query("SELECT STDDEV(x),MAX(x),MIN(x),AVG(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member) AS x")
+	Double[] getStadisticsOfMembersPerBrotherhood();
+
+	/** The largest brotherhood is the one with highest number of members **/
+	@Query("SELECT brotherhood FROM `acme-madruga`.ENROLMENT GROUP BY brotherhood HAVING COUNT(*) = (SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member)AS X )")
+	Brotherhood getLargestBrotherhood();
+
+	/** The smallest brotherhood is the one with lowest number of members **/
+	@Query("SELECT brotherhood FROM `acme-madruga`.ENROLMENT GROUP BY brotherhood HAVING COUNT(*) = (SELECT MIN(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member)AS X )")
+	Brotherhood getSmallestBrotherhood();
+
 }
