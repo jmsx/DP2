@@ -145,6 +145,7 @@
 					<li class="arrow"></li>
 					<li><a href="brotherhood/list.do"><spring:message code="master.page.brotherhood.list" /></a></li>
 					<li><a href="brotherhood/allBrotherhoodsFree.do"><spring:message code="master.page.brotherhood.allFree" /></a></li>
+					<li><a href="brotherhood/brotherhoodsHasBelonged.do"><spring:message code="master.page.brotherhood.hasBelonged" /></a></li>
 				</ul>
 			</li>
 			

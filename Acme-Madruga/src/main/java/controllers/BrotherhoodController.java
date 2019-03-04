@@ -184,7 +184,7 @@ public class BrotherhoodController extends AbstractController {
 		final Member member = this.memberService.findByPrincipal();
 		final Collection<Brotherhood> brotherhoods;
 
-		brotherhoods = this.brotherhoodService.findAllBrotherHoodByMember();
+		brotherhoods = this.brotherhoodService.findAllMyBrotherHoodByMember();
 
 		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
@@ -247,6 +247,30 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("member", member);
 		result.addObject("requetURI", "brotherhood/listAll.do");
 		result.addObject("ok", false);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	// LIST BROTHERHOODS HAS BELONGED  ---------------------------------------------------------------		
+
+	@RequestMapping(value = "/brotherhoodsHasBelonged", method = RequestMethod.GET)
+	public ModelAndView brotherhoodsHasBelonged() {
+		final ModelAndView result;
+		final Member member = this.memberService.findByPrincipal();
+		final Collection<Brotherhood> brotherhoods;
+
+		brotherhoods = this.brotherhoodService.brotherhoodsHasBelonged();
+
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
+		result = new ModelAndView("brotherhood/list");
+		result.addObject("lang", lang);
+		result.addObject("brotherhoods", brotherhoods);
+		result.addObject("member", member);
+		result.addObject("requetURI", "brotherhood/brotherhoodsHasBelonged.do");
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
