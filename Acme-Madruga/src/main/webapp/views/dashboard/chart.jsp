@@ -49,15 +49,15 @@
 		                   
 		                   ],
         datasets:[{
-          label:'Population',
+          label:'Frequency',
           data:[
 		                   <jstl:forEach items="${frequencies2}" var="frequency">
 <jstl:out value="${frequency}" />,
 </jstl:forEach>,0
 		                   
 		                   ],
-          //backgroundColor:'green',
-          backgroundColor:[
+          backgroundColor:'green',
+          /*backgroundColor:[
             'rgba(255, 99, 132, 0.6)',
             'rgba(54, 162, 235, 0.6)',
             'rgba(255, 206, 86, 0.6)',
@@ -65,9 +65,9 @@
             'rgba(153, 102, 255, 0.6)',
             'rgba(255, 159, 64, 0.6)',
             'rgba(255, 99, 132, 0.6)'
-          ],
-          width:100,
-          height:100,
+          ],*/
+          width:50,
+          height:50,
           borderWidth:1,
           borderColor:'#777',
           hoverBorderWidth:3,
