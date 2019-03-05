@@ -17,7 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Finder extends DomainEntity implements Cloneable {
+public class Finder extends DomainEntity {
 
 	private String					keyword;
 	private String					areaName;
@@ -26,6 +26,7 @@ public class Finder extends DomainEntity implements Cloneable {
 	private Collection<Procession>	processions;
 
 
+	@NotNull
 	@SafeHtml
 	public String getKeyword() {
 		return this.keyword;
@@ -35,6 +36,7 @@ public class Finder extends DomainEntity implements Cloneable {
 		this.keyword = keyword;
 	}
 
+	@NotNull
 	@SafeHtml
 	public String getAreaName() {
 		return this.areaName;
@@ -72,16 +74,6 @@ public class Finder extends DomainEntity implements Cloneable {
 
 	public void setProcessions(final Collection<Procession> processions) {
 		this.processions = processions;
-	}
-
-	@Override
-	public Object clone() {
-		Object o = null;
-		try {
-			o = super.clone();
-		} catch (final CloneNotSupportedException e) {
-		}
-		return o;
 	}
 
 }
