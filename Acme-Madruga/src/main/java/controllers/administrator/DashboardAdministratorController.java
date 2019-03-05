@@ -83,8 +83,8 @@ public class DashboardAdministratorController extends AbstractController {
 		final Double desviationResults = this.finderService.getDesviationFinderResults();
 		final Double ratioFinders = this.finderService.getRatioEmptyFinders();
 		final Double[] statisticsMembersPerBrotherhood = this.brotherhoodService.getStatisticsOfMembersPerBrotherhood();
-		final Brotherhood smallestBrotherhood = this.brotherhoodService.getSmallestBrotherhood();
-		final Brotherhood largestBrotherhood = this.brotherhoodService.getLargestBrotherhood();
+		final List<Brotherhood> smallestBrotherhood = this.brotherhoodService.getSmallestBrotherhood();
+		final List<Brotherhood> largestBrotherhood = this.brotherhoodService.getLargestBrotherhood();
 		final List<Procession> soon = this.processionService.getProcessionsThirtyDays();
 		final Double requestApproved = this.requestService.findApprovedRequestRadio();
 		final Double requestPending = this.requestService.findPendingRequestRadio();
