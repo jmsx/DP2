@@ -20,7 +20,10 @@ import services.PositionService;
 import services.ProcessionService;
 import services.RequestService;
 import controllers.AbstractController;
+import domain.Brotherhood;
+import domain.Member;
 import domain.Position;
+import domain.Procession;
 
 @Controller
 @RequestMapping(value = "/dashboard/administrator")
@@ -79,31 +82,31 @@ public class DashboardAdministratorController extends AbstractController {
 		final Integer minResults = this.finderService.getMinFinderResults();
 		final Double desviationResults = this.finderService.getDesviationFinderResults();
 		final Double ratioFinders = this.finderService.getRatioEmptyFinders();
-		//final Double[] statisticsMembersPerBrotherhood = this.brotherhoodService.getStatisticsOfMembersPerBrotherhood();
-		//final Brotherhood smallestBrotherhood = this.brotherhoodService.getSmallestBrotherhood();
-		//final Brotherhood largestBrotherhood = this.brotherhoodService.getLargestBrotherhood();
-		//final List<Procession> soon = this.processionService.getProcessionsThirtyDays();
+		final Double[] statisticsMembersPerBrotherhood = this.brotherhoodService.getStatisticsOfMembersPerBrotherhood();
+		final Brotherhood smallestBrotherhood = this.brotherhoodService.getSmallestBrotherhood();
+		final Brotherhood largestBrotherhood = this.brotherhoodService.getLargestBrotherhood();
+		final List<Procession> soon = this.processionService.getProcessionsThirtyDays();
 		final Double requestApproved = this.requestService.findApprovedRequestRadio();
 		final Double requestPending = this.requestService.findPendingRequestRadio();
 		final Double requestRejected = this.requestService.findRejectedRequestRadio();
 		final Double[] statisticsBrotherhoodsPerArea = this.areaService.getStatiticsBrotherhoodPerArea();
-		//final List<Member> membersTenPercent = this.memberService.getMembersTenPercent();
+		final List<Member> membersTenPercent = this.memberService.getMembersTenPercent();
 
 		result = new ModelAndView("dashboard/statistics"); //lleva al list.jsp
 		result.addObject("requestURI", "dashboard/admnistrator/statistics.do");
-		/*
-		 * result.addObject("averageMembers", statisticsMembersPerBrotherhood[0]);
-		 * result.addObject("minMembers", statisticsMembersPerBrotherhood[2]);
-		 * result.addObject("maxMembers", statisticsMembersPerBrotherhood[1]);
-		 * result.addObject("desviationMembers", statisticsMembersPerBrotherhood[3]);
-		 * result.addObject("largest", largestBrotherhood);
-		 * result.addObject("smallest", smallestBrotherhood);
-		 */
-		//result.addObject("soon", soon);
+
+		result.addObject("averageMembers", statisticsMembersPerBrotherhood[0]);
+		result.addObject("minMembers", statisticsMembersPerBrotherhood[2]);
+		result.addObject("maxMembers", statisticsMembersPerBrotherhood[1]);
+		result.addObject("desviationMembers", statisticsMembersPerBrotherhood[3]);
+		result.addObject("largest", largestBrotherhood);
+		result.addObject("smallest", smallestBrotherhood);
+
+		result.addObject("soon", soon);
 		result.addObject("requestsApproved", requestApproved);
 		result.addObject("requestsPending", requestPending);
 		result.addObject("requestsRejected", requestRejected);
-		//result.addObject("membersPercent", membersTenPercent);
+		result.addObject("membersPercent", membersTenPercent);
 		result.addObject("minBrotherhoods", statisticsBrotherhoodsPerArea[2]);
 		result.addObject("averageBrotherhoods", statisticsBrotherhoodsPerArea[0]);
 		result.addObject("maxBrotherhoods", statisticsBrotherhoodsPerArea[1]);

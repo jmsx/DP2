@@ -220,9 +220,9 @@ public class ProcessionService {
 		return result;
 	}
 
-	/*public List<Procession> getProcessionsThirtyDays() {
+	public List<Procession> getProcessionsThirtyDays() {
 		final List<Procession> result = this.processionRepository.getProcessionsThirtyDays();
 		Assert.notNull(result);
 		return result;
-	}*/
+	}
 }

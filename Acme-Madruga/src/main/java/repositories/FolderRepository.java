@@ -2,6 +2,7 @@
 package repositories;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -36,6 +37,6 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
 	@Query(
 		value = "SELECT MEMBER FROM `acme-madruga`.REQUEST WHERE status='ACCEPTED' GROUP BY procession HAVING COUNT(*) >= 0.1*(SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.REQUEST WHERE REQUEST.status='ACCEPTED'  GROUP BY procession)AS X)",
 		nativeQuery = true)
-	List<Member> getMembersTenPercentMaxRequestAccepted();
+	List<domain.Member> getMembersTenPercentMaxRequestAccepted();
 
 }
