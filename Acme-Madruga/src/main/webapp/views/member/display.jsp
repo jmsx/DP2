@@ -17,11 +17,23 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+
 <script>
+function generatePDF(){
+	alert('<spring:message code="display.member.document.alert"/>')
 	var doc = new jsPDF()
-	
-	
-	doc.save('doc.pdf')
+	doc.text('<spring:message code="display.document.title"/>', 20, 10)
+	doc.text('', 10, 20)
+	doc.text('<spring:message code="actor.name"/> : <jstl:out value="${member.name}"/>', 10, 30)
+	doc.text('<spring:message code="actor.middleName"/> : <jstl:out value="${member.middleName}"/>', 10, 40)
+	doc.text('<spring:message code="actor.surname"/> : <jstl:out value="${member.surname}"/>', 10, 50)
+	doc.text('<spring:message code="actor.photo"/> : <jstl:out value="${member.photo}"/>', 10, 60)
+	doc.text('<spring:message code="actor.phone"/> : <jstl:out value="${member.phone}"/>', 10, 70)
+	doc.text('<spring:message code="actor.email"/> : <jstl:out value="${member.email}"/>', 10, 80)
+	doc.text('<spring:message code="actor.address"/> : <jstl:out value="${member.address}"/>', 10, 90)
+	doc.save('<spring:message code="display.document.fileName"/>.pdf')
+}
 </script>
 
 
@@ -45,7 +57,9 @@
 		<spring:message code="actor.spammer.no"/>
 	</jstl:otherwise>
 </jstl:choose>
-
+<br>
+	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
+<br>
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<acme:button url="/member/list.do" name="back" code="member.back"/>
 </security:authorize>

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.BrotherhoodRepository;
 import security.Authority;
@@ -17,6 +19,7 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Area;
 import domain.Brotherhood;
+import forms.BrotherhoodAreaForm;
 import forms.BrotherhoodForm;
 
 @Service
@@ -37,6 +40,9 @@ public class BrotherhoodService {
 
 	@Autowired
 	private UserAccountService		userAccountService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	public Brotherhood create() {
@@ -182,7 +188,7 @@ public class BrotherhoodService {
 
 	}
 
-	/*public Double[] getStatisticsOfMembersPerBrotherhood() {
+	public Double[] getStatisticsOfMembersPerBrotherhood() {
 		final Double[] result = this.brotherhoodRepository.getStatisticsOfMembersPerBrotherhood();
 		Assert.notNull(result);
 		return result;
@@ -198,5 +204,20 @@ public class BrotherhoodService {
 		final Brotherhood result = this.brotherhoodRepository.getLargestBrotherhood();
 		Assert.notNull(result);
 		return result;
-	}*/
+	}
+
+	public Brotherhood reconstruct2(final BrotherhoodAreaForm brotherhoodAreaForm, final BindingResult binding) {
+		Brotherhood result;
+		Assert.isTrue(brotherhoodAreaForm.getId() != 0);
+
+		result = this.findOne(brotherhoodAreaForm.getId());
+
+		result.setId(brotherhoodAreaForm.getId());
+		result.setVersion(brotherhoodAreaForm.getVersion());
+		result.setArea(brotherhoodAreaForm.getArea());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
 }

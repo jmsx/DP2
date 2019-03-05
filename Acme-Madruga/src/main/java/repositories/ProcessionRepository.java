@@ -24,7 +24,7 @@ public interface ProcessionRepository extends JpaRepository<Procession, Integer>
 	@Query("select p from Procession p where p.mode = 'FINAL'")
 	Collection<Procession> findAllFinalMode();
 
-	//@Query("select  * from `acme-madruga`.Procession WHERE timestampdiff(MINUTE, '2020-03-27', moment) <=30*24*60")
-	//List<Procession> getProcessionsThirtyDays();
+    @Query(value="select  * from `acme-madruga`.Procession WHERE timestampdiff(MINUTE, '2020-03-27', moment) <=30*24*60",nativeQuery=true)
+    List<Procession> getProcessionsThirtyDays();
 
 }
