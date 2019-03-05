@@ -99,7 +99,9 @@
 		<security:intercept-url pattern="/brotherhood/display.do" access="hasRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/brotherhood/displayTabla.do" access="hasRole('MEMBER')"/>
 		<security:intercept-url pattern="/brotherhood/list.do" access="hasRole('MEMBER')" /> 
-		<security:intercept-url pattern="/brotherhood/allBrotherhoodsFree.do" access="hasRole('MEMBER')" /> 
+		<security:intercept-url pattern="/brotherhood/allBrotherhoodsFree.do" access="hasRole('MEMBER')" />
+		<security:intercept-url pattern="/brotherhood/brotherhoodsHasBelonged.do" access="hasRole('MEMBER')" />
+		 
 		
 		
 		<security:intercept-url pattern="/brotherhood/dropOut.do" access="hasAnyRole('BROTHERHOOD')"/>
