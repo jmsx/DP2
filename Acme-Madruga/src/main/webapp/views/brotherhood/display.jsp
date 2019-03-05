@@ -68,11 +68,13 @@ function deletePersonalData(){
 <jstl:choose>
 	<jstl:when test="${empty brotherhood.area}">
 	<acme:button url="brotherhood/assignArea.do" name="assign" code="brotherhood.selectArea"/>
+	<br>
 	</jstl:when>
 	<jstl:otherwise>
-	<acme:display code="brotherhood.area" value="${brotherhood.area}"/>
+	<acme:display code="brotherhood.area" value="${brotherhood.area.name}"/>
 	</jstl:otherwise>
 </jstl:choose>
+<br>
 
 	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
 	<button onClick="deletePersonalData()"><spring:message code="display.button.deletePersonalData"/></button>

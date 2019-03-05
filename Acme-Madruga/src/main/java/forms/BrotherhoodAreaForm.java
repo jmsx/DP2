@@ -8,10 +8,11 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 
 import domain.Area;
+import domain.DomainEntity;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class BrotherhoodAreaForm extends ActorFrom {
+public class BrotherhoodAreaForm extends DomainEntity {
 
 	private Area	area;
 

@@ -39,16 +39,14 @@ public class MemberService {
 	@Autowired
 	private EnrolmentService							enrolmentService;
 
-	@Autowired
-	private FinderService								fidnerService;
-
 
 	public Member create() {
 		final Member member = new Member();
 		this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
-		member.setFinder(this.fidnerService.create());
+
 		return member;
 	}
+
 	public Collection<Member> findAll() {
 
 		final Collection<Member> result = this.memberRepository.findAll();
@@ -153,4 +151,11 @@ public class MemberService {
 		return member;
 	}
 
+	/*
+	 * public List<Member> getMembersTenPercent() {
+	 * final List<Member> result = this.memberRepository.getMembersTenPercent();
+	 * Assert.notNull(result);
+	 * return result;
+	 * }
+	 */
 }

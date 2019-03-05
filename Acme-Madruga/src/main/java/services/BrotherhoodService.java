@@ -188,15 +188,33 @@ public class BrotherhoodService {
 
 	}
 
-	public Brotherhood reconstruct2(final BrotherhoodAreaForm brotherhoodPositionForm, final BindingResult binding) {
+	public Double[] getStatisticsOfMembersPerBrotherhood() {
+		final Double[] result = this.brotherhoodRepository.getStatisticsOfMembersPerBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Brotherhood getSmallestBrotherhood() {
+		final Brotherhood result = this.brotherhoodRepository.getSmallestBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Brotherhood getLargestBrotherhood() {
+		final Brotherhood result = this.brotherhoodRepository.getLargestBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Brotherhood reconstruct2(final BrotherhoodAreaForm brotherhoodAreaForm, final BindingResult binding) {
 		Brotherhood result;
-		Assert.isTrue(brotherhoodPositionForm.getId() != 0);
+		Assert.isTrue(brotherhoodAreaForm.getId() != 0);
 
-		result = this.findOne(brotherhoodPositionForm.getId());
+		result = this.findOne(brotherhoodAreaForm.getId());
 
-		result.setId(brotherhoodPositionForm.getId());
-		result.setVersion(brotherhoodPositionForm.getVersion());
-		result.setArea(brotherhoodPositionForm.getArea());
+		result.setId(brotherhoodAreaForm.getId());
+		result.setVersion(brotherhoodAreaForm.getVersion());
+		result.setArea(brotherhoodAreaForm.getArea());
 
 		this.validator.validate(result, binding);
 

@@ -17,4 +17,12 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
 	@Query("select e.member from Enrolment e where e.brotherhood.userAccount.id=?1 and e.dropOut=null")
 	Collection<Member> allMembersFromBrotherhood(Integer broUAId);
+
+	/**
+	 * Devuelve el listado de miembros que cumplen que el número de requests aceptadas solicitadas
+	 * es al menos el 10% del número de solicitudes aceptadas que tiene el miembro con
+	 * el maximo numero de solicitudes aceptadas
+	 **/
+	//@Query("SELECT MEMBER FROM `acme-madruga`.REQUEST WHERE status='ACCEPTED' GROUP BY procession HAVING COUNT(*) >= 0.1*(SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.REQUEST WHERE REQUEST.status='ACCEPTED'  GROUP BY procession)AS X)")
+	//List<Member> getMembersTenPercent();
 }
