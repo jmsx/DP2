@@ -17,13 +17,14 @@
 
 	<security:authorize access="hasRole('MEMBER')">
 	<jstl:if test="${ok}">
+	<jstl:if test="${not empty row.area}">
 		<display:column>
 			<a href="enrolment/member/create.do?brotherhoodId=${row.id}">
 				<spring:message code="brotherhood.enrolment.edit" />
 			</a>
 		</display:column>
 	</jstl:if>
-	
+	</jstl:if>
 	<jstl:if test="${leave}">
 		<display:column>
 			<a href="member/leave.do?brotherhoodId=${row.id}">
