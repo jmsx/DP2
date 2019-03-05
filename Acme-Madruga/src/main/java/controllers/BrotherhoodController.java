@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -280,9 +281,10 @@ public class BrotherhoodController extends AbstractController {
 		ModelAndView result;
 		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
 
-		if (principal != null)
+		if (principal != null) {
+			Assert.isNull(principal.getArea(), "No puedes actualizar el área.");
 			result = this.createEditModelAndView2(principal);
-		else
+		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
@@ -291,10 +293,10 @@ public class BrotherhoodController extends AbstractController {
 	// SAVE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/assignArea", method = RequestMethod.POST, params = "saveArea")
-	public ModelAndView saveArea(@Valid final BrotherhoodAreaForm brotherhoodPositionForm, final BindingResult binding) {
+	public ModelAndView saveArea(@Valid final BrotherhoodAreaForm brotherhoodAreaForm, final BindingResult binding) {
 		ModelAndView result;
 
-		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodPositionForm, binding);
+		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodAreaForm, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView2(brotherhood);
@@ -305,7 +307,7 @@ public class BrotherhoodController extends AbstractController {
 				final String banner = this.configurationParametersService.findBanner();
 				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(brotherhood, "enrolment.commit.error");
+				result = this.createEditModelAndView2(brotherhood, "enrolment.commit.error");
 			}
 
 		return result;

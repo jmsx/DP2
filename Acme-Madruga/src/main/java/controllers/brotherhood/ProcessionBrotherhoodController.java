@@ -155,13 +155,14 @@ public class ProcessionBrotherhoodController extends AbstractController {
 					result = this.createEditModelAndView(procession, "procession.area.error");
 				else if (procession.getMode().equals("FINAL"))
 					result = this.createEditModelAndView(procession, "procession.mode.error");
+				else if (procession.getFloats().isEmpty())
+					result = this.createEditModelAndView(procession, "procession.float.error");
 				else
 					result = this.createEditModelAndView(procession, "procession.commit.error");
 			}
 
 		return result;
 	}
-
 	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)
 	public ModelAndView finalMode(@RequestParam final int processionId) {
 		final ModelAndView result;

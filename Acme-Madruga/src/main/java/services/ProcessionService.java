@@ -111,7 +111,7 @@ public class ProcessionService {
 
 		if (isBrotherhood && bro.getArea() != null) {
 			final Brotherhood brotherhoodPrincipal = this.brotherhoodService.findByPrincipal();
-			Assert.notEmpty(procession.getFloats());
+			Assert.notEmpty(procession.getFloats(), "A procession must have some floats assigned to be saved");
 			Assert.isTrue(this.floatService.findByBrotherhood(brotherhoodPrincipal).containsAll(procession.getFloats()));
 
 			if (procession.getId() == 0) {
@@ -220,9 +220,9 @@ public class ProcessionService {
 		return result;
 	}
 
-	/*public List<Procession> getProcessionsThirtyDays() {
+	public List<Procession> getProcessionsThirtyDays() {
 		final List<Procession> result = this.processionRepository.getProcessionsThirtyDays();
 		Assert.notNull(result);
 		return result;
-	}*/
+	}
 }
