@@ -14,8 +14,8 @@ import domain.Procession;
 @Repository
 public interface FinderRepository extends JpaRepository<Finder, Integer> {
 
-	//	@Query("select p from Procession p where (p.title LIKE CONCAT('%',:keyword,'%') or p.description LIKE CONCAT('%',:keyword,'%') or p.ticker LIKE CONCAT('%',:keyword,'%') or p.mode LIKE CONCAT('%',:keyword,'%'))")
-	//	List<Procession> findForKeyword(@Param("keyword") String keyword);
+	//@Query(select p from Procession p where (p.title LIKE CONCAT('%',:keyword,'%') or p.description LIKE CONCAT('%',:keyword,'%') or p.ticker LIKE CONCAT('%',:keyword,'%') or p.mode LIKE CONCAT('%',:keyword,'%'))")
+	//List<Procession> findForKeyword(@Param("keyword") String keyword);
 	//
 	//	@Query("select p from Procession p join p.brotherhood b where b.area.name =?1")
 	//	List<Procession> findForArea(String areaName);

@@ -35,7 +35,9 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
 	@Query("select f from Folder f where f.actor.userAccount.id=?1")
 	Collection<Folder> findAllByUserId(Integer id);
 
-	@Query("SELECT MEMBER FROM `acme-madruga`.REQUEST WHERE status='ACCEPTED' GROUP BY procession HAVING COUNT(*) >= 0.1*(SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.REQUEST WHERE REQUEST.status='ACCEPTED'  GROUP BY procession)AS X)")
+	@Query(
+		value = "SELECT MEMBER FROM `acme-madruga`.REQUEST WHERE status='ACCEPTED' GROUP BY procession HAVING COUNT(*) >= 0.1*(SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.REQUEST WHERE REQUEST.status='ACCEPTED'  GROUP BY procession)AS X)",
+		nativeQuery = true)
 	List<Member> getMembersTenPercentMaxRequestAccepted();
 
 }

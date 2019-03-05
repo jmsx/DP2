@@ -37,17 +37,17 @@ function generatePDF(){
 </script>
 
 
-<acme:display code="actor.name" value="${member.name}"/>
-<spring:message code="actor.photo"/>:<br>
+<acme:display code="administrator.edit.name" value="${administrator.name}"/>
+<spring:message code="administrator.edit.photo"/>:<br>
 <img src="${member.photo}" alt="<spring:message code="administrator.alt.image"/>" width="20%" height="20%"/>
 <br>
-<acme:display code="actor.middleName" value="${administrator.middleName}"/>
-<acme:display code="actor.surname" value="${administrator.surname}"/>
-<acme:display code="actor.email" value="${administrator.email}"/>
-<acme:display code="actor.phone" value="${administrator.phone}"/>
-<acme:display code="actor.email" value="${administrator.email}"/>
-<acme:display code="actor.address" value="${administrator.address}"/>
-<acme:display code="actor.score" value="${administrator.score}"/>
+<acme:display code="administrator.edit.middleName" value="${administrator.middleName}"/>
+<acme:display code="administrator.edit.surname" value="${administrator.surname}"/>
+<acme:display code="administrator.edit.email" value="${administrator.email}"/>
+<acme:display code="administrator.edit.phone" value="${administrator.phone}"/>
+<acme:display code="administrator.edit.email" value="${administrator.email}"/>
+<acme:display code="administrator.edit.address" value="${administrator.address}"/>
+<acme:display code="administrator.edit.score" value="${administrator.score}"/>
 
 <jstl:choose>
 	<jstl:when test="${administrator.spammer}">
