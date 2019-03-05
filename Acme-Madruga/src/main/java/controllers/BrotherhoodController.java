@@ -28,6 +28,7 @@ import domain.Area;
 import domain.Brotherhood;
 import domain.Member;
 import forms.BrotherhoodForm;
+import forms.BrotherhoodAreaForm;
 
 @Controller
 @RequestMapping("/brotherhood")
@@ -62,31 +63,6 @@ public class BrotherhoodController extends AbstractController {
 
 	public BrotherhoodController() {
 		super();
-	}
-
-	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
-
-	protected ModelAndView createEditModelAndView(final Brotherhood brotherhood) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(brotherhood, null);
-
-		return result;
-	}
-
-	protected ModelAndView createEditModelAndView(final Brotherhood brotherhood, final String messageCode) {
-		final ModelAndView result;
-		final List<Area> libres = (List<Area>) this.areaService.AllAreasFree();
-
-		result = new ModelAndView("brotherhood/edit");
-		result.addObject("brotherhood", brotherhood);
-		result.addObject("areas", libres);
-
-		result.addObject("message", messageCode);
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
-		return result;
 	}
 
 	// CREATE  ---------------------------------------------------------------		
@@ -293,5 +269,101 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("banner", banner);
 
 		return result;
+	}
+
+	// EDIT  ---------------------------------------------------------------		
+
+	@RequestMapping(value = "/assignArea", method = RequestMethod.GET)
+	public ModelAndView assignArea() {
+		ModelAndView result;
+		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
+
+		if (principal != null)
+			result = this.createEditModelAndView2(principal);
+		else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+	}
+
+	// SAVE  ---------------------------------------------------------------		
+
+	@RequestMapping(value = "/assignArea", method = RequestMethod.POST, params = "saveArea")
+	public ModelAndView save(@Valid final BrotherhoodAreaForm brotherhoodPositionForm, final BindingResult binding) {
+		ModelAndView result;
+
+		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodPositionForm, binding);
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView2(brotherhood);
+		else
+			try {
+				this.brotherhoodService.save(brotherhood);
+				result = this.displayPrincipal();
+				final String banner = this.configurationParametersService.findBanner();
+				result.addObject("banner", banner);
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(brotherhood, "enrolment.commit.error");
+			}
+
+		return result;
+	}
+
+	// ANCILLARY METHODS  ---------------------------------------------------------------		
+
+	protected ModelAndView createEditModelAndView(final Brotherhood brotherhood) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(brotherhood, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Brotherhood brotherhood, final String messageCode) {
+		final ModelAndView result;
+		final List<Area> libres = (List<Area>) this.areaService.findAll();
+
+		result = new ModelAndView("brotherhood/edit");
+		result.addObject("brotherhood", brotherhood);
+		result.addObject("areas", libres);
+
+		result.addObject("message", messageCode);
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView2(final Brotherhood brotherhood) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(brotherhood, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView2(final Brotherhood brotherhood, final String messageCode) {
+		final ModelAndView result;
+		final List<Area> libres = (List<Area>) this.areaService.findAll();
+
+		result = new ModelAndView("brotherhood/edit2");
+		result.addObject("brotherhood", this.constructPruned(brotherhood));
+		result.addObject("areas", libres);
+
+		result.addObject("message", messageCode);
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	public BrotherhoodAreaForm constructPruned(final Brotherhood brotherhood) {
+		final BrotherhoodAreaForm pruned = new BrotherhoodAreaForm();
+
+		pruned.setId(brotherhood.getId());
+		pruned.setVersion(brotherhood.getVersion());
+		pruned.setArea(brotherhood.getArea());
+
+		return pruned;
 	}
 }
