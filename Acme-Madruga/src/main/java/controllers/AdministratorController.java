@@ -121,7 +121,7 @@ public class AdministratorController extends AbstractController {
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.actorService.save(principal);
 
-		final ModelAndView result = new ModelAndView("redirect:login.do");
+		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
 		return result;
 	}
 

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
+import services.ActorService;
 import services.AreaService;
 import services.BrotherhoodService;
 import services.ConfigurationParametersService;
@@ -24,6 +25,7 @@ import services.EnrolmentService;
 import services.MemberService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
+import domain.Actor;
 import domain.Area;
 import domain.Brotherhood;
 import domain.Member;
@@ -57,6 +59,9 @@ public class BrotherhoodController extends AbstractController {
 
 	@Autowired
 	private UserAccountService				userAccountService;
+
+	@Autowired
+	private ActorService					actorService;
 
 
 	// CONSTRUCTOR -----------------------------------------------------------
@@ -362,5 +367,27 @@ public class BrotherhoodController extends AbstractController {
 		pruned.setArea(brotherhood.getArea());
 
 		return pruned;
+	}
+
+	//GDPR
+	@RequestMapping(value = "/deletePersonalData")
+	public ModelAndView deletePersonalData() {
+		final Actor principal = this.actorService.findByPrincipal();
+		principal.setAddress("");
+		principal.setEmail("");
+		principal.setMiddleName("");
+		//principal.setName("");
+		principal.setPhone("");
+		principal.setPhoto("");
+		principal.setScore(0.0);
+		principal.setSpammer(false);
+		//principal.setSurname("");
+		final Authority ban = new Authority();
+		ban.setAuthority(Authority.BANNED);
+		principal.getUserAccount().getAuthorities().add(ban);
+		this.actorService.save(principal);
+
+		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
+		return result;
 	}
 }
