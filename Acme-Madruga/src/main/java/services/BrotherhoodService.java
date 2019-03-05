@@ -78,8 +78,6 @@ public class BrotherhoodService {
 			final Actor principal = this.actorService.findByPrincipal();
 			Assert.isTrue(principal.getId() == brotherhood.getId(), "You only can edit your info");
 			//			final Brotherhood old = this.brotherhoodRepository.findOne(brotherhood.getId());
-			//TODO: Un brotherhood no puede actualizar su area
-			Assert.isNull((brotherhood.getArea()), "You can't change of area");
 			result = (Brotherhood) this.actorService.save(brotherhood);
 		}
 		return result;

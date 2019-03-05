@@ -4,6 +4,7 @@ package forms;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -23,6 +24,18 @@ public class ActorFrom extends DomainEntity {
 	private String	email;
 	private String	phone;
 	private String	address;
+	private Boolean	termsAndCondicions;
+
+
+	@AssertTrue
+	public Boolean getTermsAndCondicions() {
+		return this.termsAndCondicions;
+	}
+
+	public void setTermsAndCondicions(final Boolean termsAndCondicions) {
+		this.termsAndCondicions = termsAndCondicions;
+	}
+
 
 	//Relational attributes
 	private String	userAccountuser;

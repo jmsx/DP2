@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
+import services.ActorService;
 import services.AreaService;
 import services.BrotherhoodService;
 import services.ConfigurationParametersService;
@@ -25,6 +26,7 @@ import services.EnrolmentService;
 import services.MemberService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
+import domain.Actor;
 import domain.Area;
 import domain.Brotherhood;
 import domain.Member;
@@ -58,6 +60,9 @@ public class BrotherhoodController extends AbstractController {
 
 	@Autowired
 	private UserAccountService				userAccountService;
+
+	@Autowired
+	private ActorService					actorService;
 
 
 	// CONSTRUCTOR -----------------------------------------------------------
@@ -288,10 +293,10 @@ public class BrotherhoodController extends AbstractController {
 	// SAVE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/assignArea", method = RequestMethod.POST, params = "saveArea")
-	public ModelAndView saveArea(@Valid final BrotherhoodAreaForm brotherhoodPositionForm, final BindingResult binding) {
+	public ModelAndView saveArea(@Valid final BrotherhoodAreaForm brotherhoodAreaForm, final BindingResult binding) {
 		ModelAndView result;
 
-		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodPositionForm, binding);
+		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodAreaForm, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView2(brotherhood);
@@ -302,7 +307,7 @@ public class BrotherhoodController extends AbstractController {
 				final String banner = this.configurationParametersService.findBanner();
 				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(brotherhood, "enrolment.commit.error");
+				result = this.createEditModelAndView2(brotherhood, "enrolment.commit.error");
 			}
 
 		return result;
@@ -364,5 +369,27 @@ public class BrotherhoodController extends AbstractController {
 		pruned.setArea(brotherhood.getArea());
 
 		return pruned;
+	}
+
+	//GDPR
+	@RequestMapping(value = "/deletePersonalData")
+	public ModelAndView deletePersonalData() {
+		final Actor principal = this.actorService.findByPrincipal();
+		principal.setAddress("");
+		principal.setEmail("");
+		principal.setMiddleName("");
+		//principal.setName("");
+		principal.setPhone("");
+		principal.setPhoto("");
+		principal.setScore(0.0);
+		principal.setSpammer(false);
+		//principal.setSurname("");
+		final Authority ban = new Authority();
+		ban.setAuthority(Authority.BANNED);
+		principal.getUserAccount().getAuthorities().add(ban);
+		this.actorService.save(principal);
+
+		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
+		return result;
 	}
 }

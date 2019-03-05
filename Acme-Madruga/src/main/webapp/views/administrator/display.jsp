@@ -37,7 +37,7 @@ function generatePDF(){
 function deletePersonalData(){
 	var r = confirm('<spring:message code="display.deletePersonalData"/>');
 	if (r == true) {
-		location.href = "/administrator/deletePersonalData.do";
+		location.href = "administrator/deletePersonalData.do";
 	}
 }
 </script>
