@@ -3,13 +3,16 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
 import repositories.FinderRepository;
+import security.Authority;
 import domain.Actor;
 import domain.Finder;
 import domain.Member;
@@ -20,19 +23,22 @@ import domain.Procession;
 public class FinderService {
 
 	@Autowired
-	private FinderRepository				finderRepository;
+	private FinderRepository							finderRepository;
 
 	@Autowired
-	private MemberService					memberService;
+	private MemberService								memberService;
 
 	@Autowired
-	private ProcessionService				processionService;
+	private ProcessionService							processionService;
 
 	@Autowired
-	private ConfigurationParametersService	configParamService;
+	private ConfigurationParametersService				configParamService;
 
 	@Autowired
-	private ActorService					actorService;
+	private ActorService								actorService;
+
+	@Autowired
+	private org.springframework.validation.Validator	validator;
 
 
 	//Métodos CRUD
@@ -81,6 +87,46 @@ public class FinderService {
 		Assert.notNull(member);
 		final Finder result = this.finderRepository.findMemberFinder(id);
 		Assert.notNull(result);
+		return result;
+	}
+
+	public Finder clear(final Finder finder, final BindingResult binding) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		final Member member = this.memberService.findByPrincipal();
+		final Finder result = this.finderRepository.findMemberFinder(member.getId());
+		Assert.isTrue(result.equals(finder));
+		Assert.notNull(result);
+		result.setKeyword("");
+		result.setAreaName("");
+		result.setMinDate(null);
+		result.setMaxDate(null);
+		result.setProcessions(new ArrayList<Procession>());
+		final Finder saved = this.finderRepository.save(result);
+		member.setFinder(saved);
+		this.validator.validate(saved, binding);
+		return saved;
+	}
+
+	public Collection<Procession> find(final String keyword, final String area, final Date maxDate, final Date minDate) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		final Collection<Procession> finalMode = this.processionService.findAllFinalMode();
+		final Collection<Procession> result = new ArrayList<Procession>();
+		for (final Procession p : finalMode)
+			if ((keyword == "" || (p.getDescription().contains(keyword) || p.getTitle().contains(keyword) || p.getTicker().contains(keyword) && (area == "" || p.getBrotherhood().getArea().getName().contains(area))
+				&& (maxDate == null || p.getMoment().before(maxDate)) && (minDate == null || p.getMoment().after(minDate)))))
+				result.add(p);
+		final Member member = this.memberService.findByPrincipal();
+		final Finder finder = this.finderRepository.findMemberFinder(member.getId());
+		finder.setAreaName(area);
+		finder.setKeyword(keyword);
+		finder.setMinDate(minDate);
+		finder.setMaxDate(maxDate);
+		finder.setProcessions(result);
+		final Finder saved = this.finderRepository.save(finder);
+		Assert.notNull(saved);
+		member.setFinder(saved);
 		return result;
 	}
 
