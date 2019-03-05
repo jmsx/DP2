@@ -123,7 +123,9 @@ public class EnrolmentService {
 
 		if (isBrotherhood) {
 			enrolments = this.enrolmentRepository.findEnrolmentFromBroMember(principal.getUserAccount().getId(), member.getUserAccount().getId());
+			Assert.notNull(enrolments);
 			enrolment = this.enrolmentActive(enrolments);
+			Assert.notNull(enrolment, "No puede expulsar de la hermandad a un miembro que no pertenece a ella.");
 			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
 		}
 	}
@@ -134,13 +136,15 @@ public class EnrolmentService {
 		Assert.isTrue(this.brotherhoodService.findAll().contains(brotherhood));
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
-		Assert.isTrue(this.brotherhoodService.findAllMyBrotherHoodByMember().contains(brotherhood));
+		Assert.isTrue(this.brotherhoodService.findAllMyBrotherHoodByMember().contains(brotherhood), "No puede darse de baja de una hermandad a la que no pertenece.");
 		Collection<Enrolment> enrolments;
 		Enrolment enrolment;
 
 		if (isMember) {
 			enrolments = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), principal.getUserAccount().getId());
+			Assert.notNull(enrolments);
 			enrolment = this.enrolmentActive(enrolments);
+			Assert.notNull(enrolment, "No puede darse de baja de una hermandad a la que no pertenece.");
 			enrolment.setDropOut(new Date(System.currentTimeMillis() - 1));
 		}
 	}
@@ -194,7 +198,9 @@ public class EnrolmentService {
 
 	public Enrolment enrole(final int brotherhoodId) {
 		final Brotherhood brotherhood = this.brotherhoodService.findOne(brotherhoodId);
+		final Member member = this.memberService.findByPrincipal();
 		Assert.notNull(brotherhood.getArea(), "No se puede inscribir en una hermandad que no tiene área seleccionada.");
+		Assert.isNull(this.getEnrolment(brotherhood, member), "No puedes inscribirte más de una vez en la misma hermandad.");
 		final Enrolment enrolment = this.create();
 
 		final Enrolment retrieved = this.save(enrolment, brotherhoodId);
