@@ -15,16 +15,17 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
+import services.ActorService;
 import services.AdministratorService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
+import domain.Actor;
 import domain.Administrator;
 import forms.ActorFrom;
 
@@ -37,7 +38,7 @@ public class AdministratorController extends AbstractController {
 	@Autowired
 	private UserAccountService		accountService;
 	@Autowired
-	private Validator				validator;
+	private ActorService			actorService;
 	@Autowired
 	private RegisterService			registerService;
 
@@ -99,6 +100,28 @@ public class AdministratorController extends AbstractController {
 		final Administrator admin = this.administratorService.findByPrincipal();
 		result = new ModelAndView("administrator/display");
 		result.addObject("administrator", admin);
+		return result;
+	}
+
+	//GDPR
+	@RequestMapping(value = "/deletePersonalData")
+	public ModelAndView deletePersonalData() {
+		final Actor principal = this.actorService.findByPrincipal();
+		principal.setAddress("");
+		principal.setEmail("");
+		principal.setMiddleName("");
+		//principal.setName("");
+		principal.setPhone("");
+		principal.setPhoto("");
+		principal.setScore(0.0);
+		principal.setSpammer(false);
+		//principal.setSurname("");
+		final Authority ban = new Authority();
+		ban.setAuthority(Authority.BANNED);
+		principal.getUserAccount().getAuthorities().add(ban);
+		this.actorService.save(principal);
+
+		final ModelAndView result = new ModelAndView("redirect:login.do");
 		return result;
 	}
 

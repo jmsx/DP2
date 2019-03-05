@@ -34,6 +34,12 @@ function generatePDF(){
 	doc.text('<spring:message code="actor.address"/> : <jstl:out value="${member.address}"/>', 10, 90)
 	doc.save('<spring:message code="display.document.fileName"/>.pdf')
 }
+function deletePersonalData(){
+	var r = confirm('<spring:message code="display.deletePersonalData"/>');
+	if (r == true) {
+		location.href = "/member/deletePersonalData.do";
+	}
+}
 </script>
 
 
@@ -59,6 +65,8 @@ function generatePDF(){
 </jstl:choose>
 <br>
 	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
+	<button onClick="deletePersonalData()"><spring:message code="display.button.deletePersonalData"/></button>
+	
 <br>
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<acme:button url="/member/list.do" name="back" code="member.back"/>
