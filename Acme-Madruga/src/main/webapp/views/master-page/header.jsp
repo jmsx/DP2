@@ -149,6 +149,9 @@
 				</ul>
 			</li>
 			
+			<%-- FINDER --%>
+			
+			<li><a href="finder/edit.do"><spring:message code="master.page.finder.edit" /></a></li>
 			
 			
 			

@@ -51,7 +51,9 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	Collection<Finder> findersWithProcession(int id);
 
 	@Query("select distinct p from Procession p where p.finalMode=1 AND" + "?1='' OR (p.description LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%')" + "OR p.ticker LIKE CONCAT('%',?1,'%'))) AND (?2=null OR (p.momentToBeOrganized>=?2))"
-		+ "AND (?3=null OR (p.momentToBeOrganized<=3)) AND (?4='' OR p.brotherhood.area.name=?4)")
+		+ "AND (?3=null OR (p.momentToBeOrganized<=?3)) AND (?4='' OR p.brotherhood.area.name=?4)")
 	Collection<Procession> findProcessions(String keyword, Date minDate, Date maxDate, String area);
+
+	//select distinct p from Procession p where p.finalMode=1 AND description='' OR (p.description LIKE CONCAT('%',description,'%') OR p.title LIKE CONCAT('%',description,'%')OR p.ticker LIKE CONCAT('%',description,'%'))) AND (null=null OR (p.momentToBeOrganized>=null))AND (null=null OR (p.momentToBeOrganized<=null)) AND (''='' OR p.brotherhood.area.name='');
 
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
 import repositories.FinderRepository;
 import security.Authority;
@@ -24,19 +25,22 @@ import domain.Procession;
 public class FinderService {
 
 	@Autowired
-	private FinderRepository				finderRepository;
+	private FinderRepository							finderRepository;
 
 	@Autowired
-	private MemberService					memberService;
+	private MemberService								memberService;
 
 	@Autowired
-	private ProcessionService				processionService;
+	private org.springframework.validation.Validator	validator;
 
 	@Autowired
-	private ConfigurationParametersService	configParamService;
+	private ProcessionService							processionService;
 
 	@Autowired
-	private ActorService					actorService;
+	private ConfigurationParametersService				configParamService;
+
+	@Autowired
+	private ActorService								actorService;
 
 
 	//Métodos CRUD
@@ -82,16 +86,38 @@ public class FinderService {
 		this.finderRepository.delete(finder);
 	}
 
-	public void clear(final Finder finder) {
-		Assert.notNull(finder);
-		Assert.isTrue(finder.getId() != 0);
-		Assert.isTrue(this.finderRepository.exists(finder.getId()));
-		finder.setKeyword("");
-		finder.setAreaName("");
-		finder.setMinDate(null);
-		finder.setMaxDate(null);
-		finder.setProcessions(new ArrayList<Procession>());
-		this.finderRepository.save(finder);
+	public Finder clear(final Finder finder, final BindingResult binding) {
+		Finder result;
+		result = this.finderRepository.findOne(finder.getId());
+		Assert.notNull(result);
+		final Finder clon = (Finder) result.clone();
+		clon.setKeyword("");
+		clon.setAreaName("");
+		clon.setMinDate(null);
+		clon.setMaxDate(null);
+		clon.setProcessions(new ArrayList<Procession>());
+
+		result = clon;
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public Finder reconstruct(final Finder finder, final BindingResult binding) {
+		Finder result;
+		result = this.finderRepository.findOne(finder.getId());
+		Assert.notNull(result);
+		final Finder clon = (Finder) result.clone();
+		clon.setKeyword(finder.getKeyword());
+		clon.setAreaName(finder.getAreaName());
+		clon.setMinDate(finder.getMinDate());
+		clon.setMaxDate(finder.getMaxDate());
+		clon.setProcessions(new ArrayList<Procession>());
+
+		result = clon;
+		this.validator.validate(result, binding);
+
+		return result;
 	}
 
 	public Collection<Procession> findProcessions(final String keyword, final Date minDate, final Date maxDate, final String area) {

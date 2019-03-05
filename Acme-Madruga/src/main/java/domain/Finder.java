@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,7 +63,6 @@ public class Finder extends DomainEntity implements Cloneable {
 		this.maxDate = maxDate;
 	}
 
-	@NotNull
 	@ManyToMany
 	public Collection<Procession> getProcessions() {
 		return this.processions;

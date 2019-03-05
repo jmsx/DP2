@@ -131,8 +131,11 @@
 		<security:intercept-url pattern="/member/leave.do" access="hasAnyRole('MEMBER')"/>
 		<security:intercept-url pattern="/member/list.do" access="hasAnyRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/member/displayTabla.do" access="hasAnyRole('BROTHERHOOD')"/>
+		
+		<!-- FINDER -->
 
-
+		<security:intercept-url pattern="/finder/edit.do" access="hasRole('MEMBER')" />
+		<security:intercept-url pattern="/finder/display.do" access="hasRole('MEMBER')" />
 
 
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
