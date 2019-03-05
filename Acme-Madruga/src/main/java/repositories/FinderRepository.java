@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import domain.Finder;
-import domain.Procession;
 
 @Repository
 public interface FinderRepository extends JpaRepository<Finder, Integer> {

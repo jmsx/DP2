@@ -167,7 +167,9 @@ public class RegisterService {
 		final String hash = encoder.encodePassword(ua.getPassword(), null);
 		if (brotherhood.getId() == 0) {
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
-			brotherhood.setDate(new Date());
+			final Date moment = new Date(System.currentTimeMillis() - 1);
+
+			brotherhood.setDate(moment);
 			ua.setPassword(hash);
 			brotherhood.setUserAccount(ua);
 

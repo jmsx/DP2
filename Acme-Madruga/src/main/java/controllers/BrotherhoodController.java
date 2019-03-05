@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -275,9 +276,10 @@ public class BrotherhoodController extends AbstractController {
 		ModelAndView result;
 		final Brotherhood principal = this.brotherhoodService.findByPrincipal();
 
-		if (principal != null)
+		if (principal != null) {
+			Assert.isNull(principal.getArea(), "No puedes actualizar el área.");
 			result = this.createEditModelAndView2(principal);
-		else
+		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
