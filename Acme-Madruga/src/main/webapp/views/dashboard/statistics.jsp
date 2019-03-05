@@ -131,7 +131,7 @@
  	<jstl:forEach items="${processions }" var="procession">
     <tr >
     <td><jstl:out value="${procession.title}" /></td>
-    <td><spring:url value="dashboard/administrator/calculate.do" var="displayURL">
+    <td><spring:url value="dashboard/administrator/statistics.do" var="displayURL">
 				<spring:param name="id" value="${procession.id }"/> <!-- es el par�metro que va a acompa�ar a la url -->
 			</spring:url>
 			<a href="${displayURL}"><spring:message code="dashboard.calculate"/></a></td>

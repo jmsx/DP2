@@ -76,7 +76,7 @@ public class DashboardAdministratorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
-	public ModelAndView statistics() {
+	public ModelAndView statistics(@RequestParam(value = "id", required = false) final Integer id) {
 		final ModelAndView result;
 
 		final Double averageResults = this.finderService.getAverageFinderResults();
@@ -122,16 +122,14 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("ratioFinders", ratioFinders);
 		result.addObject("processions", processions);
 
-		/*
-		 * if (id != null) {
-		 * final Double requestProcessionApproved = this.requestService.findApprovedRequestByProcessionRadio(id);
-		 * final Double requestProcessionPending = this.requestService.findPendingRequestByProcessionRadio(id);
-		 * final Double requestProcessionRejected = this.requestService.findRejectedRequestByProcessionRadio(id);
-		 * result.addObject("requestsProcessionApproved", requestProcessionApproved);
-		 * result.addObject("requestsProcessionPending", requestProcessionPending);
-		 * result.addObject("requestsProcessionRejected", requestProcessionRejected);
-		 * }
-		 */
+		if (id != null) {
+			final Double requestProcessionApproved = this.requestService.findApprovedRequestByProcessionRadio(id);
+			final Double requestProcessionPending = this.requestService.findPendingRequestByProcessionRadio(id);
+			final Double requestProcessionRejected = this.requestService.findRejectedRequestByProcessionRadio(id);
+			result.addObject("requestsProcessionApproved", requestProcessionApproved);
+			result.addObject("requestsProcessionPending", requestProcessionPending);
+			result.addObject("requestsProcessionRejected", requestProcessionRejected);
+		}
 
 		final Map<Position, Long> positionsFrequency = this.positionService.getPositionsFrequency();
 		Assert.notNull(positionsFrequency);
