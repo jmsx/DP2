@@ -188,6 +188,24 @@ public class BrotherhoodService {
 
 	}
 
+	public Double[] getStatisticsOfMembersPerBrotherhood() {
+		final Double[] result = this.brotherhoodRepository.getStatisticsOfMembersPerBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Brotherhood getSmallestBrotherhood() {
+		final Brotherhood result = this.brotherhoodRepository.getSmallestBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Brotherhood getLargestBrotherhood() {
+		final Brotherhood result = this.brotherhoodRepository.getLargestBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
 	public Brotherhood reconstruct2(final BrotherhoodAreaForm brotherhoodAreaForm, final BindingResult binding) {
 		Brotherhood result;
 		Assert.isTrue(brotherhoodAreaForm.getId() != 0);

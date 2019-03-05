@@ -19,16 +19,16 @@ public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Intege
 	@Query("select count(e) from Enrolment e where e.dropOut=null group by e.member")
 	Collection<Integer> getNumberOfMembersPerBrotherhood();
 
-	//	@Query(value = "SELECT STDDEV(x),MAX(x),MIN(x),AVG(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member) AS x", nativeQuery = true)
-	//	Double[] getStadisticsOfMembersPerBrotherhood();
-	//
-	//	/** The largest brotherhood is the one with highest number of members **/
-	//	@Query(value = "SELECT brotherhood FROM `acme-madruga`.ENROLMENT GROUP BY brotherhood HAVING COUNT(*) = (SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member)AS X )", nativeQuery = true)
-	//	Brotherhood getLargestBrotherhood();
-	//
-	//	/** The smallest brotherhood is the one with lowest number of members **/
-	//	@Query(value = "SELECT brotherhood FROM `acme-madruga`.ENROLMENT GROUP BY brotherhood HAVING COUNT(*) = (SELECT MIN(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member)AS X )", nativeQuery = true)
-	//	Brotherhood getSmallestBrotherhood();
+	@Query(value = "SELECT STDDEV(x),MAX(x),MIN(x),AVG(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member) AS x", nativeQuery = true)
+	Double[] getStadisticsOfMembersPerBrotherhood();
+	
+		/** The largest brotherhood is the one with highest number of members **/
+	@Query(value = "SELECT brotherhood FROM `acme-madruga`.ENROLMENT GROUP BY brotherhood HAVING COUNT(*) = (SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member)AS X )", nativeQuery = true)
+	Brotherhood getLargestBrotherhood();
+	
+	/** The smallest brotherhood is the one with lowest number of members **/
+	@Query(value = "SELECT brotherhood FROM `acme-madruga`.ENROLMENT GROUP BY brotherhood HAVING COUNT(*) = (SELECT MIN(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.ENROLMENT GROUP BY member)AS X )", nativeQuery = true)
+	Brotherhood getSmallestBrotherhood();
 
 	@Query("select distinct b from Enrolment e join e.brotherhood b where e.member.userAccount.id=?1 and e.dropOut!=null")
 	Collection<Brotherhood> brotherhoodsHasBelonged(Integer memberUAId);
