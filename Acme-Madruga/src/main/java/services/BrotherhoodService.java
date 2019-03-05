@@ -181,4 +181,22 @@ public class BrotherhoodService {
 		return brotherhood;
 
 	}
+
+	/*public Double[] getStatisticsOfMembersPerBrotherhood() {
+		final Double[] result = this.brotherhoodRepository.getStatisticsOfMembersPerBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Brotherhood getSmallestBrotherhood() {
+		final Brotherhood result = this.brotherhoodRepository.getSmallestBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Brotherhood getLargestBrotherhood() {
+		final Brotherhood result = this.brotherhoodRepository.getLargestBrotherhood();
+		Assert.notNull(result);
+		return result;
+	}*/
 }

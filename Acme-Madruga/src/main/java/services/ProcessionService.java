@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -218,4 +219,10 @@ public class ProcessionService {
 
 		return result;
 	}
+
+	/*public List<Procession> getProcessionsThirtyDays() {
+		final List<Procession> result = this.processionRepository.getProcessionsThirtyDays();
+		Assert.notNull(result);
+		return result;
+	}*/
 }

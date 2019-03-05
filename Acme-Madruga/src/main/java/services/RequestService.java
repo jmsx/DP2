@@ -229,4 +229,41 @@ public class RequestService {
 		Assert.notNull(res);
 		return res;
 	}
+
+	public Double findPendingRequestRadio() {
+		final Double result = this.requestRepository.findPendingRequestRatio();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double findApprovedRequestRadio() {
+		final Double result = this.requestRepository.findApprovedRequestRatio();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double findRejectedRequestRadio() {
+		final Double result = this.requestRepository.findRejectedRequestRatio();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double findPendingRequestByProcessionRadio(final Integer id) {
+		final Double result = this.requestRepository.findPendingRequestByProcessionRatio(id);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double findApprovedRequestByProcessionRadio(final Integer id) {
+		final Double result = this.requestRepository.findApprovedRequestByProcessionRatio(id);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double findRejectedRequestByProcessionRadio(final Integer id) {
+		final Double result = this.requestRepository.findRejectedRequestByProcessionRatio(id);
+		Assert.notNull(result);
+		return result;
+	}
+
 }

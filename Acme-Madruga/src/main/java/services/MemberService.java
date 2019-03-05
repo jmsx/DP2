@@ -153,4 +153,11 @@ public class MemberService {
 		return member;
 	}
 
+	/*
+	 * public List<Member> getMembersTenPercent() {
+	 * final List<Member> result = this.memberRepository.getMembersTenPercent();
+	 * Assert.notNull(result);
+	 * return result;
+	 * }
+	 */
 }
