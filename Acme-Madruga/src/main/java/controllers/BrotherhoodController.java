@@ -27,8 +27,8 @@ import services.auxiliary.RegisterService;
 import domain.Area;
 import domain.Brotherhood;
 import domain.Member;
-import forms.BrotherhoodForm;
 import forms.BrotherhoodAreaForm;
+import forms.BrotherhoodForm;
 
 @Controller
 @RequestMapping("/brotherhood")
@@ -168,10 +168,9 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
-		result.addObject("ok", false);
 		result.addObject("leave", true);
 		result.addObject("displayEnrolment", true);
-		result.addObject("requetURI", "brotherhood/list.do");
+		result.addObject("requestURI", "brotherhood/list.do");
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
@@ -196,8 +195,7 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
 		result.addObject("ok", true);
-		result.addObject("displayEnrolment", false);
-		result.addObject("requetURI", "brotherhood/allBrotherhoodsFree.do");
+		result.addObject("requestURI", "brotherhood/allBrotherhoodsFree.do");
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
@@ -221,8 +219,7 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
-		result.addObject("requetURI", "brotherhood/listAll.do");
-		result.addObject("ok", false);
+		result.addObject("requestURI", "brotherhood/listAll.do");
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
@@ -246,7 +243,7 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("brotherhoods", brotherhoods);
 		result.addObject("member", member);
-		result.addObject("requetURI", "brotherhood/brotherhoodsHasBelonged.do");
+		result.addObject("requestURI", "brotherhood/brotherhoodsHasBelonged.do");
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
@@ -289,7 +286,7 @@ public class BrotherhoodController extends AbstractController {
 	// SAVE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/assignArea", method = RequestMethod.POST, params = "saveArea")
-	public ModelAndView save(@Valid final BrotherhoodAreaForm brotherhoodPositionForm, final BindingResult binding) {
+	public ModelAndView saveArea(@Valid final BrotherhoodAreaForm brotherhoodPositionForm, final BindingResult binding) {
 		ModelAndView result;
 
 		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodPositionForm, binding);
@@ -337,7 +334,7 @@ public class BrotherhoodController extends AbstractController {
 	protected ModelAndView createEditModelAndView2(final Brotherhood brotherhood) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(brotherhood, null);
+		result = this.createEditModelAndView2(brotherhood, null);
 
 		return result;
 	}
