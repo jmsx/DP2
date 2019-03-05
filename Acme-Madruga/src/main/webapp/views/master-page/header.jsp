@@ -108,16 +108,6 @@
 				</ul>
 			</li>
 			
-		<%-- AREA --%>
-			
-			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="area/list.do"><spring:message code="master.page.area.display" /></a></li>
-					
-				</ul>
-			</li>
-			
 		</security:authorize>
 		
 		<!-- ========================================================================================================= -->
