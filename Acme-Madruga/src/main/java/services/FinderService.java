@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +11,6 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
 import repositories.FinderRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 import domain.Actor;
 import domain.Finder;
 import domain.Member;
@@ -120,27 +116,36 @@ public class FinderService {
 		return result;
 	}
 
-	public Collection<Procession> findProcessions(final String keyword, final Date minDate, final Date maxDate, final String area) {
-		final Actor principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
-		final UserAccount user = LoginService.getPrincipal();
-		final int id = user.getId();
+	public Finder findMemberFinder(final int id) {
+		Assert.isTrue(id != 0);
 		final Member member = this.memberService.findOne(id);
 		Assert.notNull(member);
-
-		final Finder result = this.finderRepository.findMemberFinder(member.getId());
+		final Finder result = this.finderRepository.findMemberFinder(id);
 		Assert.notNull(result);
-
-		result.setKeyword(keyword);
-		result.setAreaName(area);
-		result.setMinDate(minDate);
-		result.setMaxDate(maxDate);
-		final Collection<Procession> proc = new ArrayList<Procession>(this.finderRepository.findProcessions(keyword, minDate, maxDate, area));
-		result.setProcessions(proc);
-		final Finder finderSaved = this.finderRepository.save(result);
-
-		return finderSaved.getProcessions();
+		return result;
 	}
+
+	//	public Collection<Procession> findProcessions(final String keyword, final Date minDate, final Date maxDate, final String area) {
+	//		final Actor principal = this.actorService.findByPrincipal();
+	//		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+	//		final UserAccount user = LoginService.getPrincipal();
+	//		final int id = user.getId();
+	//		final Member member = this.memberService.findOne(id);
+	//		Assert.notNull(member);
+	//
+	//		final Finder result = this.finderRepository.findMemberFinder(member.getId());
+	//		Assert.notNull(result);
+	//
+	//		result.setKeyword(keyword);
+	//		result.setAreaName(area);
+	//		result.setMinDate(minDate);
+	//		result.setMaxDate(maxDate);
+	//		final Collection<Procession> proc = new ArrayList<Procession>(this.finderRepository.findProcessions(keyword, minDate, maxDate, area));
+	//		result.setProcessions(proc);
+	//		final Finder finderSaved = this.finderRepository.save(result);
+	//
+	//		return finderSaved.getProcessions();
+	//	}
 
 	//	public Collection<Procession> find(final Finder finder) {
 	//		Collection<Procession> result;

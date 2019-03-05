@@ -1,4 +1,3 @@
-
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -12,31 +11,14 @@
 
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
-	<form:hidden path="processions"/>
 	
-	<form:label path="keyWord">
-		<spring:message code="finder.keyWord" />: </form:label>
-	<form:input path="keyWord" />
-	<form:errors cssClass="error" path="keyWord" />
-	<br />
-	<form:label path="areaName">
-		<spring:message code="finder.areaName" />: </form:label>
-	<form:input path="areaName" />
-	<form:errors cssClass="error" path="areaName" />
-	<br />
-	<form:label path="minDate">
-		<spring:message code="finder.minDate" />: </form:label>
-	<form:input path="minDate" placeholder = "yyyy-MM-dd" />
-	<form:errors cssClass="error" path="minDate" />
-	<br />
-	<form:label path="maxDate">
-		<spring:message code="finder.maxDate" />: </form:label>
-	<form:input path="maxDate" placeholder = "yyyy-MM-dd" />
-	<form:errors cssClass="error" path="maxDate" />
-	<br />
+	<acme:textbox code="finder.keyword" path="keyword" />
+	<acme:textbox code="finder.areaName" path="areaName" />
+	<acme:textbox code="finder.minDate" path="minDate" />
+	<acme:textbox code="finder.maxDate" path="maxDate" />
 	
 	
 	<input type="submit" name="save"
-           value="<spring:message code="general.search" />"/>
+           value="<spring:message code="general.save" />"/>
 
 </form:form>

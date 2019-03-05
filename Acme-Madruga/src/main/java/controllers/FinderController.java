@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import services.ActorService;
 import services.ConfigurationParametersService;
 import services.FinderService;
 import services.MemberService;
-import services.UserAccountService;
+import domain.Actor;
 import domain.Finder;
 import domain.Member;
 import domain.Procession;
@@ -33,7 +36,7 @@ public class FinderController extends AbstractController {
 	private FinderService					finderService;
 
 	@Autowired
-	private UserAccountService				userAccountService;
+	private ActorService					actorService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
@@ -51,7 +54,7 @@ public class FinderController extends AbstractController {
 		ModelAndView result;
 		final Finder finder;
 		finder = this.finderService.create();
-		result = this.createEditModelAndView(finder, null);
+		result = this.createEditModelAndView(finder);
 
 		return result;
 	}
@@ -60,11 +63,13 @@ public class FinderController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int finderId) {
-		ModelAndView result;
-		Finder finder;
-		finder = this.finderService.findOne(finderId);
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+
+		final Finder finder = this.finderService.findOne(finderId);
 		Assert.notNull(finder);
-		result = this.createEditModelAndView(finder, null);
+		ModelAndView result;
+		result = this.createEditModelAndView(finder);
 
 		return result;
 	}
@@ -75,14 +80,14 @@ public class FinderController extends AbstractController {
 	public ModelAndView save(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(finder, null);
+			result = this.createEditModelAndView(finder);
 		else
 			try {
 				final Finder recons = this.finderService.reconstruct(finder, binding);
 				this.finderService.save(recons);
 				result = this.createEditModelAndView2(finder, null);
 			} catch (final Throwable e) {
-				result = this.createEditModelAndView(finder, "finder.commit.error");
+				result = this.createEditModelAndView(finder);
 			}
 		return result;
 	}
@@ -93,15 +98,15 @@ public class FinderController extends AbstractController {
 	public ModelAndView clear(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(finder, null);
+			result = this.createEditModelAndView(finder);
 		else
 			try {
 				final Finder cleared = this.finderService.clear(finder, binding);
 				this.finderService.save(cleared);
-				result = new ModelAndView("finder/edit");
+				result = new ModelAndView("redirect:edit.do");
 				result.addObject(cleared);
 			} catch (final Throwable e) {
-				result = this.createEditModelAndView(finder, "finder.commit.error");
+				result = this.createEditModelAndView(finder);
 			}
 		return result;
 	}
@@ -116,7 +121,8 @@ public class FinderController extends AbstractController {
 		Assert.notNull(finder);
 		if (member != null) {
 			Collection<Procession> procs;
-			procs = this.finderService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
+			//procs = this.finderService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
+			procs = new ArrayList<Procession>();
 			result = new ModelAndView("finder/display");
 			result.addObject("finder", finder);
 			result.addObject("processions", procs);
@@ -127,18 +133,18 @@ public class FinderController extends AbstractController {
 
 	}
 
-	protected ModelAndView createEditModelAndView(final Finder finder, final String message) {
+	protected ModelAndView createEditModelAndView(final Finder finder) {
 		ModelAndView result;
 		result = new ModelAndView("finder/edit");
 		result.addObject("finder", finder);
-		result.addObject("message", message);
 		return result;
 	}
 
 	protected ModelAndView createEditModelAndView2(final Finder finder, final String message) {
 		ModelAndView result;
 		Collection<Procession> procs;
-		procs = this.finderService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
+		//procs = this.finderService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
+		procs = new ArrayList<Procession>();
 		result = new ModelAndView("redirect:display.do");
 		result.addObject("finder", finder);
 		result.addObject("processions", procs);

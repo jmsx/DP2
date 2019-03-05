@@ -28,7 +28,28 @@
 </jstl:choose>
 <br>
 
-<acme:display code="finder.keyWord" value="${finder.keyWord}"/>
+<acme:display code="finder.keyword" value="${finder.keyword}"/>
 <acme:display code="finder.areaName" value="${finder.areaName}"/>
-<acme:display code="finder.minDate" value="${finder.minDate}"/>
-<acme:display code="finder.maxDate" value="${finder.maxDate}"/>
+
+<display:table name="processions" id="row" requestURI="${requestURI}" pagesize="5" class="displaytag">
+	<display:column property="title" titleKey="procession.title" />
+	
+	<display:column property="ticker" titleKey="procession.ticker" />
+
+	<acme:dataTableColumn code="procession.moment" property="moment" />
+	
+	<display:column titleKey="procession.brotherhood">
+		<a href="brotherhood/display.do?brotherhoodId=${row.brotherhood.id}">
+			<jstl:out value="${row.brotherhood.title}" />
+		</a>
+	</display:column>
+	
+	<display:column>
+		<acme:link url="procession${rolURL}/display.do?processionId=${row.id}"
+			code="procession.display" />
+	</display:column>
+	
+	
+</display:table>
+
+<input type="submit" name="clear" value="<spring:message code="general.clear" />"/>

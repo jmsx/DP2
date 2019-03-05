@@ -2,14 +2,12 @@
 package repositories;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Folder;
-import domain.Member;
 
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, Integer> {
@@ -35,7 +33,7 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
 	@Query("select f from Folder f where f.actor.userAccount.id=?1")
 	Collection<Folder> findAllByUserId(Integer id);
 
-	@Query("SELECT MEMBER FROM `acme-madruga`.REQUEST WHERE status='ACCEPTED' GROUP BY procession HAVING COUNT(*) >= 0.1*(SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.REQUEST WHERE REQUEST.status='ACCEPTED'  GROUP BY procession)AS X)")
-	List<Member> getMembersTenPercentMaxRequestAccepted();
+	//	@Query("SELECT MEMBER FROM `acme-madruga`.REQUEST WHERE status='ACCEPTED' GROUP BY procession HAVING COUNT(*) >= 0.1*(SELECT MAX(x) FROM (SELECT COUNT(*) AS x FROM `acme-madruga`.REQUEST WHERE REQUEST.status='ACCEPTED'  GROUP BY procession)AS X)")
+	//	List<Member> getMembersTenPercentMaxRequestAccepted();
 
 }
