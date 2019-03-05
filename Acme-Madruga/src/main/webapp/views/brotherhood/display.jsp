@@ -58,6 +58,16 @@ function generatePDF(){
 	</jstl:otherwise>
 </jstl:choose>
 <br>
+
+<jstl:choose>
+	<jstl:when test="${empty brotherhood.area}">
+	<acme:button url="brotherhood/assignArea.do" name="assign" code="brotherhood.selectArea"/>
+	</jstl:when>
+	<jstl:otherwise>
+	<acme:display code="brotherhood.area" value="${brotherhood.area}"/>
+	</jstl:otherwise>
+</jstl:choose>
+
 	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
 <br>
 <security:authorize access="hasRole('MEMBER')">
