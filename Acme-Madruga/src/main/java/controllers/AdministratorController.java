@@ -93,4 +93,13 @@ public class AdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping("/display")
+	public ModelAndView display() {
+		ModelAndView result = new ModelAndView();
+		final Administrator admin = this.administratorService.findByPrincipal();
+		result = new ModelAndView("administrator/display");
+		result.addObject("administrator", admin);
+		return result;
+	}
+
 }
