@@ -288,10 +288,10 @@ public class BrotherhoodController extends AbstractController {
 	// SAVE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/assignArea", method = RequestMethod.POST, params = "saveArea")
-	public ModelAndView saveArea(@Valid final BrotherhoodAreaForm brotherhoodPositionForm, final BindingResult binding) {
+	public ModelAndView saveArea(@Valid final BrotherhoodAreaForm brotherhoodAreaForm, final BindingResult binding) {
 		ModelAndView result;
 
-		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodPositionForm, binding);
+		final Brotherhood brotherhood = this.brotherhoodService.reconstruct2(brotherhoodAreaForm, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView2(brotherhood);
@@ -302,7 +302,7 @@ public class BrotherhoodController extends AbstractController {
 				final String banner = this.configurationParametersService.findBanner();
 				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(brotherhood, "enrolment.commit.error");
+				result = this.createEditModelAndView2(brotherhood, "enrolment.commit.error");
 			}
 
 		return result;
