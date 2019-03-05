@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import org.springframework.util.Assert;
 import repositories.FinderRepository;
 import domain.Actor;
 import domain.Finder;
+import domain.Member;
 import domain.Procession;
 
 @Service
@@ -75,46 +75,13 @@ public class FinderService {
 		this.finderRepository.delete(finder);
 	}
 
-	public Collection<Procession> find(final Finder finder) {
-		Collection<Procession> result;
-
-		try {
-
-			/*
-			 * Crear en el Servicio de ConfigurationParameters:
-			 * public ConfigurationParameters getConfigParas(){
-			 * List<ConfigurationParameters> configParams = new ArrayList<>(configurationParametersRepository.findAll());
-			 * return configParams;
-			 * }
-			 */
-
-			final String keyword = finder.getKeyword();
-			final String areaName = finder.getAreaName();
-			final Date minDate = finder.getMinDate();
-			final Date maxDate = finder.getMaxDate();
-			final Collection<Procession> aux = this.processionService.findAll();
-			if (keyword != null)
-				aux.retainAll(this.finderRepository.findForKeyword(keyword));
-			else if (areaName != null)
-				aux.retainAll(this.finderRepository.findForArea(areaName));
-			else if (minDate != null)
-				aux.retainAll(this.finderRepository.findForMinDate(minDate));
-			else if (maxDate != null)
-				aux.retainAll(this.finderRepository.findForMaxDate(maxDate));
-			else
-				result = aux;
-
-			result = aux;
-
-			//			final Member member = this.memberService.findByPrincipal();
-			//			member.getFinder().add(finder);
-			//			this.memberService.save(member);
-			return result;
-		} catch (final Exception e) {
-			e.printStackTrace();
-			return new ArrayList<Procession>();
-		}
-
+	public Finder findMemberFinder(final int id) {
+		Assert.isTrue(id != 0);
+		final Member member = this.memberService.findOne(id);
+		Assert.notNull(member);
+		final Finder result = this.finderRepository.findMemberFinder(id);
+		Assert.notNull(result);
+		return result;
 	}
 
 	public Double getAverageFinderResults() {

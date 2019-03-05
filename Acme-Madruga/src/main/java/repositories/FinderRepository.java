@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import domain.Finder;
+import domain.Procession;
 
 @Repository
 public interface FinderRepository extends JpaRepository<Finder, Integer> {
@@ -51,5 +52,8 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 
 	@Query("select sum(case when(f.processions.size=0) then 1.0 else 0.0 end)/count(f) from Finder f")
 	Double getRatioEmptyFinders();
+
+	@Query("select m.finder from Member m where m.id=?1")
+	Finder findMemberFinder(int id);
 
 }
