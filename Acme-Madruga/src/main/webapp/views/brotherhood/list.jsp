@@ -12,18 +12,16 @@
 
 
 <display:table name="brotherhoods" id="row"
-	requestURI="brotherhood/list.do" pagesize="5"
+	requestURI="${requestURI}" pagesize="5"
 	class="displaytag">
 
 	<security:authorize access="hasRole('MEMBER')">
-	<jstl:if test="${ok}">
-	<jstl:if test="${not empty row.area}">
+	<jstl:if test="${not empty row.area and ok}">
 		<display:column>
 			<a href="enrolment/member/create.do?brotherhoodId=${row.id}">
 				<spring:message code="brotherhood.enrolment.edit" />
 			</a>
 		</display:column>
-	</jstl:if>
 	</jstl:if>
 	<jstl:if test="${leave}">
 		<display:column>
@@ -41,7 +39,7 @@
 	<acme:dataTableColumn code="actor.date" property="date" />
 	
 	<jstl:if test="${displayEnrolment}">
-	<display:column titleKey="member.enrolment">
+	<display:column>
 	<a href="enrolment/member/display.do?brotherhoodId=${row.id}"> <spring:message
 				code="member.enrolment"/>
 		</a>

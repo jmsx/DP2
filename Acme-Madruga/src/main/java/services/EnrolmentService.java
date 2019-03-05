@@ -193,6 +193,8 @@ public class EnrolmentService {
 	}
 
 	public Enrolment enrole(final int brotherhoodId) {
+		final Brotherhood brotherhood = this.brotherhoodService.findOne(brotherhoodId);
+		Assert.notNull(brotherhood.getArea(), "No se puede inscribir en una hermandad que no tiene área seleccionada.");
 		final Enrolment enrolment = this.create();
 
 		final Enrolment retrieved = this.save(enrolment, brotherhoodId);

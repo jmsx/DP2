@@ -15,7 +15,6 @@ import domain.Procession;
 @Repository
 public interface FinderRepository extends JpaRepository<Finder, Integer> {
 
-<<<<<<< HEAD
 	//@Query(select p from Procession p where (p.title LIKE CONCAT('%',:keyword,'%') or p.description LIKE CONCAT('%',:keyword,'%') or p.ticker LIKE CONCAT('%',:keyword,'%') or p.mode LIKE CONCAT('%',:keyword,'%'))")
 	//List<Procession> findForKeyword(@Param("keyword") String keyword);
 	//
@@ -27,7 +26,6 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	//
 	//	@Query("select p from Procession p where p.moment <=?1")
 	//	List<Procession> findForMaxDate(Date fecha);
-=======
 	@Query("select p from Procession p where (p.title LIKE CONCAT('%',:keyword,'%') or p.description LIKE CONCAT('%',:keyword,'%') or p.ticker LIKE CONCAT('%',:keyword,'%') or p.mode LIKE CONCAT('%',:keyword,'%'))")
 	List<Procession> findForKeyword(@Param("keyword") String keyword);
 
@@ -39,7 +37,6 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 
 	@Query("select p from Procession p where p.moment <=?1")
 	List<Procession> findForMaxDate(Date fecha);
->>>>>>> parent of 7536226... Updata Finder Domain, Repository and Service
 
 	@Query("select AVG(f.processions.size) from Finder f")
 	Double getAverageFinderResults();
