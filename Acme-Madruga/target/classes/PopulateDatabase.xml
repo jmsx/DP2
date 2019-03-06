@@ -1009,7 +1009,7 @@
 
 	<bean id="finder1" class="domain.Finder">
 		<!-- Finder -->
-		<property name="keyword" value=""></property>
+		<property name="keyword" value="poder"></property>
 		<property name="areaName" value=""></property>
 		<property name="minDate" value="2018/04/16 15:20"></property>
 		<property name="maxDate" value="2030/04/16 15:20"></property>

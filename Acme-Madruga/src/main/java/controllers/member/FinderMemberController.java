@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import services.ActorService;
 import services.FinderService;
 import services.MemberService;
 import services.ProcessionService;
 import controllers.AbstractController;
+import domain.Actor;
 import domain.Finder;
 import domain.Member;
 import domain.Procession;
@@ -34,6 +37,9 @@ public class FinderMemberController extends AbstractController {
 
 	@Autowired
 	private ProcessionService	processionService;
+
+	@Autowired
+	private ActorService		actorService;
 
 
 	// CONSTRUCTOR -----------------------------------------------------------
@@ -90,17 +96,42 @@ public class FinderMemberController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "clear")
 	public ModelAndView clear(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
-		if (binding.hasErrors())
+		//		if (binding.hasErrors())
+		//			result = this.createEditModelAndView(finder);
+		//		else
+		try {
+			final Finder cleared = this.finderService.clear(finder, binding);
+			this.finderService.save(cleared);
+			result = new ModelAndView("redirect:edit.do");
+			result.addObject(cleared);
+		} catch (final Throwable e) {
 			result = this.createEditModelAndView(finder);
-		else
-			try {
-				final Finder cleared = this.finderService.clear(finder, binding);
-				this.finderService.save(cleared);
-				result = new ModelAndView("redirect:edit.do");
-				result.addObject(cleared);
-			} catch (final Throwable e) {
-				result = this.createEditModelAndView(finder);
-			}
+		}
+		return result;
+	}
+
+	// SAVE  ---------------------------------------------------------------		
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final Finder finder, final BindingResult binding) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		ModelAndView result;
+		final Collection<Procession> listFinder = this.finderService.find(finder.getKeyword(), finder.getAreaName(), finder.getMinDate(), finder.getMaxDate());
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		//		if (binding.hasErrors())
+		//			result = this.createEditModelAndView(finder);
+		//		else
+		try {
+			finder.setProcessions(listFinder);
+			final Finder saved = this.finderService.save(finder);
+			result = new ModelAndView("redirect:display.do");
+			result.addObject("finder", saved);
+			result.addObject("processions", listFinder);
+			result.addObject("lang", lang);
+		} catch (final Throwable e) {
+			result = this.createEditModelAndView(finder);
+		}
 		return result;
 	}
 
