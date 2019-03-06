@@ -69,16 +69,17 @@ public class MemberService {
 	public Member save(final Member member) {
 		Assert.notNull(member);
 		Member result;
-		this.actorService.checkForSpamWords(member);
+
 		if (member.getId() == 0) {
-			final Finder finder = this.finderService.create();
-			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
+			final Finder finder = this.finderService.createForNewMember();
 			member.setFinder(finder);
+			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
 			result = this.memberRepository.save(member);
 			this.folderService.setFoldersByDefault(result);
-		} else
+		} else {
+			this.actorService.checkForSpamWords(member);
 			result = (Member) this.actorService.save(member);
-
+		}
 		return result;
 	}
 	// TODO: delete all information but name including folders and their messages (but no as senders!!)
