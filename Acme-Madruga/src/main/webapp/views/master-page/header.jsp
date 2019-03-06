@@ -14,7 +14,7 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="#"><img src="images/logo.png" alt="Acme Madruga Co., Inc." /></a>
+	<a href="#"><img src="${bannerURL}" alt="Acme Madruga Co., Inc." /></a>
 </div>
 
 <div>
@@ -56,7 +56,7 @@
 				
 			</li>
 			
-			<li><a class="fNiv"><a href="dashboard/administrator/list.do"><spring:message	code="master.page.dashboard" /></a></a>
+			<li><a class="fNiv"><a href="dashboard/administrator/statistics.do"><spring:message	code="master.page.dashboard" /></a></a>
 			</li>
 			
 		</security:authorize>
@@ -100,21 +100,13 @@
 		
 		<%-- REQUESTS --%>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.request" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.request.brotherhood.list" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="request/brotherhood/list.do"><spring:message code="master.page.request.brotherhood.list" /></a></li>
-				</ul>
-			</li>
-			
-		<%-- AREA --%>
-			
-			<li><a class="fNiv"><spring:message	code="master.page.area" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="area/display.do"><spring:message code="master.page.area.display" /></a></li>
-					<li><a href="area/allAreasFree.do"><spring:message code="master.page.area.allAreasFree" /></a></li>
-					
+					<li><a href="request/brotherhood/list.do"><spring:message code="master.page.all.request" /></a></li>
+					<li><a href="request/brotherhood/listApproved.do"><spring:message code="master.page.approved.request" /></a></li>
+					<li><a href="request/brotherhood/listRejected.do"><spring:message code="master.page.rejected.request" /></a></li>
+					<li><a href="request/brotherhood/listPending.do"><spring:message code="master.page.pending.request" /></a></li>
 				</ul>
 			</li>
 			
@@ -137,7 +129,6 @@
 			
 			<li><a class="fNiv"><spring:message	code="master.page.procession" /></a>
 				<ul>
-					<li><a href="procession/list.do"><spring:message code="master.page.all.processions" /></a></li>
 					<li><a href="procession/member/list.do"><spring:message	code="master.page.procession.member.list" /></a>
 				</ul>
 			</li>
@@ -153,10 +144,14 @@
 					<li class="arrow"></li>
 					<li><a href="brotherhood/list.do"><spring:message code="master.page.brotherhood.list" /></a></li>
 					<li><a href="brotherhood/allBrotherhoodsFree.do"><spring:message code="master.page.brotherhood.allFree" /></a></li>
+					<li><a href="brotherhood/brotherhoodsHasBelonged.do"><spring:message code="master.page.brotherhood.hasBelonged" /></a></li>
 				</ul>
 			</li>
 			
+			<%-- FINDER --%>
 			
+			<li><a href="finder/member/edit.do"><spring:message code="master.page.finder.member.edit" /></a></li>	
+			<li><a href="finder/member/display.do"><spring:message code="master.page.finder.member.display" /></a></li>	
 			
 			
 		</security:authorize>
@@ -176,7 +171,10 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
-					
+					<security:authorize access="hasRole('ADMIN')">
+					<li><a href="administrator/edit.do"><spring:message code="master.page.member.edit" /></a></li>
+					<li><a href="administrator/display.do"><spring:message code="master.page.member.display" /></a></li>
+					</security:authorize>
 					<li><a href="socialProfile/list.do"><spring:message code="master.page.actor.socialProfiles" /></a></li>
 					<security:authorize access="hasRole('MEMBER')">
 					<li><a href="member/edit.do"><spring:message code="master.page.member.edit" /></a></li>

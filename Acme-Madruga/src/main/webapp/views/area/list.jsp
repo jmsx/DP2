@@ -20,8 +20,8 @@
 		
 		<spring:message code="area.edit.header" var="editHeader"></spring:message>
 		<display:column title="${editHeader}" sortable="false">
-			<spring:url value="area/administrator/edit.do" var="editURL">
-				<spring:param name="areaId" value="${row.id}"/> <!-- es el parámetro que va a acompañar a la url -->
+			<spring:url value="area/edit.do" var="editURL">
+				<spring:param name="areaId" value="${row.id}"/> <!-- es el parï¿½metro que va a acompaï¿½ar a la url -->
 			</spring:url>
 			<a href="${editURL}"><spring:message code="area.edit"/></a>
 		</display:column>
@@ -31,7 +31,7 @@
 		<spring:message code="area.display.header" var="displayHeader"></spring:message>
 		<display:column title="${displayHeader}" sortable="false">
 			<spring:url value="area/administrator/display.do" var="displayURL">
-				<spring:param name="areaId" value="${row.id}"/> <!-- es el parámetro que va a acompañar a la url -->
+				<spring:param name="areaId" value="${row.id}"/> <!-- es el parï¿½metro que va a acompaï¿½ar a la url -->
 			</spring:url>
 			<a href="${displayURL}"><spring:message code="area.display"/></a>
 		</display:column>
@@ -44,6 +44,7 @@
 		
 		
 
+
 	
 </display:table>
 	
@@ -51,7 +52,7 @@
 
 <security:authorize access="hasRole('ADMIN')">
 	<div>
-		<a href="area/administrator/create.do"> <spring:message
+		<a href="area/create.do"> <spring:message
 				code="area.create" />
 		</a>
 	</div>

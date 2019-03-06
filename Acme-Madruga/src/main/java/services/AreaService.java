@@ -82,4 +82,16 @@ public class AreaService {
 		return libres;
 	}
 
+	public Double[] getStatiticsBrotherhoodPerArea() {
+		final Double[] result = this.areaRepository.getStatiticsBrotherhoodPerArea();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Double getRatioBrotherhoodsPerArea() {
+		final Double result = this.areaRepository.getRatioBrotherhoodsPerArea();
+		Assert.notNull(result);
+		return result;
+	}
+
 }

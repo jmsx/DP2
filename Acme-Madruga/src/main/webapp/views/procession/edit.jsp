@@ -33,22 +33,19 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
+	<form:hidden path="mode" />
+	<form:hidden path="ticker" />
+	<form:hidden path="brotherhood"/>
 
 	<acme:textbox code="procession.title" path="title" />
 	<acme:textbox code="procession.description" path="description" />
 	<acme:numberbox code="procession.maxRows" path="maxRows" min="1" />
 	<acme:numberbox code="procession.maxColumns" path="maxColumns" min="1" />
-	<acme:textbox code="procession.moment" path="moment" placeholder="yyyy-MM-dd HH:mm"/>
+	<acme:textbox code="procession.moment" path="moment" placeholder="yyyy-MM-dd HH:mm"/> <spring:message code="date.pattern" />
 	
 	
-	<jstl:if test="${procession.id == 0}">
-		<acme:select items="${floatsAvailable}" itemLabel="title"
-			code="procession.floats" path="floats" />
-	</jstl:if>
+	<acme:select items="${floatsAvailable}" itemLabel="title" code="procession.floats" path="floats" />
 	<jstl:if test="${procession.id != 0}">
-		<acme:select items="${procession.floats}" itemLabel="title"
-			code="procession.floats" path="floats" />
-
 		<spring:message code="procession.requests" />:
 			<display:table name="requests" id="row"
 			requestURI="procession/brotherhood/edit.do?processionId=${procession.id}"

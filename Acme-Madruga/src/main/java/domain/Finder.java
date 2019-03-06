@@ -17,12 +17,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Finder extends DomainEntity {
+public class Finder extends DomainEntity implements Cloneable {
 
 	private String					keyword;
 	private String					areaName;
 	private Date					minDate;
 	private Date					maxDate;
+	private Date					creationDate;
 	private Collection<Procession>	processions;
 
 
@@ -74,6 +75,28 @@ public class Finder extends DomainEntity {
 
 	public void setProcessions(final Collection<Procession> processions) {
 		this.processions = processions;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	public Date getCreationDate() {
+		return this.creationDate;
+	}
+
+	public void setCreationDate(final Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	// TODO
+	@Override
+	public Object clone() {
+		Object o = null;
+		try {
+			o = super.clone();
+		} catch (final CloneNotSupportedException e) {
+			// Assert
+		}
+		return o;
 	}
 
 }

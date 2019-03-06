@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -60,7 +61,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		return result;
 	}
 
-	// LIST
+	// DISPLAY
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int processionId) {
@@ -82,15 +83,13 @@ public class ProcessionBrotherhoodController extends AbstractController {
 			result.addObject("rol", "brotherhood");
 			result.addObject("requests", requests);
 
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
 
-	// DISPLAY
+	// LIST
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -108,9 +107,6 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		result.addObject("requetURI", "procession/brotherhood/list.do");
 		result.addObject("rol", rol);
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
 		return result;
 	}
 
@@ -125,19 +121,18 @@ public class ProcessionBrotherhoodController extends AbstractController {
 
 		final Brotherhood bro = this.brotherhoodService.findByPrincipal();
 
-		if (procession != null && (procession.getMode().equals("FINAL") || procession.getBrotherhood() == bro))
+		if ((procession.getMode().equals("DRAFT") && procession.getBrotherhood() == bro))
 			result = this.createEditModelAndView(procession);
 		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final ProcessionForm pform, final BindingResult binding) {
+	public ModelAndView save(@Valid final Procession procession, final BindingResult binding) {
 		ModelAndView result;
 
-		final Procession procession = this.processionService.reconstruct(pform, binding);
+		// final Procession procession = this.processionService.reconstruct(pform, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(procession);
@@ -145,21 +140,22 @@ public class ProcessionBrotherhoodController extends AbstractController {
 			try {
 				this.processionService.save(procession);
 				result = new ModelAndView("redirect:list.do");
-				final String banner = this.configurationParametersService.findBanner();
-				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
 				final Date current = new Date(System.currentTimeMillis());
-				if (procession.getMoment().after(current))
+				if (procession.getMoment().before(current))
 					result = this.createEditModelAndView(procession, "procession.date.error");
 				else if (procession.getBrotherhood().getArea() == null)
 					result = this.createEditModelAndView(procession, "procession.area.error");
+				else if (procession.getMode().equals("FINAL"))
+					result = this.createEditModelAndView(procession, "procession.mode.error");
+				else if (procession.getFloats().isEmpty())
+					result = this.createEditModelAndView(procession, "procession.float.error");
 				else
 					result = this.createEditModelAndView(procession, "procession.commit.error");
 			}
 
 		return result;
 	}
-
 	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)
 	public ModelAndView finalMode(@RequestParam final int processionId) {
 		final ModelAndView result;
@@ -180,8 +176,6 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		try {
 			this.processionService.delete(procession);
 			result = new ModelAndView("redirect:list.do");
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(procession, "procession.commit.error");
 		}
@@ -201,21 +195,19 @@ public class ProcessionBrotherhoodController extends AbstractController {
 	}
 
 	protected ModelAndView createEditModelAndView(final Procession procession, final String messageCode) {
+		Assert.notNull(procession);
 		final ModelAndView result;
 
 		result = new ModelAndView("procession/edit");
-		result.addObject("procession", this.constructPruned(procession));
+		result.addObject("procession", procession); // this.constructPruned(procession));
 
-		if (procession.getId() == 0)
-			result.addObject("floatsAvailable", this.floatService.findByBrotherhood(procession.getBrotherhood()));
-
+		result.addObject("floatsAvailable", this.floatService.findByBrotherhood(procession.getBrotherhood()));
 		result.addObject("message", messageCode);
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
 
+	// This method is not used because it doesn't make sense to have a pruned object in Procession
 	private ProcessionForm constructPruned(final Procession procession) {
 		final ProcessionForm pruned = new ProcessionForm();
 		pruned.setId(procession.getId());

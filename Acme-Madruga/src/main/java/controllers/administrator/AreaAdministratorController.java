@@ -36,7 +36,7 @@ public class AreaAdministratorController extends AbstractController {
 
 		result = new ModelAndView("area/list"); //lleva al list.jsp
 		result.addObject("areas", areas);
-		result.addObject("requestURI", "area/admnistrator/list.do");
+		result.addObject("requestURI", "area/administrator/list.do");
 
 		return result;
 

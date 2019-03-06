@@ -31,11 +31,7 @@ public class ConfigurationParametersAdministratorController extends AbstractCont
 		ModelAndView result;
 		ConfigurationParameters configurationParameters;
 
-		//final List<ConfigurationParameters> cp = (List<ConfigurationParameters>) this.configurationParametersService.findAll();
-		//configurationParameters = cp.get(0);
-		//configurationParameters = this.configurationParametersService.find();
-		//TODO llamar directamente al método del servicio
-		configurationParameters = this.configurationParametersService.findOne(1121);
+		configurationParameters = this.configurationParametersService.find();
 
 		Assert.notNull(configurationParameters);
 

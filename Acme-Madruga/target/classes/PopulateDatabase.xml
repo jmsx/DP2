@@ -801,7 +801,7 @@
 		<property name="description" value="This is a description of a procession2" />
 		<property name="moment" value="2020/04/26 00:00" />
 		<property name="ticker" value="200426-DOUBG" />
-		<property name="mode" value="DRAFT" />
+		<property name="mode" value="FINAL" />
 		<property name="maxRows" value="120"/>
 		<property name="maxColumns" value="300"/>
 		<!-- Relations -->
@@ -824,7 +824,6 @@
 		<property name="status" value="PENDING" />
 		<property name="moment" value="2018/04/16 15:20" />
 		<!-- <property name="row" value=""/> <property name="column" value=""/> -->
-		<property name="explanation" value="" />
 
 		<!-- Relations -->
 		<property name="member" ref="member1" />
@@ -836,7 +835,6 @@
 		<property name="moment" value="2018/02/16 15:20" />
 		<property name="row" value="1" />
 		<property name="column" value="2" />
-		<property name="explanation" value="" />
 		<!-- Relations -->
 		<property name="member" ref="member2" />
 		<property name="procession" ref="procession2" />
@@ -1011,10 +1009,11 @@
 
 	<bean id="finder1" class="domain.Finder">
 		<!-- Finder -->
-		<property name="keyword" value="Triana"></property>
-		<property name="areaName" value="Triana"></property>
+		<property name="keyword" value="poder"></property>
+		<property name="areaName" value=""></property>
 		<property name="minDate" value="2018/04/16 15:20"></property>
-		<property name="maxDate" value="2019/04/16 15:20"></property>
+		<property name="maxDate" value="2030/04/16 15:20"></property>
+		<property name="creationDate" value="2019/03/06 15:20"></property>
 
 		<!-- Reletions -->
 		<property name="processions">
@@ -1128,17 +1127,6 @@
 		<property name="welcomeMessageEsp"
 			value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
 		<property name="countryPhoneCode" value="+34" />
-		<property name="positionList">
-			<list>
-				<ref bean="position1" />
-				<ref bean="position2" />
-				<ref bean="position3" />
-				<ref bean="position4" />
-				<ref bean="position5" />
-				<ref bean="position6" />
-				<ref bean="position7" />
-			</list>
-		</property>
 		<property name="spamWords">
 			<list>
 				<value>sex</value>

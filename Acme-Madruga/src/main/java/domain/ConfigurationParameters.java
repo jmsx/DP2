@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
 
@@ -20,17 +19,16 @@ import cz.jirutka.validator.collection.constraints.EachNotBlank;
 @Access(AccessType.PROPERTY)
 public class ConfigurationParameters extends DomainEntity {
 
-	private String					sysName;
-	private String					banner;
-	private String					welcomeMessageEsp;
-	private String					welcomeMessageEn;
-	private String					countryPhoneCode;
-	private Collection<Position>	positionList;
-	private Collection<String>		positiveWords;
-	private Collection<String>		negativeWords;
-	private Collection<String>		spamWords;
-	private int						maxFinderResults;
-	private int						finderTime;
+	private String				sysName;
+	private String				banner;
+	private String				welcomeMessageEsp;
+	private String				welcomeMessageEn;
+	private String				countryPhoneCode;
+	private Collection<String>	positiveWords;
+	private Collection<String>	negativeWords;
+	private Collection<String>	spamWords;
+	private int					maxFinderResults;
+	private int					finderTime;
 
 
 	@NotBlank
@@ -77,16 +75,6 @@ public class ConfigurationParameters extends DomainEntity {
 
 	public void setCountryPhoneCode(final String countryPhoneCode) {
 		this.countryPhoneCode = countryPhoneCode;
-	}
-
-	@ElementCollection
-	@NotEmpty
-	public Collection<Position> getPositionList() {
-		return this.positionList;
-	}
-
-	public void setPositionList(final Collection<Position> positions) {
-		this.positionList = positions;
 	}
 
 	@ElementCollection

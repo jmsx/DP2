@@ -59,11 +59,9 @@ public class EnrolmentMemberController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Enrolment enrolment, final String messageCode) {
 		final ModelAndView result;
-		//			final List<Area> libres = (List<Area>) this.areaService.AllAreasFree();
 
 		result = new ModelAndView("enrolment/edit");
 		result.addObject("enrolment", enrolment);
-		//			result.addObject("areas", libres);
 
 		result.addObject("message", messageCode);
 		final String banner = this.configurationParametersService.findBanner();
@@ -77,9 +75,13 @@ public class EnrolmentMemberController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int brotherhoodId) {
 		ModelAndView result = new ModelAndView();
+		final Member member = this.memberService.findByPrincipal();
+		final Brotherhood brotherhood = this.brotherhoodService.findByUserId(brotherhoodId);
 		final Enrolment enrolment = this.enrolmentService.enrole(brotherhoodId);
 		result = this.brotherhoodController.allBrotherhoodsFree();
 		result.addObject("enrolment", enrolment);
+		result.addObject("brotherhood", brotherhood);
+		result.addObject("member", member);
 		return result;
 	}
 

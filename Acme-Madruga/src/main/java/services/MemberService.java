@@ -3,18 +3,19 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
 
 import repositories.MemberRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
+import domain.Finder;
 import domain.Member;
 import forms.ActorFrom;
 
@@ -40,6 +41,9 @@ public class MemberService {
 	@Autowired
 	private EnrolmentService							enrolmentService;
 
+	@Autowired
+	private FinderService								finderService;
+
 
 	public Member create() {
 		final Member member = new Member();
@@ -64,11 +68,12 @@ public class MemberService {
 
 	public Member save(final Member member) {
 		Assert.notNull(member);
-
 		Member result;
 		this.actorService.checkForSpamWords(member);
 		if (member.getId() == 0) {
+			final Finder finder = this.finderService.create();
 			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
+			member.setFinder(finder);
 			result = this.memberRepository.save(member);
 			this.folderService.setFoldersByDefault(result);
 		} else
@@ -76,7 +81,6 @@ public class MemberService {
 
 		return result;
 	}
-
 	// TODO: delete all information but name including folders and their messages (but no as senders!!)
 	public void delete(final Member member) {
 		Assert.notNull(member);
@@ -94,15 +98,16 @@ public class MemberService {
 
 		final Member member = this.findByUserId(user.getId());
 		Assert.notNull(member);
+
 		final boolean bool = this.actorService.checkAuthority(member, Authority.MEMBER);
 		Assert.isTrue(bool);
 
 		return member;
 	}
 
-	public Member findByUserId(final int id) {
-		Assert.isTrue(id != 0);
-		final Member member = this.memberRepository.findByUserId(id);
+	public Member findByUserId(final int userAccountId) {
+		Assert.isTrue(userAccountId != 0);
+		final Member member = this.memberRepository.findByUserId(userAccountId);
 		return member;
 	}
 
@@ -110,14 +115,10 @@ public class MemberService {
 		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
 		final Collection<Member> all = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
-		final Collection<Member> res = new ArrayList<>();
-		for (final Member m : all)
-			if (this.enrolmentService.getEnrolment(principal, m).getDropOut() == null)
-				res.add(m);
-		return res;
+		return all;
 	}
 
-	public Member reconstruct(final ActorFrom actorForm, final BindingResult binding) {
+	public Member reconstruct(final ActorFrom actorForm) {
 		Member member;
 		if (actorForm.getId() == 0) {
 			member = this.create();
@@ -153,9 +154,13 @@ public class MemberService {
 			account.setPassword(actorForm.getUserAccountpassword());
 			member.setUserAccount(account);
 		}
-		this.validator.validate(member.getUserAccount(), binding);
-		this.validator.validate(member, binding);
 		return member;
+	}
+
+	public List<Member> getMembersTenPercent() {
+		final List<Member> result = this.memberRepository.getMembersTenPercent();
+		Assert.notNull(result);
+		return result;
 	}
 
 }

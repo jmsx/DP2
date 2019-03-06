@@ -165,7 +165,6 @@ public class ActorService {
 	public void banActor(final Actor a) {
 		Assert.notNull(a);
 		Assert.isTrue(a.getId() != 0);
-		Assert.isTrue(a.getSpammer());
 
 		this.administratorService.findByPrincipal();
 

@@ -45,7 +45,7 @@ public class PositionAdministratorController extends AbstractController {
 
 		result = new ModelAndView("position/list"); //lleva al list.jsp
 		result.addObject("positions", positions);
-		result.addObject("requestURI", "position/admnistrator/list.do");
+		result.addObject("requestURI", "position/administrator/list.do");
 
 		return result;
 
@@ -70,7 +70,7 @@ public class PositionAdministratorController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Position position, final BindingResult binding) {
 
-		ModelAndView result;
+		ModelAndView result = null;
 
 		if (binding.hasErrors()) //errores de validación
 			result = this.createEditModelAndView(position);
@@ -87,8 +87,8 @@ public class PositionAdministratorController extends AbstractController {
 					result = this.createEditModelAndView(position, "position.duplicate.english");
 				else if (oops.getMessage().equals("Position cannot be a spam word"))
 					result = this.createEditModelAndView(position, "position.spam");
-				else
-					result = this.createEditModelAndView(position, "position.commit.error");
+				//else
+				//result = this.createEditModelAndView(position, "position.commit.error");
 
 			}
 		return result;

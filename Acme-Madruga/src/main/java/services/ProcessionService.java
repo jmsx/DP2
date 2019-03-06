@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -41,6 +42,9 @@ public class ProcessionService {
 	private MemberService			memberService;
 
 	@Autowired
+	private FloatService			floatService;
+
+	@Autowired
 	private Validator				validator;
 
 
@@ -49,6 +53,11 @@ public class ProcessionService {
 
 		final Collection<Float> floats = new ArrayList<>();
 		procession.setFloats(floats);
+
+		procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
+		procession.setMode("DRAFT");
+		final Date moment = new Date(System.currentTimeMillis());
+		procession.setTicker(this.generateTicker(moment));
 
 		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
 		procession.setBrotherhood(brotherhood);
@@ -100,19 +109,24 @@ public class ProcessionService {
 		final Boolean isBrotherhood = this.actorService.checkAuthority(principal, Authority.BROTHERHOOD);
 		final Brotherhood bro = this.brotherhoodService.findByUserId(principal.getUserAccount().getId());
 
-		if (isBrotherhood && bro.getArea() != null)
+		if (isBrotherhood && bro.getArea() != null) {
+			final Brotherhood brotherhoodPrincipal = this.brotherhoodService.findByPrincipal();
+			Assert.notEmpty(procession.getFloats(), "A procession must have some floats assigned to be saved");
+			Assert.isTrue(this.floatService.findByBrotherhood(brotherhoodPrincipal).containsAll(procession.getFloats()));
+
 			if (procession.getId() == 0) {
-				procession.setBrotherhood(this.brotherhoodService.findByPrincipal());
+				procession.setBrotherhood(brotherhoodPrincipal);
 				procession.setMode("DRAFT");
 				final Date moment = new Date(System.currentTimeMillis());
 				procession.setTicker(this.generateTicker(moment));
-			} else
+			} else {
+				Assert.isTrue(!procession.getMode().equals("FINAL"), "Cannot edit a procession in FINAL mode");
 				Assert.isTrue(procession.getBrotherhood() == this.brotherhoodService.findByPrincipal());
-
+			}
+		}
 		result = this.processionRepository.save(procession);
 		return result;
 	}
-
 	public void delete(final Procession procession) {
 		Assert.notNull(procession);
 		Assert.isTrue(procession.getId() != 0);
@@ -167,6 +181,7 @@ public class ProcessionService {
 	}
 
 	public boolean exists(final Integer processionId) {
+		Assert.isTrue(processionId != 0, "Procession id cannot be zero");
 		return this.processionRepository.exists(processionId);
 	}
 
@@ -181,6 +196,8 @@ public class ProcessionService {
 		result = this.processionRepository.save(procession);
 		return result;
 	}
+
+	// This method is not used because it doesn't make sense to have a pruned object in Procession
 	public Procession reconstruct(final ProcessionForm pform, final BindingResult binding) {
 		Procession result;
 
@@ -200,6 +217,12 @@ public class ProcessionService {
 
 		this.validator.validate(result, binding);
 
+		return result;
+	}
+
+	public List<Procession> getProcessionsThirtyDays() {
+		final List<Procession> result = this.processionRepository.getProcessionsThirtyDays();
+		Assert.notNull(result);
 		return result;
 	}
 }

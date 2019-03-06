@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"
@@ -34,11 +35,22 @@
 
 <acme:display code="request.procession.title" value="${request.procession.title}"/>
 <acme:display code="request.member.name" value="${request.member.name}${middlename} ${request.member.surname}"/>
-<acme:display code="request.moment" value="${request.moment}"/>
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="request.moment" />: <fmt:formatDate
+			value="${request.moment}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="request.moment" />: <fmt:formatDate
+			value="${request.moment}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
+</br>
 
 <spring:message code="request.status" />:
 <span class="${request.status}">
-	<jstl:out value="${request.status}" />
+	<acme:statusChoose status="${request.status}"/>
 </span>
 <br />
 
@@ -52,11 +64,14 @@
 		<acme:display code="request.column" value="${request.column}"/>
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="request.status.pending"/>
+		<spring:message code="request.status.pending"/></br></br>
+		<security:authorize access="hasRole('MEMBER')">
+			<acme:submit name="delete" code="request.delete"/>
+		</security:authorize>
 	</jstl:otherwise>
 </jstl:choose>
 <br />
 <br />
 
-<acme:button name="back" code="request.back" url="request${rolURL}/list.do"/>
+<acme:button name="back" code="request.list.button" url="request${rolURL}/list.do"/>
 

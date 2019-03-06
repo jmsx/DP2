@@ -2,10 +2,12 @@
 package controllers.brotherhood;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +47,68 @@ public class RequestBrotherhoodController extends AbstractController {
 		requests = this.requestService.findAll();
 
 		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
+		result.addObject("requests", requests);
+		result.addObject("rol", rol);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listApproved", method = RequestMethod.GET)
+	public ModelAndView listApproved() {
+		final ModelAndView result;
+		final Collection<Request> requests;
+		final String rol = "brotherhood";
+
+		requests = this.requestService.findApprovedBrotherhood();
+
+		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
+		result.addObject("requests", requests);
+		result.addObject("rol", rol);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listRejected", method = RequestMethod.GET)
+	public ModelAndView listRejected() {
+		final ModelAndView result;
+		final Collection<Request> requests;
+		final String rol = "brotherhood";
+
+		requests = this.requestService.findRejectedBrotherhood();
+
+		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
+		result.addObject("requests", requests);
+		result.addObject("rol", rol);
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listPending", method = RequestMethod.GET)
+	public ModelAndView listPending() {
+		final ModelAndView result;
+		final Collection<Request> requests;
+		final String rol = "brotherhood";
+
+		requests = this.requestService.findPendingBrotherhood();
+
+		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
 
@@ -56,19 +120,43 @@ public class RequestBrotherhoodController extends AbstractController {
 
 	// Edition --------------------------------------------------------
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int requestId, final String mostrarTarjetas) {
+	@RequestMapping(value = "/approve", method = RequestMethod.GET)
+	public ModelAndView approve(@RequestParam final int requestId, @RequestParam final int processionId) {
 		ModelAndView result;
 		Request request;
 
+		// access controlled in findOne method implemented by jmsx
 		request = this.requestService.findOne(requestId);
-		if (request == null)
+		if (request == null || !request.getStatus().equals("PENDING") || this.requestService.processionRequested(processionId))
 			result = new ModelAndView("redirect:/misc/403.jsp");
-		else
+		else {
 			result = this.createEditModelAndView(request);
+			final List<Integer> ls = this.requestService.suggestPosition(this.processionService.findOne(processionId));
+			result.addObject("setStatusTo", "APPROVED");
+			result.addObject("suggestedRow", ls.get(0));
+			result.addObject("suggestedColumn", ls.get(1));
+		}
 
 		return result;
 	}
+
+	@RequestMapping(value = "/reject", method = RequestMethod.GET)
+	public ModelAndView reject(@RequestParam final int requestId) {
+		ModelAndView result;
+		Request request;
+
+		// access controlled in findOne method implemented by jmsx
+		request = this.requestService.findOne(requestId);
+
+		if (request == null || !request.getStatus().equals("PENDING"))
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		else {
+			result = this.createEditModelAndView(request);
+			result.addObject("setStatusTo", "REJECTED");
+		}
+		return result;
+	}
+
 	// Save --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
@@ -109,6 +197,8 @@ public class RequestBrotherhoodController extends AbstractController {
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
 			result = new ModelAndView("request/display");
+			final String lang = LocaleContextHolder.getLocale().getLanguage();
+			result.addObject("lang", lang);
 			result.addObject("request", request);
 			result.addObject("rol", "brotherhood");
 			final String banner = this.configurationParametersService.findBanner();

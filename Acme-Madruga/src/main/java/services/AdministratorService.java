@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
 
 import repositories.AdministratorRepository;
 import security.Authority;
@@ -81,7 +80,7 @@ public class AdministratorService {
 		return a;
 	}
 
-	public Administrator reconstruct(final ActorFrom actorForm, final BindingResult binding) {
+	public Administrator reconstruct(final ActorFrom actorForm) {
 		Administrator admin;
 		if (actorForm.getId() == 0) {
 			admin = this.create();

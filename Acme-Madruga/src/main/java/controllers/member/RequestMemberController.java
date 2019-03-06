@@ -3,9 +3,8 @@ package controllers.member;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import services.ConfigurationParametersService;
 import services.ProcessionService;
 import services.RequestService;
 import controllers.AbstractController;
-import domain.Procession;
 import domain.Request;
 
 @Controller
@@ -45,6 +43,8 @@ public class RequestMemberController extends AbstractController {
 		requests = this.requestService.findAll();
 
 		result = new ModelAndView("request/list");
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
 		result.addObject("theresProcessionsAvailable", !this.processionService.processionsAvailable().isEmpty());
@@ -58,22 +58,19 @@ public class RequestMemberController extends AbstractController {
 	// Creation --------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam(required = false, defaultValue = "0") final Integer processionId) {
+	public ModelAndView create(@RequestParam final Integer processionId) {
 		ModelAndView result;
-		Request request;
-		Procession procession;
-		boolean exists;
-
-		request = this.requestService.create();
-
-		result = this.createEditModelAndView(request);
-		result.addObject("processionsAvailable", this.processionService.processionsAvailable());
-
-		exists = this.processionService.exists(processionId);
-
-		if (processionId != 0 && exists) {
-			procession = this.processionService.findOne(processionId);
-			result.addObject("procession", procession);
+		try {
+			this.requestService.requestToProcession(processionId);
+			result = new ModelAndView("redirect:/request/member/list.do");
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
+		} catch (final Throwable oops) {
+			String errorMessage = "request.create.error";
+			if (oops.getMessage().contains("message.error"))
+				errorMessage = oops.getMessage();
+			result = new ModelAndView("redirect:/misc/error.jsp");
+			result.addObject("errorMessage", errorMessage);
 		}
 
 		return result;
@@ -91,6 +88,8 @@ public class RequestMemberController extends AbstractController {
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
 			result = new ModelAndView("request/display");
+			final String lang = LocaleContextHolder.getLocale().getLanguage();
+			result.addObject("lang", lang);
 			result.addObject("request", request);
 			result.addObject("rol", "member");
 			final String banner = this.configurationParametersService.findBanner();
@@ -99,29 +98,25 @@ public class RequestMemberController extends AbstractController {
 		return result;
 	}
 
-	// ------------------------- Save -------------------------------
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Request request, final BindingResult binding) {
+	@RequestMapping(value = "/displayByProcession", method = RequestMethod.GET)
+	public ModelAndView displayByProcession(@RequestParam final int processionId) {
 		ModelAndView result;
+		Request request;
 
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(request);
-		else
-			try {
-				this.requestService.save(request);
-				result = new ModelAndView("redirect:/request/member/list.do");
-				final String banner = this.configurationParametersService.findBanner();
-				result.addObject("banner", banner);
-			} catch (final Throwable oops) {
-				String errorMessage = "request.commit.error";
-				if (oops.getMessage().contains("message.error"))
-					errorMessage = oops.getMessage();
-				result = this.createEditModelAndView(request, errorMessage);
-			}
+		// only members can use this method
+		request = this.requestService.findByProcessionMember(processionId);
+		if (request == null)
+			result = new ModelAndView("redirect:/misc/403.jsp");
+		else {
+			result = new ModelAndView("request/display");
+			result.addObject("request", request);
+			result.addObject("rol", "member");
+			final String banner = this.configurationParametersService.findBanner();
+			result.addObject("banner", banner);
+		}
 		return result;
-
 	}
+
 	// Delete --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
@@ -129,6 +124,7 @@ public class RequestMemberController extends AbstractController {
 		ModelAndView result;
 
 		try {
+			// service controlled that procession deleted has pending status
 			this.requestService.delete(request);
 			result = new ModelAndView("redirect:/member/list.do");
 			final String banner = this.configurationParametersService.findBanner();
@@ -158,7 +154,7 @@ public class RequestMemberController extends AbstractController {
 		result.addObject("rol", rol);
 		result.addObject("message", messageCode);
 		// the message code references an error message or null
-		final String banner = this.configurationParametersService.find().getBanner();
+		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
 
 		return result;
