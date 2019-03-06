@@ -24,4 +24,10 @@ public interface AreaRepository extends JpaRepository<Area, Integer> {
 
 	@Query("select count(a) from Area a")
 	Integer getTotalOfAreas();
+
+	@Query("select sum(case when exists(select b from Brotherhood b where a =b.area) then 1.0 else 0.0 end) / count(a) from Area a")
+	Double getRatioBrotherhoodsPerArea();
+
+	@Query("select count(a) from Area a where exists(select b from Brotherhood b where a =b.area)")
+	Integer getNumberOfAreasWithAnyBrotherhood();
 }

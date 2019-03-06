@@ -256,6 +256,7 @@ public class RequestService {
 
 	public Double findApprovedRequestByProcessionRadio(final Integer id) {
 		final Double result = this.requestRepository.findApprovedRequestByProcessionRatio(id);
+		System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBA" + result);
 		Assert.notNull(result);
 		return result;
 	}
