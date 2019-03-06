@@ -329,7 +329,7 @@ public class MessageController extends AbstractController {
 			try {
 
 				this.messageService.moveFromAToB(message, actualFolder, choosedFolder);
-				res = new ModelAndView("administrator/congratulation");
+				res = new ModelAndView("administrator/congratulationMove");
 				res.addObject("actualFolder", actualFolder);
 				res.addObject("choosedFolder", choosedFolder);
 
@@ -389,7 +389,7 @@ public class MessageController extends AbstractController {
 		try {
 
 			this.messageService.copyToFolder(message, choosedFolder);
-			res = new ModelAndView("administrator/congratulation");
+			res = new ModelAndView("administrator/congratulationCopy");
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 

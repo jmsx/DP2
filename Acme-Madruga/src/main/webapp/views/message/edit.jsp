@@ -39,6 +39,8 @@
     <form:select path="recipients" code="message.recipients">
         <form:options items="${recipients}" itemLabel="name"/>
     </form:select>
+    <br/>
+    <br/>
 
     <acme:textbox path="subject" code="message.subject"/>
     <br/>
@@ -54,8 +56,9 @@
         <form:options items="${priorities}"/>
     </form:select>
     <br/>
-    
+    <br/>
     <acme:textbox code="message.tags" path="tags"/>
+    <h5 style="color: red;"><spring:message code="collection.tags"/></h5>
 
 
     <!---------------------------- BOTONES -------------------------->

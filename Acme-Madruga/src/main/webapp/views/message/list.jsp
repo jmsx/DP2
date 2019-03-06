@@ -15,6 +15,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+	
+	<h3><jstl:out value="${folder.name}"/></h3>
 
 	<jstl:if test="${folder.isSystemFolder == false}">
 	<div>
@@ -62,8 +64,8 @@
         </display:column>
 
 	<display:column property="subject" titleKey="message.subject" />
-	<display:column property="sender" value="name" titleKey="message.sender" />
-	<display:column property="recipients" value="name" titleKey="message.recipients" />
+	<display:column property="sender.name" value="name" titleKey="message.sender" />
+	<display:column property="recipients"  value="name" titleKey="message.recipients"/>
 	<display:column property="priority" titleKey="message.priority" />
 	
 	<display:column>
