@@ -137,7 +137,6 @@
 			<%-- FINDER --%>
 			
 			<li><a href="finder/member/edit.do"><spring:message code="master.page.finder.member.edit" /></a></li>	
-			<li><a href="finder/member/display.do"><spring:message code="master.page.finder.member.display" /></a></li>	
 			
 			
 		</security:authorize>
