@@ -68,13 +68,13 @@ public class BrotherhoodService {
 	public Brotherhood save(final Brotherhood brotherhood) {
 		Assert.notNull(brotherhood);
 		Brotherhood result;
-		this.actorService.checkForSpamWords(brotherhood);
 
 		if (brotherhood.getId() == 0) {
 			this.actorService.setAuthorityUserAccount(Authority.BROTHERHOOD, brotherhood);
 			result = this.brotherhoodRepository.save(brotherhood);
 			this.folderService.setFoldersByDefault(result);
 		} else {
+			this.actorService.checkForSpamWords(brotherhood);
 			final Actor principal = this.actorService.findByPrincipal();
 			Assert.isTrue(principal.getId() == brotherhood.getId(), "You only can edit your info");
 			//			final Brotherhood old = this.brotherhoodRepository.findOne(brotherhood.getId());

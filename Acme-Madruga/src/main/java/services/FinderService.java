@@ -40,7 +40,7 @@ public class FinderService {
 	private ActorService								actorService;
 
 
-	//M�todos CRUD
+	//Metodos CRUD
 
 	public Finder create() {
 		final Finder finder = new Finder();
@@ -85,6 +85,19 @@ public class FinderService {
 
 		member.setFinder(finder);
 		this.memberService.save(member);
+		return res;
+	}
+
+	public Finder createForNewMember() {
+		final Finder finder = new Finder();
+		finder.setKeyword("");
+		finder.setAreaName("");
+		finder.setMinDate(null);
+		finder.setMaxDate(null);
+		final Collection<Procession> ps = new ArrayList<Procession>();
+		finder.setCreationDate(new Date());
+		finder.setProcessions(ps);
+		final Finder res = this.finderRepository.save(finder);
 		return res;
 	}
 
