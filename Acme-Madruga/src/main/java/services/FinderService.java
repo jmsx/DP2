@@ -171,6 +171,7 @@ public class FinderService {
 		return result;
 	}
 
+	// TODO
 	public Finder reconstruct(final Finder finder, final BindingResult binding) {
 		Finder result;
 

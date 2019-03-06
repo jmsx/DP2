@@ -1,6 +1,7 @@
 
 package repositories;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -56,8 +57,7 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	@Query("select m.finder from Member m where m.id=?1")
 	Finder findMemberFinder(int id);
 
-	//	@Query("select distinct p from Procession p where p.mode='FINAL' AND" + "?1='' OR (p.description LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%')" + "OR p.ticker LIKE CONCAT('%',?1,'%'))) AND (?2=null OR (p.moment>=?2))"
-	//		+ "AND (?3=null OR (p.moment<=?3)) AND (?4='' OR p.brotherhood.area.name=?4)")
-	//	Collection<Procession> findProcessions(String keyword, Date minDate, Date maxDate, String area);
+	@Query("select p from Procession p where p.mode='FINAL' AND (?1='' OR p.description LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%')  OR p.ticker LIKE CONCAT('%',?1,'%')) AND p.moment>=?2 AND p.moment<=?3 AND (?4='' OR p.brotherhood.area.name=?4))")
+	Collection<Procession> findProcessions(String keyword, Date minDate, Date maxDate, String area);
 
 }
