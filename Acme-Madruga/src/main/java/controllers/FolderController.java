@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -46,13 +47,20 @@ public class FolderController extends AbstractController {
 
 		final ModelAndView res;
 		final Collection<Folder> folders;
-
+		final Folder folder = null;
 		//		folders = this.folderService.setFoldersByDefault(this.actorService.findByPrincipal());
 		folders = this.folderService.findAllByUserId(this.actorService.findByPrincipal().getUserAccount().getId());
+		final Collection<Folder> foldersFinal = new ArrayList<>();
+		for (final Folder f : folders)
+			if (f.getFather() == null)
+				foldersFinal.add(f);
+
+		folders.retainAll(foldersFinal);
 		//		folders.addAll(this.folderService.setFoldersByDefault(this.actorService.findByPrincipal()));
 
 		res = new ModelAndView("folder/list");
 		res.addObject("folders", folders);
+		res.addObject("folder", folder);
 		//No necesitamos el objeto requestURI ya que lo hemos puesto directamente en la vista
 		res.addObject("requestURI", "folder/list.do");
 		final String banner = this.configurationParametersService.find().getBanner();
@@ -61,6 +69,7 @@ public class FolderController extends AbstractController {
 		return res;
 
 	}
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 
@@ -75,13 +84,29 @@ public class FolderController extends AbstractController {
 
 	}
 
+	@RequestMapping(value = "/createInFolder", method = RequestMethod.GET)
+	public ModelAndView createInFolder(final int fatherId) {
+
+		ModelAndView res;
+		Folder folder;
+
+		final Folder father = this.folderService.findOne(fatherId);
+		folder = this.folderService.createInFolder(father);
+		res = this.createEditInFolderModelAndView(folder);
+		res.addObject("new", false);
+		res.addObject("father", father);
+
+		return res;
+
+	}
+
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int folderId) {
 		ModelAndView result;
 		Folder folder;
 
 		folder = this.folderService.findOne(folderId);
-		if (folder.getName().equals("In box") || folder.getName().equals("Out box") || folder.getName().equals("Spam box") || folder.getName().equals("Trash box") || folder.getName().equals("Notification box")) {
+		if (folder.getIsSystemFolder()) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", "You can't edit or delete system folder");
 			return result;
@@ -106,9 +131,21 @@ public class FolderController extends AbstractController {
 
 		if (binding.hasErrors())
 			res = this.createEditModelAndView(folder);
-		else
+
+		else if (folder.getFather() == null)
+
 			try {
 				this.folderService.save(folder, principal);
+				res = new ModelAndView("redirect:list.do");
+				final String banner = this.configurationParametersService.find().getBanner();
+				res.addObject("banner", banner);
+			} catch (final Throwable oops) {
+				res = this.createEditModelAndView(folder, "folder.commit.error");
+			}
+		else
+			try {
+				final Folder father = this.folderService.findOne(folder.getFather().getId());
+				this.folderService.saveInFather2(father, folder, principal);
 				res = new ModelAndView("redirect:list.do");
 				final String banner = this.configurationParametersService.find().getBanner();
 				res.addObject("banner", banner);
@@ -118,11 +155,46 @@ public class FolderController extends AbstractController {
 		return res;
 	}
 
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveInFather")
+	public ModelAndView saveInFather(@Valid final Folder folder) {
+		ModelAndView res;
+		final Actor actor = this.actorService.findByPrincipal();
+		final Folder father = this.folderService.findOne(folder.getFather().getId());
+
+		if (father != null && folder != null)
+			try {
+
+				this.folderService.save(father, actor);
+				res = new ModelAndView("administrator/congratulation");
+				res.addObject("father", father);
+				res.addObject("folder", folder);
+
+				final String banner = this.configurationParametersService.find().getBanner();
+				res.addObject("banner", banner);
+
+			} catch (final Throwable oops) {
+
+				//				final Collection<Folder> folders = this.folderService.findAll();
+				res = new ModelAndView("message/move");
+				//				res.addObject("m", message);
+				//				res.addObject("message", "ms.commit.error");
+				//				res.addObject("folders", folders);
+
+				final String banner = this.configurationParametersService.find().getBanner();
+				res.addObject("banner", banner);
+
+			}
+		else
+			res = new ModelAndView("redirect:/misc/403.jsp");
+
+		return res;
+	}
+
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int folderId) {
 		ModelAndView result;
 		final Folder folder = this.folderService.findOne(folderId);
-		if (folder.getName().equals("In box") || folder.getName().equals("Out box") || folder.getName().equals("Spam box") || folder.getName().equals("Trash box") || folder.getName().equals("Notification box")) {
+		if (folder.getIsSystemFolder()) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", "You can't edit or delete system folder");
 		} else
@@ -146,10 +218,8 @@ public class FolderController extends AbstractController {
 		if (folder == null)
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
-			//			final Collection<Message> m = this.messageService.findAllByFolderIdAndUserId(folderId, this.actorService.findByPrincipal().getUserAccount().getId());
 			result = this.messageController.list(folderId);
 			result.addObject("folder", folder);
-			//			result.addObject("m", m);
 			final String banner = this.configurationParametersService.findBanner();
 			result.addObject("banner", banner);
 		}
@@ -171,6 +241,31 @@ public class FolderController extends AbstractController {
 		ModelAndView res;
 
 		res = new ModelAndView("folder/edit");
+		res.addObject("folder", folder);
+
+		res.addObject("message", messageCode);
+		final String banner = this.configurationParametersService.find().getBanner();
+		res.addObject("banner", banner);
+
+		return res;
+
+	}
+
+	protected ModelAndView createEditInFolderModelAndView(final Folder folder) {
+
+		ModelAndView res;
+
+		res = this.createEditInFolderModelAndView(folder, null);
+
+		return res;
+
+	}
+
+	protected ModelAndView createEditInFolderModelAndView(final Folder folder, final String messageCode) {
+
+		ModelAndView res;
+
+		res = new ModelAndView("folder/editInFolder");
 		res.addObject("folder", folder);
 
 		res.addObject("message", messageCode);

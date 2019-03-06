@@ -26,52 +26,43 @@
   ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
   --%>
   
-<form:form action="message/move.do" modelAttribute="m">
+<p><spring:message code="message.edit" /></p>
+
+<form:form action="message/edit.do" modelAttribute="m">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
     <form:hidden path="moment"/>
     <form:hidden path="sender"/>
-    
-    <spring:message code="message.subject" var="subject1"/>
-	<h3><jstl:out value="${subject1}"/></h3>
-	<jstl:out value="${m.subject}"/>
+    <form:hidden path="recipients"/>
 	
-	<spring:message code="message.body" var="body1"/>
-	<h3><jstl:out value="${body1}"/></h3>
-	<jstl:out value="${m.body}"/>
-    
-    <spring:message code="message.receiver" var="receiver1"/>
-	<h3><jstl:out value="${receiver1}"/></h3>
-	<jstl:out value="${m.recipients}"/>
-	
-	<spring:message code="message.priority" var="priority1"/>
-	<h3><jstl:out value="${priority1}"/></h3>
-	<jstl:out value="${m.priority}"/>
-	
-	<spring:message code="message.tags" var="tags1"/>
-	<h3><jstl:out value="${tags1}"/></h3>
-	<jstl:out value="${m.tags}"/>
-	
-    <display:table pagesize="10" class="displaytag" keepStatus="true"
-               name="folders" requestURI="${requestURI}" id="row">
+    <br/>
 
-    <!-- Attributes -->
+    <acme:textbox path="subject" code="message.subject"/>
+    <br/>
 
-	<display:column>
-	<spring:message var="title" code="folder.name"/>
-    <display:column property="name" title="${title}" sortable="true"/>
-	<input type="button" class="btn btn-danger" name="saveMove"
-		value="<spring:message code="general.move" />"
-           onclick="relativeRedir('message/saveMove.do?messageId=${m.id}&folderId=${folder.id}&choosedFolderId=${row.id}');"/>
-	
-	</display:column>
-	
-</display:table>
+    <acme:textarea path="body" code="message.body"/>
+    <br/>
+
+
+    <form:label path="priority">
+        <spring:message code="message.priority"/>:
+    </form:label>
+    <form:select path="priority" code="message.priority">
+        <form:options items="${priorities}"/>
+    </form:select>
+    <br/>
+    
+    <acme:textbox code="message.tags" path="tags"/>
+
 
     <!---------------------------- BOTONES -------------------------->
-	
-	
+
+
+    <button name="broadcast" type="submit" class="button2">
+        <spring:message code="general.broadcast"/>
+    </button>
+
     <input type="button" class="btn btn-danger" name="cancel"
            value="<spring:message code="general.cancel" />"
            onclick="relativeRedir('folder/list.do');"/>

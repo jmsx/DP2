@@ -26,9 +26,11 @@
   ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
   --%>
   
+<p><spring:message code="general.copy" /></p>
+
 <form:form action="message/move.do" modelAttribute="m">
 
-    <form:hidden path="id"/>
+	<form:hidden path="id"/>
     <form:hidden path="version"/>
     <form:hidden path="moment"/>
     <form:hidden path="sender"/>
@@ -61,9 +63,9 @@
 	<display:column>
 	<spring:message var="title" code="folder.name"/>
     <display:column property="name" title="${title}" sortable="true"/>
-	<input type="button" class="btn btn-danger" name="saveMove"
-		value="<spring:message code="general.move" />"
-           onclick="relativeRedir('message/saveMove.do?messageId=${m.id}&folderId=${folder.id}&choosedFolderId=${row.id}');"/>
+	<input type="button" class="btn btn-danger" name="saveCopy"
+		value="<spring:message code="general.copy" />"
+           onclick="relativeRedir('message/saveCopy.do?messageId=${m.id}&choosedFolderId=${row.id}');"/>
 	
 	</display:column>
 	

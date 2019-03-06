@@ -26,8 +26,6 @@
   ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
   --%>
   
-<p><spring:message code="message.edit" /></p>
-
 <form:form action="message/edit.do" modelAttribute="m">
 
     <form:hidden path="id"/>
@@ -35,14 +33,13 @@
     <form:hidden path="moment"/>
     <form:hidden path="sender"/>
     
-	<acme:select items="${recipients}" itemLabel="name" code="message.recipients" path="recipients"/>
-	
-	<!--<form:label path="recipients">
-        <spring:message code="message.receiver"/>:
+	<form:label path="recipients">
+        <spring:message code="message.recipients"/>:
     </form:label>
     <form:select path="recipients" code="message.recipients">
-        <form:options items="${recipients}" itemLabel="name" itemValue="id"/>
-    </form:select>-->
+        <form:options items="${recipients}" itemLabel="name"/>
+    </form:select>
+    <br/>
     <br/>
 
     <acme:textbox path="subject" code="message.subject"/>
@@ -59,8 +56,9 @@
         <form:options items="${priorities}"/>
     </form:select>
     <br/>
-    
+    <br/>
     <acme:textbox code="message.tags" path="tags"/>
+    <h5 style="color: red;"><spring:message code="collection.tags"/></h5>
 
 
     <!---------------------------- BOTONES -------------------------->

@@ -24,6 +24,7 @@ public class Folder extends DomainEntity {
 	//Relational attributes
 	private Actor				actor;
 	private Collection<Message>	messages;
+	private Folder				father;
 
 
 	@NotBlank
@@ -65,6 +66,16 @@ public class Folder extends DomainEntity {
 
 	public void setMessages(final Collection<Message> messages) {
 		this.messages = messages;
+	}
+
+	@Valid
+	@ManyToOne(optional = true)
+	public Folder getFather() {
+		return this.father;
+	}
+
+	public void setFather(final Folder father) {
+		this.father = father;
 	}
 
 }

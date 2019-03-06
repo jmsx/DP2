@@ -16,43 +16,34 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><spring:message code="folder.list" /></p>
-
-<%--<security:authorize access="hasAnyRole('ADMIN')">
-    <div>
-        <H3>
-            <input type="button" class="btn btn-danger" name="createMessage"
-                   value="<spring:message code="message.send" />"
-                   onclick="relativeRedir('message/create.do');"/>
-        </H3>
-    </div>
-</security:authorize> --%>
-
     <div>
         <input type="button" class="btn btn-danger" name="createFolder"
                value="<spring:message code="general.createFolder" />"
                onclick="relativeRedir('folder/create.do');"/>
     </div>
 
-<security:authorize access="hasRole('ADMIN')">
     <div>
-        <input type="button" class="btn btn-danger" name="createFolder"
+        <input type="button" class="btn btn-danger" name="createMessage"
                value="<spring:message code="message.createMessage" />"
                onclick="relativeRedir('message/create.do');"/>
+    </div>
+<security:authorize access="hasRole('ADMIN')">
+    <div>
+        <input type="button" class="btn btn-danger" name="createBroadcast"
+               value="<spring:message code="message.createBroadcast" />"
+               onclick="relativeRedir('message/broadcast.do');"/>
     </div>
 </security:authorize>
 
 	<!-- Listing grid -->
 	<display:table pagesize="10" class="displaytag" keepStatus="true"
                name="folders" requestURI="${requestURI}" id="row">
-    <security:authorize access="hasAnyRole('ADMIN')">
     <display:column>
         <input type="button" class="btn btn-danger" name="open"
                value="<spring:message code="general.open" />"
                onclick="relativeRedir('folder/view.do?folderId=${row.id}');"/>
 
     </display:column>
-    </security:authorize>
     <!-- Attributes -->
 
 
@@ -60,8 +51,9 @@
     <display:column property="name" title="${title}" sortable="true"/>
 	
 	
-    <security:authorize access="hasAnyRole('ADMIN')">
+           
         <display:column>
+        	<jstl:if test="${row.isSystemFolder eq false}">     
             <input type="button" class="btn btn-danger" name="edit"
                    value="<spring:message code="general.edit" />"
                    onclick="relativeRedir('folder/edit.do?folderId=${row.id}');"/>
@@ -69,7 +61,8 @@
             <input type="button" class="btn btn-danger" name="edit"
                    value="<spring:message code="general.delete" />"
                    onclick="relativeRedir('folder/delete.do?folderId=${row.id}');"/>
+                   </jstl:if>
         </display:column>
+        
 
-    </security:authorize>
 </display:table>

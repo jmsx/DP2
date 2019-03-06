@@ -36,6 +36,16 @@ public class FolderService {
 		final Collection<Message> ms = new ArrayList<>();
 		folder.setIsSystemFolder(false);
 		folder.setMessages(ms);
+		folder.setFather(null);
+		return folder;
+	}
+
+	public Folder createInFolder(final Folder father) {
+		final Folder folder = new Folder();
+		final Collection<Message> ms = new ArrayList<>();
+		folder.setIsSystemFolder(false);
+		folder.setMessages(ms);
+		folder.setFather(father);
 		return folder;
 	}
 
@@ -53,10 +63,46 @@ public class FolderService {
 		return res;
 	}
 
+	public void saveInFather(final Folder father, final Folder f, final Actor a) {
+		Assert.notNull(father);
+		Assert.notNull(f);
+		Assert.notNull(a);
+		Assert.isTrue(father.getId() != 0);
+		Assert.isTrue(f.getId() != 0);
+		Assert.isTrue(a.getId() != 0);
+
+		f.setFather(father);
+		f.setActor(a);
+		this.folderRepository.save(f);
+
+	}
+	public Folder saveInFather2(final Folder father, final Folder f, final Actor a) {
+		Assert.notNull(father);
+		Assert.notNull(f);
+		Assert.notNull(a);
+
+		Folder saved;
+		final boolean bool = this.checkForSpamWords(f);
+
+		if (bool)
+			a.setSpammer(true);
+
+		if (f.getId() == 0 && father.getId() != 0) {
+			Assert.isTrue(f.getFather() != null);
+			f.setActor(a);
+			f.setFather(father);
+			saved = this.folderRepository.save(f);
+		} else {
+			final Collection<Folder> fs = this.findAllByUserId(a.getUserAccount().getId());
+			Assert.isTrue(fs.contains(f));
+			saved = this.folderRepository.save(f);
+		}
+		return saved;
+	}
+
 	public Folder save(final Folder f, final Actor a) {
 		Assert.notNull(f);
 		Assert.notNull(a);
-		f.setIsSystemFolder(false);
 
 		Folder saved;
 		final boolean bool = this.checkForSpamWords(f);
@@ -65,6 +111,7 @@ public class FolderService {
 			a.setSpammer(true);
 
 		if (f.getId() == 0) {
+			Assert.isTrue(f.getFather() == null);
 			f.setActor(a);
 			saved = this.folderRepository.save(f);
 		} else {
@@ -89,12 +136,25 @@ public class FolderService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Collection<Folder> fs = this.findAllByUserId(principal.getUserAccount().getId());
 		final Collection<Message> ms = this.messageService.findAllByFolderIdAndUserId(f.getId(), principal.getUserAccount().getId());
+		final Collection<Folder> folders = this.findAllByFatherId(f.getId());
 		Assert.isTrue(fs.contains(f));
 
-		if (!ms.isEmpty())
+		if (!ms.isEmpty() && !folders.isEmpty()) {
 			this.messageService.deleteAll(ms, f);
+			this.deleteAll(folders);
+		} else if (!ms.isEmpty() && folders.isEmpty())
+			this.messageService.deleteAll(ms, f);
+		else if (ms.isEmpty() && !folders.isEmpty())
+			this.deleteAll(folders);
 
 		this.folderRepository.delete(f);
+
+	}
+
+	public void deleteAll(final Collection<Folder> fs) {
+		Assert.notEmpty(fs);
+		for (final Folder f : fs)
+			this.delete(f);
 	}
 
 	public Collection<Folder> setFoldersByDefault(final Actor actor) {
@@ -106,6 +166,7 @@ public class FolderService {
 		inbox.setIsSystemFolder(true);
 		inbox.setActor(actor);
 		inbox.setMessages(messages);
+		inbox.setFather(null);
 		folders.add(inbox);
 
 		final Folder outbox = this.create();
@@ -113,6 +174,7 @@ public class FolderService {
 		outbox.setIsSystemFolder(true);
 		outbox.setActor(actor);
 		outbox.setMessages(messages);
+		outbox.setFather(null);
 		folders.add(outbox);
 
 		final Folder trash = this.create();
@@ -120,6 +182,7 @@ public class FolderService {
 		trash.setIsSystemFolder(true);
 		trash.setActor(actor);
 		trash.setMessages(messages);
+		trash.setFather(null);
 		folders.add(trash);
 
 		final Folder spam = this.create();
@@ -127,6 +190,7 @@ public class FolderService {
 		spam.setIsSystemFolder(true);
 		spam.setActor(actor);
 		spam.setMessages(messages);
+		spam.setFather(null);
 		folders.add(spam);
 
 		final Folder notification = this.create();
@@ -134,6 +198,7 @@ public class FolderService {
 		notification.setIsSystemFolder(true);
 		notification.setActor(actor);
 		notification.setMessages(messages);
+		notification.setFather(null);
 		folders.add(notification);
 
 		return folders;
@@ -185,6 +250,18 @@ public class FolderService {
 		Assert.isTrue(uid != 0);
 
 		return this.folderRepository.findAllByMessageIdAndUserId(mid, uid);
+	}
+
+	public Collection<Folder> findAllByFatherId(final int fatherId) {
+		Assert.isTrue(fatherId != 0);
+
+		return this.folderRepository.findAllByFatherId(fatherId);
+	}
+
+	public Collection<Folder> findAllFolderFatherNullByUserId(final int id) {
+		Assert.isTrue(id != 0);
+
+		return this.folderRepository.findAllFolderFatherNullByUserId(id);
 	}
 
 }

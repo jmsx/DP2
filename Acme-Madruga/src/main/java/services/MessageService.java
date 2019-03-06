@@ -144,6 +144,8 @@ public class MessageService {
 		this.administratorService.findByPrincipal();
 
 		final Collection<Actor> actors = this.actorService.findAll();
+		final Actor actor = this.actorService.findByPrincipal();
+		actors.remove(actor);
 		m.setRecipients(actors);
 		this.send(m);
 	}

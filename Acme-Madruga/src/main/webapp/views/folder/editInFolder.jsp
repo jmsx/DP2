@@ -26,7 +26,6 @@
     <form:hidden path="actor"/>
     <form:hidden path="messages"/>
     <form:hidden path="father"/>
-    
 
     <acme:textbox path="name" code="folder.name"/>
    

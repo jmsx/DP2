@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,14 +41,63 @@ public class MessageController extends AbstractController {
 	private ConfigurationParametersService	configurationParametersService;
 
 
+	//	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	//	public ModelAndView list2(@RequestParam final int folderId) {
+	//		final ModelAndView res;
+	//		final Collection<Message> messages;
+	//		final Folder father = this.folderService.findOne(folderId);
+	//		final Collection<Folder> folders = this.folderService.findAll();
+	//		final Collection<Folder> foldersFinal = new ArrayList<>();
+	//		for (final Folder f : folders)
+	//			if (f.getFather() != null && f.getFather().equals(father))
+	//				foldersFinal.add(f);
+	//
+	//		folders.retainAll(foldersFinal);
+	//
+	//		if (folder != null) {
+	//			final int userId = this.actorService.findByPrincipal().getUserAccount().getId();
+	//
+	//			messages = this.messageService.findAllByFolderIdAndUserId(folderId, userId);
+	//
+	//			res = new ModelAndView("message/list");
+	//			res.addObject("m", messages);
+	//			res.addObject("folder", folder);
+	//			res.addObject("father", father);
+	//			res.addObject("folders", foldersFinal);
+	//			res.addObject("requestURI", "message/list.do?folderId=" + folderId);
+	//			final String banner = this.configurationParametersService.find().getBanner();
+	//			res.addObject("banner", banner);
+	//		} else
+	//			res = new ModelAndView("redirect:/misc/403.jsp");
+	//
+	//		return res;
+	//
+	//	}
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int folderId) {
 		final ModelAndView res;
 		final Collection<Message> messages;
-
 		final Folder folder = this.folderService.findOne(folderId);
 
-		if (folder != null) {
+		if (folder != null && folder.getFather() == null) {
+			final int userId = this.actorService.findByPrincipal().getUserAccount().getId();
+			final Folder father = this.folderService.findOne(folderId);
+			final Collection<Folder> folders = this.folderService.findAll();
+			folders.retainAll(this.folderService.findAllByFatherId(father.getId()));
+
+			messages = this.messageService.findAllByFolderIdAndUserId(folderId, userId);
+
+			res = new ModelAndView("message/list");
+			res.addObject("m", messages);
+			res.addObject("folder", folder);
+			res.addObject("folders", folders);
+			res.addObject("requestURI", "message/list.do?folderId=" + folderId);
+			final String banner = this.configurationParametersService.find().getBanner();
+			res.addObject("banner", banner);
+		} else if (folder != null && folder.getFather() != null) {
+			final Collection<Folder> folders = this.folderService.findAllByFatherId(folderId);
+
 			final int userId = this.actorService.findByPrincipal().getUserAccount().getId();
 
 			messages = this.messageService.findAllByFolderIdAndUserId(folderId, userId);
@@ -55,6 +105,7 @@ public class MessageController extends AbstractController {
 			res = new ModelAndView("message/list");
 			res.addObject("m", messages);
 			res.addObject("folder", folder);
+			res.addObject("folders", folders);
 			res.addObject("requestURI", "message/list.do?folderId=" + folderId);
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
@@ -125,15 +176,15 @@ public class MessageController extends AbstractController {
 	public ModelAndView saveBroadcast(@ModelAttribute("m") @Valid final Message m, final BindingResult binding) {
 
 		ModelAndView res;
-		final Actor principal = this.actorService.findByPrincipal();
-		final Folder outbox = this.folderService.findOutboxByUserId(principal.getUserAccount().getId());
+		//		final Actor principal = this.actorService.findByPrincipal();
+		//		final Folder outbox = this.folderService.findOutboxByUserId(principal.getUserAccount().getId());
 
 		if (binding.hasErrors())
 			res = this.createEditModelAndViewBroadcast(m);
 		else
 			try {
-				final Message sent = this.messageService.send(m);
-				res = new ModelAndView("redirect:display.do?messageId=" + sent.getId() + "&folderId=" + outbox.getId());
+				this.messageService.broadcast(m);
+				res = new ModelAndView("administrator/congratulation");
 				final String banner = this.configurationParametersService.find().getBanner();
 				res.addObject("banner", banner);
 			} catch (final Throwable oops) {
@@ -142,7 +193,6 @@ public class MessageController extends AbstractController {
 		return res;
 
 	}
-
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int messageId, @RequestParam final int folderId) {
 
@@ -171,10 +221,12 @@ public class MessageController extends AbstractController {
 		Message message;
 		Folder folder;
 		boolean ownMessage;
+
 		final Actor principal = this.actorService.findByPrincipal();
 
 		message = this.messageService.findOne(messageId);
 		folder = this.folderService.findOne(folderId);
+		Assert.isTrue(principal.equals(folder.getActor()), "No puedes ver mensajes de otros actores.");
 
 		if (folder != null && message != null) {
 			ownMessage = message.getSender().equals(principal);
@@ -247,10 +299,12 @@ public class MessageController extends AbstractController {
 		final ModelAndView res;
 		final Message message = this.messageService.findOne(messageId);
 		final Folder actualFolder = this.folderService.findOne(folderId);
+		final Actor actor = this.actorService.findByPrincipal();
+		final Folder trashBox = this.folderService.findTrashboxByUserId(actor.getUserAccount().getId());
 
 		if (message != null && actualFolder != null) {
-			final Collection<Folder> allFolders = this.folderService.findAll();
-
+			final Collection<Folder> allFolders = this.folderService.findAllByUserId(actor.getUserAccount().getId());
+			allFolders.remove(trashBox);
 			res = new ModelAndView("message/move");
 			res.addObject("m", message);
 			res.addObject("folder", actualFolder);
@@ -264,7 +318,6 @@ public class MessageController extends AbstractController {
 
 		return res;
 	}
-
 	@RequestMapping(value = "/saveMove", method = RequestMethod.GET)
 	public ModelAndView move(@RequestParam(required = true) final int messageId, @RequestParam(required = true) final int folderId, @RequestParam(required = true) final int choosedFolderId) {
 		ModelAndView res;
@@ -276,7 +329,9 @@ public class MessageController extends AbstractController {
 			try {
 
 				this.messageService.moveFromAToB(message, actualFolder, choosedFolder);
-				res = new ModelAndView("redirect: display.do?messageId=" + messageId + "&folderId=" + choosedFolderId);
+				res = new ModelAndView("administrator/congratulationMove");
+				res.addObject("actualFolder", actualFolder);
+				res.addObject("choosedFolder", choosedFolder);
 
 				final String banner = this.configurationParametersService.find().getBanner();
 				res.addObject("banner", banner);
@@ -303,9 +358,12 @@ public class MessageController extends AbstractController {
 	public ModelAndView copy(@RequestParam final int messageId) {
 		final ModelAndView res;
 		final Message message = this.messageService.findOne(messageId);
+		final Actor actor = this.actorService.findByPrincipal();
+		final Folder trashBox = this.folderService.findTrashboxByUserId(actor.getUserAccount().getId());
 
 		if (message != null) {
-			final Collection<Folder> allFolders = this.folderService.findAll();
+			final Collection<Folder> allFolders = this.folderService.findAllByUserId(actor.getUserAccount().getId());
+			allFolders.remove(trashBox);
 
 			res = new ModelAndView("message/copy");
 			res.addObject("m", message);
@@ -331,7 +389,7 @@ public class MessageController extends AbstractController {
 		try {
 
 			this.messageService.copyToFolder(message, choosedFolder);
-			res = new ModelAndView("redirect: display.do?messageId=" + messageId + "&folderId=" + choosedFolderId);
+			res = new ModelAndView("administrator/congratulationCopy");
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 
