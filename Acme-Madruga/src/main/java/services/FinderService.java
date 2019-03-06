@@ -46,6 +46,7 @@ public class FinderService {
 		finder.setMinDate(null);
 		finder.setMaxDate(null);
 		final Collection<Procession> ps = new ArrayList<Procession>();
+		finder.setCreationDate(new Date());
 		finder.setProcessions(ps);
 		return finder;
 	}
@@ -70,10 +71,11 @@ public class FinderService {
 		Assert.isTrue(finder.getId() != 0);
 		Assert.isTrue(this.finderRepository.findMemberFinder(member.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot modify it");
 
-		if (finder.getMinDate() == null)
-			finder.setMinDate(new Date());
-		if (finder.getMaxDate() == null)
-			finder.setMaxDate(new Date());
+		//		if (finder.getMinDate() == null)
+		//			finder.setMinDate(new Date());
+		//		if (finder.getMaxDate() == null)
+		//			finder.setMaxDate(new Date());
+		finder.setCreationDate(new Date());
 		final Finder res = this.finderRepository.save(finder);
 		//Assert.notNull(me);
 		Assert.notNull(res);
@@ -122,24 +124,19 @@ public class FinderService {
 		return saved;
 	}
 
-	public Collection<Procession> find(final String keyword, final String area, final Date maxDate, final Date minDate) {
-		final Member member = this.memberService.findByPrincipal();
-
+	// Antes de guardar tengo que pasar por este metodo para setearle las nuevas procesiones segun los nuevos parametros
+	public Finder find(final Finder finder) {
+		this.memberService.findByPrincipal();
 		final Collection<Procession> finalMode = this.processionService.findAllFinalMode();
 		final Collection<Procession> result = new ArrayList<Procession>();
 		for (final Procession p : finalMode)
-			if ((keyword == "" || (p.getDescription().contains(keyword) || p.getTitle().contains(keyword) || p.getTicker().contains(keyword) && (area == "" || p.getBrotherhood().getArea().getName().contains(area))
-				&& (maxDate == null || p.getMoment().before(maxDate)) && (minDate == null || p.getMoment().after(minDate)))))
+			if ((finder.getKeyword() == "" || (p.getDescription().contains(finder.getKeyword()) || p.getTitle().contains(finder.getKeyword()) || p.getTicker().contains(finder.getKeyword())
+				&& (finder.getAreaName() == "" || p.getBrotherhood().getArea().getName().contains(finder.getAreaName())) && (finder.getMaxDate() == null || p.getMoment().before(finder.getMaxDate()))
+				&& (finder.getMinDate() == null || p.getMoment().after(finder.getMinDate())))))
 				result.add(p);
-		final Finder finder = this.finderRepository.findMemberFinder(member.getId());
-		finder.setAreaName(area);
-		finder.setKeyword(keyword);
-		finder.setMinDate(minDate);
-		finder.setMaxDate(maxDate);
+		// result = this.finderRepository.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
 		finder.setProcessions(result);
-		this.save(finder);
-
-		return result;
+		return this.save(finder);
 	}
 	public Double getAverageFinderResults() {
 		final Double result = this.finderRepository.getAverageFinderResults();

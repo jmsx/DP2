@@ -87,6 +87,7 @@ public class Finder extends DomainEntity implements Cloneable {
 		this.creationDate = creationDate;
 	}
 
+	// TODO
 	@Override
 	public Object clone() {
 		Object o = null;
