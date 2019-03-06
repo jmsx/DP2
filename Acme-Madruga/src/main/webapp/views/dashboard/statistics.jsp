@@ -99,6 +99,9 @@
     <td><spring:message code="desviation.brotherhood.area" var="desBH" /><jstl:out value="${desBH}" /></td>
     <td>${desviationBrotherhoods}</td>
     </tr>
+    <td><spring:message code="ratio.brotherhood.area" var="ratioBH" /><jstl:out value="${ratioBH}" /></td>
+    <td>${ratioBrotherhoods}</td>
+    </tr>
     </table>
     
     <table>

@@ -85,15 +85,24 @@ public class DashboardAdministratorController extends AbstractController {
 		final Double desviationResults = this.finderService.getDesviationFinderResults();
 		final Double ratioFinders = this.finderService.getRatioEmptyFinders();
 		final Double[] statisticsMembersPerBrotherhood = this.brotherhoodService.getStatisticsOfMembersPerBrotherhood();
-		final List<Brotherhood> smallestBrotherhood = this.brotherhoodService.getSmallestBrotherhood();
-		final List<Brotherhood> largestBrotherhood = this.brotherhoodService.getLargestBrotherhood();
-		final List<Procession> soon = this.processionService.getProcessionsThirtyDays();
+		final List<String> smallestBrotherhood = new ArrayList<String>();
+		for (final Brotherhood b : this.brotherhoodService.getSmallestBrotherhood())
+			smallestBrotherhood.add(b.getName());
+		final List<String> largestBrotherhood = new ArrayList<String>();
+		for (final Brotherhood b : this.brotherhoodService.getLargestBrotherhood())
+			largestBrotherhood.add(b.getName());
+		final List<String> soon = new ArrayList<String>();
+		for (final Procession p : this.processionService.getProcessionsThirtyDays())
+			soon.add(p.getTitle());
 		final Double requestApproved = this.requestService.findApprovedRequestRadio();
 		final Double requestPending = this.requestService.findPendingRequestRadio();
 		final Double requestRejected = this.requestService.findRejectedRequestRadio();
 		final Double[] statisticsBrotherhoodsPerArea = this.areaService.getStatiticsBrotherhoodPerArea();
-		final List<Member> membersTenPercent = this.memberService.getMembersTenPercent();
+		final List<String> membersTenPercent = new ArrayList<String>();
+		for (final Member m : this.memberService.getMembersTenPercent())
+			membersTenPercent.add(m.getName());
 		final Collection<Procession> processions = this.processionService.findAll();
+		final Double ratioBrotherhoodsPerArea = this.areaService.getRatioBrotherhoodsPerArea();
 
 		result = new ModelAndView("dashboard/statistics"); //lleva al list.jsp
 		result.addObject("requestURI", "dashboard/admnistrator/statistics.do");
@@ -114,7 +123,7 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("averageBrotherhoods", statisticsBrotherhoodsPerArea[0]);
 		result.addObject("maxBrotherhoods", statisticsBrotherhoodsPerArea[1]);
 		result.addObject("desviationBrotherhoods", statisticsBrotherhoodsPerArea[3]);
-		//result.addObject("ratioBrotherhoods",);
+		result.addObject("ratioBrotherhoods", ratioBrotherhoodsPerArea);
 		result.addObject("averageResults", averageResults);
 		result.addObject("minResults", minResults);
 		result.addObject("maxResults", maxResults);
