@@ -41,8 +41,6 @@ public class ProcessionMemberController extends AbstractController {
 			result.addObject("rol", "member");
 			result.addObject("lang", lang);
 
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -65,9 +63,6 @@ public class ProcessionMemberController extends AbstractController {
 		result.addObject("rol", "member");
 		result.addObject("memberProcessions", memberProcessions);
 		result.addObject("requetURI", "procession/member/list.do");
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
