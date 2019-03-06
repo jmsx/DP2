@@ -36,8 +36,11 @@ public class FinderService {
 	@Autowired
 	private org.springframework.validation.Validator	validator;
 
+	@Autowired
+	private ActorService								actorService;
 
-	//Métodos CRUD
+
+	//Mï¿½todos CRUD
 
 	public Finder create() {
 		final Finder finder = new Finder();
@@ -138,6 +141,7 @@ public class FinderService {
 		finder.setProcessions(result);
 		return this.save(finder);
 	}
+
 	public Double getAverageFinderResults() {
 		final Double result = this.finderRepository.getAverageFinderResults();
 		Assert.notNull(result);

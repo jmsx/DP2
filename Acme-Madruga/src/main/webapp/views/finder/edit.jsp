@@ -62,5 +62,30 @@
 	<br>
 	<input type="submit" name="save" value="<spring:message code="finder.search" />" />
 	<input type="submit" name="clear" value="<spring:message code="finder.clear" />" />
+	<br>
+	<br>
+	<spring:message code="finder.results" />
+	<br>
+	
+<display:table name="${finder.processions}" id="row" requestURI="${requestURI}" pagesize="5" class="displaytag">
+	<display:column property="title" titleKey="procession.title" />
+	
+	<display:column property="ticker" titleKey="procession.ticker" />
+
+	<acme:dataTableColumn code="procession.moment" property="moment" />
+	
+	<display:column titleKey="procession.brotherhood">
+		<a href="brotherhood/display.do?brotherhoodId=${row.brotherhood.id}">
+			<jstl:out value="${row.brotherhood.title}" />
+		</a>
+	</display:column>
+	
+	<display:column>
+		<acme:link url="procession${rolURL}/display.do?processionId=${row.id}"
+			code="procession.display" />
+	</display:column>
+	
+	
+</display:table>
 		
 </form:form>

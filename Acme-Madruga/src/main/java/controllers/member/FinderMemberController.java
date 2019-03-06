@@ -56,8 +56,7 @@ public class FinderMemberController extends AbstractController {
 		else
 			try {
 				final Finder cleared = this.finderService.clear(finder);
-				result = new ModelAndView("redirect:edit.do");
-				result.addObject(cleared);
+				result = this.createEditModelAndView(cleared);
 			} catch (final Throwable e) {
 				result = this.createEditModelAndView(finder, "finder.commit.error");
 			}
@@ -76,11 +75,10 @@ public class FinderMemberController extends AbstractController {
 			try {
 				final Finder saved = this.finderService.find(finder);
 				final String lang = LocaleContextHolder.getLocale().getLanguage();
-				result = new ModelAndView("redirect:display.do");
-				result.addObject("finder", saved);
+				result = this.createEditModelAndView(saved);
 				result.addObject("lang", lang);
 			} catch (final Throwable e) {
-				result = this.createEditModelAndView(finder);
+				result = this.createEditModelAndView(finder, "finder.commit.error");
 			}
 		return result;
 	}
