@@ -801,7 +801,7 @@
 		<property name="description" value="This is a description of a procession2" />
 		<property name="moment" value="2020/04/26 00:00" />
 		<property name="ticker" value="200426-DOUBG" />
-		<property name="mode" value="DRAFT" />
+		<property name="mode" value="FINAL" />
 		<property name="maxRows" value="120"/>
 		<property name="maxColumns" value="300"/>
 		<!-- Relations -->
@@ -1009,10 +1009,10 @@
 
 	<bean id="finder1" class="domain.Finder">
 		<!-- Finder -->
-		<property name="keyword" value="Triana"></property>
-		<property name="areaName" value="Triana"></property>
+		<property name="keyword" value="poder"></property>
+		<property name="areaName" value=""></property>
 		<property name="minDate" value="2018/04/16 15:20"></property>
-		<property name="maxDate" value="2019/04/16 15:20"></property>
+		<property name="maxDate" value="2030/04/16 15:20"></property>
 
 		<!-- Reletions -->
 		<property name="processions">

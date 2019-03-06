@@ -15,6 +15,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
+import domain.Finder;
 import domain.Member;
 import forms.ActorFrom;
 
@@ -40,6 +41,9 @@ public class MemberService {
 	@Autowired
 	private EnrolmentService							enrolmentService;
 
+	@Autowired
+	private FinderService								finderService;
+
 
 	public Member create() {
 		final Member member = new Member();
@@ -64,11 +68,12 @@ public class MemberService {
 
 	public Member save(final Member member) {
 		Assert.notNull(member);
-
 		Member result;
 		this.actorService.checkForSpamWords(member);
 		if (member.getId() == 0) {
+			final Finder finder = this.finderService.create();
 			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
+			member.setFinder(finder);
 			result = this.memberRepository.save(member);
 			this.folderService.setFoldersByDefault(result);
 		} else
@@ -76,7 +81,6 @@ public class MemberService {
 
 		return result;
 	}
-
 	// TODO: delete all information but name including folders and their messages (but no as senders!!)
 	public void delete(final Member member) {
 		Assert.notNull(member);
@@ -94,15 +98,16 @@ public class MemberService {
 
 		final Member member = this.findByUserId(user.getId());
 		Assert.notNull(member);
+
 		final boolean bool = this.actorService.checkAuthority(member, Authority.MEMBER);
 		Assert.isTrue(bool);
 
 		return member;
 	}
 
-	public Member findByUserId(final int id) {
-		Assert.isTrue(id != 0);
-		final Member member = this.memberRepository.findByUserId(id);
+	public Member findByUserId(final int userAccountId) {
+		Assert.isTrue(userAccountId != 0);
+		final Member member = this.memberRepository.findByUserId(userAccountId);
 		return member;
 	}
 

@@ -135,6 +135,8 @@
 		<security:intercept-url pattern="/member/deletePersonalData.do" access="hasAnyRole('MEMBER')"/>
 		<security:intercept-url pattern="/member/list.do" access="hasAnyRole('BROTHERHOOD')"/>
 		<security:intercept-url pattern="/member/displayTabla.do" access="hasAnyRole('BROTHERHOOD')"/>
+		<security:intercept-url pattern="/finder/member/edit.do" access="hasAnyRole('MEMBER')"/>
+		<security:intercept-url pattern="/finder/member/display.do" access="hasAnyRole('MEMBER')"/>
 
 
 

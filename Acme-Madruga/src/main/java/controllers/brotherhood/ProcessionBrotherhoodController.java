@@ -83,8 +83,6 @@ public class ProcessionBrotherhoodController extends AbstractController {
 			result.addObject("rol", "brotherhood");
 			result.addObject("requests", requests);
 
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -108,9 +106,6 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("requetURI", "procession/brotherhood/list.do");
 		result.addObject("rol", rol);
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
@@ -145,8 +140,6 @@ public class ProcessionBrotherhoodController extends AbstractController {
 			try {
 				this.processionService.save(procession);
 				result = new ModelAndView("redirect:list.do");
-				final String banner = this.configurationParametersService.findBanner();
-				result.addObject("banner", banner);
 			} catch (final Throwable oops) {
 				final Date current = new Date(System.currentTimeMillis());
 				if (procession.getMoment().before(current))
@@ -183,8 +176,6 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		try {
 			this.processionService.delete(procession);
 			result = new ModelAndView("redirect:list.do");
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(procession, "procession.commit.error");
 		}
@@ -212,8 +203,6 @@ public class ProcessionBrotherhoodController extends AbstractController {
 
 		result.addObject("floatsAvailable", this.floatService.findByBrotherhood(procession.getBrotherhood()));
 		result.addObject("message", messageCode);
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
