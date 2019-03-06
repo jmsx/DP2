@@ -68,6 +68,21 @@ public class FinderService {
 		return res;
 	}
 
+	// Antes de guardar tengo que pasar por este metodo para setearle las nuevas procesiones segun los nuevos parametros
+	public Finder find(final Finder finder) {
+		this.memberService.findByPrincipal();
+		final Collection<Procession> finalMode = this.processionService.findAllFinalMode();
+		final Collection<Procession> result;//= new ArrayList<Procession>();
+		//		for (final Procession p : finalMode)
+		//			if ((finder.getKeyword() == "" || (p.getDescription().contains(finder.getKeyword()) || p.getTitle().contains(finder.getKeyword()) || p.getTicker().contains(finder.getKeyword())
+		//				&& (finder.getAreaName() == "" || p.getBrotherhood().getArea().getName().contains(finder.getAreaName())) && (finder.getMaxDate() == null || p.getMoment().before(finder.getMaxDate()))
+		//				&& (finder.getMinDate() == null || p.getMoment().after(finder.getMinDate())))))
+		//				result.add(p);
+		result = this.finderRepository.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
+		finder.setProcessions(result);
+		return this.save(finder);
+	}
+
 	public Finder save(final Finder finder) {
 		final Member member = this.memberService.findByPrincipal();
 		Assert.notNull(finder);
@@ -138,21 +153,6 @@ public class FinderService {
 		result.setProcessions(new ArrayList<Procession>());
 		final Finder saved = this.save(result);
 		return saved;
-	}
-
-	// Antes de guardar tengo que pasar por este metodo para setearle las nuevas procesiones segun los nuevos parametros
-	public Finder find(final Finder finder) {
-		this.memberService.findByPrincipal();
-		final Collection<Procession> finalMode = this.processionService.findAllFinalMode();
-		final Collection<Procession> result = new ArrayList<Procession>();
-		for (final Procession p : finalMode)
-			if ((finder.getKeyword() == "" || (p.getDescription().contains(finder.getKeyword()) || p.getTitle().contains(finder.getKeyword()) || p.getTicker().contains(finder.getKeyword())
-				&& (finder.getAreaName() == "" || p.getBrotherhood().getArea().getName().contains(finder.getAreaName())) && (finder.getMaxDate() == null || p.getMoment().before(finder.getMaxDate()))
-				&& (finder.getMinDate() == null || p.getMoment().after(finder.getMinDate())))))
-				result.add(p);
-		// result = this.finderRepository.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
-		finder.setProcessions(result);
-		return this.save(finder);
 	}
 
 	public Double getAverageFinderResults() {

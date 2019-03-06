@@ -128,87 +128,73 @@ public class ConfigurationParametersService {
 		Assert.isTrue(isAdmin);
 		System.out.println(a.getUserAccount().getAuthorities());
 
-		/*
-		 * if (c.getId() == 0) {
-		 * c.setBanner("https://tinyurl.com/acme-madruga");
-		 * c.setCountryPhoneCode("+34");
-		 * 
-		 * final Collection<Position> positionList = new ArrayList<>();
-		 * final Position p1 = this.positionService.create("Presidente", "President");
-		 * final Position p2 = this.positionService.create("Vicepresidente", "Vice President");
-		 * final Position p3 = this.positionService.create("Secretario", "Secretary");
-		 * final Position p4 = this.positionService.create("Tesorero", "Treasurer");
-		 * final Position p5 = this.positionService.create("Historiador", "Historian");
-		 * final Position p6 = this.positionService.create("Promotor", "Fundraiser");
-		 * final Position p7 = this.positionService.create("Vocal", "Officer");
-		 * 
-		 * positionList.add(p1);
-		 * positionList.add(p2);
-		 * positionList.add(p3);
-		 * positionList.add(p4);
-		 * positionList.add(p5);
-		 * positionList.add(p6);
-		 * positionList.add(p7);
-		 * 
-		 * c.setPositionList(positionList);
-		 * 
-		 * c.setMaxFinderResults(10);
-		 * c.setFinderTime(1);
-		 * c.setWelcomeMessageEn("Welcome to Acme Madrugá, the site to organise your processions.");
-		 * c.setWelcomeMessageEsp("¡Bienvenidos a Acme Madrugá! Tu sitio para organizar procesiones.");
-		 * 
-		 * final Collection<String> negativeWords = new ArrayList<>();
-		 * negativeWords.add("not");
-		 * negativeWords.add("bad");
-		 * negativeWords.add("horrible");
-		 * negativeWords.add("average");
-		 * negativeWords.add("disaster");
-		 * negativeWords.add("no");
-		 * negativeWords.add("malo");
-		 * negativeWords.add("mediocre");
-		 * negativeWords.add("desastre");
-		 * c.setNegativeWords(negativeWords);
-		 * 
-		 * final Collection<String> positiveWords = new ArrayList<>();
-		 * positiveWords.add("good");
-		 * positiveWords.add("fantastic");
-		 * positiveWords.add("excellent");
-		 * positiveWords.add("great");
-		 * positiveWords.add("amazing");
-		 * positiveWords.add("terrific");
-		 * positiveWords.add("beautiful");
-		 * positiveWords.add("bueno");
-		 * positiveWords.add("fantastico");
-		 * positiveWords.add("excelente");
-		 * positiveWords.add("genial");
-		 * positiveWords.add("increble");
-		 * positiveWords.add("estupendo");
-		 * positiveWords.add("bonito");
-		 * c.setPositiveWords(positiveWords);
-		 * 
-		 * final Collection<String> spamWords = new ArrayList<>();
-		 * spamWords.add("sex");
-		 * spamWords.add("viagra");
-		 * spamWords.add("cialis");
-		 * spamWords.add("one million");
-		 * spamWords.add("you've been selected");
-		 * spamWords.add("Nigeria");
-		 * spamWords.add("sexo");
-		 * spamWords.add("un millón");
-		 * spamWords.add("has sido seleccionado");
-		 * c.setSpamWords(spamWords);
-		 * 
-		 * c.setSysName("Acme Madrugá");
-		 * 
-		 * }
-		 */
+		//		if (c.getId() == 0) {
+		//			c.setBanner("https://tinyurl.com/acme-madruga");
+		//			c.setCountryPhoneCode("+34");
+		//
+		//			this.positionService.createDefault("Presidente", "President");
+		//			this.positionService.createDefault("Vicepresidente", "Vice President");
+		//			this.positionService.createDefault("Secretario", "Secretary");
+		//			this.positionService.createDefault("Tesorero", "Treasurer");
+		//			this.positionService.createDefault("Historiador", "Historian");
+		//			this.positionService.createDefault("Promotor", "Fundraiser");
+		//			this.positionService.createDefault("Vocal", "Officer");
+		//
+		//			c.setMaxFinderResults(10);
+		//			c.setFinderTime(1);
+		//			c.setWelcomeMessageEn("Welcome to Acme Madrugá, the site to organise your processions.");
+		//			c.setWelcomeMessageEsp("¡Bienvenidos a Acme Madrugá! Tu sitio para organizar procesiones.");
+		//			final Collection<String> negativeWords = new ArrayList<>();
+		//			negativeWords.add("not");
+		//			negativeWords.add("bad");
+		//			negativeWords.add("horrible");
+		//			negativeWords.add("average");
+		//			negativeWords.add("disaster");
+		//			negativeWords.add("no");
+		//			negativeWords.add("malo");
+		//			negativeWords.add("mediocre");
+		//			negativeWords.add("desastre");
+		//			c.setNegativeWords(negativeWords);
+		//
+		//			final Collection<String> positiveWords = new ArrayList<>();
+		//			positiveWords.add("good");
+		//			positiveWords.add("fantastic");
+		//			positiveWords.add("excellent");
+		//			positiveWords.add("great");
+		//			positiveWords.add("amazing");
+		//			positiveWords.add("terrific");
+		//			positiveWords.add("beautiful");
+		//			positiveWords.add("bueno");
+		//			positiveWords.add("fantastico");
+		//			positiveWords.add("excelente");
+		//			positiveWords.add("genial");
+		//			positiveWords.add("increble");
+		//			positiveWords.add("estupendo");
+		//			positiveWords.add("bonito");
+		//			c.setPositiveWords(positiveWords);
+		//
+		//			final Collection<String> spamWords = new ArrayList<>();
+		//			spamWords.add("sex");
+		//			spamWords.add("viagra");
+		//			spamWords.add("cialis");
+		//			spamWords.add("one million");
+		//			spamWords.add("you've been selected");
+		//			spamWords.add("nigeria");
+		//			spamWords.add("sexo");
+		//			spamWords.add("un millón");
+		//			spamWords.add("has sido seleccionado");
+		//			c.setSpamWords(spamWords);
+		//
+		//			c.setSysName("Acme Madrugá");
+		//
+		//		}
+
 		final ConfigurationParameters result = this.configurationParametersRepository.save(c);
 		Assert.notNull(result);
 		System.out.println(result.getId());
 		return result;
 
 	}
-
 	// Ancilliary methods
 
 	public String createTicker() {

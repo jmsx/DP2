@@ -40,6 +40,14 @@ public class PositionService {
 		return res;
 	}
 
+	public Position createDefault(final String nameEn, final String nameEs) {
+		final Position res = new Position();
+		res.setNameEnglish(nameEn);
+		res.setNameSpanish(nameEs);
+		final Position retrieved = this.positionRepository.save(res);
+		return retrieved;
+	}
+
 	public Collection<Position> findAll() {
 		final Collection<Position> res = this.positionRepository.findAll();
 		Assert.notNull(res);
