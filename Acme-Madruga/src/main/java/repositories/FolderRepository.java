@@ -33,4 +33,10 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
 	@Query("select f from Folder f where f.actor.userAccount.id=?1")
 	Collection<Folder> findAllByUserId(Integer id);
 
+	@Query("select f from Folder f where f.father.id=?1")
+	Collection<Folder> findAllByFatherId(Integer id);
+
+	@Query("select f from Folder f where f.father.id = null and f.actor.userAccount.id=?1")
+	Collection<Folder> findAllFolderFatherNullByUserId(Integer id);
+
 }

@@ -26,8 +26,6 @@
   ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
   --%>
   
-<p><spring:message code="general.move" /></p>
-
 <form:form action="message/move.do" modelAttribute="m">
 
     <form:hidden path="id"/>
@@ -35,29 +33,45 @@
     <form:hidden path="moment"/>
     <form:hidden path="sender"/>
     
-    <display:table pagesize="5" class="displaytag" keepStatus="true"
-               name="m" requestURI="${requestURI}" id="row">
+    <spring:message code="message.subject" var="subject1"/>
+	<h3><jstl:out value="${subject1}"/></h3>
+	<jstl:out value="${m.subject}"/>
+	
+	<spring:message code="message.body" var="body1"/>
+	<h3><jstl:out value="${body1}"/></h3>
+	<jstl:out value="${m.body}"/>
+    
+    <spring:message code="message.receiver" var="receiver1"/>
+	<h3><jstl:out value="${receiver1}"/></h3>
+	<jstl:out value="${m.recipients}"/>
+	
+	<spring:message code="message.priority" var="priority1"/>
+	<h3><jstl:out value="${priority1}"/></h3>
+	<jstl:out value="${m.priority}"/>
+	
+	<spring:message code="message.tags" var="tags1"/>
+	<h3><jstl:out value="${tags1}"/></h3>
+	<jstl:out value="${m.tags}"/>
+	
+    <display:table pagesize="10" class="displaytag" keepStatus="true"
+               name="folders" requestURI="${requestURI}" id="row">
 
     <!-- Attributes -->
 
-	<display:column property="subject" titleKey="message.subject" />
-	<display:column property="sender" value="name" titleKey="message.sender" />
-	<display:column property="recipients" value="name" titleKey="message.recipients" />
-	<display:column property="priority" titleKey="message.priority" />
 	<display:column>
-	<form:select path="">
-    <form:options items="${folders}" itemLabel="name" itemValue="id"/>
-	</form:select>
+	<spring:message var="title" code="folder.name"/>
+    <display:column property="name" title="${title}" sortable="true"/>
+	<input type="button" class="btn btn-danger" name="saveMove"
+		value="<spring:message code="general.move" />"
+           onclick="relativeRedir('message/saveMove.do?messageId=${m.id}&folderId=${folder.id}&choosedFolderId=${row.id}');"/>
+	
 	</display:column>
 	
 </display:table>
 
     <!---------------------------- BOTONES -------------------------->
 	
-	<input type="button" class="btn btn-danger" name="saveMove"
-		value="<spring:message code="general.move" />"
-           onclick="relativeRedir('message/saveMove.do?messageId=${row.id}&folderId=${folder.id}&choosedFolderId=${itemValue}');"/>
-
+	
     <input type="button" class="btn btn-danger" name="cancel"
            value="<spring:message code="general.cancel" />"
            onclick="relativeRedir('folder/list.do');"/>

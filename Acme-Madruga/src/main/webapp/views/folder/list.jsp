@@ -51,8 +51,9 @@
     <display:column property="name" title="${title}" sortable="true"/>
 	
 	
-    <security:authorize access="hasAnyRole('ADMIN', 'MEMBER', 'BROTHERHOOD', 'SUPER')">
+           
         <display:column>
+        	<jstl:if test="${row.isSystemFolder eq false}">     
             <input type="button" class="btn btn-danger" name="edit"
                    value="<spring:message code="general.edit" />"
                    onclick="relativeRedir('folder/edit.do?folderId=${row.id}');"/>
@@ -60,7 +61,8 @@
             <input type="button" class="btn btn-danger" name="edit"
                    value="<spring:message code="general.delete" />"
                    onclick="relativeRedir('folder/delete.do?folderId=${row.id}');"/>
+                   </jstl:if>
         </display:column>
+        
 
-    </security:authorize>
 </display:table>

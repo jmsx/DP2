@@ -35,5 +35,10 @@
         <put-attribute name="title" value="Ups... han error has ocurred"/>
         <put-attribute name="body" value="/views/administrator/error.jsp"/>
     </definition>
+    
+    <definition name="administrator/congratulation" extends="master.page">	
+		<put-attribute name="title" value="Congratulation !!" />
+		<put-attribute name="body" value="/views/administrator/congratulation.jsp" />
+	</definition>
 	
 </tiles-definitions>
