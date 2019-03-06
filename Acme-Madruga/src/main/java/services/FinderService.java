@@ -45,7 +45,11 @@ public class FinderService {
 
 	public Finder create() {
 		final Finder finder = new Finder();
-		final Collection<Procession> ps = new ArrayList<>();
+		finder.setKeyword("");
+		finder.setAreaName("");
+		finder.setMinDate(null);
+		finder.setMaxDate(null);
+		final Collection<Procession> ps = new ArrayList<Procession>();
 		finder.setProcessions(ps);
 		return finder;
 	}
@@ -65,11 +69,16 @@ public class FinderService {
 	}
 
 	public Finder save(final Finder finder) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
 		Assert.notNull(finder);
 		Assert.isTrue(finder.getId() != 0);
-		final Actor me = this.actorService.findByPrincipal();
-		Assert.notNull(me);
+		if (finder.getMinDate() == null)
+			finder.setMinDate(new Date());
+		if (finder.getMaxDate() == null)
+			finder.setMaxDate(new Date());
 		final Finder res = this.finderRepository.save(finder);
+		//Assert.notNull(me);
 		Assert.notNull(res);
 		return res;
 	}

@@ -96,17 +96,17 @@ public class FinderMemberController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "clear")
 	public ModelAndView clear(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
-		//		if (binding.hasErrors())
-		//			result = this.createEditModelAndView(finder);
-		//		else
-		try {
-			final Finder cleared = this.finderService.clear(finder, binding);
-			this.finderService.save(cleared);
-			result = new ModelAndView("redirect:edit.do");
-			result.addObject(cleared);
-		} catch (final Throwable e) {
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(finder);
-		}
+		else
+			try {
+				final Finder cleared = this.finderService.clear(finder, binding);
+				this.finderService.save(cleared);
+				result = new ModelAndView("redirect:edit.do");
+				result.addObject(cleared);
+			} catch (final Throwable e) {
+				result = this.createEditModelAndView(finder);
+			}
 		return result;
 	}
 
@@ -119,19 +119,19 @@ public class FinderMemberController extends AbstractController {
 		ModelAndView result;
 		final Collection<Procession> listFinder = this.finderService.find(finder.getKeyword(), finder.getAreaName(), finder.getMinDate(), finder.getMaxDate());
 		final String lang = LocaleContextHolder.getLocale().getLanguage();
-		//		if (binding.hasErrors())
-		//			result = this.createEditModelAndView(finder);
-		//		else
-		try {
-			finder.setProcessions(listFinder);
-			final Finder saved = this.finderService.save(finder);
-			result = new ModelAndView("redirect:display.do");
-			result.addObject("finder", saved);
-			result.addObject("processions", listFinder);
-			result.addObject("lang", lang);
-		} catch (final Throwable e) {
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(finder);
-		}
+		else
+			try {
+				finder.setProcessions(listFinder);
+				final Finder saved = this.finderService.save(finder);
+				result = new ModelAndView("redirect:display.do");
+				result.addObject("finder", saved);
+				result.addObject("processions", listFinder);
+				result.addObject("lang", lang);
+			} catch (final Throwable e) {
+				result = this.createEditModelAndView(finder);
+			}
 		return result;
 	}
 

@@ -14,6 +14,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
+import domain.Finder;
 import domain.Member;
 import forms.ActorFrom;
 
@@ -39,6 +40,9 @@ public class MemberService {
 	@Autowired
 	private EnrolmentService							enrolmentService;
 
+	@Autowired
+	private FinderService								finderService;
+
 
 	public Member create() {
 		final Member member = new Member();
@@ -63,11 +67,12 @@ public class MemberService {
 
 	public Member save(final Member member) {
 		Assert.notNull(member);
-
 		Member result;
 		this.actorService.checkForSpamWords(member);
 		if (member.getId() == 0) {
+			final Finder finder = this.finderService.create();
 			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
+			member.setFinder(finder);
 			result = this.memberRepository.save(member);
 			this.folderService.setFoldersByDefault(result);
 		} else
@@ -75,7 +80,6 @@ public class MemberService {
 
 		return result;
 	}
-
 	// TODO: delete all information but name including folders and their messages (but no as senders!!)
 	public void delete(final Member member) {
 		Assert.notNull(member);

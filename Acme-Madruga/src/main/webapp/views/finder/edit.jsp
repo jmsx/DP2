@@ -20,7 +20,7 @@
 
 <form:form action="finder/member/edit.do" modelAttribute="finder" method="POST">
 
-	<form:hidden path="id" />
+	<%-- <form:hidden path="id" />
 	<form:hidden path="version" />
 
 	<br/>
@@ -31,7 +31,32 @@
     <acme:textbox path="maxDate" code="finder.maxDate"/>
     <br/>
     <acme:textbox path="minDate" code="finder.minDate"/>
-    <br/>
+    <br/> --%>
+    
+    <form:hidden path="id"/>
+	<form:hidden path="version"/>
+	<form:hidden path="processions"/>
+	
+	<form:label path="keyword">
+		<spring:message code="finder.keyword" />: </form:label>
+	<form:input path="keyword" />
+	<form:errors cssClass="error" path="keyword" />
+	<br />
+	<form:label path="areaName">
+		<spring:message code="finder.areaName" />: </form:label>
+	<form:input path="areaName" />
+	<form:errors cssClass="error" path="areaName" />
+	<br />
+	<form:label path="minDate">
+		<spring:message code="finder.minDate" />: </form:label>
+	<form:input path="minDate" placeholder = "yyyy-MM-dd" />
+	<form:errors cssClass="error" path="minDate" />
+	<br />
+	<form:label path="maxDate">
+		<spring:message code="finder.maxDate" />: </form:label>
+	<form:input path="maxDate" placeholder = "yyyy-MM-dd" />
+	<form:errors cssClass="error" path="maxDate" />
+	<br />
 
 
 	<br>

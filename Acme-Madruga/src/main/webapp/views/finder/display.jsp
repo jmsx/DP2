@@ -23,12 +23,14 @@
 	<jstl:when test="${lang eq 'en' }">
 		<spring:message code="finder.minDate" />: <fmt:formatDate
 			value="${finder.minDate}" type="both" pattern="yyyy-MM-dd" />
+			<br>
 		<spring:message code="finder.maxDate" />: <fmt:formatDate
 			value="${finder.maxDate}" type="both" pattern="yyyy-MM-dd" />
 	</jstl:when>
 	<jstl:otherwise>
 	<spring:message code="finder.minDate" />: <fmt:formatDate
 			value="${finder.minDate}" type="both" pattern="dd-MM-yyyy" />
+			<br>
 	<spring:message code="finder.maxDate" />: <fmt:formatDate
 			value="${finder.maxDate}" type="both" pattern="dd-MM-yyyy" />
 	</jstl:otherwise>
