@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -88,6 +89,7 @@ public class Actor extends DomainEntity {
 	//TODO: Phone Pattern
 	// @NotBlank incluye NotNull, y addres es optional
 	// @Pattern(regexp="^\+{1}[1-9]{0,3}\s\([1-9]{0,3}\)\s[0-9]{4,}|\+{1}[1-9]{0,3}\s[0-9]{4,}|[0-9]{4,}$")
+	@Pattern(regexp = "(\\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}")
 	public String getPhone() {
 		return this.phone;
 	}
