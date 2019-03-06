@@ -153,6 +153,7 @@ public class BrotherhoodController extends AbstractController {
 		result = new ModelAndView("brotherhood/edit");
 		final Brotherhood brotherhood = this.brotherhoodService.findByPrincipal();
 		final BrotherhoodForm actor = this.registerService.inyect(brotherhood);
+		actor.setTermsAndCondicions(true);
 		result.addObject("brotherhoodForm", actor);
 		return result;
 

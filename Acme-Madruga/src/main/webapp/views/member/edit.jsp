@@ -18,22 +18,23 @@
 	</script>
 </jstl:if>
 
-<jstl:if test="${not empty errors}">
-	<div class="errorDiv">
-		<ul>
-			<jstl:forEach items="${errors}" var="error">
-				<li><spring:message code="member.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
-			</jstl:forEach>
-		</ul>
-	</div>
-</jstl:if>
+	<jstl:if test="${not empty errors}">
+		<div class="errorDiv">
+			<ul>
+				<jstl:forEach items="${errors}" var="error">
+					<li><spring:message code="member.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+				</jstl:forEach>
+			</ul>
+		</div>
+	</jstl:if>
+
 
 
 <form:form modelAttribute="actorForm" action="member/edit.do" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<acme:textbox code="member.edit.userAccountuser" path="userAccountuser" />
-	<acme:textbox code="member.edit.userAccountpassword" path="userAccountpassword" />
+	<acme:password code="member.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="member.edit.name" path="name" />
 	<acme:textbox code="member.edit.middleName" path="middleName" />
@@ -42,5 +43,16 @@
 	<acme:textbox code="member.edit.email" path="email" />
 	<acme:textbox code="member.edit.phone" path="phone" />
 	<acme:textbox code="member.edit.address" path="address" />
+
+	<jstl:choose>
+	    <jstl:when test="${actorForm.termsAndCondicions == true}">
+	        <form:hidden path="termsAndCondicions"/>
+	    </jstl:when>    
+	    <jstl:otherwise>
+			<form:checkbox path="termsAndCondicions"/><spring:message code="edit.accepted"/> <spring:message code="edit.termsAndConditions"/>
+			<br>
+	    </jstl:otherwise>
+	</jstl:choose>
+
 	<acme:submit code="member.edit.submit" name="save"/>
 </form:form>

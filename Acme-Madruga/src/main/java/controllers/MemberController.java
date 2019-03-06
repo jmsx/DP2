@@ -140,6 +140,7 @@ public class MemberController extends AbstractController {
 		result = new ModelAndView("member/edit");
 		final Member member = this.memberService.findByPrincipal();
 		final ActorFrom actor = this.registerService.inyect(member);
+		actor.setTermsAndCondicions(true);
 		result.addObject("actorForm", actor);
 		return result;
 

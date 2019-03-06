@@ -159,7 +159,10 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
-					
+					<security:authorize access="hasRole('ADMIN')">
+					<li><a href="administrator/edit.do"><spring:message code="master.page.member.edit" /></a></li>
+					<li><a href="administrator/display.do"><spring:message code="master.page.member.display" /></a></li>
+					</security:authorize>
 					<li><a href="socialProfile/list.do"><spring:message code="master.page.actor.socialProfiles" /></a></li>
 					<security:authorize access="hasRole('MEMBER')">
 					<li><a href="member/edit.do"><spring:message code="master.page.member.edit" /></a></li>

@@ -80,6 +80,7 @@ public class AdministratorController extends AbstractController {
 		result = new ModelAndView("administrator/edit");
 		final Administrator admin = this.administratorService.findByPrincipal();
 		final ActorFrom actor = this.registerService.inyect(admin);
+		actor.setTermsAndCondicions(true);
 		result.addObject("actorForm", actor);
 		return result;
 
