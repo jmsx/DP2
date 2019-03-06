@@ -41,7 +41,11 @@ public class FinderService {
 
 	public Finder create() {
 		final Finder finder = new Finder();
-		final Collection<Procession> ps = new ArrayList<>();
+		finder.setKeyword("");
+		finder.setAreaName("");
+		finder.setMinDate(null);
+		finder.setMaxDate(null);
+		final Collection<Procession> ps = new ArrayList<Procession>();
 		finder.setProcessions(ps);
 		return finder;
 	}
@@ -66,7 +70,12 @@ public class FinderService {
 		Assert.isTrue(finder.getId() != 0);
 		Assert.isTrue(this.finderRepository.findMemberFinder(member.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot modify it");
 
+		if (finder.getMinDate() == null)
+			finder.setMinDate(new Date());
+		if (finder.getMaxDate() == null)
+			finder.setMaxDate(new Date());
 		final Finder res = this.finderRepository.save(finder);
+		//Assert.notNull(me);
 		Assert.notNull(res);
 
 		member.setFinder(finder);
