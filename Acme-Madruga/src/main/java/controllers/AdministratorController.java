@@ -80,6 +80,7 @@ public class AdministratorController extends AbstractController {
 		result = new ModelAndView("administrator/edit");
 		final Administrator admin = this.administratorService.findByPrincipal();
 		final ActorFrom actor = this.registerService.inyect(admin);
+		actor.setTermsAndCondicions(true);
 		result.addObject("actorForm", actor);
 		return result;
 
@@ -121,7 +122,7 @@ public class AdministratorController extends AbstractController {
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.actorService.save(principal);
 
-		final ModelAndView result = new ModelAndView("redirect:login.do");
+		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
 		return result;
 	}
 

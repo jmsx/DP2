@@ -18,22 +18,22 @@
 	</script>
 </jstl:if>
 
-<jstl:if test="${not empty errors}">
-	<div class="errorDiv">
-		<ul>
-			<jstl:forEach items="${errors}" var="error">
-				<li><spring:message code="brotherhood.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
-			</jstl:forEach>
-		</ul>
-	</div>
-</jstl:if>
+	<jstl:if test="${not empty errors}">
+		<div class="errorDiv">
+			<ul>
+				<jstl:forEach items="${errors}" var="error">
+					<li><spring:message code="brotherhood.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+				</jstl:forEach>
+			</ul>
+		</div>
+	</jstl:if>
 
 
 <form:form modelAttribute="brotherhoodForm" action="brotherhood/edit.do" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<acme:textbox code="brotherhood.edit.userAccountuser" path="userAccountuser" />
-	<acme:textbox code="brotherhood.edit.userAccountpassword" path="userAccountpassword" />
+	<acme:password code="brotherhood.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="brotherhood.edit.name" path="name" />
 	<acme:textbox code="brotherhood.edit.middleName" path="middleName" />
@@ -44,5 +44,16 @@
 	<acme:textbox code="brotherhood.edit.address" path="address" />
 	<acme:textbox code="brotherhood.edit.title" path="title" />
 	<acme:textbox code="brotherhood.edit.pictures" path="pictures" />
+
+	<jstl:choose>
+	    <jstl:when test="${brotherhood.termsAndCondicions == true}">
+	        <form:hidden path="termsAndCondicions"/>
+	    </jstl:when>    
+	    <jstl:otherwise>
+			<form:checkbox path="termsAndCondicions"/><spring:message code="edit.accepted"/> <spring:message code="edit.termsAndConditions"/>
+			<br>
+	    </jstl:otherwise>
+	</jstl:choose>
+
 	<acme:submit code="brotherhood.edit.submit" name="save"/>
 </form:form>

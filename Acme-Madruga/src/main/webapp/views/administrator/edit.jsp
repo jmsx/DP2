@@ -32,8 +32,9 @@
 <form:form modelAttribute="actorForm" action="administrator/edit.do" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
+	
 	<acme:textbox code="administrator.edit.userAccountuser" path="userAccountuser" />
-	<acme:textbox code="administrator.edit.userAccountpassword" path="userAccountpassword" />
+	<acme:password code="administrator.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="administrator.edit.name" path="name" />
 	<acme:textbox code="administrator.edit.middleName" path="middleName" />
@@ -42,5 +43,17 @@
 	<acme:textbox code="administrator.edit.email" path="email" />
 	<acme:textbox code="administrator.edit.phone" path="phone" />
 	<acme:textbox code="administrator.edit.address" path="address" />
+	
+	<jstl:choose>
+	    <jstl:when test="${actorForm.termsAndCondicions == true}">
+	        <form:hidden path="termsAndCondicions"/>
+	    </jstl:when>    
+	    <jstl:otherwise>
+			<form:checkbox path="termsAndCondicions"/><spring:message code="edit.accepted"/> <spring:message code="edit.termsAndConditions"/>
+			<br>
+	    </jstl:otherwise>
+	</jstl:choose>
+
+
 	<acme:submit code="administrator.edit.submit" name="save"/>
 </form:form>

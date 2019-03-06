@@ -88,4 +88,10 @@ public class AreaService {
 		return result;
 	}
 
+	public Double getRatioBrotherhoodsPerArea() {
+		final Double result = this.areaRepository.getRatioBrotherhoodsPerArea();
+		Assert.notNull(result);
+		return result;
+	}
+
 }

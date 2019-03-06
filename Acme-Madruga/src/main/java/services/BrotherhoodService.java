@@ -78,8 +78,6 @@ public class BrotherhoodService {
 			final Actor principal = this.actorService.findByPrincipal();
 			Assert.isTrue(principal.getId() == brotherhood.getId(), "You only can edit your info");
 			//			final Brotherhood old = this.brotherhoodRepository.findOne(brotherhood.getId());
-			//TODO: Un brotherhood no puede actualizar su area
-			Assert.isNull((brotherhood.getArea()), "You can't change of area");
 			result = (Brotherhood) this.actorService.save(brotherhood);
 		}
 		return result;
@@ -194,15 +192,21 @@ public class BrotherhoodService {
 		return result;
 	}
 
-	public Brotherhood getSmallestBrotherhood() {
-		final Brotherhood result = this.brotherhoodRepository.getSmallestBrotherhood();
-		Assert.notNull(result);
+	public List<Brotherhood> getSmallestBrotherhood() {
+		final Integer[] bs = this.brotherhoodRepository.getSmallestBrotherhood();
+		Assert.notNull(bs);
+		final List<Brotherhood> result = new ArrayList<Brotherhood>();
+		for (final Integer id : bs)
+			result.add(this.findOne(id));
 		return result;
 	}
 
-	public Brotherhood getLargestBrotherhood() {
-		final Brotherhood result = this.brotherhoodRepository.getLargestBrotherhood();
-		Assert.notNull(result);
+	public List<Brotherhood> getLargestBrotherhood() {
+		final Integer[] bs = this.brotherhoodRepository.getLargestBrotherhood();
+		Assert.notNull(bs);
+		final List<Brotherhood> result = new ArrayList<Brotherhood>();
+		for (final Integer id : bs)
+			result.add(this.findOne(id));
 		return result;
 	}
 

@@ -140,6 +140,7 @@ public class MemberController extends AbstractController {
 		result = new ModelAndView("member/edit");
 		final Member member = this.memberService.findByPrincipal();
 		final ActorFrom actor = this.registerService.inyect(member);
+		actor.setTermsAndCondicions(true);
 		result.addObject("actorForm", actor);
 		return result;
 
@@ -202,7 +203,7 @@ public class MemberController extends AbstractController {
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.actorService.save(principal);
 
-		final ModelAndView result = new ModelAndView("redirect:login.do");
+		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
 		return result;
 	}
 

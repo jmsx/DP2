@@ -56,12 +56,7 @@
 				
 			</li>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.dashboard" /></a></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="dashboard/administrator/chart.do"><spring:message code="master.page.dashboard.chart" /></a></li>
-					<li><a href="dashboard/administrator/statistics.do"><spring:message code="master.page.dashboard.statistics" /></a></li>
-				</ul>
+			<li><a class="fNiv"><a href="dashboard/administrator/statistics.do"><spring:message	code="master.page.dashboard" /></a></a>
 			</li>
 			
 		</security:authorize>
@@ -162,7 +157,10 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
-					
+					<security:authorize access="hasRole('ADMIN')">
+					<li><a href="administrator/edit.do"><spring:message code="master.page.member.edit" /></a></li>
+					<li><a href="administrator/display.do"><spring:message code="master.page.member.display" /></a></li>
+					</security:authorize>
 					<li><a href="socialProfile/list.do"><spring:message code="master.page.actor.socialProfiles" /></a></li>
 					<security:authorize access="hasRole('MEMBER')">
 					<li><a href="member/edit.do"><spring:message code="master.page.member.edit" /></a></li>
