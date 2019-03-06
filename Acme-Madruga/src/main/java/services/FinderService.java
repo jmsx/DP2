@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +13,6 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
 import repositories.FinderRepository;
-import security.Authority;
-import domain.Actor;
 import domain.Finder;
 import domain.Member;
 import domain.Procession;
@@ -33,9 +32,6 @@ public class FinderService {
 
 	@Autowired
 	private ConfigurationParametersService				configParamService;
-
-	@Autowired
-	private ActorService								actorService;
 
 	@Autowired
 	private org.springframework.validation.Validator	validator;
@@ -65,71 +61,77 @@ public class FinderService {
 	}
 
 	public Finder save(final Finder finder) {
+		final Member member = this.memberService.findByPrincipal();
 		Assert.notNull(finder);
 		Assert.isTrue(finder.getId() != 0);
-		final Actor me = this.actorService.findByPrincipal();
-		Assert.notNull(me);
+		Assert.isTrue(this.finderRepository.findMemberFinder(member.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot modify it");
+
 		final Finder res = this.finderRepository.save(finder);
 		Assert.notNull(res);
+
+		member.setFinder(finder);
+		this.memberService.save(member);
 		return res;
 	}
 
 	public void delete(final Finder finder) {
 		Assert.notNull(finder);
+		final Member member = this.memberService.findByPrincipal();
 		Assert.isTrue(finder.getId() != 0);
 		Assert.isTrue(this.finderRepository.exists(finder.getId()));
+		Assert.isTrue(this.finderRepository.findMemberFinder(member.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot delete it");
 		this.finderRepository.delete(finder);
 	}
 
-	public Finder findMemberFinder(final int id) {
-		Assert.isTrue(id != 0);
-		final Member member = this.memberService.findOne(id);
-		Assert.notNull(member);
-		final Finder result = this.finderRepository.findMemberFinder(id);
-		Assert.notNull(result);
-		return result;
+	public Finder findMemberFinder() {
+		final Member principal = this.memberService.findByPrincipal();
+
+		final Finder finder = this.finderRepository.findMemberFinder(principal.getId());
+		Assert.notNull(finder);
+
+		final int finderTime = this.configParamService.find().getFinderTime();
+		final LocalDateTime ldt = new LocalDateTime(finder.getCreationDate());
+		ldt.plusHours(finderTime);
+
+		if (ldt.isBefore(LocalDateTime.now()))
+			this.clear(finder);
+
+		return finder;
 	}
 
-	public Finder clear(final Finder finder, final BindingResult binding) {
-		final Actor principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+	public Finder clear(final Finder finder) {
 		final Member member = this.memberService.findByPrincipal();
 		final Finder result = this.finderRepository.findMemberFinder(member.getId());
-		Assert.isTrue(result.equals(finder));
+		Assert.isTrue(result.equals(finder), "You're not owner of this finder");
 		Assert.notNull(result);
 		result.setKeyword("");
 		result.setAreaName("");
 		result.setMinDate(null);
 		result.setMaxDate(null);
 		result.setProcessions(new ArrayList<Procession>());
-		final Finder saved = this.finderRepository.save(result);
-		member.setFinder(saved);
-		this.validator.validate(saved, binding);
+		final Finder saved = this.save(result);
 		return saved;
 	}
 
 	public Collection<Procession> find(final String keyword, final String area, final Date maxDate, final Date minDate) {
-		final Actor principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.MEMBER));
+		final Member member = this.memberService.findByPrincipal();
+
 		final Collection<Procession> finalMode = this.processionService.findAllFinalMode();
 		final Collection<Procession> result = new ArrayList<Procession>();
 		for (final Procession p : finalMode)
 			if ((keyword == "" || (p.getDescription().contains(keyword) || p.getTitle().contains(keyword) || p.getTicker().contains(keyword) && (area == "" || p.getBrotherhood().getArea().getName().contains(area))
 				&& (maxDate == null || p.getMoment().before(maxDate)) && (minDate == null || p.getMoment().after(minDate)))))
 				result.add(p);
-		final Member member = this.memberService.findByPrincipal();
 		final Finder finder = this.finderRepository.findMemberFinder(member.getId());
 		finder.setAreaName(area);
 		finder.setKeyword(keyword);
 		finder.setMinDate(minDate);
 		finder.setMaxDate(maxDate);
 		finder.setProcessions(result);
-		final Finder saved = this.finderRepository.save(finder);
-		Assert.notNull(saved);
-		member.setFinder(saved);
+		this.save(finder);
+
 		return result;
 	}
-
 	public Double getAverageFinderResults() {
 		final Double result = this.finderRepository.getAverageFinderResults();
 		Assert.notNull(result);
@@ -157,6 +159,26 @@ public class FinderService {
 	public Double getRatioEmptyFinders() {
 		final Double result = this.finderRepository.getRatioEmptyFinders();
 		Assert.notNull(result);
+		return result;
+	}
+
+	public Finder reconstruct(final Finder finder, final BindingResult binding) {
+		Finder result;
+
+		result = this.finderRepository.findOne(finder.getId());
+		Assert.notNull(result);
+
+		final Finder finderClonado = (Finder) result.clone();
+
+		finderClonado.setKeyword(finder.getKeyword());
+		finderClonado.setAreaName(finder.getAreaName());
+		finderClonado.setMinDate(finder.getMinDate());
+		finderClonado.setMaxDate(finder.getMaxDate());
+
+		result = finderClonado;
+
+		this.validator.validate(result, binding);
+
 		return result;
 	}
 }

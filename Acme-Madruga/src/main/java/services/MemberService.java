@@ -93,15 +93,16 @@ public class MemberService {
 
 		final Member member = this.findByUserId(user.getId());
 		Assert.notNull(member);
+
 		final boolean bool = this.actorService.checkAuthority(member, Authority.MEMBER);
 		Assert.isTrue(bool);
 
 		return member;
 	}
 
-	public Member findByUserId(final int id) {
-		Assert.isTrue(id != 0);
-		final Member member = this.memberRepository.findByUserId(id);
+	public Member findByUserId(final int userAccountId) {
+		Assert.isTrue(userAccountId != 0);
+		final Member member = this.memberRepository.findByUserId(userAccountId);
 		return member;
 	}
 

@@ -22,7 +22,6 @@ import services.ProcessionService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Finder;
-import domain.Member;
 import domain.Procession;
 
 @Controller
@@ -84,8 +83,7 @@ public class FinderMemberController extends AbstractController {
 	public ModelAndView edit() {
 		ModelAndView result;
 		final Finder finder;
-		final Member member = this.memberService.findByPrincipal();
-		finder = this.finderService.findMemberFinder(member.getId());
+		finder = this.finderService.findMemberFinder();
 		Assert.notNull(finder);
 		result = this.createEditModelAndView(finder);
 		return result;
@@ -96,17 +94,17 @@ public class FinderMemberController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "clear")
 	public ModelAndView clear(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
-		//		if (binding.hasErrors())
-		//			result = this.createEditModelAndView(finder);
-		//		else
-		try {
-			final Finder cleared = this.finderService.clear(finder, binding);
-			this.finderService.save(cleared);
-			result = new ModelAndView("redirect:edit.do");
-			result.addObject(cleared);
-		} catch (final Throwable e) {
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(finder);
-		}
+		else
+			try {
+				final Finder cleared = this.finderService.clear(finder);
+				// this.finderService.save(cleared);
+				result = new ModelAndView("redirect:edit.do");
+				result.addObject(cleared);
+			} catch (final Throwable e) {
+				result = this.createEditModelAndView(finder);
+			}
 		return result;
 	}
 
@@ -119,19 +117,19 @@ public class FinderMemberController extends AbstractController {
 		ModelAndView result;
 		final Collection<Procession> listFinder = this.finderService.find(finder.getKeyword(), finder.getAreaName(), finder.getMinDate(), finder.getMaxDate());
 		final String lang = LocaleContextHolder.getLocale().getLanguage();
-		//		if (binding.hasErrors())
-		//			result = this.createEditModelAndView(finder);
-		//		else
-		try {
-			finder.setProcessions(listFinder);
-			final Finder saved = this.finderService.save(finder);
-			result = new ModelAndView("redirect:display.do");
-			result.addObject("finder", saved);
-			result.addObject("processions", listFinder);
-			result.addObject("lang", lang);
-		} catch (final Throwable e) {
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(finder);
-		}
+		else
+			try {
+				finder.setProcessions(listFinder);
+				final Finder saved = this.finderService.save(finder);
+				result = new ModelAndView("redirect:display.do");
+				result.addObject("finder", saved);
+				result.addObject("processions", listFinder);
+				result.addObject("lang", lang);
+			} catch (final Throwable e) {
+				result = this.createEditModelAndView(finder);
+			}
 		return result;
 	}
 
@@ -140,21 +138,19 @@ public class FinderMemberController extends AbstractController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display() {
 		final ModelAndView result;
-		final Member member = this.memberService.findByPrincipal();
-		final Finder finder = this.finderService.findMemberFinder(member.getId());
+		final Finder finder = this.finderService.findMemberFinder();
 		Assert.notNull(finder);
 		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
-		if (member != null) {
-			Collection<Procession> procs;
-			procs = this.finderService.find(finder.getKeyword(), finder.getAreaName(), finder.getMinDate(), finder.getMaxDate());
-			//procs = this.processionService.findAllFinalMode();
-			result = new ModelAndView("finder/display");
-			result.addObject("finder", finder);
-			result.addObject("processions", procs);
-			result.addObject("lang", lang);
-		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+		Collection<Procession> procs;
+		procs = this.finderService.find(finder.getKeyword(), finder.getAreaName(), finder.getMinDate(), finder.getMaxDate());
+		//procs = this.processionService.findAllFinalMode();
+		result = new ModelAndView("finder/display");
+		result.addObject("finder", finder);
+		result.addObject("processions", procs);
+		result.addObject("lang", lang);
+		//		 else
+		//			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 
