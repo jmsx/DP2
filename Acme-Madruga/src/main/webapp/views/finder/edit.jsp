@@ -44,10 +44,17 @@
 	<form:errors cssClass="error" path="keyword" />
 	<br />
 	<form:label path="areaName">
-		<spring:message code="finder.areaName" />: </form:label>
-	<form:input path="areaName" />
-	<form:errors cssClass="error" path="areaName" />
+		<spring:message code="finder.areaName" />
+	</form:label>	
+	<form:select path="areaName" >
+		<form:option value=""/>
+		<jstl:forEach items="${areas}" var="mar">
+			<form:option value="${mar.name}"/>		
+		</jstl:forEach>
+	</form:select>
+	<form:errors path="areaName" cssClass="error" />
 	<br />
+	
 	<form:label path="minDate">
 		<spring:message code="finder.minDate" />: </form:label>
 	<form:input path="minDate" placeholder = "yyyy-MM-dd HH:mm" />
