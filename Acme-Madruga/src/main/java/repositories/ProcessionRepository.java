@@ -2,6 +2,7 @@
 package repositories;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,6 @@ public interface ProcessionRepository extends JpaRepository<Procession, Integer>
 	@Query(value = "select  * from `acme-madruga`.Procession WHERE timestampdiff(MINUTE, '2020-03-27', moment) <=30*24*60", nativeQuery = true)
 	List<Procession> getProcessionsThirtyDays();
 
+	@Query("select distinct p from Procession p where p.mode='FINAL' AND (?1='' OR p.description LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%') OR p.ticker LIKE CONCAT('%',?1,'%')) AND ((p.moment>=?2) OR ?2=NULL) AND ((p.moment<=?3) OR ?3=NULL) AND (?4='' OR p.brotherhood.area.name=?4)")
+	Collection<Procession> findProcessions(String keyword, Date minDate, Date maxDate, String area);
 }

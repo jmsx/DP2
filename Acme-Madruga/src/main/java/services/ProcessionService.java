@@ -102,6 +102,12 @@ public class ProcessionService {
 		return res;
 	}
 
+	Collection<Procession> findProcessions(final String keyword, final Date minDate, final Date maxDate, final String area) {
+		final Collection<Procession> res = this.processionRepository.findProcessions(keyword, minDate, maxDate, area);
+		Assert.notNull(res);
+		return res;
+	}
+
 	public Procession save(final Procession procession) {
 		Assert.notNull(procession);
 		final Actor principal = this.actorService.findByPrincipal();

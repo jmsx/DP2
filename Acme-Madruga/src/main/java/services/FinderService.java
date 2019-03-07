@@ -70,7 +70,7 @@ public class FinderService {
 	// Antes de guardar tengo que pasar por este metodo para setearle las nuevas procesiones segun los nuevos parametros
 	public Finder find(final Finder finder) {
 		this.memberService.findByPrincipal();
-		final Collection<Procession> result = this.finderRepository.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
+		final Collection<Procession> result = this.processionService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
 		finder.setProcessions(result);
 		return this.save(finder);
 	}

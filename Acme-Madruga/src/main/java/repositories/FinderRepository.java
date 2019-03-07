@@ -1,7 +1,6 @@
 
 package repositories;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -16,17 +15,6 @@ import domain.Procession;
 @Repository
 public interface FinderRepository extends JpaRepository<Finder, Integer> {
 
-	//@Query(select p from Procession p where (p.title LIKE CONCAT('%',:keyword,'%') or p.description LIKE CONCAT('%',:keyword,'%') or p.ticker LIKE CONCAT('%',:keyword,'%') or p.mode LIKE CONCAT('%',:keyword,'%'))")
-	//List<Procession> findForKeyword(@Param("keyword") String keyword);
-	//
-	//	@Query("select p from Procession p join p.brotherhood b where b.area.name =?1")
-	//	List<Procession> findForArea(String areaName);
-	//
-	//	@Query("select p from Procession p where p.moment >=?1")
-	//	List<Procession> findForMinDate(Date fecha);
-	//
-	//	@Query("select p from Procession p where p.moment <=?1")
-	//	List<Procession> findForMaxDate(Date fecha);
 	@Query("select p from Procession p where (p.title LIKE CONCAT('%',:keyword,'%') or p.description LIKE CONCAT('%',:keyword,'%') or p.ticker LIKE CONCAT('%',:keyword,'%') or p.mode LIKE CONCAT('%',:keyword,'%'))")
 	List<Procession> findForKeyword(@Param("keyword") String keyword);
 
@@ -56,9 +44,4 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 
 	@Query("select m.finder from Member m where m.id=?1")
 	Finder findMemberFinder(int id);
-
-	@Query("select distinct p from Procession p where p.mode='FINAL' AND " + "(?1='' OR p.description LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%')  "
-		+ "OR p.ticker LIKE CONCAT('%',?1,'%')) AND (?2=NULL OR (p.moment>=?2)) AND (?3=NULL OR p.moment<=?3)) AND (?4='' " + "OR p.brotherhood.area.name=?4)")
-	Collection<Procession> findProcessions(String keyword, Date minDate, Date maxDate, String area);
-
 }
