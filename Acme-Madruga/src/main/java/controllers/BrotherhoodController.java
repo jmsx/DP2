@@ -81,7 +81,6 @@ public class BrotherhoodController extends AbstractController {
 		result.addObject("brotherhoodForm", brotherhoodForm);
 		return result;
 	}
-
 	// DISPLAY  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
