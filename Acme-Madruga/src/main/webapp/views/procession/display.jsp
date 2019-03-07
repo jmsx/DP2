@@ -54,14 +54,19 @@
 	value="${procession.maxColumns}" />
 
 <jstl:forEach items="${procession.floats}" var="f" varStatus="loop">
-	<jstl:out value="${loop.index+1} " /><spring:message code="procession.float" />
-	: <a href="float/display.do?floatId=${f.id}"><jstl:out value="${f.title}"/></a>
-	<br />
+	<jstl:out value="${loop.index+1} " /><spring:message code="procession.float" />: 
+	<security:authorize access="hasRole('BROTHERHOOD')">
+		<a href="float/display.do?floatId=${f.id}">
+	</security:authorize>
+	<jstl:out value="${f.title}"/></a><br />
 </jstl:forEach>
 
 <spring:message code="procession.brotherhood" />:
-<a href="brotherhood/displayTabla.do?brotherhoodId=${procession.brotherhood.id}"><jstl:out value="${procession.brotherhood.title}"/></a>
-<br />
+<security:authorize access="hasRole('BROTHERHOOD')">
+<a href="brotherhood/displayTabla.do?brotherhoodId=${procession.brotherhood.id}">
+</security:authorize>
+<jstl:out value="${procession.brotherhood.title}"/>
+</a><br />
 <br />
 
 <security:authorize access="hasRole('BROTHERHOOD')">
