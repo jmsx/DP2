@@ -66,7 +66,10 @@
 	<jstl:otherwise>
 		<spring:message code="request.status.pending"/></br></br>
 		<security:authorize access="hasRole('MEMBER')">
-			<acme:submit name="delete" code="request.delete"/>
+			<form:form action="request/member/edit.do" modelAttribute="request">
+			<form:hidden path="id"/>
+			<form:hidden path="version"/>
+			<acme:submit name="delete" code="request.delete"/></form:form>
 		</security:authorize>
 	</jstl:otherwise>
 </jstl:choose>

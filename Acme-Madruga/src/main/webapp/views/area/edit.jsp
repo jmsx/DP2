@@ -16,7 +16,7 @@
 </head>
 
 
-<form:form action="area/edit.do"  modelAttribute="area" >
+<form:form action="area/administrator/edit.do"  modelAttribute="area" >
 
 	<form:hidden path="id" />
 	<form:hidden path="version" /> 
@@ -65,7 +65,7 @@
 	
 	  <input type="button" name="cancel"
 		value="<spring:message code="area.cancel"/>"
-		onclick="javascript: window.location.replace('area/list.do')" />
+		onclick="javascript: window.location.replace('area/administrator/list.do')" />
 	<br />
 	
 	</security:authorize>
