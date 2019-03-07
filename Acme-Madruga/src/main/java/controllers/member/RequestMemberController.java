@@ -120,7 +120,7 @@ public class RequestMemberController extends AbstractController {
 		try {
 			// service controlled that procession deleted has pending status
 			this.requestService.delete(retrieved);
-			result = new ModelAndView("request/list");
+			result = new ModelAndView("redirect:/request/member/list.do");
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(request, "request.commit.error");
 		}

@@ -111,8 +111,8 @@ public class RequestService {
 			if (req.getStatus().equals("APPROVED")) {
 				Assert.isTrue(!this.processionRequested(req.getProcession().getId()));
 				Assert.isTrue((req.getExplanation() == "" || req.getExplanation() == null), "A explanation musn't be written if you approve the request");
-				final boolean rowIsNull = req.getRow() == null && req.getRow() <= req.getProcession().getMaxRows();
-				final boolean columnIsNull = req.getColumn() == null && req.getColumn() <= req.getProcession().getMaxColumns();
+				final boolean rowIsNull = req.getRow() == null || req.getRow() > req.getProcession().getMaxRows();
+				final boolean columnIsNull = req.getColumn() == null || req.getColumn() > req.getProcession().getMaxColumns();
 				Assert.isTrue(!(rowIsNull || columnIsNull), "If Request is APPROVED, row and column cannot be null or greater than maximum allowed");
 				Assert.isTrue(this.requestRepository.availableRowColumn(req.getRow(), req.getColumn(), req.getProcession().getId()), "If Request is APPROVED, row and column assigned by brotherhood must be unique");
 			}
@@ -120,6 +120,12 @@ public class RequestService {
 		req = this.requestRepository.save(req);
 		return req;
 	}
+
+	public boolean availableRowColumn(final Request req) {
+		Assert.notNull(req);
+		return this.requestRepository.availableRowColumn(req.getRow(), req.getColumn(), req.getProcession().getId());
+	}
+
 	public void delete(final Request req) {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);

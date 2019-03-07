@@ -40,9 +40,11 @@
 				<form:hidden path="status" value="APPROVED"/>
 				<form:hidden path="explanation"/>
 				<acme:display code="request.suggested.row" value="${suggestedRow}"/>
+				<acme:display code="request.max.row" value="${request.procession.maxRows}"/>
 				<acme:numberbox code="request.row" path="row" min="1"/>
 				<br />
 				<acme:display code="request.suggested.column" value="${suggestedColumn}"/>
+				<acme:display code="request.max.column" value="${request.procession.maxColumns}"/>
 				<acme:numberbox code="request.column" path="column" min="1"/>	
 				<br />
 			</jstl:if>
