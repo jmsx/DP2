@@ -80,8 +80,7 @@ public class MemberController extends AbstractController {
 		if (member != null) {
 			result = new ModelAndView("member/display");
 			result.addObject("member", member);
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
+			result.addObject("displayButtons", true);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -97,11 +96,11 @@ public class MemberController extends AbstractController {
 		member = this.memberService.findOne(memberId);
 
 		if (member != null) {
+			final int principal = this.actorService.findByPrincipal().getId();
 			result = new ModelAndView("member/display");
 			result.addObject("member", member);
-
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
+			final boolean displayButtons = principal == member.getId();
+			result.addObject("displayButtons", displayButtons);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 

@@ -80,6 +80,13 @@ public class ProcessionService {
 		return result;
 	}
 
+	public Collection<Procession> findAllFinalModeByBrotherhood(final int id) {
+		final Collection<Procession> result = this.processionRepository.findAllFinalModeByBrotherhood(id);
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	public Collection<Procession> findAllByPrincipal() {
 		Collection<Procession> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();

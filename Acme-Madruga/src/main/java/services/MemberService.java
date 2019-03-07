@@ -87,6 +87,8 @@ public class MemberService {
 		Assert.notNull(member);
 		Assert.isTrue(this.findByPrincipal().equals(member));
 		Assert.isTrue(member.getId() != 0);
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(principal.getId() == member.getId(), "You only can edit your info");
 		Assert.isTrue(this.memberRepository.exists(member.getId()));
 		this.memberRepository.delete(member);
 	}

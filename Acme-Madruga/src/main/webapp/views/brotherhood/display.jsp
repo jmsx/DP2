@@ -65,10 +65,8 @@ function deletePersonalData(){
 </jstl:choose>
 <br>
 
-<jstl:if test="${displayButtons eq true}">
-
 <jstl:choose>
-	<jstl:when test="${empty brotherhood.area}">
+	<jstl:when test="${empty brotherhood.area and displayButtons}">
 	<acme:button url="brotherhood/assignArea.do" name="assign" code="brotherhood.selectArea"/>
 	<br>
 	</jstl:when>
@@ -77,9 +75,9 @@ function deletePersonalData(){
 	</jstl:otherwise>
 </jstl:choose>
 <br>
-	<acme:button url="procession/brotherhood/list.do" name="processionList" code="brotherhood.processionList"/>
+	<acme:button url="procession/listByBrotherhood.do?brotherhoodId=${brotherhood.id}" name="processionList" code="brotherhood.processionList"/>
 <br>
-
+<jstl:if test="${displayButtons}">
 	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
 	<button onClick="deletePersonalData()"><spring:message code="display.button.deletePersonalData"/></button>
 </jstl:if>

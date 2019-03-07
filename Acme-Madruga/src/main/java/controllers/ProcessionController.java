@@ -63,4 +63,23 @@ public class ProcessionController extends AbstractController {
 
 		return result;
 	}
+
+	@RequestMapping(value = "/listByBrotherhood", method = RequestMethod.GET)
+	public ModelAndView listByBrotherhood(@RequestParam final int brotherhoodId) {
+		final ModelAndView result;
+		final Collection<Procession> processions;
+
+		processions = this.processionService.findAllFinalModeByBrotherhood(brotherhoodId);
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
+		result = new ModelAndView("procession/list");
+		result.addObject("processions", processions);
+		result.addObject("lang", lang);
+		result.addObject("requetURI", "procession/list.do");
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
 }

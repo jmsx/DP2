@@ -93,9 +93,7 @@ public class BrotherhoodController extends AbstractController {
 		if (brotherhood != null) {
 			result = new ModelAndView("brotherhood/display");
 			result.addObject("brotherhood", brotherhood);
-
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
+			result.addObject("displayButtons", true);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -110,11 +108,11 @@ public class BrotherhoodController extends AbstractController {
 		brotherhood = this.brotherhoodService.findOne(brotherhoodId);
 
 		if (brotherhood != null) {
+			final int principal = this.actorService.findByPrincipal().getId();
 			result = new ModelAndView("brotherhood/display");
 			result.addObject("brotherhood", brotherhood);
-
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
+			final boolean displayButtons = principal == brotherhood.getId();
+			result.addObject("displayButtons", displayButtons);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 

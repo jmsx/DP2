@@ -65,7 +65,7 @@ function deletePersonalData(){
 </jstl:choose>
 
 
-<jstl:if test="${displayButtons eq true}">
+<jstl:if test="${displayButtons}">
 <br>
 	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
 	<button onClick="deletePersonalData()"><spring:message code="display.button.deletePersonalData"/></button>

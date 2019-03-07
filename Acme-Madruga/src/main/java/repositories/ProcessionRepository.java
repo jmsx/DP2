@@ -31,4 +31,7 @@ public interface ProcessionRepository extends JpaRepository<Procession, Integer>
 
 	@Query("select distinct p from Procession p where p.mode='FINAL' AND (?1='' OR p.description LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%') OR p.ticker LIKE CONCAT('%',?1,'%')) AND (?4='' OR (?4=p.brotherhood.area.name)) AND ((p.moment>=?2) OR ?2=NULL) AND ((p.moment<=?3) OR ?3=NULL)")
 	Collection<Procession> findProcessions(String keyword, Date minDate, Date maxDate, String area);
+
+	@Query("select p from Procession p where p.mode='FINAL' AND p.brotherhood.id=?1")
+	Collection<Procession> findAllFinalModeByBrotherhood(int userAccountId);
 }

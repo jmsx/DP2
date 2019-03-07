@@ -87,6 +87,8 @@ public class BrotherhoodService {
 		Assert.notNull(brotherhood);
 		Assert.isTrue(this.findByPrincipal().equals(brotherhood));
 		Assert.isTrue(brotherhood.getId() != 0);
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(principal.getId() == brotherhood.getId(), "You only can edit your info");
 		Assert.isTrue(this.brotherhoodRepository.exists(brotherhood.getId()));
 		this.brotherhoodRepository.delete(brotherhood);
 	}
