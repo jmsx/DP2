@@ -123,11 +123,12 @@ public class FinderService {
 		final Finder finder = this.finderRepository.findMemberFinder(principal.getId());
 		Assert.notNull(finder);
 
-		final int finderTime = this.configParamService.find().getFinderTime();
-		final LocalDateTime ldt = new LocalDateTime(finder.getCreationDate());
-		ldt.plusHours(finderTime);
+		// final int finderTime = this.configParamService.find().getFinderTime();
+		// final LocalDateTime ldt = new LocalDateTime(finder.getCreationDate());
+		// ldt.plusHours(finderTime);
 
-		if (ldt.isBefore(LocalDateTime.now()))
+		// if (ldt.isBefore(LocalDateTime.now()))
+		if (this.clearCache(finder))
 			this.clear(finder);
 
 		return finder;
@@ -176,4 +177,17 @@ public class FinderService {
 		Assert.notNull(result);
 		return result;
 	}
+
+	public boolean clearCache(final Finder finder) {
+		Assert.notNull(finder);
+
+		final double update = finder.getCreationDate().getTime();
+		final double current = new Date(System.currentTimeMillis()).getTime();
+		final Double period = (current - update) / 3600000;
+		final ConfigurationParameters conf = this.configParamService.find();
+		final int max = conf.getFinderTime();
+
+		return max <= period;
+	}
+
 }
