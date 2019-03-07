@@ -3,7 +3,9 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +72,10 @@ public class FinderService {
 	// Antes de guardar tengo que pasar por este metodo para setearle las nuevas procesiones segun los nuevos parametros
 	public Finder find(final Finder finder) {
 		this.memberService.findByPrincipal();
-		final Collection<Procession> result = this.processionService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName());
+		final List<Procession> result = new ArrayList<>(this.processionService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName()));
+		Collections.shuffle(result);
+		final int maxResults = this.configParamService.find().getMaxFinderResults();
+		result.subList(0, maxResults - 1);
 		finder.setProcessions(result);
 		return this.save(finder);
 	}
