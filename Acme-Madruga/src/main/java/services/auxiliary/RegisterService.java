@@ -61,21 +61,12 @@ public class RegisterService {
 			result.setUserAccount(uaSaved);
 		} else {
 			final Administrator old = this.administratorService.findOne(admin.getId());
-			if (!old.getUserAccount().getPassword().equals(ua.getPassword()))
-				ua.setPassword(hash);
+
+			ua.setPassword(hash);
 			if (!old.getUserAccount().getUsername().equals(ua.getUsername()))
 				Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+
 			result = this.administratorService.save(admin);
-			UserAccount uaSaved = result.getUserAccount();
-			uaSaved.setAuthorities(ua.getAuthorities());
-			admin.setUserAccount(ua);
-
-			uaSaved.setUsername(ua.getUsername());
-			if (!old.getUserAccount().getPassword().equals(ua.getPassword()))
-				uaSaved.setPassword(hash);
-
-			uaSaved = this.userAccountService.save(uaSaved);
-			result.setUserAccount(uaSaved);
 
 		}
 
@@ -100,21 +91,12 @@ public class RegisterService {
 			result.setUserAccount(uaSaved);
 		} else {
 			final Member old = this.memberService.findOne(member.getId());
-			if (!old.getUserAccount().getPassword().equals(ua.getPassword()))
-				ua.setPassword(hash);
+
+			ua.setPassword(hash);
 			if (!old.getUserAccount().getUsername().equals(ua.getUsername()))
 				Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+
 			result = this.memberService.save(member);
-			UserAccount uaSaved = result.getUserAccount();
-			uaSaved.setAuthorities(ua.getAuthorities());
-			member.setUserAccount(ua);
-
-			uaSaved.setUsername(ua.getUsername());
-			if (!old.getUserAccount().getPassword().equals(ua.getPassword()))
-				uaSaved.setPassword(hash);
-
-			uaSaved = this.userAccountService.save(uaSaved);
-			result.setUserAccount(uaSaved);
 
 		}
 
@@ -165,6 +147,7 @@ public class RegisterService {
 		final UserAccount ua = brotherhood.getUserAccount();
 		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 		final String hash = encoder.encodePassword(ua.getPassword(), null);
+		System.out.println();
 		if (brotherhood.getId() == 0) {
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
 			final Date moment = new Date(System.currentTimeMillis() - 1);
@@ -181,22 +164,14 @@ public class RegisterService {
 			uaSaved = this.userAccountService.save(uaSaved);
 			result.setUserAccount(uaSaved);
 		} else {
+
 			final Brotherhood old = this.brotherhoodService.findOne(brotherhood.getId());
-			if (!old.getUserAccount().getPassword().equals(ua.getPassword()))
-				ua.setPassword(hash);
+
+			ua.setPassword(hash);
 			if (!old.getUserAccount().getUsername().equals(ua.getUsername()))
 				Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+
 			result = this.brotherhoodService.save(brotherhood);
-			UserAccount uaSaved = result.getUserAccount();
-			uaSaved.setAuthorities(ua.getAuthorities());
-			brotherhood.setUserAccount(ua);
-
-			uaSaved.setUsername(ua.getUsername());
-			if (!old.getUserAccount().getPassword().equals(ua.getPassword()))
-				uaSaved.setPassword(hash);
-
-			uaSaved = this.userAccountService.save(uaSaved);
-			result.setUserAccount(uaSaved);
 
 		}
 
