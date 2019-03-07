@@ -20,7 +20,7 @@
   
   <!-- ===================================== -->
   <!-- =============== HTTPS =============== -->
-  <!--  
+
   <security-constraint>
   	<web-resource-collection>
   		<web-resource-name>Acme-Madruga</web-resource-name>
@@ -30,7 +30,7 @@
   		<transport-guarantee>CONFIDENTIAL</transport-guarantee>
   	</user-data-constraint>
   </security-constraint>
-  -->
+
   <!-- ===================================== -->
   <!-- ===================================== -->
   
