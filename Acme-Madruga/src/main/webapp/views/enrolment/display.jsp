@@ -34,6 +34,7 @@
 </jstl:choose>
 <br>
 
+<jstl:if test="${not empty enrolment.moment}">
 <jstl:choose>
 	<jstl:when test="${enrolment.enrolled}">
 		<jstl:choose>
@@ -71,7 +72,7 @@
 	</jstl:otherwise>
 </jstl:choose>
 
-
+ </jstl:if>
 <jstl:choose>
 	<jstl:when test="${enrolment.dropOut ne null}">
 		<acme:display code="enrolment.dropOut" value="${enrolment.dropOut}"/>		
