@@ -49,12 +49,12 @@
 	<br />
 	<form:label path="minDate">
 		<spring:message code="finder.minDate" />: </form:label>
-	<form:input path="minDate" placeholder = "yyyy-MM-dd" />
+	<form:input path="minDate" placeholder = "yyyy-MM-dd HH:mm" />
 	<form:errors cssClass="error" path="minDate" />
 	<br />
 	<form:label path="maxDate">
 		<spring:message code="finder.maxDate" />: </form:label>
-	<form:input path="maxDate" placeholder = "yyyy-MM-dd" />
+	<form:input path="maxDate" placeholder = "yyyy-MM-dd HH:mm" />
 	<form:errors cssClass="error" path="maxDate" />
 	<br />
 

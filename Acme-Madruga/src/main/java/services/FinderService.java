@@ -71,7 +71,7 @@ public class FinderService {
 	// Antes de guardar tengo que pasar por este metodo para setearle las nuevas procesiones segun los nuevos parametros
 	public Finder find(final Finder finder) {
 		this.memberService.findByPrincipal();
-		final Collection<Procession> finalMode = this.processionService.findAllFinalMode();
+		// final Collection<Procession> finalMode = this.processionService.findAllFinalMode();
 		final Collection<Procession> result;//= new ArrayList<Procession>();
 		//		for (final Procession p : finalMode)
 		//			if ((finder.getKeyword() == "" || (p.getDescription().contains(finder.getKeyword()) || p.getTitle().contains(finder.getKeyword()) || p.getTicker().contains(finder.getKeyword())

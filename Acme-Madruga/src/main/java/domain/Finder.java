@@ -47,8 +47,8 @@ public class Finder extends DomainEntity implements Cloneable {
 		this.areaName = areaName;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	public Date getMinDate() {
 		return this.minDate;
 	}
@@ -57,8 +57,8 @@ public class Finder extends DomainEntity implements Cloneable {
 		this.minDate = minDate;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	public Date getMaxDate() {
 		return this.maxDate;
 	}

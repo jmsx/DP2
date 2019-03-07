@@ -17,7 +17,7 @@
 
 	<bean id="userAccountAdmin1" class="security.UserAccount">
 		<property name="username" value="admin1" />
-		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="password" value="e00cf25ad42683b3df678c61f42c6bda" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -29,7 +29,7 @@
 
 	<bean id="userAccountAdmin2" class="security.UserAccount">
 		<property name="username" value="admin2" />
-		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="password" value="c84258e9c39059a89ab77d846ddab909" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -67,7 +67,7 @@
 
 	<bean id="userAccountMember3" class="security.UserAccount">
 		<property name="username" value="member3" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
+		<property name="password" value="3ef4802d8a37022fd187fbd829d1c4d6" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -785,8 +785,8 @@
 		<property name="moment" value="2020/04/24 00:00" />
 		<property name="ticker" value="200424-TUEBG" />
 		<property name="mode" value="FINAL" />
-		<property name="maxRows" value="200"/>
-		<property name="maxColumns" value="200"/>
+		<property name="maxRows" value="200" />
+		<property name="maxColumns" value="200" />
 		<!-- Relations -->
 		<property name="floats">
 			<list>
@@ -802,8 +802,8 @@
 		<property name="moment" value="2020/04/26 00:00" />
 		<property name="ticker" value="200426-DOUBG" />
 		<property name="mode" value="FINAL" />
-		<property name="maxRows" value="120"/>
-		<property name="maxColumns" value="300"/>
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
 		<!-- Relations -->
 		<property name="floats">
 			<list>
@@ -1075,7 +1075,7 @@
 				<value>http://tyniurl.com/dsfe2435rwsd.png</value>
 			</list>
 		</property>
-		
+
 	</bean>
 
 
@@ -1103,7 +1103,7 @@
 		<property name="member" ref="member2"></property>
 		<property name="brotherhood" ref="brotherhood2"></property>
 	</bean>
-	
+
 	<bean id="enrolment3" class="domain.Enrolment">
 		<!-- Atributes -->
 		<property name="moment" value="2018/03/14 17:30"></property>
@@ -1113,8 +1113,8 @@
 		<property name="member" ref="member1"></property>
 		<property name="brotherhood" ref="brotherhood2"></property>
 	</bean>
-	
-	
+
+
 
 	<!-- =================================================================== 
 		======= ConfigurationParameters ========= =================================================================== -->
@@ -1134,7 +1134,7 @@
 				<value>cialis</value>
 				<value>one million</value>
 				<value>you've been selected</value>
-				<value>Nigeria</value>
+				<value>nigeria</value>
 				<value>sexo</value>
 				<value>un millón</value>
 				<value>ha sido seleccionado</value>
