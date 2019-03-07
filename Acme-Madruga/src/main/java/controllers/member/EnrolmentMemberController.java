@@ -89,26 +89,30 @@ public class EnrolmentMemberController extends AbstractController {
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int brotherhoodId) {
-		final ModelAndView result;
-		final Member member = this.memberService.findByPrincipal();
-		final Brotherhood brotherhood = this.brotherhoodService.findOne(brotherhoodId);
-		final Enrolment enrolment = this.enrolmentService.getEnrolment(brotherhood, member);
+		try {
+			final ModelAndView result;
+			final Member member = this.memberService.findByPrincipal();
+			final Brotherhood brotherhood = this.brotherhoodService.findOne(brotherhoodId);
+			final Enrolment enrolment = this.enrolmentService.getEnrolment(brotherhood, member);
 
-		final String lang = LocaleContextHolder.getLocale().getLanguage();
+			final String lang = LocaleContextHolder.getLocale().getLanguage();
 
-		if (member != null) {
-			result = new ModelAndView("enrolment/display");
-			result.addObject("enrolment", enrolment);
-			result.addObject("brotherhood", brotherhood);
-			result.addObject("member", member);
-			result.addObject("lang", lang);
+			if (member != null) {
+				result = new ModelAndView("enrolment/display");
+				result.addObject("enrolment", enrolment);
+				result.addObject("brotherhood", brotherhood);
+				result.addObject("member", member);
+				result.addObject("lang", lang);
 
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
-		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+				final String banner = this.configurationParametersService.findBanner();
+				result.addObject("banner", banner);
+			} else
+				result = new ModelAndView("redirect:/misc/403.jsp");
 
-		return result;
+			return result;
+		} catch (final Throwable e) {
+			return new ModelAndView("redirect:/misc/403.jsp");
+		}
 	}
 
 	// LIST MY ENROLMENTS  ---------------------------------------------------------------		
