@@ -812,6 +812,150 @@
 		</property>
 		<property name="brotherhood" ref="brotherhood2" />
 	</bean>
+	<bean id="procession3" class="domain.Procession">
+		<property name="title" value="Esperanza de jesus" />
+		<property name="description" value="This is a description of a procession3" />
+		<property name="moment" value="2025/04/26 00:00" />
+		<property name="ticker" value="200427-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession4" class="domain.Procession">
+		<property name="title" value="Nazareno" />
+		<property name="description" value="This is a description of a procession4" />
+		<property name="moment" value="2019/04/26 00:00" />
+		<property name="ticker" value="200428-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession5" class="domain.Procession">
+		<property name="title" value="Señor de la sangre" />
+		<property name="description" value="This is a description of a procession5" />
+		<property name="moment" value="2020/04/26 00:00" />
+		<property name="ticker" value="200429-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession6" class="domain.Procession">
+		<property name="title" value="Virgen de la Macarena" />
+		<property name="description" value="This is a description of a procession6" />
+		<property name="moment" value="2021/04/26 00:00" />
+		<property name="ticker" value="200436-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession7" class="domain.Procession">
+		<property name="title" value="El cachorro" />
+		<property name="description" value="This is a description of a procession7" />
+		<property name="moment" value="2021/04/26 00:00" />
+		<property name="ticker" value="200446-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession8" class="domain.Procession">
+		<property name="title" value="Los gitanos" />
+		<property name="description" value="This is a description of a procession8" />
+		<property name="moment" value="2021/04/26 00:00" />
+		<property name="ticker" value="200456-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession9" class="domain.Procession">
+		<property name="title" value="Santa genoveva" />
+		<property name="description" value="This is a description of a procession9s" />
+		<property name="moment" value="2021/04/26 00:00" />
+		<property name="ticker" value="200466-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession10" class="domain.Procession">
+		<property name="title" value="San gonzalo" />
+		<property name="description" value="This is a description of a procession10" />
+		<property name="moment" value="2022/04/26 00:00" />
+		<property name="ticker" value="200476-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+	<bean id="procession11" class="domain.Procession">
+		<property name="title" value="La amargura" />
+		<property name="description" value="This is a description of a procession11" />
+		<property name="moment" value="2022/04/26 00:00" />
+		<property name="ticker" value="200486-DOUBG" />
+		<property name="mode" value="FINAL" />
+		<property name="maxRows" value="120" />
+		<property name="maxColumns" value="300" />
+		<!-- Relations -->
+		<property name="floats">
+			<list>
+				<ref bean="float3" />
+			</list>
+		</property>
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
 
 
 
