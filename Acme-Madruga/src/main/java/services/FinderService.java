@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -184,8 +183,7 @@ public class FinderService {
 		final double update = finder.getCreationDate().getTime();
 		final double current = new Date(System.currentTimeMillis()).getTime();
 		final Double period = (current - update) / 3600000;
-		final ConfigurationParameters conf = this.configParamService.find();
-		final int max = conf.getFinderTime();
+		final int max = this.configParamService.find().getFinderTime();
 
 		return max <= period;
 	}
