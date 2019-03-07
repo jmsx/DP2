@@ -18,9 +18,9 @@
 	
 	<!-- User accounts -->
 
-	<bean id="userAccount1" class="security.UserAccount">
-		<property name="username" value="admin" />
-		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+	<bean id="userAccountAdmin1" class="security.UserAccount">
+		<property name="username" value="admin1" />
+		<property name="password" value="e00cf25ad42683b3df678c61f42c6bda" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
@@ -30,6 +30,80 @@
 		</property>
 	</bean>
 	
+	<bean id="administrator1" class="domain.Administrator">
+		<!-- Actor -->
+		<property name="name" value="Jose Manuel"></property>
+		<property name="middleName" value="jmsx12"></property>
+		<property name="surname" value="Gonzalez"></property>
+		<property name="photo" value="http://tinyurl.com/picture.png"></property>
+		<property name="email" value="conwdasto@jmsx.es"></property>
+		<property name="phone" value="+34647607406"></property>
+		<property name="address" value="Reina Mercedes"></property>
+		<property name="score" value="0.5"></property>
+		<property name="spammer" value="false"></property>
+		<property name="userAccount" ref="userAccountAdmin1"></property>
+
+
+	</bean>
+	
 	<!-- Other domain beans come here -->	
+	
+	<bean id="configurationParameters" class="domain.ConfigurationParameters">
+		<property name="sysName" value="Acme Madrugá" />
+		<property name="banner" value="https://tinyurl.com/acme-madruga" />
+		<property name="welcomeMessageEn"
+			value="Welcome to Acme Madrugá!  The site to organise your processions" />
+		<property name="welcomeMessageEsp"
+			value="¡Bienvenidos a Acme Madrugá!  Tu sitio para organizar procesiones" />
+		<property name="countryPhoneCode" value="+34" />
+		<property name="spamWords">
+			<list>
+				<value>sex</value>
+				<value>viagra</value>
+				<value>cialis</value>
+				<value>one million</value>
+				<value>you've been selected</value>
+				<value>nigeria</value>
+				<value>sexo</value>
+				<value>un millón</value>
+				<value>ha sido seleccionado</value>
+			</list>
+		</property>
+		<property name="positiveWords">
+			<list>
+				<value>good</value>
+				<value>factastic</value>
+				<value>excellent</value>
+				<value>great</value>
+				<value>amazing</value>
+				<value>terrific</value>
+				<value>beautiful</value>
+				<value>bueno</value>
+				<value>buena</value>
+				<value>fantástico</value>
+				<value>fantástica</value>
+				<value>excelente</value>
+				<value>genial</value>
+				<value>terrorífico</value>
+				<value>bonito</value>
+				<value>bonita</value>
+			</list>
+		</property>
+		<property name="negativeWords">
+			<list>
+				<value>not</value>
+				<value>bad</value>
+				<value>horrible</value>
+				<value>average</value>
+				<value>disaster</value>
+				<value>malo</value>
+				<value>media</value>
+				<value>desastre</value>
+			</list>
+		</property>
+		<property name="maxFinderResults" value="10" />
+		<property name="finderTime" value="1" />
+
+	</bean>
 	
 </beans>

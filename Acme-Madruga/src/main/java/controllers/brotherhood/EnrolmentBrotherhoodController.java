@@ -70,7 +70,7 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 
 			final String lang = LocaleContextHolder.getLocale().getLanguage();
 
-			if (brotherhood != null) {
+			if (brotherhood != null && enrolment != null) {
 				result = new ModelAndView("enrolment/display");
 				result.addObject("enrolment", enrolment);
 				result.addObject("member", member);
@@ -80,7 +80,8 @@ public class EnrolmentBrotherhoodController extends AbstractController {
 				final String banner = this.configurationParametersService.findBanner();
 				result.addObject("banner", banner);
 			} else
-				result = new ModelAndView("redirect:/misc/403.jsp");
+				result = new ModelAndView("enrolment/error");
+			result.addObject("ok", "No se encuentra ningún enrolment asociado");
 
 			return result;
 		} catch (final Throwable e) {

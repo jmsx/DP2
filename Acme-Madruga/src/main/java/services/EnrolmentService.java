@@ -153,8 +153,8 @@ public class EnrolmentService {
 		final Collection<Enrolment> res = this.enrolmentRepository.findEnrolmentFromBroMember(brotherhood.getUserAccount().getId(), member.getUserAccount().getId());
 		final Enrolment enrolment = this.enrolmentActive(res);
 		Assert.notNull(res);
-		Assert.notNull(enrolment);
-		Assert.notNull(enrolment.getMoment());
+		//		Assert.notNull(enrolment);
+		//		Assert.notNull(enrolment.getMoment());
 
 		return enrolment;
 	}
