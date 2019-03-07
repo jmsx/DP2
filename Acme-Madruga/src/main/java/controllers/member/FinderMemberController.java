@@ -77,6 +77,7 @@ public class FinderMemberController extends AbstractController {
 				final String lang = LocaleContextHolder.getLocale().getLanguage();
 				result = this.createEditModelAndView(saved);
 				result.addObject("lang", lang);
+				result.addObject("requestURI", "finder/member/edit.do");
 			} catch (final Throwable e) {
 				result = this.createEditModelAndView(finder, "finder.commit.error");
 			}
