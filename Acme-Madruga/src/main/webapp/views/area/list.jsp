@@ -20,7 +20,7 @@
 		
 		<spring:message code="area.edit.header" var="editHeader"></spring:message>
 		<display:column title="${editHeader}" sortable="false">
-			<spring:url value="area/edit.do" var="editURL">
+			<spring:url value="area/administrator/edit.do" var="editURL">
 				<spring:param name="areaId" value="${row.id}"/> <!-- es el par�metro que va a acompa�ar a la url -->
 			</spring:url>
 			<a href="${editURL}"><spring:message code="area.edit"/></a>
@@ -52,7 +52,7 @@
 
 <security:authorize access="hasRole('ADMIN')">
 	<div>
-		<a href="area/create.do"> <spring:message
+		<a href="area/administrator/create.do"> <spring:message
 				code="area.create" />
 		</a>
 	</div>

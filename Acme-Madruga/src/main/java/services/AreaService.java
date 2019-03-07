@@ -46,7 +46,7 @@ public class AreaService {
 		Assert.notNull(areaId);
 		Assert.isTrue(areaId != 0);
 		final Area result = this.areaRepository.findOne(areaId);
-		Assert.notNull(result);
+		Assert.notNull(result, "El área seleccionada no existe");
 		return result;
 	}
 
