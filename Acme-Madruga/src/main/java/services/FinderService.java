@@ -74,7 +74,8 @@ public class FinderService {
 		final List<Procession> result = new ArrayList<>(this.processionService.findProcessions(finder.getKeyword(), finder.getMinDate(), finder.getMaxDate(), finder.getAreaName()));
 		Collections.shuffle(result);
 		final int maxResults = this.configParamService.find().getMaxFinderResults();
-		result.subList(0, maxResults - 1);
+		if (result.size() > maxResults)
+			result.subList(0, maxResults);
 		finder.setProcessions(result);
 		return this.save(finder);
 	}
