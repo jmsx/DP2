@@ -126,10 +126,12 @@ public class BrotherhoodController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@Valid final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
 		ModelAndView result;
-		result = new ModelAndView("brotherhood/edit");
+
 		Brotherhood brotherhood;
 		if (binding.hasErrors()) {
+			result = new ModelAndView("brotherhood/edit");
 			result.addObject("errors", binding.getAllErrors());
+			brotherhoodForm.setTermsAndCondicions(false);
 			result.addObject("brotherhoodForm", brotherhoodForm);
 		} else
 			try {
@@ -137,13 +139,15 @@ public class BrotherhoodController extends AbstractController {
 				brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm);
 				brotherhood.setUserAccount(ua);
 				this.registerService.saveBrotherhood(brotherhood, binding);
+				result = new ModelAndView("redirect:security/login.do");
 				result.addObject("alert", "brotherhood.edit.correct");
-				brotherhoodForm.setTermsAndCondicions(false);
 				result.addObject("brotherhoodForm", brotherhoodForm);
 			} catch (final Throwable e) {
+				result = new ModelAndView("brotherhood/edit");
 				if (e.getMessage().contains("username is register"))
 					result.addObject("alert", "brotherhood.edit.usernameIsUsed");
 				result.addObject("errors", binding.getAllErrors());
+				brotherhoodForm.setTermsAndCondicions(false);
 				result.addObject("brotherhoodForm", brotherhoodForm);
 			}
 		return result;
