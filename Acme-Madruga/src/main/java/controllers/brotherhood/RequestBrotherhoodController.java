@@ -158,7 +158,7 @@ public class RequestBrotherhoodController extends AbstractController {
 		ModelAndView result;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(request);
+			result = this.createEditModelAndView(request, "request.commit.error");
 		else
 			try {
 				result = new ModelAndView("redirect:/request/brotherhood/list.do");
@@ -168,14 +168,22 @@ public class RequestBrotherhoodController extends AbstractController {
 				else
 					result = this.createEditModelAndView(request, "request.commit.error");
 			} catch (final Throwable oops) {
-				final String errorMessage = "request.commit.error";
-				//				if (oops.getMessage().contains("message.error"))
-				//					errorMessage = oops.getMessage();
-				result = this.createEditModelAndView(request, errorMessage);
+				if (request.getStatus().equals("REJECTED") && (request.getExplanation() == null || request.getExplanation() == "")) {
+					result = this.createEditModelAndView(request, "request.explanation.error");
+					result.addObject("setStatusTo", "REJECTED");
+				} else if (request.getStatus().equals("APPROVED") && (request.getRow() == null || request.getColumn() == null)) {
+					result = this.createEditModelAndView(request, "request.rowcolumn.error");
+					result.addObject("setStatusTo", "APPROVED");
+				} else if (request.getStatus().equals("APPROVED") && ((request.getRow() > request.getProcession().getMaxRows()) || (request.getColumn() > request.getProcession().getMaxColumns()))) {
+					result = this.createEditModelAndView(request, "request.max.error");
+					result.addObject("setStatusTo", "APPROVED");
+				} else if (!this.requestService.availableRowColumn(request)) {
+					result = this.createEditModelAndView(request, "request.available.error");
+					result.addObject("setStatusTo", "APPROVED");
+				} else
+					result = this.createEditModelAndView(request, "request.commit.error");
 			}
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 		return result;
 	}
 
