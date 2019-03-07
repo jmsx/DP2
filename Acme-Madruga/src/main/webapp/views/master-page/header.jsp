@@ -118,20 +118,11 @@
 				
 		<security:authorize access="hasRole('MEMBER')">
 		
-			<li><a class="fNiv"><spring:message	code="master.page.member" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="folder/list.do"><spring:message code="folder.list" /></a></li>					
-				</ul>
-			</li>
+			<li><a href="folder/list.do"><spring:message code="master.page.folder.list" /></a></li>
 			
 			<%-- PROCESSIONS --%>
 			
-			<li><a class="fNiv"><spring:message	code="master.page.procession" /></a>
-				<ul>
-					<li><a href="procession/member/list.do"><spring:message	code="master.page.procession.member.list" /></a>
-				</ul>
-			</li>
+			<li><a href="procession/member/list.do"><spring:message	code="master.page.procession.member.list" /></a>
 			
 			<%-- REQUESTS --%>
 						
