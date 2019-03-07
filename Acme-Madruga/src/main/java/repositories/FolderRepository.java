@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Folder;
-import domain.Member;
 
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, Integer> {
@@ -37,6 +36,9 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
 
 	@Query("select f from Folder f where f.father.id=?1")
 	Collection<Folder> findAllByFatherId(Integer id);
+
+	@Query("select f from Folder f where f.isSystemFolder = true and f.actor.userAccount.id=?1")
+	Collection<Folder> findAllSystemFolderByUserId(Integer id);
 
 	@Query("select f from Folder f where f.father.id = null and f.actor.userAccount.id=?1")
 	Collection<Folder> findAllFolderFatherNullByUserId(Integer id);

@@ -264,4 +264,10 @@ public class FolderService {
 		return this.folderRepository.findAllFolderFatherNullByUserId(id);
 	}
 
+	public Collection<Folder> findAllSystemFolderByUserId(final int id) {
+		Assert.isTrue(id != 0);
+
+		return this.folderRepository.findAllSystemFolderByUserId(id);
+	}
+
 }
