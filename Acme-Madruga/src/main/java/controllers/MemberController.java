@@ -125,6 +125,7 @@ public class MemberController extends AbstractController {
 				member.setUserAccount(ua);
 				this.registerService.saveMember(member, binding);
 				result.addObject("alert", "member.edit.correct");
+				actorForm.setTermsAndCondicions(false);
 				result.addObject("actorForm", actorForm);
 			} catch (final Throwable e) {
 				if (e.getMessage().contains("username is register"))

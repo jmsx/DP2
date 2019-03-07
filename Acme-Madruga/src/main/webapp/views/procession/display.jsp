@@ -60,7 +60,7 @@
 </jstl:forEach>
 
 <spring:message code="procession.brotherhood" />:
-<a href="brotherhood/display.do?brotherhoodId=${procession.brotherhood.id}"><jstl:out value="${procession.brotherhood.title}"/></a>
+<a href="brotherhood/displayTabla.do?brotherhoodId=${procession.brotherhood.id}"><jstl:out value="${procession.brotherhood.title}"/></a>
 <br />
 <br />
 

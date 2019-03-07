@@ -138,6 +138,7 @@ public class BrotherhoodController extends AbstractController {
 				brotherhood.setUserAccount(ua);
 				this.registerService.saveBrotherhood(brotherhood, binding);
 				result.addObject("alert", "brotherhood.edit.correct");
+				brotherhoodForm.setTermsAndCondicions(false);
 				result.addObject("brotherhoodForm", brotherhoodForm);
 			} catch (final Throwable e) {
 				if (e.getMessage().contains("username is register"))

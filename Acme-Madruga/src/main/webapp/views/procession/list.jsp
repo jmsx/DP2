@@ -35,7 +35,7 @@
 	<acme:dataTableColumn code="procession.moment" property="moment" />
 	
 	<display:column titleKey="procession.brotherhood">
-		<a href="brotherhood/display.do?brotherhoodId=${row.brotherhood.id}">
+		<a href="brotherhood/displayTabla.do?brotherhoodId=${row.brotherhood.id}">
 			<jstl:out value="${row.brotherhood.title}" />
 		</a>
 	</display:column>

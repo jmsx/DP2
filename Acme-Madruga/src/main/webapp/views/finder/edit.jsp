@@ -36,6 +36,7 @@
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<form:hidden path="processions"/>
+	<form:hidden path="creationDate"/>
 	
 	<form:label path="keyword">
 		<spring:message code="finder.keyword" />: </form:label>
@@ -67,7 +68,7 @@
 	<spring:message code="finder.results" />
 	<br>
 	
-<display:table name="${finder.processions}" id="row" requestURI="${requestURI}" pagesize="5" class="displaytag">
+<display:table name="${finder.processions}" id="row" requestURI="/finder/member/edit.do" pagesize="15" class="displaytag">
 	<display:column property="title" titleKey="procession.title" />
 	
 	<display:column property="ticker" titleKey="procession.ticker" />

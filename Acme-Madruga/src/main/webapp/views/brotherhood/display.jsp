@@ -81,7 +81,7 @@ function deletePersonalData(){
 	
 <br>
 <security:authorize access="hasRole('MEMBER')">
-	<acme:button url="brotherhood/list.do" name="back" code="procession.back"/>
+	<acme:button url="brotherhood/list.do" name="back" code="procession.back.list"/>
 </security:authorize>
 
 
