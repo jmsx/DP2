@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.AreaService;
 import services.FinderService;
 import controllers.AbstractController;
 import domain.Finder;
@@ -22,6 +23,9 @@ public class FinderMemberController extends AbstractController {
 
 	@Autowired
 	private FinderService	finderService;
+
+	@Autowired
+	private AreaService		areaService;
 
 
 	// CREATE  ---------------------------------------------------------------		
@@ -45,7 +49,6 @@ public class FinderMemberController extends AbstractController {
 		result = this.createEditModelAndView(finder);
 		return result;
 	}
-
 	// CLEAR  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "clear")
@@ -122,6 +125,7 @@ public class FinderMemberController extends AbstractController {
 
 		result = new ModelAndView("finder/edit");
 		result.addObject("finder", finder);
+		result.addObject("areas", this.areaService.findAll());
 		result.addObject("message", messageCode);
 
 		return result;
