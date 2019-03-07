@@ -113,10 +113,9 @@ public class MemberController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final ActorFrom actorForm, final BindingResult binding) {
 		ModelAndView result;
-
+		result = new ModelAndView("member/edit");
 		Member member;
 		if (binding.hasErrors()) {
-			result = new ModelAndView("member/edit");
 			result.addObject("errors", binding.getAllErrors());
 			actorForm.setTermsAndCondicions(false);
 			result.addObject("actorForm", actorForm);
@@ -126,11 +125,9 @@ public class MemberController extends AbstractController {
 				member = this.memberService.reconstruct(actorForm);
 				member.setUserAccount(ua);
 				this.registerService.saveMember(member, binding);
-				result = new ModelAndView("redirect:security/login.do");
 				result.addObject("alert", "member.edit.correct");
 				result.addObject("actorForm", actorForm);
 			} catch (final Throwable e) {
-				result = new ModelAndView("member/edit");
 				if (e.getMessage().contains("username is register"))
 					result.addObject("alert", "member.edit.usernameIsUsed");
 				result.addObject("errors", binding.getAllErrors());
