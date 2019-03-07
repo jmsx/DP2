@@ -45,7 +45,6 @@ public class AdministratorService {
 		this.findByPrincipal();
 		Assert.notNull(a);
 		Administrator result;
-		this.actorService.checkForSpamWords(a);
 		if (a.getId() == 0) {
 			this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
 			result = this.administratorRepository.save(a);

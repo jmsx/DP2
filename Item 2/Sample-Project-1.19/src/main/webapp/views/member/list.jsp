@@ -15,25 +15,13 @@
 	requestURI="member/list.do" pagesize="5"
 	class="displaytag">
 
-	<security:authorize access="hasRole('BROTHERHOOD')">
-	<jstl:if test="${ok}">
-		<display:column>
-			<a href="brotherhood/dropOut.do?memberId=${row.id}">
-				<spring:message code="brotherhood.dropOut" />
-			</a>
-		</display:column>
-	</jstl:if>
-	</security:authorize>
+	
 
 	<display:column property="name" titleKey="actor.name" />
 	
 	<display:column property="surname" titleKey="actor.surname" />
 	
-	<display:column titleKey="actor.enrolment">
-	<a href="enrolment/brotherhood/display.do?memberId=${row.id}"> <spring:message
-				code="member.enrolment" />
-		</a>
-	</display:column>
+	
 	
 	<display:column>
 		<a href="member/displayTabla.do?memberId=${row.id}"> <spring:message

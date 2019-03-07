@@ -23,8 +23,8 @@ import security.Authority;
 import security.UserAccount;
 import services.ActorService;
 import services.AdministratorService;
-import services.RegisterService;
 import services.UserAccountService;
+import services.auxiliary.RegisterService;
 import domain.Actor;
 import domain.Administrator;
 import forms.ActorFrom;
@@ -118,7 +118,6 @@ public class AdministratorController extends AbstractController {
 		principal.setSpammer(false);
 		//principal.setSurname("");
 		final Authority ban = new Authority();
-		ban.setAuthority(Authority.BANNED);
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.actorService.save(principal);
 

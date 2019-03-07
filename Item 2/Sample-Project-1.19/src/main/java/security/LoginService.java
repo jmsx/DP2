@@ -44,7 +44,6 @@ public class LoginService implements UserDetailsService {
 		// WARNING: The following sentences prevent lazy initialisation problems!
 		Assert.notNull(result.getAuthorities());
 		final Authority ban = new Authority();
-		ban.setAuthority(Authority.BANNED);
 		Assert.isTrue(!result.getAuthorities().contains(ban));
 		result.getAuthorities().size();
 

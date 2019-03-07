@@ -1,5 +1,5 @@
 
-package services;
+package services.auxiliary;
 
 import java.util.Date;
 
@@ -12,6 +12,10 @@ import org.springframework.validation.BindingResult;
 
 import security.UserAccount;
 import security.UserAccountRepository;
+import services.ActorService;
+import services.AdministratorService;
+import services.MemberService;
+import services.UserAccountService;
 import domain.Actor;
 import domain.Administrator;
 import domain.Member;

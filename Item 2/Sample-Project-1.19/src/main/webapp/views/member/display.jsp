@@ -55,14 +55,6 @@ function deletePersonalData(){
 <acme:display code="actor.address" value="${member.address}"/>
 <acme:display code="actor.score" value="${member.score}"/>
 
-<jstl:choose>
-	<jstl:when test="${member.spammer}">
-		<spring:message code="actor.spammer"/>
-	</jstl:when>
-	<jstl:otherwise>
-		<spring:message code="actor.spammer.no"/>
-	</jstl:otherwise>
-</jstl:choose>
 
 
 <jstl:if test="${displayButtons}">
@@ -73,6 +65,4 @@ function deletePersonalData(){
 <br>
 </jstl:if>
 
-<security:authorize access="hasRole('BROTHERHOOD')">
 	<acme:button url="/member/list.do" name="back" code="member.back"/>
-</security:authorize>

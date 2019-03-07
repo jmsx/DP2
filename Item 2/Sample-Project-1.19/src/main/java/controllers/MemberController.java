@@ -17,8 +17,8 @@ import security.Authority;
 import security.UserAccount;
 import services.ActorService;
 import services.MemberService;
-import services.RegisterService;
 import services.UserAccountService;
+import services.auxiliary.RegisterService;
 import domain.Actor;
 import domain.Member;
 import forms.ActorFrom;
@@ -28,16 +28,15 @@ import forms.ActorFrom;
 public class MemberController extends AbstractController {
 
 	@Autowired
-	private MemberService					memberService;
-
-
-	@Autowired
-	private UserAccountService				userAccountService;
+	private MemberService		memberService;
 
 	@Autowired
-	private RegisterService					registerService;
+	private UserAccountService	userAccountService;
+
 	@Autowired
-	private ActorService					actorService;
+	private RegisterService		registerService;
+	@Autowired
+	private ActorService		actorService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -139,30 +138,31 @@ public class MemberController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Member> members;
 
-		members = this.memberService.allMembersFromBrotherhood();
+		members = this.memberService.findAll();
 
 		result = new ModelAndView("member/list");
 		result.addObject("members", members);
 		result.addObject("ok", true);
 		result.addObject("requetURI", "member/list.do");
 
-
 		return result;
 	}
 
 	// LEAVE  ---------------------------------------------------------------		
 
-	/*@RequestMapping(value = "/leave", method = RequestMethod.GET)
-	public ModelAndView leave(@RequestParam final int brotherhoodId) {
-		final ModelAndView result;
-
-		result = this.brotherhoodController.list();
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
-		return result;
-	}*/
+	/*
+	 * @RequestMapping(value = "/leave", method = RequestMethod.GET)
+	 * public ModelAndView leave(@RequestParam final int brotherhoodId) {
+	 * final ModelAndView result;
+	 * 
+	 * result = this.brotherhoodController.list();
+	 * 
+	 * final String banner = this.configurationParametersService.findBanner();
+	 * result.addObject("banner", banner);
+	 * 
+	 * return result;
+	 * }
+	 */
 
 	//GDPR
 	@RequestMapping(value = "/deletePersonalData")
@@ -178,7 +178,6 @@ public class MemberController extends AbstractController {
 		principal.setSpammer(false);
 		//principal.setSurname("");
 		final Authority ban = new Authority();
-		ban.setAuthority(Authority.BANNED);
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.actorService.save(principal);
 

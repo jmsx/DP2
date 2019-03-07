@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,6 @@ public class MemberService {
 	private org.springframework.validation.Validator	validator;
 
 
-
 	public Member create() {
 		final Member member = new Member();
 		this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
@@ -68,10 +66,8 @@ public class MemberService {
 			this.actorService.setAuthorityUserAccount(Authority.MEMBER, member);
 			result = this.memberRepository.save(member);
 			this.folderService.setFoldersByDefault(result);
-		} else {
-			this.actorService.checkForSpamWords(member);
+		} else
 			result = (Member) this.actorService.save(member);
-		}
 		return result;
 	}
 	// TODO: delete all information but name including folders and their messages (but no as senders!!)
@@ -104,13 +100,6 @@ public class MemberService {
 		Assert.isTrue(userAccountId != 0);
 		final Member member = this.memberRepository.findByUserId(userAccountId);
 		return member;
-	}
-
-	public Collection<Member> allMembersFromBrotherhood() {
-		final Actor principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD));
-		final Collection<Member> all = this.memberRepository.allMembersFromBrotherhood(principal.getUserAccount().getId());
-		return all;
 	}
 
 	public Member reconstruct(final ActorFrom actorForm) {
@@ -150,12 +139,6 @@ public class MemberService {
 			member.setUserAccount(account);
 		}
 		return member;
-	}
-
-	public List<Member> getMembersTenPercent() {
-		final List<Member> result = this.memberRepository.getMembersTenPercent();
-		Assert.notNull(result);
-		return result;
 	}
 
 }

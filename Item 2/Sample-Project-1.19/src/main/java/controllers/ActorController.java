@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import services.ActorService;
-import services.MemberService;
 import domain.Actor;
 
 @Controller
@@ -17,9 +16,6 @@ public class ActorController extends AbstractController {
 
 	@Autowired
 	private ActorService	actorService;
-
-	@Autowired
-	private MemberService	memberService;
 
 
 	//GDPR
@@ -36,7 +32,6 @@ public class ActorController extends AbstractController {
 		principal.setSpammer(false);
 		//principal.setSurname("");
 		final Authority ban = new Authority();
-		ban.setAuthority(Authority.BANNED);
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.actorService.save(principal);
 
