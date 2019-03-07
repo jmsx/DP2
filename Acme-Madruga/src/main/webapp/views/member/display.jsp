@@ -63,11 +63,16 @@ function deletePersonalData(){
 		<spring:message code="actor.spammer.no"/>
 	</jstl:otherwise>
 </jstl:choose>
+
+
+<jstl:if test="${displayButtons eq true}">
 <br>
 	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
 	<button onClick="deletePersonalData()"><spring:message code="display.button.deletePersonalData"/></button>
 	
 <br>
+</jstl:if>
+
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<acme:button url="/member/list.do" name="back" code="member.back"/>
 </security:authorize>
