@@ -44,12 +44,13 @@ public class FolderController extends AbstractController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
-
 		final ModelAndView res;
-		final Collection<Folder> folders;
+		final Actor actor = this.actorService.findByPrincipal();
+		final Collection<Folder> folders = this.folderService.findAllByUserId(actor.getUserAccount().getId());
 		final Folder folder = null;
-		//		folders = this.folderService.setFoldersByDefault(this.actorService.findByPrincipal());
-		folders = this.folderService.findAllByUserId(this.actorService.findByPrincipal().getUserAccount().getId());
+		if (this.folderService.findAllSystemFolderByUserId(actor.getUserAccount().getId()).isEmpty())
+			folders.addAll(this.folderService.setFoldersByDefault(actor));
+
 		final Collection<Folder> foldersFinal = new ArrayList<>();
 		for (final Folder f : folders)
 			if (f.getFather() == null)

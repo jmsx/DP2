@@ -18,33 +18,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/profile")
 public class ProfileController extends AbstractController {
 
-	// Action-1 ---------------------------------------------------------------		
+	// Terms and conds ---------------------------------------------------------------		
 
-	@RequestMapping("/action-1")
+	@RequestMapping("/terms")
 	public ModelAndView action1() {
 		ModelAndView result;
-
-		result = new ModelAndView("profile/action-1");
-
+		result = new ModelAndView("misc/terms");
 		return result;
 	}
-
-	// Action-2 ---------------------------------------------------------------		
-
-	@RequestMapping("/action-2")
-	public ModelAndView action2() {
-		ModelAndView result;
-
-		result = new ModelAndView("profile/action-2");
-
-		return result;
-	}
-
-	// Action-2 ---------------------------------------------------------------		
-
-	@RequestMapping("/action-3")
-	public ModelAndView action3() {
-		throw new RuntimeException("Oops! An *expected* exception was thrown. This is normal behaviour.");
-	}
-
 }

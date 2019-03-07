@@ -1219,6 +1219,7 @@
 				<value>http://tyniurl.com/dsfe2435rwsd.png</value>
 			</list>
 		</property>
+		<property name="area" ref="area2"></property>
 
 	</bean>
 

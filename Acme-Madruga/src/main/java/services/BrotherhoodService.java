@@ -48,7 +48,6 @@ public class BrotherhoodService {
 	public Brotherhood create() {
 		final Brotherhood brotherhood = new Brotherhood();
 		this.actorService.setAuthorityUserAccount(Authority.BROTHERHOOD, brotherhood);
-
 		return brotherhood;
 	}
 
@@ -72,7 +71,7 @@ public class BrotherhoodService {
 		if (brotherhood.getId() == 0) {
 			this.actorService.setAuthorityUserAccount(Authority.BROTHERHOOD, brotherhood);
 			result = this.brotherhoodRepository.save(brotherhood);
-			this.folderService.setFoldersByDefault(result);
+
 		} else {
 			this.actorService.checkForSpamWords(brotherhood);
 			final Actor principal = this.actorService.findByPrincipal();
