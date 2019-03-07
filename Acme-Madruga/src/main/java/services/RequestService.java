@@ -50,11 +50,11 @@ public class RequestService {
 	 */
 	public Collection<Request> findAll() {
 		final Actor principal = this.actorService.findByPrincipal();
-		final Collection<Request> res = new HashSet<>();
+		Collection<Request> res = new HashSet<>();
 		if (this.actorService.checkAuthority(principal, Authority.MEMBER))
-			res.addAll(this.requestRepository.findByMember(principal.getUserAccount().getId()));
+			res = this.requestRepository.findByMember(principal.getUserAccount().getId());
 		else if (this.actorService.checkAuthority(principal, Authority.BROTHERHOOD))
-			res.addAll(this.requestRepository.findByBrotherhood(principal.getUserAccount().getId()));
+			res = (this.requestRepository.findByBrotherhood(principal.getUserAccount().getId()));
 		return res;
 	}
 	/**
@@ -124,7 +124,9 @@ public class RequestService {
 		final Actor principal = this.actorService.findByPrincipal();
 		final Boolean isMember = this.actorService.checkAuthority(principal, Authority.MEMBER);
 		Assert.isTrue(isMember, "Only a member can delete a request");
-		Assert.isTrue(req.getMember().getUserAccount().getId() == principal.getUserAccount().getId(), "Member must be the request owner");
+		final int reqMemberId = req.getMember().getUserAccount().getId();
+		final int principalId = principal.getUserAccount().getId();
+		Assert.isTrue(reqMemberId == principalId, "Member must be the request owner");
 		final Request request = this.requestRepository.findOne(req.getId());
 		Assert.isTrue(request.getStatus().equals(Request.PENDING), "The Request must be PENDING");
 		this.requestRepository.delete(req.getId());

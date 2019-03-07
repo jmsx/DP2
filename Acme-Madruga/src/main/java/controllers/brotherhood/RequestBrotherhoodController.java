@@ -92,9 +92,6 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
 		return result;
 	}
 
@@ -111,9 +108,6 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
@@ -174,9 +168,9 @@ public class RequestBrotherhoodController extends AbstractController {
 				else
 					result = this.createEditModelAndView(request, "request.commit.error");
 			} catch (final Throwable oops) {
-				String errorMessage = "request.commit.error";
-				if (oops.getMessage().contains("message.error"))
-					errorMessage = oops.getMessage();
+				final String errorMessage = "request.commit.error";
+				//				if (oops.getMessage().contains("message.error"))
+				//					errorMessage = oops.getMessage();
 				result = this.createEditModelAndView(request, errorMessage);
 			}
 
@@ -201,8 +195,6 @@ public class RequestBrotherhoodController extends AbstractController {
 			result.addObject("lang", lang);
 			result.addObject("request", request);
 			result.addObject("rol", "brotherhood");
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		}
 		return result;
 	}
@@ -229,8 +221,6 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("message", messageCode);
 		// the message code references an error message or null
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 		return result;
 	}
 }

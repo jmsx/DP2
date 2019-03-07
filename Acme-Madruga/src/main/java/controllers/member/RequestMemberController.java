@@ -6,13 +6,13 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ConfigurationParametersService;
 import services.ProcessionService;
 import services.RequestService;
 import controllers.AbstractController;
@@ -23,13 +23,10 @@ import domain.Request;
 public class RequestMemberController extends AbstractController {
 
 	@Autowired
-	private RequestService					requestService;
+	private RequestService		requestService;
 
 	@Autowired
-	private ProcessionService				processionService;
-
-	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
+	private ProcessionService	processionService;
 
 
 	// Listing --------------------------------------------------------
@@ -49,8 +46,6 @@ public class RequestMemberController extends AbstractController {
 		result.addObject("rol", rol);
 		result.addObject("theresProcessionsAvailable", !this.processionService.processionsAvailable().isEmpty());
 		result.addObject("requestURI", "request/member/list.do");
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
@@ -63,8 +58,6 @@ public class RequestMemberController extends AbstractController {
 		try {
 			this.requestService.requestToProcession(processionId);
 			result = new ModelAndView("redirect:/request/member/list.do");
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		} catch (final Throwable oops) {
 			String errorMessage = "request.create.error";
 			if (oops.getMessage().contains("message.error"))
@@ -92,8 +85,6 @@ public class RequestMemberController extends AbstractController {
 			result.addObject("lang", lang);
 			result.addObject("request", request);
 			result.addObject("rol", "member");
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		}
 		return result;
 	}
@@ -111,8 +102,6 @@ public class RequestMemberController extends AbstractController {
 			result = new ModelAndView("request/display");
 			result.addObject("request", request);
 			result.addObject("rol", "member");
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
 		}
 		return result;
 	}
@@ -121,14 +110,17 @@ public class RequestMemberController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Request request, final BindingResult binding) {
+		Assert.notNull(request);
+		Assert.isTrue(request.getId() != 0);
+
+		final Request retrieved = this.requestService.findOne(request.getId());
+
 		ModelAndView result;
 
 		try {
 			// service controlled that procession deleted has pending status
-			this.requestService.delete(request);
-			result = new ModelAndView("redirect:/member/list.do");
-			final String banner = this.configurationParametersService.findBanner();
-			result.addObject("banner", banner);
+			this.requestService.delete(retrieved);
+			result = new ModelAndView("request/list");
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(request, "request.commit.error");
 		}
@@ -154,8 +146,6 @@ public class RequestMemberController extends AbstractController {
 		result.addObject("rol", rol);
 		result.addObject("message", messageCode);
 		// the message code references an error message or null
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
