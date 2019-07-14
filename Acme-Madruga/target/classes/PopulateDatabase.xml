@@ -1342,6 +1342,7 @@
 		<!-- Atributes -->
 		<property name="moment" value="2018/03/16 15:20"></property>
 		<property name="position" ref="position1"></property>
+		<property name="enrolled" value="true"></property>
 
 		<!-- Relations -->
 		<property name="member" ref="member1"></property>
@@ -1352,6 +1353,7 @@
 		<!-- Atributes -->
 		<property name="moment" value="2018/03/14 17:30"></property>
 		<property name="position" ref="position2"></property>
+		<property name="enrolled" value="true"></property>
 
 		<!-- Relations -->
 		<property name="member" ref="member2"></property>
@@ -1362,6 +1364,7 @@
 		<!-- Atributes -->
 		<property name="moment" value="2018/03/14 17:30"></property>
 		<property name="position" ref="position3"></property>
+		<property name="enrolled" value="true"></property>
 
 		<!-- Relations -->
 		<property name="member" ref="member1"></property>

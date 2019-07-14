@@ -62,11 +62,15 @@ public class FloatController extends AbstractController {
 			result = new ModelAndView("float/edit");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("float", f);
-		} else {
-			result = new ModelAndView("float/display");
-			f = this.floatService.save(f);
-			result.addObject("f", f);
-		}
+		} else
+			try {
+				result = new ModelAndView("float/display");
+				f = this.floatService.save(f);
+				result.addObject("f", f);
+			} catch (final Throwable oops) {
+				result = new ModelAndView("float/edit");
+				result.addObject("message", "commit.error");
+			}
 
 		return result;
 	}

@@ -14,6 +14,16 @@
 	<form:hidden path="version"/>
 	<form:hidden path="brotherhood"/>
 	
+	<jstl:if test="${not empty errors}">
+	<div class="errorDiv">
+		<ul>
+			<jstl:forEach items="${errors}" var="error">
+				<li>${error.field} - <jstl:out value="${error.defaultMessage}" /></li>
+			</jstl:forEach>
+		</ul>
+	</div>
+</jstl:if>
+	
 	<acme:textbox code="float.title" path="title"/>
 	<acme:textarea code="float.description" path="description"/>
 	<acme:textarea code="float.pictures" path="pictures"/>
