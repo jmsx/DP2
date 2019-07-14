@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ConfigurationParametersService;
 import services.PositionService;
 import controllers.AbstractController;
-import domain.ConfigurationParameters;
 import domain.Position;
 
 @Controller
@@ -25,17 +23,13 @@ import domain.Position;
 public class PositionAdministratorController extends AbstractController {
 
 	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
-
-	@Autowired
-	private PositionService					positionService;
+	private PositionService	positionService;
 
 
 	//Listing -----------------------------------
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		final ModelAndView result;
-		final ConfigurationParameters configurationParameters;
 
 		//configurationParameters = this.configurationParametersService.findOne(1121);
 		//Assert.notNull(configurationParameters);

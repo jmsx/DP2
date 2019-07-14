@@ -39,9 +39,6 @@ public class MemberService {
 	private org.springframework.validation.Validator	validator;
 
 	@Autowired
-	private EnrolmentService							enrolmentService;
-
-	@Autowired
 	private FinderService								finderService;
 
 

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.BrotherhoodService;
-import services.ConfigurationParametersService;
 import services.FloatService;
 import services.ProcessionService;
 import services.RequestService;
@@ -25,26 +24,22 @@ import controllers.AbstractController;
 import domain.Brotherhood;
 import domain.Procession;
 import domain.Request;
-import forms.ProcessionForm;
 
 @Controller
 @RequestMapping("/procession/brotherhood")
 public class ProcessionBrotherhoodController extends AbstractController {
 
 	@Autowired
-	private ProcessionService				processionService;
+	private ProcessionService	processionService;
 
 	@Autowired
-	private RequestService					requestService;
+	private RequestService		requestService;
 
 	@Autowired
-	private BrotherhoodService				brotherhoodService;
+	private BrotherhoodService	brotherhoodService;
 
 	@Autowired
-	private FloatService					floatService;
-
-	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
+	private FloatService		floatService;
 
 
 	// CREATE
@@ -70,7 +65,7 @@ public class ProcessionBrotherhoodController extends AbstractController {
 		Collection<Request> requests;
 
 		procession = this.processionService.findOne(processionId);
-		requests = this.requestService.findAll();
+		requests = this.requestService.findByProcession(processionId);
 
 		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
@@ -208,17 +203,17 @@ public class ProcessionBrotherhoodController extends AbstractController {
 	}
 
 	// This method is not used because it doesn't make sense to have a pruned object in Procession
-	private ProcessionForm constructPruned(final Procession procession) {
-		final ProcessionForm pruned = new ProcessionForm();
-		pruned.setId(procession.getId());
-		pruned.setVersion(procession.getVersion());
-		pruned.setTitle(procession.getTitle());
-		pruned.setDescription(procession.getDescription());
-		pruned.setMaxRows(procession.getMaxRows());
-		pruned.setMaxColumns(procession.getMaxColumns());
-		pruned.setMoment(procession.getMoment());
-		pruned.setFloats(procession.getFloats());
-		return pruned;
-	}
+	//	private ProcessionForm constructPruned(final Procession procession) {
+	//		final ProcessionForm pruned = new ProcessionForm();
+	//		pruned.setId(procession.getId());
+	//		pruned.setVersion(procession.getVersion());
+	//		pruned.setTitle(procession.getTitle());
+	//		pruned.setDescription(procession.getDescription());
+	//		pruned.setMaxRows(procession.getMaxRows());
+	//		pruned.setMaxColumns(procession.getMaxColumns());
+	//		pruned.setMoment(procession.getMoment());
+	//		pruned.setFloats(procession.getFloats());
+	//		return pruned;
+	//	}
 
 }

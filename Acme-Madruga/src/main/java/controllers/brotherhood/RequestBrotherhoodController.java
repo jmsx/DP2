@@ -51,6 +51,7 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
+		result.addObject("requestURI", "/list.do");
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
@@ -71,6 +72,7 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
+		result.addObject("requestURI", "/listApproved.do");
 
 		final String banner = this.configurationParametersService.findBanner();
 		result.addObject("banner", banner);
@@ -91,6 +93,7 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
+		result.addObject("requestURI", "/listRejected.do");
 
 		return result;
 	}
@@ -108,6 +111,7 @@ public class RequestBrotherhoodController extends AbstractController {
 		result.addObject("lang", lang);
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
+		result.addObject("requestURI", "/listPending.do");
 
 		return result;
 	}
@@ -121,14 +125,22 @@ public class RequestBrotherhoodController extends AbstractController {
 
 		// access controlled in findOne method implemented by jmsx
 		request = this.requestService.findOne(requestId);
-		if (request == null || !request.getStatus().equals("PENDING") || this.requestService.processionRequested(processionId))
+		final boolean processionRequested = this.requestService.processionRequested(processionId);
+		final boolean rowColumn = this.requestService.availableRowColumn(request);
+		if (request == null)
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
 			result = this.createEditModelAndView(request);
-			final List<Integer> ls = this.requestService.suggestPosition(this.processionService.findOne(processionId));
-			result.addObject("setStatusTo", "APPROVED");
-			result.addObject("suggestedRow", ls.get(0));
-			result.addObject("suggestedColumn", ls.get(1));
+			if (!request.getStatus().equals("PENDING"))
+				result.addObject("msg", "request.no.pending.error");
+			else if (processionRequested && rowColumn)
+				result.addObject("msg", "request.available.error");
+			else {
+				final List<Integer> ls = this.requestService.suggestPosition(this.processionService.findOne(processionId));
+				result.addObject("setStatusTo", "APPROVED");
+				result.addObject("suggestedRow", ls.get(0));
+				result.addObject("suggestedColumn", ls.get(1));
+			}
 		}
 
 		return result;

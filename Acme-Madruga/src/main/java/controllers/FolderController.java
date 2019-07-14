@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationParametersService;
 import services.FolderService;
-import services.MessageService;
 import domain.Actor;
 import domain.Folder;
 
@@ -31,9 +30,6 @@ public class FolderController extends AbstractController {
 
 	@Autowired
 	private ActorService					actorService;
-
-	@Autowired
-	private MessageService					messageService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;

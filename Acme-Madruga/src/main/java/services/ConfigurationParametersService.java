@@ -26,9 +26,6 @@ public class ConfigurationParametersService {
 	private ConfigurationParametersRepository	configurationParametersRepository;
 
 	@Autowired
-	private PositionService						positionService;
-
-	@Autowired
 	private AdministratorService				administratorService;
 
 	@Autowired

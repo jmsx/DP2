@@ -33,7 +33,7 @@
 		<spring:message code="request.no.list" />
 	</jstl:when>
 	<jstl:otherwise>
-		<display:table name="requests" id="row" requestURI="request${rolURL}/list.do" pagesize="5" class="displaytag">
+		<display:table name="requests" id="row" requestURI="request${rolURL}/${requestURI}" pagesize="5" class="displaytag">
 
 			<jstl:set value="${row.status} " var="colorStyle" />
 			

@@ -196,7 +196,6 @@ public class RequestService {
 		Assert.isTrue(processionId != 0);
 		Request res = null;
 		final Member principal = this.memberService.findByPrincipal();
-		final Procession p = this.processionService.findOne(processionId);
 		final Collection<Request> cr = this.requestRepository.findByProcesion(processionId);
 		for (final Request request : cr)
 			if (request.getMember().equals(principal)) {

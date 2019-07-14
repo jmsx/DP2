@@ -21,19 +21,16 @@ import domain.Procession;
 public class FloatService {
 
 	@Autowired
-	private FloatRepository					floatRepository;
+	private FloatRepository		floatRepository;
 
 	@Autowired
-	private ProcessionService				processionService;
+	private ProcessionService	processionService;
 
 	@Autowired
-	private ConfigurationParametersService	configuracionParametersService;
+	private BrotherhoodService	brotherhoodService;
 
 	@Autowired
-	private BrotherhoodService				brotherhoodService;
-
-	@Autowired
-	private ActorService					actorService;
+	private ActorService		actorService;
 
 
 	//Métodos CRUD

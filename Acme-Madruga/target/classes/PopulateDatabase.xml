@@ -791,7 +791,7 @@
 		<property name="floats">
 			<list>
 				<ref bean="float1" />
-				<ref bean="float1" />
+				<ref bean="float2" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -823,7 +823,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float4" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -839,7 +839,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float5" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -855,7 +855,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float6" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -871,7 +871,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float7" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -887,7 +887,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float8" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -903,7 +903,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float9" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -919,7 +919,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float10" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -935,7 +935,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float11" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -951,7 +951,7 @@
 		<!-- Relations -->
 		<property name="floats">
 			<list>
-				<ref bean="float3" />
+				<ref bean="float12" />
 			</list>
 		</property>
 		<property name="brotherhood" ref="brotherhood1" />
@@ -1072,7 +1072,7 @@
 			</list>
 		</property>
 		<!-- Relations -->
-		<property name="brotherhood" ref="brotherhood1" />
+		<property name="brotherhood" ref="brotherhood2" />
 	</bean>
 
 	<bean id="float4" class="domain.Float">
@@ -1105,8 +1105,117 @@
 		<property name="brotherhood" ref="brotherhood1" />
 	</bean>
 
+	<bean id="float6" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
 
+	<bean id="float7" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
 
+	<bean id="float8" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float9" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float10" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float11" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
+
+	<bean id="float12" class="domain.Float">
+		<property name="title" value="Virgen de la Cabeza" />
+		<property name="description"
+			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
+		<property name="pictures">
+			<list>
+				<value>https://sevilla.abc.es/Media/201202/23/virgen-cabeza-siete-palabras--644x362.jpg
+				</value>
+				<value>https://cinturondeesparto.com/0.1/wp-content/uploads/2017/12/las-siete-palabras-celebro-besamanos-a-la-virgen-de-la-cabeza-3.jpg
+				</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="brotherhood" ref="brotherhood1" />
+	</bean>
 
 	<!-- =================================================================== 
 		======= POSITION ========= =================================================================== -->

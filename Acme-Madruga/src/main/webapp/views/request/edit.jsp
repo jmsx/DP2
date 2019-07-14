@@ -46,19 +46,23 @@
 				<acme:display code="request.suggested.column" value="${suggestedColumn}"/>
 				<acme:display code="request.max.column" value="${request.procession.maxColumns}"/>
 				<acme:numberbox code="request.column" path="column" min="1"/>	
-				<br />
+				<br /><br />
+				<acme:submit name="save" code="request.save"/>
 			</jstl:if>
 			<jstl:if test="${setStatusTo eq 'REJECTED'}">
 				<form:hidden path="status" value="REJECTED"/>
 				<form:hidden path="row"/>
 				<form:hidden path="column"/>
 				<acme:textarea code="request.explanation" path="explanation"/>
-				<br />
+				<br /><br />
+				<acme:submit name="save" code="request.save"/>
 			</jstl:if>
-			<br />
-			<acme:submit name="save" code="request.save"/>
 	</security:authorize>
 	
-	<acme:button url="request${rolURL}/list.do" name="cancel" code="request.cancel"/>
+	<acme:button url="request${rolURL}/list.do" name="cancel" code="request.cancel"/><br>
+	
+	<jstl:if test="${not empty msg}">
+		<p><spring:message code="${msg}"/></p>
+	</jstl:if>
 
 </form:form>

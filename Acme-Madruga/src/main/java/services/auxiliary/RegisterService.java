@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 
 import security.UserAccount;
 import security.UserAccountRepository;
-import services.ActorService;
 import services.AdministratorService;
 import services.BrotherhoodService;
 import services.MemberService;
@@ -28,8 +27,6 @@ import forms.BrotherhoodForm;
 @Transactional
 public class RegisterService {
 
-	@Autowired
-	private ActorService			actorService;
 	@Autowired
 	private UserAccountService		userAccountService;
 	@Autowired

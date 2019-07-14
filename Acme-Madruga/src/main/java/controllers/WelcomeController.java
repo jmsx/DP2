@@ -20,15 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
 import services.ConfigurationParametersService;
 
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController extends AbstractController {
-
-	@Autowired
-	private ActorService					actorService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
