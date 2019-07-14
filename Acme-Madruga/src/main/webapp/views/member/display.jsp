@@ -42,18 +42,38 @@ function deletePersonalData(){
 }
 </script>
 
+<jstl:if test="${not empty auth}">
+<h3><spring:message code="actor.banned"/></h3></jstl:if>
 
 <acme:display code="actor.name" value="${member.name}"/>
-<spring:message code="actor.photo"/>:<br>
-<img src="${member.photo}" alt="<spring:message code="member.alt.image"/>" width="20%" height="20%"/>
+<jstl:choose>
+	<jstl:when test="${not empty member.photo}">
+		<spring:message code="actor.photo"/>:<br>
+		<img src="${member.photo}" alt="<spring:message code="member.alt.image"/>" width="20%" height="20%"/>
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="actor.no.photo"/>
+	</jstl:otherwise>
+</jstl:choose>
 <br>
+<jstl:if test="${not empty member.middleName}">
 <acme:display code="actor.middleName" value="${member.middleName}"/>
+</jstl:if>
+<jstl:if test="${not empty member.surname}">
 <acme:display code="actor.surname" value="${member.surname}"/>
+</jstl:if>
+<jstl:if test="${not empty member.email}">
 <acme:display code="actor.email" value="${member.email}"/>
+</jstl:if>
+<jstl:if test="${not empty member.phone}">
 <acme:display code="actor.phone" value="${member.phone}"/>
-<acme:display code="actor.email" value="${member.email}"/>
+</jstl:if>
+<jstl:if test="${not empty member.address}">
 <acme:display code="actor.address" value="${member.address}"/>
+</jstl:if>
+<jstl:if test="${not empty member.score and member.score ne 0}">
 <acme:display code="actor.score" value="${member.score}"/>
+</jstl:if>
 
 <jstl:choose>
 	<jstl:when test="${member.spammer}">

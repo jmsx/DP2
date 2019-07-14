@@ -831,7 +831,7 @@
 	<bean id="procession4" class="domain.Procession">
 		<property name="title" value="Nazareno" />
 		<property name="description" value="This is a description of a procession4" />
-		<property name="moment" value="2019/04/26 00:00" />
+		<property name="moment" value="2020/04/26 00:00" />
 		<property name="ticker" value="200428-DOUBG" />
 		<property name="mode" value="FINAL" />
 		<property name="maxRows" value="120" />

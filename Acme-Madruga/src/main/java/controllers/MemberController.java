@@ -19,6 +19,7 @@ import services.ActorService;
 import services.BrotherhoodService;
 import services.ConfigurationParametersService;
 import services.EnrolmentService;
+import services.FolderService;
 import services.MemberService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
@@ -51,6 +52,10 @@ public class MemberController extends AbstractController {
 
 	@Autowired
 	private RegisterService					registerService;
+
+	@Autowired
+	private FolderService					folderService;
+
 	@Autowired
 	private ActorService					actorService;
 
@@ -99,6 +104,10 @@ public class MemberController extends AbstractController {
 			final int principal = this.actorService.findByPrincipal().getId();
 			result = new ModelAndView("member/display");
 			result.addObject("member", member);
+			final Authority ban = new Authority();
+			ban.setAuthority(Authority.BANNED);
+			if (member.getUserAccount().getAuthorities().contains(ban))
+				result.addObject("auth", "banned");
 			final boolean displayButtons = principal == member.getId();
 			result.addObject("displayButtons", displayButtons);
 		} else
@@ -203,6 +212,8 @@ public class MemberController extends AbstractController {
 		ban.setAuthority(Authority.BANNED);
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.actorService.save(principal);
+
+		this.folderService.deleteActorFolders(principal);
 
 		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
 		return result;

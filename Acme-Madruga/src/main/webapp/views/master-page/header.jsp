@@ -140,11 +140,13 @@
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 			<li><a class="fNiv" href="procession/list.do"><spring:message code="master.page.all.processions" /></a></li>
+			<li><a class="fNiv" href="brotherhood/listAll.do"><spring:message code="master.page.all.brotherhood" /></a></li>
 			<li><a class="fNiv" href="brotherhood/create.do"><spring:message code="master.page.brotherhood.register" /></a></li>
 			<li><a class="fNiv" href="member/create.do"><spring:message code="master.page.member.register" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">
+			<li><a class="fNiv" href="brotherhood/listAllAuthenticated.do"><spring:message code="master.page.all.brotherhood" /></a></li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 

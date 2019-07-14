@@ -90,7 +90,6 @@
 		<security:intercept-url pattern="/message/saveCopy.do" access="hasAnyRole('ADMIN', 'MEMBER', 'BROTHERHOOD', 'SUPER')" />
 		<security:intercept-url pattern="/message/broadcast.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/saveBroadcast.do" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/brotherhood/listAll.do" access="hasAnyRole('ADMIN')" /> 
 		
 		 
 		<!-- AREA: PROBLEMA 1 -->
@@ -110,7 +109,9 @@
 		<security:intercept-url pattern="/brotherhood/assignArea.do" access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/brotherhood/deletePersonalData.do" access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/brotherhood/displayTabla.do" access="permitAll"/>
-		<security:intercept-url pattern="/brotherhood/list.do" access="permitAll" /> 
+		<security:intercept-url pattern="/brotherhood/list.do" access="permitAll" />
+		<security:intercept-url pattern="/brotherhood/listAllAuthenticated.do" access="permitAll" />
+		<security:intercept-url pattern="/brotherhood/listAll.do" access="permitAll" /> 
 		<security:intercept-url pattern="/brotherhood/allBrotherhoodsFree.do" access="hasRole('MEMBER')" />
 		<security:intercept-url pattern="/brotherhood/brotherhoodsHasBelonged.do" access="hasRole('MEMBER')" />
 		 
@@ -119,7 +120,6 @@
 		<security:intercept-url pattern="/brotherhood/dropOut.do" access="hasRole('BROTHERHOOD')"/>
 		
 		<!-- FLOAT -->
-		
 		<security:intercept-url pattern="/float/list.do" access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/float/edit.do" access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/float/create.do" access="hasRole('BROTHERHOOD')" />

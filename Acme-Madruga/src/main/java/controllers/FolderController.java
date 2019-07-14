@@ -48,8 +48,8 @@ public class FolderController extends AbstractController {
 		final Actor actor = this.actorService.findByPrincipal();
 		final Collection<Folder> folders = this.folderService.findAllByUserId(actor.getUserAccount().getId());
 		final Folder folder = null;
-		if (this.folderService.findAllSystemFolderByUserId(actor.getUserAccount().getId()).isEmpty())
-			folders.addAll(this.folderService.setFoldersByDefault(actor));
+		//if (this.folderService.findAllSystemFolderByUserId(actor.getUserAccount().getId()).isEmpty())
+		//	folders.addAll(this.folderService.setFoldersByDefault(actor));
 
 		final Collection<Folder> foldersFinal = new ArrayList<>();
 		for (final Folder f : folders)

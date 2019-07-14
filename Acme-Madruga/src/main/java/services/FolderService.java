@@ -135,9 +135,9 @@ public class FolderService {
 
 		final Actor principal = this.actorService.findByPrincipal();
 		final Collection<Folder> fs = this.findAllByUserId(principal.getUserAccount().getId());
+		Assert.isTrue(fs.contains(f));
 		final Collection<Message> ms = this.messageService.findAllByFolderIdAndUserId(f.getId(), principal.getUserAccount().getId());
 		final Collection<Folder> folders = this.findAllByFatherId(f.getId());
-		Assert.isTrue(fs.contains(f));
 
 		if (!ms.isEmpty() && !folders.isEmpty()) {
 			this.messageService.deleteAll(ms, f);
@@ -151,10 +151,9 @@ public class FolderService {
 
 	}
 
-	public void deleteAll(final Collection<Folder> fs) {
+	private void deleteAll(final Collection<Folder> fs) {
 		Assert.notEmpty(fs);
-		for (final Folder f : fs)
-			this.delete(f);
+		this.folderRepository.deleteInBatch(fs);
 	}
 
 	public Collection<Folder> setFoldersByDefault(final Actor actor) {
@@ -200,6 +199,8 @@ public class FolderService {
 		notification.setMessages(messages);
 		notification.setFather(null);
 		folders.add(notification);
+
+		this.saveAll(folders);
 
 		return folders;
 	}
@@ -268,6 +269,12 @@ public class FolderService {
 		Assert.isTrue(id != 0);
 
 		return this.folderRepository.findAllSystemFolderByUserId(id);
+	}
+
+	public void deleteActorFolders(final Actor principal) {
+		final Collection<Folder> folderToDelete = this.folderRepository.findAllByUserId(principal.getUserAccount().getId());
+		this.deleteAll(folderToDelete);
+
 	}
 
 }
