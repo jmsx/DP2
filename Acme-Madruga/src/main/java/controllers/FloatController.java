@@ -28,7 +28,9 @@ public class FloatController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView result = new ModelAndView("float/list");
 		final Collection<domain.Float> floats = this.floatService.findByBrotherhoodPrincipal();
+		final Collection<domain.Float> selectedFloats = this.floatService.findSelectedByBrotherhoodPrincipal();
 		result.addObject("floats", floats);
+		result.addObject("selectedFloats", selectedFloats);
 		return result;
 	}
 

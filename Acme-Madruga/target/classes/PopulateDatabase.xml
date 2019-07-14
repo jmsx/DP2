@@ -1106,7 +1106,7 @@
 	</bean>
 
 	<bean id="float6" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza" />
+		<property name="title" value="Virgen de la Cabeza2" />
 		<property name="description"
 			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
 		<property name="pictures">
@@ -1122,7 +1122,7 @@
 	</bean>
 
 	<bean id="float7" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza" />
+		<property name="title" value="Virgen de la Cabeza3" />
 		<property name="description"
 			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
 		<property name="pictures">
@@ -1138,7 +1138,7 @@
 	</bean>
 
 	<bean id="float8" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza" />
+		<property name="title" value="Virgen de la Cabeza4" />
 		<property name="description"
 			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
 		<property name="pictures">
@@ -1154,7 +1154,7 @@
 	</bean>
 
 	<bean id="float9" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza" />
+		<property name="title" value="Virgen de la Cabeza5" />
 		<property name="description"
 			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
 		<property name="pictures">
@@ -1170,7 +1170,7 @@
 	</bean>
 
 	<bean id="float10" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza" />
+		<property name="title" value="Virgen de la Cabeza6" />
 		<property name="description"
 			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
 		<property name="pictures">
@@ -1186,7 +1186,7 @@
 	</bean>
 
 	<bean id="float11" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza" />
+		<property name="title" value="Virgen de la Cabeza7" />
 		<property name="description"
 			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
 		<property name="pictures">
@@ -1202,7 +1202,7 @@
 	</bean>
 
 	<bean id="float12" class="domain.Float">
-		<property name="title" value="Virgen de la Cabeza" />
+		<property name="title" value="Virgen de la Cabeza8" />
 		<property name="description"
 			value="La Virgen de la Cabeza procede de la talla de un ángel, realizado por Pizarro (1901) que fue adaptado por Manuel Escamilla en 1956." />
 		<property name="pictures">

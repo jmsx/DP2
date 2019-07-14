@@ -17,7 +17,10 @@ public interface FloatRepository extends JpaRepository<Float, Integer> {
 	@Query("select p from Procession p join p.floats b where b.title =?1")
 	List<Procession> findForFloat(String fProcession);
 
-	@Query("select f from Float f where f.brotherhood.userAccount.id = ?1")
+	@Query("select distinct f from Float f where f.brotherhood.userAccount.id = ?1")
 	Collection<Float> findByBrotherhood(int brotherhooodUserAccountId);
+
+	@Query("select distinct f from Float f where f.brotherhood.userAccount.id = ?1 AND ((1.0*(select count(p) from Procession p join p.floats fp where fp.id=f.id))>0)")
+	Collection<Float> findSelectedByBrotherhood(int brotherhooodUserAccountId);
 
 }

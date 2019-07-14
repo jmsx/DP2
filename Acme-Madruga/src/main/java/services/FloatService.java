@@ -125,4 +125,12 @@ public class FloatService {
 		Assert.notNull(res);
 		return res;
 	}
+
+	public Collection<Float> findSelectedByBrotherhoodPrincipal() {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.BROTHERHOOD), "The principal actor must be a BROTHEHOOD");
+		final Collection<Float> res = this.floatRepository.findSelectedByBrotherhood(principal.getUserAccount().getId());
+		Assert.notNull(res);
+		return res;
+	}
 }

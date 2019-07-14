@@ -27,18 +27,10 @@
 
 
 	<display:column property="title" titleKey="float.title" />
-
-
 	
 	<display:column titleKey="float.edit">
 		<a href="float/edit.do?floatId=${row.id}"> 
 			<spring:message code="float.edit"/>
-		</a>
-	</display:column>
-	
-	<display:column titleKey="float.delete">
-		<a href="float/delete.do?floatId=${row.id}"> 
-			<spring:message code="float.delete"/>
 		</a>
 	</display:column>
 
@@ -48,6 +40,19 @@
 		</a>
 	</display:column>
 
+	<jstl:set var="ctrl" value="0" />
+			<jstl:forEach var="r" items="${selectedFloats}">
+				<jstl:if test="${r eq row}">
+					<jstl:set var="ctrl" value="1" />
+				</jstl:if>
+	</jstl:forEach>
+	<display:column titleKey="float.delete">
+		<jstl:if test="${ctrl==0}">
+			<a href="float/delete.do?floatId=${row.id}"> 
+				<spring:message code="float.delete"/>
+			</a>
+		</jstl:if>
+	</display:column>
 </display:table>
 
 
