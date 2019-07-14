@@ -51,6 +51,11 @@
 				code="brotherhood.display" />
 		</a>
 	</display:column>
+	<display:column>
+		<a href="member/listAll.do?brotherhoodId=${row.id}"> <spring:message
+				code="brotherhood.members" />
+		</a>
+	</display:column>
 
 
 </display:table>

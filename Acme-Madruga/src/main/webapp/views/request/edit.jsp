@@ -34,6 +34,7 @@
 	<form:hidden path="member"/>
 	<form:hidden path="procession"/>
 	
+	<jstl:out value="sdds ${setStatusTo}"></jstl:out>
 	
 	<security:authorize access="hasRole('BROTHERHOOD')">
 			<jstl:if test="${setStatusTo eq 'APPROVED'}">

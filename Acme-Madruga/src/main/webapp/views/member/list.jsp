@@ -10,7 +10,26 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<jstl:choose>
+<jstl:when test="${requetURI eq 'member/listAll.do'}">
+<display:table name="members" id="row"
+	requestURI="${requetURI}" pagesize="5"
+	class="displaytag">
 
+	<display:column property="name" titleKey="actor.name" />
+	
+	<display:column property="surname" titleKey="actor.surname" />
+	
+	<display:column>
+		<a href="member/displayTabla.do?memberId=${row.id}"> <spring:message
+				code="member.display" />
+		</a>
+	</display:column>
+
+</display:table>
+
+</jstl:when>
+<jstl:otherwise>
 <display:table name="members" id="row"
 	requestURI="member/list.do" pagesize="5"
 	class="displaytag">
@@ -43,3 +62,6 @@
 
 
 </display:table>
+
+</jstl:otherwise>
+</jstl:choose>

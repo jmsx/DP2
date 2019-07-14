@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ConfigurationParametersService;
+import services.MemberService;
 import services.ProcessionService;
 import controllers.AbstractController;
+import domain.Member;
 import domain.Procession;
 
 @Controller
@@ -21,10 +22,10 @@ import domain.Procession;
 public class ProcessionMemberController extends AbstractController {
 
 	@Autowired
-	private ProcessionService				processionService;
+	private ProcessionService	processionService;
 
 	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
+	private MemberService		memberService;
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -52,8 +53,9 @@ public class ProcessionMemberController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Procession> processions;
 		Collection<Procession> memberProcessions;
+		final Member principal = this.memberService.findByPrincipal();
 
-		processions = this.processionService.findAllFinalMode();
+		processions = this.processionService.findAllAvailableByMemberId(principal);
 		memberProcessions = this.processionService.findAllByPrincipal();
 		final String lang = LocaleContextHolder.getLocale().getLanguage();
 

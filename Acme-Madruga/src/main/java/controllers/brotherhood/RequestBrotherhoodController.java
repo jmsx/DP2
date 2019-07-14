@@ -125,15 +125,15 @@ public class RequestBrotherhoodController extends AbstractController {
 
 		// access controlled in findOne method implemented by jmsx
 		request = this.requestService.findOne(requestId);
-		final boolean processionRequested = this.requestService.processionRequested(processionId);
-		final boolean rowColumn = this.requestService.availableRowColumn(request);
+
 		if (request == null)
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		else {
 			result = this.createEditModelAndView(request);
+			final boolean available = this.requestService.availableProcessionPositions(request.getProcession());
 			if (!request.getStatus().equals("PENDING"))
 				result.addObject("msg", "request.no.pending.error");
-			else if (processionRequested && rowColumn)
+			else if (available)
 				result.addObject("msg", "request.available.error");
 			else {
 				final List<Integer> ls = this.requestService.suggestPosition(this.processionService.findOne(processionId));
@@ -169,6 +169,8 @@ public class RequestBrotherhoodController extends AbstractController {
 	public ModelAndView save(@Valid final Request request, final BindingResult binding) {
 		ModelAndView result;
 
+		final String status = request.getStatus();
+
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(request, "request.commit.error");
 		else
@@ -192,8 +194,10 @@ public class RequestBrotherhoodController extends AbstractController {
 				} else if (!this.requestService.availableRowColumn(request)) {
 					result = this.createEditModelAndView(request, "request.available.error");
 					result.addObject("setStatusTo", "APPROVED");
-				} else
+				} else {
 					result = this.createEditModelAndView(request, "request.commit.error");
+					result.addObject("setStatusTo", status);
+				}
 			}
 
 		return result;

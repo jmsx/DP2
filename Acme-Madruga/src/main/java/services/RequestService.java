@@ -102,6 +102,7 @@ public class RequestService {
 			final boolean hasMemberRequestToProcession = this.requestRepository.hasMemberRequestToProcession(req.getProcession().getId(), req.getMember().getUserAccount().getId());
 			Assert.isTrue(!hasMemberRequestToProcession, "A member cannot request twice to the same procession");
 			Assert.isTrue((req.getRow() == null && req.getColumn() == null && req.getExplanation() == null), "Row, column and explanation attributes only can be set by brotherhood");
+			Assert.isTrue(this.processionService.findAllAvailableByMemberId(req.getMember()).contains(req.getProcession()));
 		} else {
 			Assert.isTrue(!isMember, "A member cannot update the request");
 			Assert.isTrue(isBrotherhood, "Only brotherhood can update a Request (to change it's status)");
@@ -124,6 +125,12 @@ public class RequestService {
 	public boolean availableRowColumn(final Request req) {
 		Assert.notNull(req);
 		return this.requestRepository.availableRowColumn(req.getRow(), req.getColumn(), req.getProcession().getId());
+	}
+
+	public boolean availableProcessionPositions(final Procession procession) {
+		final int total = procession.getMaxColumns() * procession.getMaxRows();
+		final int totalRequests = this.requestRepository.totalApprovedRequestByProcession(procession.getId());
+		return total < totalRequests;
 	}
 
 	public void delete(final Request req) {

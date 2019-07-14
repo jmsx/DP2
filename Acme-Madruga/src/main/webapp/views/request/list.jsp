@@ -27,13 +27,20 @@
 <jstl:if test="${not empty rol}">
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
-
+<jstl:choose>
+<jstl:when test="${not empty requestURI}">
+	<jstl:set var="URI" value="/${requestURI}"/>
+</jstl:when>
+<jstl:otherwise>
+	<jstl:set var="URI" value="/list.do"/>
+</jstl:otherwise>
+</jstl:choose>
 <jstl:choose>
 	<jstl:when test="${empty requests}">
 		<spring:message code="request.no.list" />
 	</jstl:when>
 	<jstl:otherwise>
-		<display:table name="requests" id="row" requestURI="request${rolURL}/${requestURI}" pagesize="5" class="displaytag">
+		<display:table name="requests" id="row" requestURI="request${rolURL}${URI}" pagesize="5" class="displaytag">
 
 			<jstl:set value="${row.status} " var="colorStyle" />
 			

@@ -24,22 +24,19 @@ import forms.ActorFrom;
 public class MemberService {
 
 	@Autowired
-	private MemberRepository							memberRepository;
+	private MemberRepository	memberRepository;
 
 	@Autowired
-	private ActorService								actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private FolderService								folderService;
+	private FolderService		folderService;
 
 	@Autowired
-	private UserAccountService							userAccountService;
+	private UserAccountService	userAccountService;
 
 	@Autowired
-	private org.springframework.validation.Validator	validator;
-
-	@Autowired
-	private FinderService								finderService;
+	private FinderService		finderService;
 
 
 	public Member create() {
@@ -163,4 +160,9 @@ public class MemberService {
 		return result;
 	}
 
+	public Collection<Member> allMembersFromBrotherhood(final int brotherhoodId) {
+		final Collection<Member> result = this.memberRepository.allMembersFromBrotherhood(brotherhoodId);
+		Assert.notNull(result);
+		return result;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,15 +102,18 @@ public class MemberController extends AbstractController {
 		member = this.memberService.findOne(memberId);
 
 		if (member != null) {
-			final int principal = this.actorService.findByPrincipal().getId();
 			result = new ModelAndView("member/display");
 			result.addObject("member", member);
 			final Authority ban = new Authority();
 			ban.setAuthority(Authority.BANNED);
 			if (member.getUserAccount().getAuthorities().contains(ban))
 				result.addObject("auth", "banned");
-			final boolean displayButtons = principal == member.getId();
-			result.addObject("displayButtons", displayButtons);
+			final Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (user != "anonymousUser") {
+				final int principal = this.actorService.findByPrincipal().getId();
+				final boolean displayButtons = principal == member.getId();
+				result.addObject("displayButtons", displayButtons);
+			}
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -178,6 +182,26 @@ public class MemberController extends AbstractController {
 		return result;
 	}
 
+	// LIST MY MEMBERS  ---------------------------------------------------------------		
+
+	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
+	public ModelAndView listAll(@RequestParam final int brotherhoodId) {
+		final ModelAndView result;
+		final Collection<Member> members;
+
+		final Brotherhood brotherhood = this.brotherhoodService.findOne(brotherhoodId);
+		members = this.memberService.allMembersFromBrotherhood(brotherhood.getUserAccount().getId());
+
+		result = new ModelAndView("member/list");
+		result.addObject("members", members);
+		result.addObject("brotherhood", brotherhood);
+		result.addObject("requetURI", "member/listAll.do");
+
+		final String banner = this.configurationParametersService.findBanner();
+		result.addObject("banner", banner);
+
+		return result;
+	}
 	// LEAVE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/leave", method = RequestMethod.GET)

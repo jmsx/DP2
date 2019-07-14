@@ -45,7 +45,6 @@ public class RequestMemberController extends AbstractController {
 		result.addObject("requests", requests);
 		result.addObject("rol", rol);
 		result.addObject("theresProcessionsAvailable", !this.processionService.processionsAvailable().isEmpty());
-		result.addObject("requestURI", "request/member/list.do");
 
 		return result;
 	}

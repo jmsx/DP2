@@ -188,9 +188,15 @@ public class ProcessionService {
 	public Collection<Procession> processionsAvailable() {
 		final Member principal = this.memberService.findByPrincipal();
 		final Collection<Procession> memberProcessions = this.processionRepository.findAllProcessionByBMemberId(principal.getUserAccount().getId());
-		final Collection<Procession> processions = this.findAllFinalMode();
+		final Collection<Procession> processions = this.processionRepository.findAllAvailableByMemberId(principal.getId());
 		processions.removeAll(memberProcessions);
 		return processions;
+	}
+
+	public Collection<Procession> findAllAvailableByMemberId(final Member principal) {
+		final Collection<Procession> res = this.processionRepository.findAllAvailableByMemberId(principal.getId());
+		Assert.notNull(res);
+		return res;
 	}
 
 	public boolean exists(final Integer processionId) {
