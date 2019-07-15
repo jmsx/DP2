@@ -154,11 +154,11 @@ public class ProcessionBrotherhoodController extends AbstractController {
 	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)
 	public ModelAndView finalMode(@RequestParam final int processionId) {
 		final ModelAndView result;
-		if (this.brotherhoodService.findByPrincipal().getArea() != null) {
+		result = this.list();
+		if (this.brotherhoodService.findByPrincipal().getArea() != null)
 			this.processionService.toFinalMode(processionId);
-			result = new ModelAndView("redirect:list.do");
-		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+		else
+			result.addObject("msg", "no.area");
 		return result;
 	}
 

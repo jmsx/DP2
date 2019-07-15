@@ -80,6 +80,10 @@
 
 </display:table>
 
+<jstl:if test="${not empty msg}">
+	<h3><spring:message code="${msg}"/></h3>
+</jstl:if>
+
 <security:authorize access="hasRole('BROTHERHOOD')">
 	<acme:link url="procession/brotherhood/create.do"
 		code="procession.create" />
