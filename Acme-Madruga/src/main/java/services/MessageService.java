@@ -146,6 +146,7 @@ public class MessageService {
 		final Collection<Actor> actors = this.actorService.findAll();
 		final Actor actor = this.actorService.findByPrincipal();
 		actors.remove(actor);
+		actors.removeAll(this.actorService.findAllBanned());
 		m.setRecipients(actors);
 		this.send(m);
 	}
