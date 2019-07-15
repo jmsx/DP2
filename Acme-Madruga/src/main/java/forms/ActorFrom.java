@@ -94,6 +94,7 @@ public class ActorFrom extends DomainEntity {
 		this.photo = photo;
 	}
 
+	@NotBlank
 	@Email
 	public String getEmail() {
 		return this.email;
@@ -103,7 +104,6 @@ public class ActorFrom extends DomainEntity {
 		this.email = email;
 	}
 
-	//TODO: Phone Pattern
 	//@Pattern(regexp="^\+{1}[1-9]{0,3}\s\([1-9]{0,3}\)\s[0-9]{4,}|\+{1}[1-9]{0,3}\s[0-9]{4,}|[0-9]{4,}$")
 	public String getPhone() {
 		return this.phone;

@@ -73,7 +73,7 @@ public class MemberController extends AbstractController {
 		ModelAndView result = new ModelAndView();
 		final ActorFrom member = new ActorFrom();
 		result = new ModelAndView("member/edit");
-		result.addObject("actorForm", member);
+		result.addObject("actorFrom", member);
 		return result;
 	}
 
@@ -130,7 +130,7 @@ public class MemberController extends AbstractController {
 		if (binding.hasErrors()) {
 			result.addObject("errors", binding.getAllErrors());
 			actorForm.setTermsAndCondicions(false);
-			result.addObject("actorForm", actorForm);
+			result.addObject("actorFrom", actorForm);
 		} else
 			try {
 				final UserAccount ua = this.userAccountService.reconstruct(actorForm, Authority.MEMBER);
@@ -138,13 +138,13 @@ public class MemberController extends AbstractController {
 				member.setUserAccount(ua);
 				this.registerService.saveMember(member, binding);
 				result.addObject("alert", "member.edit.correct");
-				result.addObject("actorForm", actorForm);
+				result.addObject("actorFrom", actorForm);
 			} catch (final Throwable e) {
 				if (e.getMessage().contains("username is register"))
 					result.addObject("alert", "member.edit.usernameIsUsed");
 				result.addObject("errors", binding.getAllErrors());
 				actorForm.setTermsAndCondicions(false);
-				result.addObject("actorForm", actorForm);
+				result.addObject("actorFrom", actorForm);
 			}
 		return result;
 	}
@@ -155,7 +155,7 @@ public class MemberController extends AbstractController {
 		final Member member = this.memberService.findByPrincipal();
 		final ActorFrom actor = this.registerService.inyect(member);
 		actor.setTermsAndCondicions(true);
-		result.addObject("actorForm", actor);
+		result.addObject("actorFrom", actor);
 		return result;
 
 	}

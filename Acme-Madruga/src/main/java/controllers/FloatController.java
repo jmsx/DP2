@@ -89,9 +89,7 @@ public class FloatController extends AbstractController {
 		final Float f = this.floatService.findOne(floatId);
 		this.floatService.delete(f);
 
-		final ModelAndView result = new ModelAndView("float/list");
-		final Collection<domain.Float> floats = this.floatService.findByBrotherhoodPrincipal();
-		result.addObject("floats", floats);
+		final ModelAndView result = this.list();
 		return result;
 	}
 }

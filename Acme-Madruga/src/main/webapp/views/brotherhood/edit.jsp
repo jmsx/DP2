@@ -21,8 +21,11 @@
 	<jstl:if test="${not empty errors}">
 		<div class="errorDiv">
 			<ul>
+				<li><spring:message code="brotherhood.edit"/></li>
 				<jstl:forEach items="${errors}" var="error">
+				<jstl:if test="${error.field eq 'termsAndCondicions'}">
 					<li><spring:message code="brotherhood.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+				</jstl:if>
 				</jstl:forEach>
 			</ul>
 		</div>

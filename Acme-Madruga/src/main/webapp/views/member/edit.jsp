@@ -21,8 +21,11 @@
 	<jstl:if test="${not empty errors}">
 		<div class="errorDiv">
 			<ul>
+				<li><spring:message code="member.edit"/></li>
 				<jstl:forEach items="${errors}" var="error">
+				<jstl:if test="${error.field eq 'termsAndCondicions'}">
 					<li><spring:message code="member.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+				</jstl:if>
 				</jstl:forEach>
 			</ul>
 		</div>
@@ -30,7 +33,7 @@
 
 
 
-<form:form modelAttribute="actorForm" action="member/edit.do" method="POST">
+<form:form modelAttribute="actorFrom" action="member/edit.do" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<acme:textbox code="member.edit.userAccountuser" path="userAccountuser" />
